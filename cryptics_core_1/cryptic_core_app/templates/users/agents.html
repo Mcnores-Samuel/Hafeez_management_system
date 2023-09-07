@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block content %}
+<section class=".agents_stock">
+            <table class="stock-table">
+                <caption>Stock In</caption>
+                <thead>
+                    <tr>
+                        <th>imei_number</th>
+                        <th>phone</th>
+                        <th>sale</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in stock_in %}
+                        <tr>
+                            <td>{{ item.imei_number }}</td>
+                            <td>{{ item.phone_type }}</td>
+                            <td>
+                                <button type="submit"><a href="{% url 'combinedData_collection' data_id=item.id %}">>>></a></button>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <table class="stock-table">
+                <caption>Stock Out</caption>
+                <thead>
+                    <tr>
+                        <th>imei_number</th>
+                        <th>phone</th>
+                        <th>assigned on</th>
+                        <th>stock_out_date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in stock_out %}
+                    <tr>
+                        <td>{{ item.imei_number }}</td>
+                        <td>{{ item.phone_type }}</td>
+                        <td>{{ item.collection_date }}</td>
+                        <td>{{ item.stock_out_date }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+</section>
+{% endblock %}

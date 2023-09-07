@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="sign_up_form">
+    <div class="form_container custom">
+        <h2>Customer Data</h2>
+        <form method="post" class="sign_up customer-form">
+            {% csrf_token %}
+            <div class="role">
+                <label for="{{ form.payment_method.id_for_label }}">Payment Method:</label>
+                {{ form.payment_method }}
+            </div>
+            <div class="form-group">
+                {{ form.customer_name }}
+                <label for="{{ form.customer_name.id_for_label }}">Customer Name:</label>
+            </div>
+            <div class="form-group">
+                {{ form.national_id }}
+                <label for="{{ form.national_id.id_for_label }}">National ID:</label>
+            </div>
+            <div class="form-group">
+                {{ form.customer_contact }}
+                <label for="{{ form.customer_contact.id_for_label }}">Customer Contact:</label>
+            </div>
+            <div class="form-group">
+                {{ form.second_contact }}
+                <label for="{{ form.second_contact.id_for_label }}">Second Contact:</label>
+            </div>
+            <div class="form-group">
+                {{ form.first_witness_name }}
+                <label for="{{ form.first_witness_name.id_for_label }}">First Witness Name:</label>
+            </div>
+            <div class="form-group">
+                {{ form.first_witness_contact }}
+                <label for="{{ form.first_witness_contact.id_for_label }}">First Witness Contact:</label>
+            </div>
+            <div class="form-group">
+                {{ form.second_witness_name }}
+                <label for="{{ form.second_witness_name.id_for_label }}">Second Witness Name:</label>
+            </div>
+            <div class="form-group">
+                {{ form.second_witness_contact }}
+                <label for="{{ form.second_witness_contact.id_for_label }}">Second Witness Contact:</label>
+            </div>
+            <div class="form-group">
+                {{ form.customer_location }}
+                <label for="{{ form.customer_location.id_for_label }}">Customer Location:</label>
+            </div>
+            <div class="form-group">
+                {{ form.nearest_school }}
+                <label for="{{ form.nearest_school.id_for_label }}">Nearest School:</label>
+            </div>
+            <div class="form-group">
+                {{ form.nearest_market_church_hospital }}
+                <label for="{{ form.nearest_market_church_hospital.id_for_label }}">Nearest Market/Church/Hospital:</label>
+            </div>
+            <div class="form-group">
+                {{ form.customer_email }}
+                <label for="{{ form.customer_email.id_for_label }}">Customer Email:</label>
+            </div>
+            <div class="form-group">
+                {{ form.contract_number }}
+                <label for="{{ form.contract_number.id_for_label }}">Contract Number:</label>
+            </div>
+            <div class="form-group">
+                {{ form.payment_period }}
+                <label for="{{ form.payment_period.id_for_label }}">Payment Period:</label>
+            </div>
+            {% for field in form %}
+                <article>
+                    {% if field.errors %}
+                    <ol class="errorlist">
+                        {% for error in field.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ol>
+                {% endif %}
+                </article>
+            {% endfor %}
+            <button type="submit">submit</button>
+        </form>
+    </div>
+</section>
+{% endblock %}

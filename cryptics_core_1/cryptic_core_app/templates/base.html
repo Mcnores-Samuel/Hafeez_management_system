@@ -1,0 +1,75 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="{% static 'styles/common.css' %}">
+    <link rel="stylesheet" href="{% static 'css/data_table.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/base_header.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/forms.css' %}">
+    <link rel="stylesheet" href="{% static 'css/spinner.css' %}">
+    <script src="{% static 'app_js/navigation.js' %}" defer></script>
+    <script src="{% static 'app_js/spinner.js' %}" defer></script>
+    <title>{% block title %}Hafeez{% endblock %}</title>
+    <!-- Common CSS and JavaScript files -->
+</head>
+<body>
+    <div class="loader"></div>
+    <header>
+        {% block header %}
+        <!-- Custom header content for Template 1 -->
+        {% if user.is_authenticated %}
+        <div class="topbar">
+            <div class="logo">HE</div>
+            <span class="menu"><i class='bx bx-menu'></i></span>
+        </div>
+        <nav class="heading">
+            <div class="logo">HE</div>
+            <ul class="navigation">
+                <li><a href="{% url 'home_page' %}">Home</a></li>
+                <li><a href="#">Products</a></li>
+                <li><a href="#">Services</a></li>
+                <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+            </ul>
+            <ul>
+                <li class="profile"><a href="{% url 'profile' %}">{{ profile }}</a></li>
+                <li class="settings"><a href="{% url 'profile' %}">Settings</a></li>
+                <li><a href="{% url 'sign_out' %}">Sign Out</a></li>
+            </ul>
+        </nav>
+        {% else %}
+        <div class="topbar">
+            <div class="logo">HE</div>
+            <span class="menu"><i class='bx bx-menu'></i></span>
+        </div>
+        <nav class="heading">
+            <div class="logo">HE</div>
+            <ul>
+                <li><a href="{% url 'home_page' %}">Home</a></li>
+                <li><a href="#">Products</a></li>
+                <li><a href="#">Services</a></li>
+                <li><a href="#">About Us</a></li>
+            </ul>
+            <ul>
+                <li><a href="{% url 'sign_in' %}">sign In</a></li>
+                <li><a href="{% url 'sign_up' %}">sign Up</a></li>
+            </ul>
+        </nav>
+        {% endif %}
+        {% endblock %}
+    </header>
+    <div class="content">
+        {% block content %}
+        <h1>Welcome to Hafeez management system</h1>
+        {% endblock %}
+    </div>
+    
+    <footer>
+        {% block footer %}
+        <!-- Footer content -->
+        {% endblock %}
+    </footer>
+</body>
+</html>

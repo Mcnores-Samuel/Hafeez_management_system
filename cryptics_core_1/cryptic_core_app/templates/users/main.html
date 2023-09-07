@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block header %}
+    <!-- Custom header content for Template 1 -->
+    <nav>
+        <div class="logo">HE</div>
+        <ul class="navigation">
+            <li><a href="{% url 'home_page' %}">Home</a></li>
+            <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+            <li><a href="/admin/">Admin Dashboard</a></li>
+
+        </ul>
+        <ul>
+            <li class="profile"><a href="{% url 'profile' %}">{{ profile }}</a></li>
+            <li><a href="{% url 'sign_out' %}">Sign Out</a></li>
+        </ul>
+        <span class="menu"><i class='bx bx-menu'></i></span>
+    </nav>
+{% endblock %}
+
+{% block content %}
+    <!-- Custom content for Template 1 -->
+{% endblock %}
+
+{% block footer %}
+    <!-- Custom footer content for Template 1 -->
+{% endblock %}
