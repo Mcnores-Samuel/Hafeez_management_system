@@ -6,6 +6,7 @@ charset-normalizer==3.2.0
 cryptography==41.0.3
 defusedxml==0.7.1
 deprecation==2.1.0
+dj-database-url==2.1.0
 Django==4.2.4
 django-allauth==0.55.0
 django-email-verification==0.3.1
@@ -25,3 +26,4 @@ sqlparse==0.4.4
 tenacity==8.2.3
 typing_extensions==4.7.1
 urllib3==2.0.4
+whitenoise==6.5.0
