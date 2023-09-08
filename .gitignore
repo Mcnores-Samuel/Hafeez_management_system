@@ -1,5 +1,5 @@
 # Text backup files
 *.bak
-
+__pycache__/
 # Database
 *.sqlite3
