@@ -1,6 +1,8 @@
 # Text backup files
 *.bak
 __pycache__/
+
 env_iron/
+
 # Database
 *.sqlite3
