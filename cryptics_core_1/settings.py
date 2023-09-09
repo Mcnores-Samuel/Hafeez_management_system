@@ -145,7 +145,7 @@ EMAIL_MAIL_HTML = 'authentication/activation_email.html'
 EMAIL_MAIL_PLAIN = 'authentication/activation_email.txt'
 EMAIL_MAIL_TOKEN_LIFE = 60 * 60
 EMAIL_MAIL_PAGE_TEMPLATE = 'comfirm_template.html'
-EMAIL_PAGE_DOMAIN = 'https://hafeez-management-system.vercel.app/cryptic_core_app/'
+EMAIL_PAGE_DOMAIN = 'https://hafeez-management-system-28ipg30uc-mcnores-samuel.vercel.app/'
 EMAIL_MULTI_USER = True
 
 
