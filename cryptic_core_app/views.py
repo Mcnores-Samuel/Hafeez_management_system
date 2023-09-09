@@ -16,7 +16,28 @@ from django.contrib.auth.hashers import check_password
 
 
 def home_page(request):
-    context = {}
+    if request.method == "POST":
+        form = SignInForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data['email']
+            password = form.cleaned_data['password']
+            user = authenticate(request, email=email, password=password)
+            if user is not None:
+                if user.is_active:
+                    login(request, user)
+                    if user.is_staff:
+                        return redirect(reverse('home_page'))
+                    elif user.groups.filter(name='agents').exists():
+                        return redirect(reverse('home_page'))
+                    else:
+                        return redirect(reverse('home_page'))
+                else:
+                    form.add_error(None, "Please!! activate your account")
+            else:
+                form.add_error(None, "Invalid username or password")
+    else:
+        form = SignInForm()
+    context = {'form': form}
     if request.user.is_authenticated:
         context['profile'] = request.user.email[0]
     return render(request, 'base.html', context)

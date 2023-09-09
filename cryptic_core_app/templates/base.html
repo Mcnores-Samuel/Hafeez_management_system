@@ -62,48 +62,34 @@
     </header>
     <div class="content">
         {% block content %}
+        {% if user.is_authenticated %}
+        <div></div>
+        {% else %}
         <section class="sign_up_form">
-            <div class="infor">
-                <h1>Welcome Our designated agents and users please sign up</h1>
-            </div>
+            <div class="infor"></div>
             <div class="form_container">
-                <h2 class="sign_up_h2">Sign up</h2>
-                <form method="post" class="sign_up">
+                <h2>Sign in</h2>
+                <form method="post" class="sign_in">
                     {% csrf_token %}
-                    <div class="role">
-                        <label for="{{ form.role.id_for_label }}">Role:</label>
-                        {{ form.role }}
-                    </div>
-                    <div class="form-group">
+                    <div class="form-group sign_in_group">
                         <span class="icon"><i class='bx bx-envelope'></i></span>
                         {{ form.email }}
                         <label for="{{ form.email.id_for_label }}">Email:</label>
                     </div>
-                    <div class="form-group">
-                        <span class="icon"><i class='bx bxs-user'></i></span>
-                        {{ form.username }}
-                        <label for="{{ form.username.id_for_label }}">Username:</label>
-                    </div>
-                    <div class="form-group">
+                    <div class="form-group sign_in_group">
                         <span class="icon"><i class='bx bx-lock-alt'></i></span>
-                        {{ form.password1 }}
-                        <label for="{{ form.password1.id_for_label }}">Password:</label>
+                        {{ form.password }}
+                        <label for="{{ form.password.id_for_label }}">Password:</label>
                     </div>
-                    <!-- Password2 -->
-                    <div class="form-group">
-                        <span class="icon"><i class='bx bx-lock-alt'></i></span>
-                        {{ form.password2 }}
-                        <label for="{{ form.password2.id_for_label }}">Confirm Password:</label>
-                    </div>
-                    <div class="form-group">
-                        <span class="icon"><i class='bx bx-barcode'></i></span>
-                        {{ form.agent_code }}
-                        <label for="{{ form.agent_code.id_for_label }}">Agent Code:</label>
-                    </div>
-                    <button type="submit" class="submitBtn">Sign up</button>
+                    {% for error in form.non_field_errors %}
+                    <p>{{ error }}</p>
+                    {% endfor %}
+                    <button type="submit">Sign in</button>
+                    <a href="{% url 'password_reset' %}">Forgot Password?</a>
                 </form>
             </div>
         </section>
+        {% endif %}
         {% endblock %}
     </div>
     
