@@ -145,16 +145,15 @@ EMAIL_MAIL_HTML = 'authentication/activation_email.html'
 EMAIL_MAIL_PLAIN = 'authentication/activation_email.txt'
 EMAIL_MAIL_TOKEN_LIFE = 60 * 60
 EMAIL_MAIL_PAGE_TEMPLATE = 'comfirm_template.html'
-EMAIL_PAGE_DOMAIN = 'https://hafeez-management-system-28ipg30uc-mcnores-samuel.vercel.app/'
+EMAIL_PAGE_DOMAIN = 'https://hafeez-management-system-mcnores-samuel.vercel.app/'
 EMAIL_MULTI_USER = True
 
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-EMAIL_HOST = os.environ.get('EMAIL_HOST', 'smtp.gmail.com')
-EMAIL_PORT = os.environ.get('EMAIL_PORT', '587')
+EMAIL_HOST = os.environ.get('EMAIL_HOST')
+EMAIL_PORT = os.environ.get('EMAIL_PORT')
 EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS')
-EMAIL_USE_SSL = False
-EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', 'Hafeezapp6@gmail.com')
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 
 PASSWORD_RESET_TIMEOUT_DAYS = 1
