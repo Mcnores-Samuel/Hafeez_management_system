@@ -57,6 +57,7 @@
     border-radius: 50%;
     padding: 5px;
     margin-top: 3px;
+    background-color: rgb(97, 198, 165);
 }
 
 .profile {
@@ -129,12 +130,16 @@
         display: flex;
         align-items: center;
         font-size: 3rem;
-        margin-right: 20px;
+        margin-right: 5px;
         position: absolute;
-        right: 1rem;
+        right: 0.3rem;
         top: 1rem;
         border-radius: 5px;
         cursor: pointer;
+    }
+
+    .topbar .logo {
+        margin-left: 5px;
     }
 
     .topbar .menu:hover {

@@ -10,8 +10,11 @@
     <link rel="stylesheet" href="{% static 'styles/base_header.css' %}">
     <link rel="stylesheet" href="{% static 'styles/forms.css' %}">
     <link rel="stylesheet" href="{% static 'css/spinner.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/sections.css' %}">
+    <link rel="icon" href="{% static 'images/icon.png' %}" type="image/png">
     <script src="{% static 'app_js/navigation.js' %}" defer></script>
     <script src="{% static 'app_js/spinner.js' %}" defer></script>
+    <script src="{% static 'app_js/placeholders.js' %}" defer></script>
     <title>{% block title %}Hafeez{% endblock %}</title>
     <!-- Common CSS and JavaScript files -->
 </head>
@@ -63,7 +66,7 @@
     <div class="content">
         {% block content %}
         {% if user.is_authenticated %}
-        <div></div>
+        <div class="placeholders"></div>
         {% else %}
         <section class="sign_up_form">
             <div class="infor"></div>
@@ -85,10 +88,11 @@
                     <p>{{ error }}</p>
                     {% endfor %}
                     <button type="submit">Sign in</button>
-                    <a href="{% url 'password_reset' %}">Forgot Password?</a>
+                    <div class="forget"><a href="{% url 'password_reset' %}">Forgot Password?</a></div>
                 </form>
             </div>
         </section>
+        <div class="placeholders"></div>
         {% endif %}
         {% endblock %}
     </div>

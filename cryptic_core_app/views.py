@@ -248,7 +248,7 @@ def profile(request):
         }
     return render(request, 'users/profile.html', context)
 
-
+@login_required
 def combinedData_collection(request, data_id):
     """
     The `combinedData_collection` view function is a Django view responsible for

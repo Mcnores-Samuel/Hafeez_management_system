@@ -3,6 +3,11 @@ const menu = document.querySelector(".menu")
 const navigation = document.querySelector('.heading')
 const profile = document.querySelector('.profile')
 const settings = document.querySelector('.settings')
+const body = document.querySelector("body")
+
+body.addEventListener("click", ()=>{
+  settings.style.display = 'none'
+})
 
 window.addEventListener('scroll', () => {
     if (window.scrollY > 10) {

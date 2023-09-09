@@ -1,21 +1,11 @@
 // script.js
 const dash = document.querySelector(".dash")
 const sidebar = document.querySelector(".left-sidebar")
-const topBar = document.querySelector(".heading")
 const main = document.querySelector(".main")
 const products = document.querySelector(".top_products")
 
 let resizeClasses = ["resize", "topBar", "main-resize", "shift"]
 let class_keys = ["size", "top", "main", "unshift"]
-
-window.addEventListener('scroll', () => {
-  if (window.scrollY > 5) {
-    topBar.style.boxShadow = "3px 3px 7px grey"
-  }
-  else{
-    topBar.style.boxShadow = "none"
-  }
-});
 
 const resize = () => {
   if (localStorage.getItem(class_keys[0]) === "true" &&
