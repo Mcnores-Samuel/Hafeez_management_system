@@ -29,7 +29,7 @@ SECRET_KEY = get_random_secret_key()
 DEBUG = False
 
 # ALLOWED_HOSTS = []
-ALLOWED_HOSTS = ['.vercel.app', 'railway.app', 'localhost', '127.0.0.1', 'www.hafeezmw.com']
+ALLOWED_HOSTS = ['.vercel.app', 'railway.app', '.hafeezmw.com', 'www.hafeezmw.com', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -145,7 +145,7 @@ EMAIL_MAIL_HTML = 'authentication/activation_email.html'
 EMAIL_MAIL_PLAIN = 'authentication/activation_email.txt'
 EMAIL_MAIL_TOKEN_LIFE = 60 * 60
 EMAIL_MAIL_PAGE_TEMPLATE = 'comfirm_template.html'
-EMAIL_PAGE_DOMAIN = 'https://hafeez-management-system-mcnores-samuel.vercel.app/'
+EMAIL_PAGE_DOMAIN = 'https://www.hafeezmw.com/'
 EMAIL_MULTI_USER = True
 
 
