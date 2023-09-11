@@ -1,5 +1,5 @@
 .heading {
-    background: #020615;
+    background: #050c2e;
     color: #fff; /* Text color */
     display: flex;
     padding: 2px 0;
@@ -74,9 +74,8 @@
 
 .profile a {
     position: absolute;
+    left: 10%;
     font-size: 32px;
-    display: flex;
-    align-items: center;
 }
 
 .settings {
@@ -97,7 +96,7 @@
     }
 
     .dropmenu {
-        background: #020615;
+        background: #050c2e;
         position: absolute;
         display: flex;
         flex-direction: column;

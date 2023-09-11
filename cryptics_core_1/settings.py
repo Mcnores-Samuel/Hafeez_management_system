@@ -139,7 +139,7 @@ def verified_callback(user):
 
 
 EMAIL_VERIFIED_CALLBACK = verified_callback
-EMAIL_FROM_ADDRESS = 'Hafeezapp6@gmail.com'
+EMAIL_FROM_ADDRESS = 'samuelmcnores1@gmail.com'
 EMAIL_MAIL_SUBJECT = 'Confirm your email {{ user.username }}'
 EMAIL_MAIL_HTML = 'authentication/activation_email.html'
 EMAIL_MAIL_PLAIN = 'authentication/activation_email.txt'

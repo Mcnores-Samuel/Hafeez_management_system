@@ -1,5 +1,17 @@
+/* Add animation for opening and closing the menu */
+.heading .dropmenu {
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.heading .dropmenu.open {
+    opacity: 1;
+    transform: translateY(0);
+}
+
 .heading {
-    background: #020615;
+    background: #050c2e;
     color: #fff; /* Text color */
     display: flex;
     padding: 2px 0;
@@ -74,9 +86,8 @@
 
 .profile a {
     position: absolute;
+    left: 10%;
     font-size: 32px;
-    display: flex;
-    align-items: center;
 }
 
 .settings {
@@ -97,7 +108,7 @@
     }
 
     .dropmenu {
-        background: #020615;
+        background: #050c2e;
         position: absolute;
         display: flex;
         flex-direction: column;
@@ -147,4 +158,11 @@
         background-color: rgb(18, 9, 82);
         opacity: 90%;
     }
+}
+
+/* Add animation for link hover */
+.heading a:hover::after {
+    transform: translateY(0);
+    opacity: 1;
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
 }

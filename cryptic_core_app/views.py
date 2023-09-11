@@ -98,7 +98,7 @@ def sign_up(request):
                     send_email(user)
                     return redirect(reverse('sign_in'))
                 else:
-                    form.add_error('agent_code', "Invalid code!!, please Enter a valid code")
+                    form.add_error(None, "Invalid Agent code!!, please Enter a valid code")
     else:
         form = SignUpForm()
     return render(request, 'authentication/sign_up.html', {'form': form})
@@ -205,7 +205,7 @@ def dashboard(request):
 @login_required
 def sign_out(request):
     logout(request)
-    return redirect('/')
+    return redirect(reverse('home_page'))
 
 
 @login_required

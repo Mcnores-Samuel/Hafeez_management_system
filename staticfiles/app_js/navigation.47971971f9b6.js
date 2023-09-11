@@ -8,8 +8,8 @@ const body = document.querySelector("body");
 // Function to close the menu
 function closeMenu() {
   navigation.classList.remove('dropmenu');
-  profile.style.display = 'block'; 
-  settings.style.display = 'none';
+  profile.style.display = 'block'; // Display the profile
+  settings.style.display = 'none'; // Hide the settings
 }
 
 // Event listener to close the menu when clicking outside
@@ -22,10 +22,9 @@ window.addEventListener("click", (e) => {
 // Event listener to open the menu when clicking on the menu button
 menu.addEventListener('click', () => {
   navigation.classList.toggle('dropmenu');
-
   if (navigation.classList.contains('dropmenu')) {
-    profile.style.display = 'none';
-    settings.style.display = 'block';
+    profile.style.display = 'none'; // Hide the profile
+    settings.style.display = 'block'; // Display the settings
   } else {
     closeMenu();
   }

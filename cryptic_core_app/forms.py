@@ -15,9 +15,7 @@ class SignUpForm(UserCreationForm):
     ]
 
     role = forms.ChoiceField(choices=ROLES, widget=forms.RadioSelect, required=True)
-    agent_code = forms.CharField(max_length=100)
-    email = forms.EmailField(max_length=254, required=True, help_text='Required')
-    username = forms.CharField(max_length=25, required=True, help_text="Required")
+    agent_code = forms.CharField(max_length=100, required=False)
 
     class Meta:
         model = UserProfile
@@ -25,11 +23,17 @@ class SignUpForm(UserCreationForm):
                    'password2', 'agent_code')
     
     def clean(self):
-       email = self.cleaned_data.get('email')
-       if UserProfile.objects.filter(email=email).exists():
-            raise ValidationError("Sorry, the email address you entered is already registered.\
-                                   Please use a different email address or try signing in with your existing account.")
-       return self.cleaned_data
+        cleaned_data = super().clean()
+        role = cleaned_data.get('role')
+
+        if role == 'agent':
+            required_fields = ['agent_code']
+            for field_name in required_fields:
+                field_value = cleaned_data.get(field_name)
+                if not field_value:
+                    self.add_error(field_name, 'Agent code is required for agent registration')
+
+        return cleaned_data
 
 
 

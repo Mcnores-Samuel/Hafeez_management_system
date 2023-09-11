@@ -15,6 +15,7 @@
             <div class="form-group">
                 <span class="icon"><i class='bx bx-envelope'></i></span>
                 {{ form.email }}
+                {{ form.email.errors }}
                 <label for="{{ form.email.id_for_label }}">Email:</label>
             </div>
             <div class="form-group">
@@ -25,19 +26,25 @@
             <div class="form-group">
                 <span class="icon"><i class='bx bx-lock-alt'></i></span>
                 {{ form.password1 }}
+                {{ form.password1.errors }}
                 <label for="{{ form.password1.id_for_label }}">Password:</label>
             </div>
             <!-- Password2 -->
             <div class="form-group">
                 <span class="icon"><i class='bx bx-lock-alt'></i></span>
                 {{ form.password2 }}
+                {{ form.password2.errors }}
                 <label for="{{ form.password2.id_for_label }}">Confirm Password:</label>
             </div>
             <div class="form-group">
                 <span class="icon"><i class='bx bx-barcode'></i></span>
                 {{ form.agent_code }}
                 <label for="{{ form.agent_code.id_for_label }}">Agent Code:</label>
+                {{ form.agent_code.errors }}
             </div>
+            {% for error in form.non_field_errors %}
+            <p class="error_message">{{ error }}</p>
+            {% endfor %}
             <button type="submit" class="submitBtn">Sign up</button>
         </form>
     </div>

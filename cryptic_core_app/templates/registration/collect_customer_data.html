@@ -11,14 +11,17 @@
             </div>
             <div class="form-group">
                 {{ form.customer_name }}
+                <div class="customer_data_errors">{{ form.customer_name.errors }}</div>
                 <label for="{{ form.customer_name.id_for_label }}">Customer Name:</label>
             </div>
             <div class="form-group">
                 {{ form.national_id }}
+                <div class="customer_data_errors">{{ form.national_id.errors }}</div>
                 <label for="{{ form.national_id.id_for_label }}">National ID:</label>
             </div>
             <div class="form-group">
                 {{ form.customer_contact }}
+                <div class="customer_data_errors">{{ form.customer_contact.errors }}</div>
                 <label for="{{ form.customer_contact.id_for_label }}">Customer Contact:</label>
             </div>
             <div class="form-group">
@@ -65,18 +68,7 @@
                 {{ form.payment_period }}
                 <label for="{{ form.payment_period.id_for_label }}">Payment Period:</label>
             </div>
-            {% for field in form %}
-                <article>
-                    {% if field.errors %}
-                    <ol class="errorlist">
-                        {% for error in field.errors %}
-                            <li>{{ error }}</li>
-                        {% endfor %}
-                    </ol>
-                {% endif %}
-                </article>
-            {% endfor %}
-            <button type="submit">submit</button>
+            <button type="submit" class="submit">submit</button>
         </form>
     </div>
 </section>
