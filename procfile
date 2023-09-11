@@ -1,1 +1,1 @@
-web: python3 manage.py collectstatic --no-input && gunicorn cryptics_core_1.wsgi
+web: python manage.py collectstatic --no-input && gunicorn cryptics_core_1.wsgi
