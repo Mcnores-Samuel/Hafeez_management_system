@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 from . import views
 from django.contrib.auth import views as auth_views
 
@@ -11,6 +11,7 @@ urlpatterns =[
     path('profile/', views.profile, name='profile'),
     path('change_password/', views.change_password, name='change_password'),
     path('combinedData_collection/<int:data_id>/', views.combinedData_collection, name='combinedData_collection'),
+    path('accounts/', include('django.contrib.auth.urls')),
     # reseting user password
     path('password_reset/', auth_views.PasswordResetView.as_view(template_name='registration/reset_form.html'), name='password_reset'),
     path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(template_name='registration/reset_done.html'), name='password_reset_done'),

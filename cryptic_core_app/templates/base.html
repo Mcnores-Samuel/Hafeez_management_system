@@ -6,15 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="{% static 'styles/common.css' %}">
-    <link rel="stylesheet" href="{% static 'css/data_table.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/data_table.css' %}">
     <link rel="stylesheet" href="{% static 'styles/base_header.css' %}">
     <link rel="stylesheet" href="{% static 'styles/forms.css' %}">
-    <link rel="stylesheet" href="{% static 'css/spinner.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/spinner.css' %}">
     <link rel="stylesheet" href="{% static 'styles/sections.css' %}">
     <link rel="icon" href="{% static 'images/icon.png' %}" type="image/png">
-    <script src="{% static 'app_js/navigation.js' %}" defer></script>
-    <script src="{% static 'app_js/spinner.js' %}" defer></script>
-    <script src="{% static 'app_js/placeholders.js' %}" defer></script>
+    <script src="{% static 'scripts/navigation.js' %}" defer></script>
+    <script src="{% static 'scripts/spinner.js' %}" defer></script>
+    <script src="{% static 'scripts/placeholders.js' %}" defer></script>
     <title>{% block title %}Hafeez{% endblock %}</title>
     <!-- Common CSS and JavaScript files -->
 </head>
@@ -56,8 +56,8 @@
                 <li><a href="#">About Us</a></li>
             </ul>
             <ul>
-                <li><a href="{% url 'sign_in' %}">sign In</a></li>
-                <li><a href="{% url 'sign_up' %}">sign Up</a></li>
+                <li><a href="{% url 'sign_in' %}">Sign In</a></li>
+                <li><a href="{% url 'sign_up' %}">Sign Up</a></li>
             </ul>
         </nav>
         {% endif %}

@@ -49,15 +49,15 @@
     justify-content: center;
     font-weight: bold;
     margin-left: 30px;
-    font-size: 2em;
-    width: 60px;
-    height: 60px;
+    font-size: 1.5em;
+    width: 50px;
+    height: 50px;
     color: yellow;
     border: 5px solid yellow;
     border-radius: 50%;
     padding: 5px;
     margin-top: 3px;
-    background-color: rgb(97, 198, 165);
+    background-color: rgb(63, 186, 145);
 }
 
 .profile {
@@ -117,6 +117,10 @@
     .dropmenu ul > li {
         width: 100%;
         padding: 20px 20px;
+    }
+
+    .dropmenu ul > li:hover {
+        background-color: #23435c;
     }
 
     .topbar {
