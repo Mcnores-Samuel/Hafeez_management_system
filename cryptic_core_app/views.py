@@ -78,11 +78,11 @@ def sign_up(request):
         form = SignUpForm(request.POST)
         if form.is_valid():
             role = form.cleaned_data["role"]
-            send_email(user)
             if role == 'regular':
                 user = form.save(commit=False)
                 user.is_active = False
                 user.save()
+                send_email(user)
                 return redirect(reverse('sign_in'))
             elif role == 'agent':
                 agent_code = form.cleaned_data['agent_code']
@@ -91,6 +91,7 @@ def sign_up(request):
                     user = form.save(commit=False)
                     user.is_active = False
                     user.save()
+                    send_email(user)
                     agen_group = Group.objects.get(name="agents")
                     user.groups.add(agen_group)
                     agent_profile = AgentProfile.objects.create(user=user)
