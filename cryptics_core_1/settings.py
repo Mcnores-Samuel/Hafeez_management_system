@@ -149,7 +149,7 @@ EMAIL_PAGE_DOMAIN = 'https://www.hafeezmw.com/'
 EMAIL_MULTI_USER = True
 
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = os.environ.get('EMAIL_PORT')
 EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS')
