@@ -139,7 +139,7 @@ def verified_callback(user):
 
 
 EMAIL_VERIFIED_CALLBACK = verified_callback
-EMAIL_FROM_ADDRESS = 'samuelmcnores1@gmail.com'
+EMAIL_FROM_ADDRESS = 'noreply.hafeezmw@gmail.com'
 EMAIL_MAIL_SUBJECT = 'Confirm your email {{ user.username }}'
 EMAIL_MAIL_HTML = 'authentication/activation_email.html'
 EMAIL_MAIL_PLAIN = 'authentication/activation_email.txt'
@@ -150,7 +150,7 @@ EMAIL_MULTI_USER = True
 
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-EMAIL_HOST = os.environ.get('EMAIL_HOST')
+EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = os.environ.get('EMAIL_PORT')
 EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS')
 EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
