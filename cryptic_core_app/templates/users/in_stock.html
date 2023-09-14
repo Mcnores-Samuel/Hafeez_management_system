@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+<p>Go to: <span><a href="{% url 'stock_out' %}">Stock Out</a></span></p>
+{% for item in stock_in %}
+<div class="data-card">
+    <p>Device Imei: <span>{{ item.imei_number }}</span></p>
+    <p>Model: <span>{{ item.phone_type }}</span></p>
+    {% for element in reference_list %}
+
+        {% if element.phone == item.phone_type %}
+           <p>Initial Deposit: <span>Mk {{ element.deposit }}</span></p>
+        {% endif %}
+    {% endfor %}
+    <p>Sale: <span><a href="{% url 'combinedData_collection' data_id=item.id %}"><i class='bx bx-chevrons-right'></i></a></span></p>
+</div>
+{% endfor %}
+{% endblock %}

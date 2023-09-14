@@ -27,7 +27,7 @@ class MainStorageData(admin.ModelAdmin):
 
 
 @admin.register(phone_reference)
-class Pho_re(admin.ModelAdmin):
+class PhoneReferenceAdmin(admin.ModelAdmin):
     list_display = ("phone", "initial_deposit", "merchant")
 
     def initial_deposit(self, obj):
@@ -44,7 +44,7 @@ class AgentProfileAdmin(admin.ModelAdmin):
 
 @admin.register(AgentStock)
 class AgentStockAdmin(admin.ModelAdmin):
-    list_display = ('agent', 'device_imei', 'phone_type', 'sales_type',
+    list_display = ('agent', 'device_imei', 'phone_type', 'sales_type', 'contract_number',
                      'collection_date', 'in_stock', 'stock_out_date')
     list_filter = ('in_stock', 'collection_date')
     search_fields = ('imei_number', 'phone_type', 'assigned')
@@ -90,14 +90,14 @@ class AgentStockAdmin(admin.ModelAdmin):
 
 @admin.register(CustomerData)
 class CustomerDataAdmin(admin.ModelAdmin):
-    list_display = ("customer_name", "national_id", "contract_number", "customer_contact", "second_contact", "customer_email",
+    list_display = ("customer_name", "national_id", "customer_contact", "second_contact", "customer_email",
                     "first_witness_name", "first_witness_contact", "second_witness_name", "second_witness_contact",
                     "customer_location", "nearest_school", "nearest_market_church_hospital", "created_at")
     
 
 @admin.register(PhoneData)
 class PhoneDataAdmin(admin.ModelAdmin):
-    list_display = ('customer_name', 'agent', 'phone_name', 'imei_number', 'selling_price',
+    list_display = ('customer_name', 'agent', 'phone_name', 'imei_number', "contract_number", 'selling_price',
                     'cost_price', 'deposit', 'payment_period')
     
     def customer_name(self, obj):

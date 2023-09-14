@@ -8,11 +8,13 @@
     color: white;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     position: relative;
-    background-image: url('../images/sign_up.jpg');
-    background-repeat: no-repeat;
-    background-attachment: fixed;
+    background-color: rgb(2, 6, 21);
 }
 
 .content {
@@ -46,5 +48,6 @@ header {
         background-color: #020615;
         padding-top: 10px;
         padding-bottom: 10px;
+        border-bottom: 1px solid gray;
     }
 }

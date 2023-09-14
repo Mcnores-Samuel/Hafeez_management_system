@@ -94,9 +94,10 @@ class AgentStock(models.Model):
     )
     agent = models.ForeignKey(AgentProfile, on_delete=models.CASCADE)
     imei_number = models.CharField(max_length=15, unique=True)
-    phone_type = models.CharField(max_length=25, blank=True) 
+    phone_type = models.CharField(max_length=25, blank=True)
     collection_date = models.DateField()
     sales_type = models.CharField(max_length=10, choices=TYPES, default="Loan")
+    contract_number = models.CharField(max_length=8,null=True)
     in_stock = models.BooleanField(default=True)
     stock_out_date = models.DateField()
 
@@ -150,7 +151,6 @@ class CustomerData(models.Model):
     nearest_school = models.CharField(max_length=50)
     nearest_market_church_hospital = models.CharField(max_length=50)
     customer_email = models.CharField(max_length=50, null=True)
-    contract_number = models.CharField(max_length=8)
 
     class Meta:
         app_label = 'cryptic_core_app' 
@@ -212,6 +212,7 @@ class PhoneData(models.Model):
     agent = models.ForeignKey(AgentProfile, on_delete=models.CASCADE)
     phone_type = models.CharField(max_length=25, choices=PHONELIST, default='S18 (4+64)')
     imei_number = models.CharField(max_length=15, unique=True)
+    contract_number = models.CharField(max_length=8,null=True)
     selling_price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     cost_price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     payment_period = models.CharField(max_length=50, null=True)

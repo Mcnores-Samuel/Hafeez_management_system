@@ -11,10 +11,13 @@
     <link rel="stylesheet" href="{% static 'styles/forms.css' %}">
     <link rel="stylesheet" href="{% static 'styles/spinner.css' %}">
     <link rel="stylesheet" href="{% static 'styles/sections.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/profile.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/agent_stock_mobile.css' %}">
     <link rel="icon" href="{% static 'images/icon.png' %}" type="image/png">
     <script src="{% static 'scripts/navigation.js' %}" defer></script>
     <script src="{% static 'scripts/spinner.js' %}" defer></script>
     <script src="{% static 'scripts/placeholders.js' %}" defer></script>
+    <script src="{% static 'scripts/data_updates.js' %}" defer></script>
     <title>{% block title %}Hafeez{% endblock %}</title>
     <!-- Common CSS and JavaScript files -->
 </head>
@@ -36,8 +39,8 @@
                 <li><a href="#">Services</a></li>
                 <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
             </ul>
-            <ul>
-                <li class="profile"><a href="{% url 'profile' %}">{{ profile }}</a></li>
+            <button type="submit" class="profile">{{ profile }}</button>
+            <ul class="mobile-set" style="display: none;">
                 <li class="settings"><a href="{% url 'profile' %}">Settings</a></li>
                 <li><a href="{% url 'sign_out' %}">Sign Out</a></li>
             </ul>
@@ -70,7 +73,6 @@
         {% else %}
         <section class="sign_up_form">
             <div class="infor">
-                <div class="logo_icon"></div>
             </div>
             <div class="form_container">
                 <h2>Sign in</h2>

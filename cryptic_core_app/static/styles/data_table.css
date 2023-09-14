@@ -27,11 +27,11 @@
 }
 
 .stock-table tr:hover {
-    background-color: #283385;
+    background-color: #11363a;
 }
 
 caption {
-    background-color: rgb(17, 54, 58);
+    background-color: #11363a;
     text-align: center;
     color: white;
     padding: 10px;
@@ -39,28 +39,22 @@ caption {
     text-transform: uppercase;
 }
 
-td > button {
-    background-color: #020615;
-    border: none;
-    border-radius: 5px;
-    padding: 10px auto;
+
+
+td > a > i, .data-card a > i{
+    font-weight: bold;
+    font-size: 2rem;
+    text-decoration: none;
+    transition: .3s ease-out;
 }
 
-td > button > a {
-    font-weight: bold;
-    font-size: 1.2rem;
-    padding: 3px 10px;
-    border: none;
-    text-decoration: none;
+td > a > i:hover, .data-card a > i:hover {
+    transform: scale(1.5);
+    cursor: pointer;
 }
 
 @media screen and (max-width: 50rem) {
-    .stock-table {
-        font-size: 12px;
-        width: 100%;
-    }
-
     .agents_stock {
-        margin: auto 20px;
+        display: none;
     }
 }

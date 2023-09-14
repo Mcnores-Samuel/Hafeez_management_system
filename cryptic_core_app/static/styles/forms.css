@@ -2,11 +2,12 @@
     display: flex;
     height: 100%;
     font-size: 20px;
-    background: transparent;
     color: #FFFFFF;
     padding: 20px;
     border-radius: 12px;
-    border: 1px solid gray;
+    background-image: url('../images/sign_up.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 form {
@@ -155,6 +156,10 @@ input:invalid {
     background: transparent;
 }
 
+input[type=radio]:checked {
+    border: 6px solid black;
+}
+
 .form-group label {
     position: absolute;
     left: 0;
@@ -179,13 +184,18 @@ input:invalid {
 }
 
 form button {
-    width: 7rem;
+    width: 200px;
     padding: 5px;
-    border: 1px solid #808080;
+    border: none;
     background-color: #0a9c89;
     font-size: 1.2rem;
     font-weight: bolder;
     border-radius: 20px;
+}
+
+.contract_number-btn {
+    width: 70px;
+    font-size: 1rem;
 }
 
 .forget {
@@ -195,6 +205,15 @@ form button {
 
 label {
     margin-bottom: 5px;
+}
+
+.contract_number_form input {
+    appearance: none;
+    outline: none;
+    padding: 3px 5px;
+    font-size: 16px;
+    border-radius: 5px;
+    width: 170px;
 }
 
 @media screen and (max-width: 50rem) {

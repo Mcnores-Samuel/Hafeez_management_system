@@ -1,5 +1,5 @@
-const loader = document.querySelector(".loader");
+const loader = document.querySelector('.loader');
 
-window.addEventListener("load", ()=>{
-    loader.classList.add("hide-loader")
-  })
+window.addEventListener('load', () => {
+  loader.classList.add('hide-loader');
+});

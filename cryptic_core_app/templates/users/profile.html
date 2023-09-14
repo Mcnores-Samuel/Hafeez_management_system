@@ -1,18 +1,27 @@
 {% extends "base.html" %}
 {% block content %}
 <section class="sign_up_form">
-    <div>
-        <button type="submit"><a href="#profile-section">Profile</a></button>
+    <div class="controls">
+        <button type="submit" class="profile-btn"><a href="#profile-section">Profile</a></button>
         <button type="submit"><a href="{% url 'change_password' %}">Change password</a></button>
     </div>
     <div class="userprofile">
-        <h2>Profile Information</h2>
-        <p>Email: {{ user.email }}</p>
-        <p>Username: {{ user.username }}</p>
-        <p>First Name: {{ user.first_name }}</p>
-        <p>Last Name: {{ user.last_name }}</p>
-        <p>Phone Number: {{ user.phone_number }}</p>
-        <!-- Add more fields as needed -->
+        <h2>Profile</h2>
+        <div class="user-data">
+            <p><span>Email:</span> <span class="email">{{ user.email }}</span></p>
+            <p><span>Username:</span> {{ user.username }}</p>
+            <p><span>First Name:</span> {{ user.first_name }}</p>
+            <p><span>Last Name:</span> {{ user.last_name }}</p>
+            <p><span>Phone Number:</span> {{ user.phone_number }}</p>
+        </div>
+        <div class="danger-zone">
+            <h2>Danger Zone</h2>
+            <p><strong>Carefull!! this action is irreversible</strong></p>
+            <p>You will have to sign up again to access our services</p>
+            <form action="" method="detete">
+                <button type="submit">Delete Account</button>
+            </form>
+        </div>
     </div>
         <div class="form_container" id="profile-section">
             <h2>Edit Profile</h2>

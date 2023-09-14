@@ -96,7 +96,6 @@ class CombinedDataForm(forms.Form):
       - nearest_school: Nearest school to the customer's location.
       - nearest_market_church_hospital: Nearest market, church, or hospital.
       - customer_email: Customer's email address (optional).
-      - contract_number: Contract number associated with the customer.
 
     - Phone Selection:
       - phone_type: Choice field for selecting the type of phone.
@@ -125,6 +124,12 @@ class CombinedDataForm(forms.Form):
         ('Loan', 'Loan'),
     ]
 
+    PAYMENT_PERIOD = [
+        ('6 Months', '6 Months'),
+        ('12 Months', '12 Months'),
+
+    ]
+
     customer_data = None
     phone_data = None
     main_storage_phone = None
@@ -143,8 +148,7 @@ class CombinedDataForm(forms.Form):
     nearest_school = forms.CharField(max_length=50, required=False, widget=forms.TextInput({ "placeholder": "Nearest school if any"}))
     nearest_market_church_hospital = forms.CharField(max_length=50, required=False, widget=forms.TextInput({ "placeholder": ""}))
     customer_email = forms.CharField(max_length=50, required=False, widget=forms.TextInput({ "placeholder": "Text!"}))
-    contract_number = forms.CharField(max_length=8, required=False, widget=forms.TextInput({ "placeholder": "Text!"}))
-    payment_period = forms.CharField(max_length=50, required=False, widget=forms.TextInput({ "placeholder": "Text!"}))
+    payment_period = forms.ChoiceField(choices=PAYMENT_PERIOD, required=False, widget=forms.RadioSelect)
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user', None)
@@ -163,7 +167,7 @@ class CombinedDataForm(forms.Form):
             for field_name in required_fields:
                 field_value = cleaned_data.get(field_name)
                 if not field_value:
-                    self.add_error(field_name, f'{field_name} is required for a loan payment.')
+                    self.add_error(field_name, f'{field_name.replace("_", " ")} required')
         return cleaned_data
 
     def process_cash_payment(self, data_id):
@@ -279,8 +283,7 @@ class CombinedDataForm(forms.Form):
                 nearest_school=self.cleaned_data['nearest_school'],
                 nearest_market_church_hospital=self.cleaned_data['nearest_market_church_hospital'],
                 customer_email=self.cleaned_data['customer_email'],
-                contract_number=self.cleaned_data['contract_number'],
-                )
+            )
             customer_data.save()
 
             phone_data = PhoneData(
@@ -300,3 +303,8 @@ class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         fields = ['first_name', 'last_name', 'phone_number']
+
+class ContractNumberForm(forms.ModelForm):
+    class Meta:
+        model = AgentStock
+        fields = ['contract_number']

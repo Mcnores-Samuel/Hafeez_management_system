@@ -31,7 +31,9 @@ DEBUG = False
 # ALLOWED_HOSTS = []
 ALLOWED_HOSTS = ['.vercel.app', 'railway.app', '.hafeezmw.com', 'www.hafeezmw.com', 'localhost', '127.0.0.1']
 
-
+SESSION_COOKIE_SECURE = True
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
 # Application definition
 
 INSTALLED_APPS = [
