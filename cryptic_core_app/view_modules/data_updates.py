@@ -7,7 +7,6 @@ from ..forms import UserProfileForm
 from ..models import AgentProfile, AgentStock, PhoneData, phone_reference
 from django.http import JsonResponse
 
-@login_required
 def profile(request):
     user = request.user
     profile_form = None
@@ -28,7 +27,6 @@ def profile(request):
     return render(request, 'users/profile.html', context)
 
 
-@login_required
 def change_password(request):
     user = request.user
     if request.method == 'POST':
@@ -49,7 +47,6 @@ def change_password(request):
     return render(request, 'users/change_password.html', context)
 
 
-@login_required
 def in_stock(request):
     context = None
     if request.user.groups.filter(name='agents').exists():
@@ -66,7 +63,6 @@ def in_stock(request):
     return render(request, 'users/in_stock.html', context)
 
 
-@login_required
 def stock_out(request):
     context = None
     if request.user.groups.filter(name='agents').exists():

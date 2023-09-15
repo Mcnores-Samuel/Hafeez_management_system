@@ -8,8 +8,6 @@ function save_contract_number() {
   })
   .then(response => response.json())
   .then(data => {
-      alert(data)
-      console.log(data);
       form.reset();
   })
   .catch(error => {
