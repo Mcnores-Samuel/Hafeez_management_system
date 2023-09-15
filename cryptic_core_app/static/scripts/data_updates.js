@@ -9,6 +9,7 @@ function save_contract_number() {
   .then(response => response.json())
   .then(data => {
       form.reset();
+      window.location.href = '/cryptic_core_app/dashboard/';
   })
   .catch(error => {
     console.error(error);
