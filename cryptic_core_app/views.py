@@ -8,6 +8,7 @@ from django.http import HttpResponse, HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
 from .models import *
 from django.contrib import messages
+from .helper_modules.load_json_file import load_from_json_file
 
 
 def home_page(request):
@@ -73,9 +74,12 @@ def dashboard(request):
     """
     if request.user.is_staff:
         user = request.user
+        filename = "cryptic_core_app/protected_codes/agent_code.json"
+        agent_code = load_from_json_file(filename=filename)
         context = {
             'profile': user.email[0],
-            'user': user
+            'user': user,
+            'agent_code': agent_code
         }
         return render(request, 'users/main.html', context)
     elif request.user.groups.filter(name='agents').exists():

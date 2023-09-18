@@ -15,3 +15,17 @@ function save_contract_number() {
     console.error(error);
 });
 }
+
+
+const textToCopy = document.querySelector('.text-to-copy');
+const copyButton = document.querySelector('.copy-button');
+
+copyButton.addEventListener('click', () => {
+    const textarea = document.createElement('textarea');
+    textarea.value = textToCopy.innerText;
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textarea);
+    copyButton.innerText = 'Copied!';
+});
