@@ -26,7 +26,6 @@
     <header>
         {% block header %}
         <!-- Custom header content for Template 1 -->
-        {% if user.is_authenticated %}
         <div class="topbar">
             <div class="logo">HE</div>
             <span class="menu"><i class='bx bx-menu'></i></span>
@@ -37,32 +36,22 @@
                 <li><a href="{% url 'home_page' %}">Home</a></li>
                 <li><a href="#">Products</a></li>
                 <li><a href="#">Services</a></li>
-                <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+                <li><a href="#">About Us</a></li>
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+                {% endif %}
             </ul>
+        {% if user.is_authenticated %}
             <button type="submit" class="profile">{{ profile }}</button>
             <ul class="mobile-set" style="display: none;">
                 <li class="settings"><a href="{% url 'profile' %}">Settings</a></li>
                 <li><a href="{% url 'sign_out' %}">Sign Out</a></li>
             </ul>
-        </nav>
         {% else %}
-        <div class="topbar">
-            <div class="logo">HE</div>
-            <span class="menu"><i class='bx bx-menu'></i></span>
-        </div>
-        <nav class="heading">
-            <div class="logo">HE</div>
-            <ul>
-                <li><a href="{% url 'home_page' %}">Home</a></li>
-                <li><a href="#">Products</a></li>
-                <li><a href="#">Services</a></li>
-                <li><a href="#">About Us</a></li>
-            </ul>
             <ul>
                 <li><a href="{% url 'sign_in' %}">Sign In</a></li>
                 <li><a href="{% url 'sign_up' %}">Sign Up</a></li>
             </ul>
-        </nav>
         {% endif %}
         {% endblock %}
     </header>
@@ -92,6 +81,10 @@
                     <p class="error_message">{{ error }}</p>
                     {% endfor %}
                     <button type="submit">Sign in</button>
+                    <div class="form-check">
+                        {{ form.remember_me }}
+                        <label class="form-check-label" for="{{ form.remember_me.id_for_label }}">Remember Me</label>
+                    </div>
                     <div class="forget"><a href="{% url 'password_reset' %}">Forgot Password?</a></div>
                 </form>
             </div>

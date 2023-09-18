@@ -93,10 +93,15 @@ def sign_in(request):
         if form.is_valid():
             email = form.cleaned_data['email']
             password = form.cleaned_data['password']
+            remember_me = form.cleaned_data['remember_me']
             user = authenticate(request, email=email, password=password)
             if user is not None:
                 if user.is_active:
                     login(request, user)
+                    if remember_me:
+                        request.session.set_expiry(604800)
+                    else:
+                        request.session.set_expiry(0)
                     if user.is_staff:
                         return redirect(reverse('home_page'))
                     elif user.groups.filter(name='agents').exists():

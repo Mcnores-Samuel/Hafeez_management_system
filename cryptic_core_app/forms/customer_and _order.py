@@ -1,78 +1,8 @@
+#!/usr/bin/env python3
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
-from django.core.exceptions import ValidationError
-from .models import *
+from ..models import (AgentStock, PhoneData, phone_reference,
+                       MainStorage, CustomerData)
 from django.utils import timezone
-
-
-class SignUpForm(UserCreationForm):
-    """Dynamically create the user sign in form to allow users to sign in
-    to access user privillegies
-    """
-    ROLES = [
-        ('regular', 'Regular User'),
-        ('agent', 'Agent'),
-    ]
-
-    role = forms.ChoiceField(choices=ROLES, widget=forms.RadioSelect, required=True)
-    agent_code = forms.CharField(max_length=100, required=False)
-
-    class Meta:
-        model = UserProfile
-        fields = ('role', 'email', 'username', 'password1',
-                   'password2', 'agent_code')
-    
-    def clean(self):
-        cleaned_data = super().clean()
-        role = cleaned_data.get('role')
-
-        if role == 'agent':
-            required_fields = ['agent_code']
-            for field_name in required_fields:
-                field_value = cleaned_data.get(field_name)
-                if not field_value:
-                    self.add_error(field_name, 'Agent code is required for agent registration')
-
-        return cleaned_data
-
-
-
-class SignInForm(forms.Form):
-    email = forms.EmailField(required=True)
-    password = forms.CharField(widget=forms.PasswordInput, required=True)
-    remember_me = forms.BooleanField(required=False, initial=True, widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}))
-
-
-class AgentStockForm(forms.ModelForm):
-    """Dynamically populates the phone_type field based on the selected imei_number
-    in the Django admin interface when creating or editing an AgentStock instance
-    """
-    class Meta:
-        model = AgentStock
-        fields = ['agent', 'imei_number', 'phone_type', 'collection_date',
-                   'sales_type', 'in_stock', 'stock_out_date']
-    
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        """Dynamically populate choices for imei_number from MainStorage"""
-        in_stock_phones = MainStorage.objects.filter(in_stock=True, assigned=False)
-        choices = [(phone.device_imei, phone.device_imei) for phone in in_stock_phones]
-        self.fields['imei_number'].widget.choices = choices
-
-    def clean(self):
-        """Retrieves the imei_number entered in the form and use it to fetch the
-          associated phone_type from the MainStorage model.
-        """
-        cleaned_data = super().clean()
-        imei_number = cleaned_data.get('imei_number')
-        try:
-            main_storage = MainStorage.objects.get(device_imei=imei_number, in_stock=True)
-            phone_type = main_storage.phone_type
-            cleaned_data['phone_type'] = phone_type
-        except MainStorage.DoesNotExist:
-            pass
-        return cleaned_data
-
 
 class CombinedDataForm(forms.Form):
     """
@@ -298,14 +228,3 @@ class CombinedDataForm(forms.Form):
             )
             phone_data.save()
         return customer_data, phone_data
-    
-
-class UserProfileForm(forms.ModelForm):
-    class Meta:
-        model = UserProfile
-        fields = ['first_name', 'last_name', 'phone_number']
-
-class ContractNumberForm(forms.ModelForm):
-    class Meta:
-        model = AgentStock
-        fields = ['contract_number']

@@ -21,6 +21,10 @@
             <p class="error_message">{{ error }}</p>
             {% endfor %}
             <button type="submit">Sign in</button>
+            <div class="form-check">
+                {{ form.remember_me }}
+                <label class="form-check-label" for="{{ form.remember_me.id_for_label }}">Remember Me</label>
+            </div>
             <div class="forget"><a href="{% url 'password_reset' %}">Forgot Password?</a></div>
         </form>
     </div>

@@ -8,28 +8,10 @@ const body = document.querySelector('body');
 let profileSettings = null;
 let isProfileSettingsDisplayed = false; 
 
-profile.addEventListener('click', () => {
-  if (!isProfileSettingsDisplayed) {
-    profileSettings = document.createElement('div');
-    profileSettings.classList.add('profile-settings');
-    profileSettings.innerHTML ='<ul><li><i class="bx bx-cog"></i><a href="/cryptic_core_app/profile/">Settings</a></li>\
-    <li><i class="bx bx-log-out"></i><a href="/cryptic_core_app/sign_out/">Sign out</a></li></ul>';
-    // profileSettings.innerHTML = '';
-    navBar.appendChild(profileSettings);
-    isProfileSettingsDisplayed = true; // Set the flag to true
-  } else {
-    // If it's displayed, hide it and remove it from the DOM
-    profileSettings.style.display = 'none';
-    navBar.removeChild(profileSettings);
-    isProfileSettingsDisplayed = false; // Set the flag to false
-    profileSettings = null; // Reset the profileSettings variable
-  }
-});
-
 // Function to close the menu
 function closeMenu () {
   navigation.classList.remove('dropmenu');
-  profile.style.display = 'flex';
+  profile.style.display = 'block';
   settings.style.display = 'none';
 }
 
@@ -69,4 +51,22 @@ window.addEventListener('scroll', () => {
 // Event listener to close the menu when resizing the window
 window.addEventListener('resize', () => {
   closeMenu();
+});
+
+profile.addEventListener('click', () => {
+  if (!isProfileSettingsDisplayed) {
+    profileSettings = document.createElement('div');
+    profileSettings.classList.add('profile-settings');
+    profileSettings.innerHTML ='<ul><li><i class="bx bx-cog"></i><a href="/cryptic_core_app/profile/">Settings</a></li>\
+    <li><i class="bx bx-log-out"></i><a href="/cryptic_core_app/sign_out/">Sign out</a></li></ul>';
+    // profileSettings.innerHTML = '';
+    navBar.appendChild(profileSettings);
+    isProfileSettingsDisplayed = true; // Set the flag to true
+  } else {
+    // If it's displayed, hide it and remove it from the DOM
+    profileSettings.style.display = 'none';
+    navBar.removeChild(profileSettings);
+    isProfileSettingsDisplayed = false; // Set the flag to false
+    profileSettings = null; // Reset the profileSettings variable
+  }
 });
