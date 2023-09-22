@@ -103,11 +103,11 @@ def sign_in(request):
                     else:
                         request.session.set_expiry(0)
                     if user.is_staff:
-                        return redirect(reverse('home_page'))
+                        return redirect(reverse('dashboard'))
                     elif user.groups.filter(name='agents').exists():
-                        return redirect(reverse('home_page'))
+                        return redirect(reverse('dashboard'))
                     else:
-                        return redirect(reverse('home_page'))
+                        return redirect(reverse('dashboard'))
                 else:
                     form.add_error(None, "Please!! activate your account")
             else:

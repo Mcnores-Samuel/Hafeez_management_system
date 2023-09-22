@@ -1,0 +1,290 @@
+main {
+    margin: auto;
+    width: 80%;
+}
+.main-container {
+    background-color: beige;
+    text-transform: uppercase;
+}
+
+/*Media Qury targeting tablets and smartphones*/
+@media  screen and (max-width: 800px) {
+    body {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    main {
+        width: 100%;
+    }
+
+    .main-container {
+        display: flex;
+        align-items: center;
+        height: auto;
+    }
+
+    .container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        align-items: center;
+    }
+
+    li {
+        font-size: medium;
+        font-weight: bold;
+        font-style: normal;
+    }
+
+    .logo {
+        margin-left: auto;
+        margin-right: 18%;
+    }
+
+    .opening-info {
+        display: flex;
+        flex-direction: column;
+        padding: 5%;
+        margin-top: 40px;
+    }
+
+    img {
+        max-width: 100%;
+        border-radius: 15%;
+    }
+
+    .intro, .project-info{
+        display: flex;
+        flex-direction: column;
+    }
+
+    .the-team, .projects {
+        height: 600px;
+    }
+
+    .contact-info {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .bottom-btn {
+       margin-right: auto;
+    }
+
+    .courses {
+        overflow: scroll;
+    }
+
+    .prod, .people {
+        width: 200px;
+        height: 200px;
+    }
+
+}
+
+img {
+    width: 500px;
+    border-radius: 10%;
+}
+
+a {
+    text-decoration: none;
+    color: #333;
+    padding: 12px;
+    font-size: medium;
+    font-weight: bold;
+    font-style: normal;
+}
+.main-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 63px;
+    position: fixed;
+    width: 100%;
+}
+.container {
+    list-style-type: none;
+    display: flex;
+}
+
+a {
+    margin-left: auto;
+}
+
+.opening-info {
+    padding-top: 8%;
+    display: flex;
+    color: white;
+    line-height: 1.7rem;
+
+
+}
+
+.me {
+    padding-right: 35px;
+}
+.flex-open {
+    display: flex;
+    flex-direction: column;
+}
+
+.heading {
+    text-transform: capitalize;
+    line-height: 2.3rem;
+}
+
+.personal-info {
+    padding-top: 30px;
+}
+
+.myteam {
+    color: white;
+}
+
+.courses {
+    background-color: rgb(165, 165, 108);
+    height: 400px;
+}
+.contacts {
+    background-color: azure;
+    width: 80%;
+    height: auto;
+    margin: 16px auto;
+    padding: 5px;
+    
+}
+
+.contact-info {
+    background-color: #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+   
+}
+
+.footer {
+    padding: 20px;
+    text-align: center;
+    color: #eee;
+}
+
+a:hover {
+    background-color: rgb(34, 34, 20);
+    color: white;
+    border-radius: 10px;
+}
+
+.button {
+    width: 100px;
+    margin-top: 10px;
+    padding: 8px;
+    border-radius: 10px;
+    font-size: large;
+    font-weight: bold;
+    background-color: rgb(89, 89, 194);
+    color: beige;
+
+}
+
+.bottom-btn {
+    margin-left: auto;
+}
+
+.button:hover {
+    transition: transform .4s ease-in-out;
+    transform: scale(1.2);
+    box-shadow: -3px 3px 3px rgb(39, 98, 100);
+}
+
+p {
+    margin: 0;
+    padding: 0;
+}
+
+/*section 1*/
+
+.projects {
+    background-color: rgb(150, 144, 144);
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+}
+
+.prod, .people {
+    height: 200px;
+    width: 200px;
+    background: radial-gradient(circle at 100%, white 3%, blue 40%, black 80%);
+    border-radius: 10px;
+}
+
+.project-info , .intro {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    padding: 10px;
+    justify-content: space-evenly;
+    height: 300px;
+}
+
+.text {
+    margin: 10px;
+    text-align: center;
+    width: auto;
+    height: auto;
+    color: white;
+}
+header {
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.3rem;
+    padding: 20px;
+}
+
+.logo {
+    
+    padding: 8px;
+    font-family: cursive;
+    font-weight: bolder;
+    font-size: x-large;
+    border-radius: 50%;
+    margin-top: auto;
+    margin-right: 50%;
+    margin-left: 8%;
+    transition: transform .6s ease-in-out;
+}
+.inlogo {
+    padding: 10px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 100%, white 3%, blue 40%, black 80%);
+}
+
+span {
+    text-shadow: -3px 2px 3px white;
+}
+
+.below {
+    background: radial-gradient(circle at 100%, rgb(41, 13, 13), rgb(26, 29, 179) 50%, #eee 75%, #333 75%);
+    padding: 10px;
+    border-radius: 50%;
+}
+
+.logo:hover {
+    margin-top: 60px;
+    transform: scale(1.4);
+}
+
+.quote {
+    font-style: italic;
+    font-size: xx-large;
+    text-align: center;
+    width: 50%;
+    margin: auto;
+    padding: 5px;
+}
+
+.people1 {
+    width: 100px;
+    border-radius: 50%;
+}

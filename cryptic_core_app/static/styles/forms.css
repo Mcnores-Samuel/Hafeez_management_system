@@ -8,6 +8,8 @@
     background-image: url('../images/sign_up.jpg');
     background-repeat: no-repeat;
     background-size: cover;
+    width: 80%;
+    margin: 20px auto;
 }
 
 form {
@@ -216,6 +218,11 @@ label {
     width: 170px;
 }
 
+.form-check {
+    font-size: 16px;
+    margin-bottom: 1rem;
+}
+
 @media screen and (max-width: 50rem) {
     /* Responsive styles for smaller screens */
     .sign_up_form {
@@ -232,5 +239,9 @@ label {
     .form_container {
         width: 100%;
         padding: 20px;
+    }
+
+    form button {
+        width: 100%;
     }
 }

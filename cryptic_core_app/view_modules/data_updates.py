@@ -4,7 +4,7 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from ..forms import UserProfileForm
-from ..models import AgentProfile, AgentStock, PhoneData, phone_reference
+from ..models import AgentProfile, AgentStock, PhoneData, phone_reference, MainStorage
 from django.http import JsonResponse
 
 def profile(request):
@@ -84,10 +84,13 @@ def add_contract_number(request):
         if contract_number and imei_number:
             agent_stock = AgentStock.objects.get(imei_number=imei_number, in_stock=False)
             phone_sold = PhoneData.objects.get(imei_number=imei_number)
+            main_storage = MainStorage.objects.get(device_imei=imei_number)
             if agent_stock and phone_sold:
                 agent_stock.contract_number = contract_number
                 phone_sold.contract_number = contract_number
+                main_storage.contract_no = contract_number
                 agent_stock.save()
                 phone_sold.save()
+                main_storage.save()
             return JsonResponse({'message': 'Data added successfully'})
     return render(request, 'users/agents.html')

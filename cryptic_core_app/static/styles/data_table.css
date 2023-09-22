@@ -1,7 +1,11 @@
 .agents_stock {
+    position: relative;
     display: flex;
     flex-wrap: wrap;
     gap: 12px;
+    max-height: 500px;
+    overflow-y: auto;
+    box-sizing: border-box;
     width: 100%;
 }
 
@@ -9,10 +13,12 @@
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 2rem;
-    background-color: rgba(232, 167, 167, 0.3);
-    overflow-x: auto;
-    overflow-y: auto;
-    height: 10px;
+    border-left: 1px solid;
+    border-right: 1px solid;
+}
+
+.main-stock-table {
+    margin-left: 10rem;
 }
 
 .stock-table th, .stock-table td {
@@ -24,6 +30,9 @@
 .stock-table th {
     background-color: #878787;
     text-transform: uppercase;
+    font-size: 12px;
+    position: sticky;
+    top: 0px;
 }
 
 .stock-table tr:hover {
@@ -37,6 +46,8 @@ caption {
     padding: 10px;
     font-weight: bold;
     text-transform: uppercase;
+    position: sticky;
+    top: -4rem;
 }
 
 

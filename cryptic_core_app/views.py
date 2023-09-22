@@ -166,3 +166,45 @@ def combinedData_collection(request, data_id):
     else:
         return HttpResponseForbidden("Access Denied")
     
+
+@login_required
+def users(request):
+    content = None
+    if request.user.is_staff:
+        all_users = UserProfile.objects.all().order_by('id')
+        agents = AgentProfile.objects.all().order_by('id')
+        content = {'users': all_users, 'agents': agents}
+    return render(request, 'users/users.html', content)
+
+
+@login_required
+def main_storage(request):
+    content = None
+    if request.user.is_staff:
+        data = MainStorage.objects.all().order_by('id')
+        content = {'data': data}
+    return render(request, 'users/main_stock.html', content)
+
+
+from django.db.models import Sum
+
+def agents_and_data(request):
+    content = None
+    data_by_agent = {}
+    
+    if request.user.is_staff:
+        # Group by 'agent' and calculate the sum of 'stock_quantity' for each group
+        data = AgentStock.objects.values('agent').annotate(total_stock_quantity=Sum('agent'))
+
+        # Convert the queryset into a dictionary for easier access in the template
+        for entry in data:
+            agent_name = entry['agent']
+            total_stock = entry['total_stock_quantity']
+            data_by_agent[agent_name] = total_stock
+
+        content = {'data_by_agent': data_by_agent}
+        print(data_by_agent)
+
+    return render(request, 'users/admin_agent_view.html', content)
+
+    

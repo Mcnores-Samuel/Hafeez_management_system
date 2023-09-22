@@ -18,9 +18,9 @@ body {
 }
 
 .content {
-    margin: 20px auto;
-    max-width: 1000px;
+    margin: 20px 30px;
     height: 100%;
+    display: flex;
 }
 
 header {
@@ -29,12 +29,48 @@ header {
     z-index: 1;
 }
 
+.landing-page {
+    width: 100%;
+    height: 100%;
+    margin-bottom: 12rem;
+}
+
+.landing-page > .hero-content > div {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding-top: 2rem;
+    color: yellow;
+    margin-bottom: 2rem;
+}
+
+.landing-page > .hero-content > h1 {
+    font-size: 6rem;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.landing-page > .hero-content > p {
+    font-size: 2rem;
+    font-weight: bold;
+    padding-left: 4rem;
+}
+
+.landing-page > .hero-content > p > a {
+    color: blue;
+}
+
+footer > div > p {
+    text-align: center;
+    margin-bottom: 5px;
+}
 
 @media screen and (max-width: 50rem) {
     body {
         width: 100%;
     }
     .content {
+        margin: 20px auto;
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
@@ -49,5 +85,16 @@ header {
         padding-top: 10px;
         padding-bottom: 10px;
         border-bottom: 1px solid gray;
+    }
+
+    .landing-page > .hero-content > h1 {
+        font-size: 4rem;
+        text-align: center;
+    }
+
+    .landing-page > .hero-content > p {
+        text-align: center;
+        padding-left: 0px;
+        padding: 5px;
     }
 }

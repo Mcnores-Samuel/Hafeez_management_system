@@ -124,11 +124,13 @@
     .dropmenu {
         background: #11363a;
         position: absolute;
+        top: 4rem;
         display: flex;
         flex-direction: column;
         width: 45%;
         height: 100vh;
         margin-top: 7px;
+        overflow: scroll;
         z-index: 5;
     }
 

@@ -15,6 +15,9 @@ urlpatterns =[
     path('add_contract_number/', data_updates.add_contract_number, name='add_contract_number'),
     path('in_stock/', data_updates.in_stock, name='in_stock'),
     path('stock_out/', data_updates.stock_out, name='stock_out'),
+    path('users/', views.users, name='users'),
+    path('main_storage/', views.main_storage, name='main_storage'),
+    path('agents_and_data/', views.agents_and_data, name='agents_and_data'),
     # reseting user password
     path('password_reset/', auth_views.PasswordResetView.as_view(template_name='registration/reset_form.html'), name='password_reset'),
     path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(template_name='registration/reset_done.html'), name='password_reset_done'),

@@ -55,9 +55,9 @@ class AgentStockForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         """Dynamically populate choices for imei_number from MainStorage"""
-        in_stock_phones = MainStorage.objects.filter(in_stock=True, assigned=False)
+        in_stock_phones = MainStorage.objects.filter(in_stock=True, assigned=False).order_by('id')
         choices = [(phone.device_imei, phone.device_imei) for phone in in_stock_phones]
-        self.fields['imei_number'].widget.choices = choices
+        self.fields['imei_number'].choices = choices
 
     def clean(self):
         """Retrieves the imei_number entered in the form and use it to fetch the
@@ -161,9 +161,9 @@ class CombinedDataForm(forms.Form):
 
         if payment_method == 'Loan':
             required_fields = [
-                'customer_name',
-                'national_id',
-                'customer_contact',
+                'customer_name', 'national_id', 'customer_contact',
+                'first_witness_name', 'first_witness_contact', 'payment_period',
+                'customer_location'
             ]
             for field_name in required_fields:
                 field_value = cleaned_data.get(field_name)

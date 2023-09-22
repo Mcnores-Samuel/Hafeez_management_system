@@ -12,7 +12,6 @@ PHONELIST = (
         ("Spark 10C (4+128)", "Spark 10C (4+128)"), ("Spark 8C (2+64)", "Spark 8C (2+64)"),
         ("Pop 7 pro (4+64)", "Pop 7 pro (4+64)"), ("Pop 7 pro (3+64)", "Pop 7 pro (3+64)"),
         ("Pop 7 (2+64)", "Pop 7 (2+64)"),
-
     )
 
 class UserProfileManager(BaseUserManager):

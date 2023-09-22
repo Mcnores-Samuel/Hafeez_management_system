@@ -1,0 +1,40 @@
+{% extends 'users/main.html' %}
+{% block content %}
+<table class="stock-table">
+    <caption>Main Stock</caption>
+    <thead>
+        <tr>
+            <th>Model</th>
+            <th>Device imei</th>
+            <th>In Stock</th>
+            <th>Sales type</th>
+            <th>Contract number</th>
+            <th>Entry date</th>
+            <th>Stock out date</th>
+            <th>Assigned</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in data %}
+            <tr>
+                <td>{{ item.phone_type }}</td>
+                <td>{{ item.device_imei }}</td>
+                {% if item.in_stock %}
+                    <td>Yes</td>
+                {% else %}
+                    <td>No</td>
+                {% endif %}
+                <td>{{ item.sales_type }}</td>
+                <td>{{ item.contract_no }}</td>
+                <td>{{ item.entry_date }}</td>
+                <td>{{ item.stock_out_date }}</td>
+                {% if item.assigned %}
+                    <td>Yes</td>
+                {% else %}
+                    <td>No</td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
