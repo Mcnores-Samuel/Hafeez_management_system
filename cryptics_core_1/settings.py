@@ -22,13 +22,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 SECRET_KEY = os.environ.get('SECRET_KEY')
-
-# SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = True
-DEBUG = False
+DEBUG = os.environ.get('DEBUG')
 
 # ALLOWED_HOSTS = []
-ALLOWED_HOSTS = ['.vercel.app', 'railway.app', '.hafeezmw.com', 'www.hafeezmw.com', 'localhost', '127.0.0.1']
+MAIN_DOMAIN = os.environ.get('MAIN_DOMAIN')
+SUBDOMAIN_NAME = os.environ.get('SUBDOMAIN_NAME')
+SERVER_DOMAIN1 = os.environ.get('SERVER_DOMAIN')
+SERVER_DOMAIN2 = os.environ.get('SERVER_DOMAIN2')
+OTHER_DOMAIN = os.environ.get('OTHER_DOMAIN')
+ALLOWED_HOSTS = [MAIN_DOMAIN, SUBDOMAIN_NAME, SERVER_DOMAIN1, SERVER_DOMAIN2, OTHER_DOMAIN]
 
 SESSION_COOKIE_SECURE = True
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
@@ -58,6 +60,8 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'cryptic_core_app.middleware.RedirectAuthenticatedUsersMiddleware',
 ]
+
+X_FRAME_OPTIONS = 'DENY'
 
 ROOT_URLCONF = 'cryptics_core_1.urls'
 
@@ -117,7 +121,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'Africa/Blantyre'
+TIME_ZONE = os.environ.get('TIME_ZONE')
 
 USE_I18N = True
 
@@ -130,6 +134,9 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATIC_URL = '/static/'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
@@ -141,18 +148,18 @@ def verified_callback(user):
 
 
 EMAIL_VERIFIED_CALLBACK = verified_callback
-EMAIL_FROM_ADDRESS = 'noreply.hafeezmw@gmail.com'
+EMAIL_FROM_ADDRESS = os.environ.get('EMAIL_FROM_ADDRESS')
 EMAIL_MAIL_SUBJECT = 'Confirm your email {{ user.username }}'
 EMAIL_MAIL_HTML = 'authentication/activation_email.html'
 EMAIL_MAIL_PLAIN = 'authentication/activation_email.txt'
 EMAIL_MAIL_TOKEN_LIFE = 60 * 60
 EMAIL_MAIL_PAGE_TEMPLATE = 'comfirm_template.html'
-EMAIL_PAGE_DOMAIN = 'https://www.hafeezmw.com/'
+EMAIL_PAGE_DOMAIN = os.environ.get('EMAIL_PAGE_DOMAIN')
 EMAIL_MULTI_USER = True
 
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST = os.environ.get('EMAIL_HOST')
 EMAIL_PORT = os.environ.get('EMAIL_PORT')
 EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS')
 EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')

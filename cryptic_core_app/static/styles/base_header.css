@@ -63,6 +63,13 @@
     user-select: none; /* Standard syntax */
 }
 
+.logo > div > span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
 .profile {
     border: 5px solid #c1c1c1;
     display: flex;
