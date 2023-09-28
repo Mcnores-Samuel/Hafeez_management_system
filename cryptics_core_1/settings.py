@@ -27,8 +27,8 @@ DEBUG = os.environ.get('DEBUG')
 # ALLOWED_HOSTS = []
 MAIN_DOMAIN = os.environ.get('MAIN_DOMAIN')
 SUBDOMAIN_NAME = os.environ.get('SUBDOMAIN_NAME')
-SERVER_DOMAIN1 = os.environ.get('SERVER_DOMAIN')
-SERVER_DOMAIN2 = os.environ.get('SERVER_DOMAIN2')
+SERVER_DOMAIN1 = os.environ.get('SERVER_DOMAIN', default=".vercel.app")
+SERVER_DOMAIN2 = os.environ.get('SERVER_DOMAIN2', default=".railway.app")
 OTHER_DOMAIN = os.environ.get('OTHER_DOMAIN')
 ALLOWED_HOSTS = [MAIN_DOMAIN, SUBDOMAIN_NAME, SERVER_DOMAIN1, SERVER_DOMAIN2, OTHER_DOMAIN]
 
