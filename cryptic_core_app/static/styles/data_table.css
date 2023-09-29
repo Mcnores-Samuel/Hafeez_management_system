@@ -13,8 +13,8 @@
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 2rem;
-    border-left: 1px solid;
-    border-right: 1px solid;
+    border-left: 1px solid #80808066;
+    border-right: 1px solid #80808066;
 }
 
 .main-stock-table {
@@ -24,7 +24,7 @@
 .stock-table th, .stock-table td {
     padding: 10px;
     text-align: left;
-    border-bottom: 1px solid #f5f8f8;
+    border-bottom: 1px solid #80808066;
 }
 
 .stock-table th {

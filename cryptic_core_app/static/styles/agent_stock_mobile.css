@@ -13,7 +13,7 @@
     .mobile-display .in_stock,
     .mobile-display .stock_out {
         width: 100%;
-        border: 1px solid gray;
+        border: 1px solid #80808066;
         margin: 20px auto;
         padding: 5px;
     }

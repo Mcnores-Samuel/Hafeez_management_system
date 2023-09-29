@@ -5,7 +5,7 @@
     color: #FFFFFF;
     padding: 20px;
     border-radius: 12px;
-    background-image: url('../images/sign_up.jpg');
+    background-image: url("../images/sign_up.b246b9b8adf2.jpg");
     background-repeat: no-repeat;
     background-size: cover;
     width: 80%;
@@ -46,7 +46,7 @@ form {
 }
 
 .logo_icon {
-    background-image: url("../images/icon.png");
+    background-image: url("../images/icon.86a2a7e243b9.png");
 }
 
 .infor {

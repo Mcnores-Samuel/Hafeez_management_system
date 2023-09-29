@@ -44,9 +44,9 @@ menu.addEventListener('click', () => {
 });
 
 // Event listener to close the menu when scrolling
-window.addEventListener('scroll', () => {
-  closeMenu();
-});
+// window.addEventListener('scroll', () => {
+//   closeMenu();
+// });
 
 // Event listener to close the menu when resizing the window
 window.addEventListener('resize', () => {
