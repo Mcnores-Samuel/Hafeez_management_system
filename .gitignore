@@ -7,3 +7,4 @@ env_iron/
 # Database
 *.sqlite3
 .vercel
+data_api.py

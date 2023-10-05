@@ -7,6 +7,7 @@
     padding-top: 7px;
     padding-bottom: 7px;
     border-bottom: 1px solid #80808066;
+    z-index: 100;
 }
 
 

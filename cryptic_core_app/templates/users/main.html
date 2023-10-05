@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 {% block header %}
     <!-- Custom header content for Template 1 -->
     <div class="topbar">
@@ -24,12 +25,14 @@
     </nav>
 {% endblock %}
 {% block sidebar %}
-<nav>
-    <a href="{% url 'users' %}">Users</a>
-    <a href="{% url 'main_storage' %}">Main Stock</a>
-    <a href="{% url 'agents_and_data' %}">Agents</a>
-    <a href="#">Customer Data</a>
-</nav>
+<din class="sidebar-containter">
+    <nav>
+        <a href="{% url 'users' %}"><i class='bx bx-group'></i> Users</a>
+        <a href="{% url 'main_storage' %}"><i class="fi fi-ts-warehouse-alt"></i> Main Stock</a>
+        <a href="{% url 'agents_and_data' %}"><i class='bx bx-group'></i> Agents</a>
+        <a href="#"> Customer Data</a>
+    </nav>
+</din>
 {% endblock %}
 {% block content %}
     <!-- Custom content for Template 1 -->
@@ -37,6 +40,7 @@
         <p>Agent Sign Up Code:</p>
         <div class="text-to-copy">{{ agent_code }}</div>
         <button class="copy-button">Copy</button>
+        <a href="{% url 'generate_agent_code' %}"><button type="submit">generate code</button></a>
     </div>
 {% endblock %}
 

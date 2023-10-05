@@ -1,6 +1,31 @@
 {% extends 'users/main.html' %}
 {% block content %}
-<section class="agents_stock">
+<form method="get" class="select_filter">
+    <h1>Filter</h1>
+    <div class="fields">
+        <label for="">{{ filter.form.phone_type.label_tag }}</label>
+        {{ filter.form.phone_type }}
+    </div>
+    <div class="fields">
+        <label for="">{{ filter.form.in_stock.label_tag }}</label>
+        {{ filter.form.in_stock }}
+    </div>
+    <div class="fields">
+        <label for="">{{ filter.form.assigned.label_tag }}</label>
+        {{ filter.form.assigned }}
+    </div>
+    <div class="fields">
+        <label for="">{{ filter.form.entry_date.label_tag }}</label>
+        {{ filter.form.entry_date }}
+    </div>
+    <input type="submit" class="filters-btn"/>
+</form>
+<form method="get" action="{% url 'main_storage' %}" class="search_filter">
+    <div class="fields"></div>
+    {{ search_filter.as_p }}
+    <button type="submit" class="search-btn"><i class='bx bx-search'></i></button>
+</form>
+<section class="agents_stock main-table">
     <table class="stock-table main-stock-table">
         <caption>Main Stock</caption>
         <thead>
@@ -13,6 +38,8 @@
                 <th>Entry date</th>
                 <th>Stock out date</th>
                 <th>Assigned</th>
+                <th>Sold</th>
+                <th>action</th>
             </tr>
         </thead>
         <tbody>
@@ -21,19 +48,45 @@
                     <td>{{ item.phone_type }}</td>
                     <td>{{ item.device_imei }}</td>
                     {% if item.in_stock %}
-                        <td>Yes</td>
+                        <td>
+                            <input type="checkbox" id="checkbox" checked disabled>
+                            <label for="checkbox" class="checkbox"></label>
+                        </td>
                     {% else %}
-                        <td>No</td>
+                        <td>
+                            <input type="checkbox" id="checkbox" checked disabled>
+                            <label for="checkbox" class="Notcheckbox"></label>
+                        </td>
                     {% endif %}
                     <td>{{ item.sales_type }}</td>
                     <td>{{ item.contract_no }}</td>
                     <td>{{ item.entry_date }}</td>
                     <td>{{ item.stock_out_date }}</td>
                     {% if item.assigned %}
-                        <td>Yes</td>
+                        <td>
+                            <input type="checkbox" id="checkbox" checked disabled>
+                            <label for="checkbox" class="checkbox"></label>
+                        </td>
                     {% else %}
-                        <td>No</td>
+                        <td>
+                            <input type="checkbox" id="checkbox" checked disabled>
+                            <label for="checkbox" class="Notcheckbox"></label>
+                        </td>
                     {% endif %}
+                    {% if item.sold %}
+                        <td>
+                            <input type="checkbox" id="checkbox" checked disabled>
+                            <label for="checkbox" class="checkbox"></label>
+                        </td>
+                    {% else %}
+                        <td>
+                            <input type="checkbox" id="checkbox" checked disabled>
+                            <label for="checkbox" class="Notcheckbox"></label>
+                        </td>
+                    {% endif %}
+                    <td>
+                        <a href="{% url 'action_on_click' data_id=item.id %}"><i class='bx bx-chevrons-right'></i></a>
+                    </td>
                 </tr>
             {% endfor %}
         </tbody>

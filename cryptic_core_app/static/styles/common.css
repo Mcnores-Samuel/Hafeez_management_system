@@ -8,6 +8,10 @@
     color: white;
 }
 
+.main-container {
+    display: flex;
+}
+
 html {
     scroll-behavior: smooth;
 }
@@ -20,6 +24,7 @@ body {
 .content {
     margin: 20px 30px;
     height: 100%;
+    width: 100%;
     display: flex;
 }
 
@@ -70,7 +75,7 @@ footer > div > p {
         width: 100%;
     }
     .content {
-        margin: 20px auto;
+        margin: 30rem auto;
         display: flex;
         flex-wrap: wrap;
         justify-content: center;

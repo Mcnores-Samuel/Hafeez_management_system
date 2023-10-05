@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="{% static 'styles/sections.css' %}">
     <link rel="stylesheet" href="{% static 'styles/profile.css' %}">
     <link rel="stylesheet" href="{% static 'styles/agent_stock_mobile.css' %}">
-    <link rel="stylesheet" href="{% static 'styles/home.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/admin_sects_display.css' %}">
     <link rel="icon" href="{% static 'images/icon.png' %}" type="image/png">
     <script src="{% static 'scripts/navigation.js' %}" defer></script>
     <script src="{% static 'scripts/spinner.js' %}" defer></script>
@@ -59,44 +59,50 @@
         {% endif %}
         {% endblock %}
     </header>
-    <div class="sidebar">
-        {% block sidebar %}
-        {% endblock %}
+    <div class="main-container">
+        <div class="sidebar">
+            {% block sidebar %}
+            {% endblock %}
+        </div>
+        <div class="content">
+            {% block content %}
+            {% if user.is_authenticated %}
+            <div class="placeholders"></div>
+            {% else %}
+            <section class="landing-page">
+                <div class="hero-content">
+                    <h1>Get Your Dream Phone Today!</h1>
+                    <p>Affordable Smartphones With Flexible Payment Options</p>
+                    <p>You can choose to pay by <strong>Cash</strong> or <strong>Loan</strong></p>
+                    <p>Interested? <a href="{% url 'sign_up' %}" class="cta-button">Get Started</a></p>
+                </div>
+            </section>
+
+            <section id="products">
+                <!-- Product showcase here -->
+            </section>
+
+            <section id="loan">
+                <!-- Loan and Cash Options content here -->
+            </section>
+
+            <!-- Contact Us Section -->
+            <section id="contact">
+                <!-- Contact information and form here -->
+            </section>
+            {% endif %}
+            {% endblock %}
+        </div>
     </div>
-    <div class="content">
-        {% block content %}
-        {% if user.is_authenticated %}
-        <div class="placeholders"></div>
-        {% else %}
-        <section class="landing-page">
-            <div class="hero-content">
-                <h1>Get Your Dream Phone Today!</h1>
-                <p>Affordable Smartphones With Flexible Payment Options</p>
-                <p>You can choose to pay by <strong>Cash</strong> or <strong>Loan</strong></p>
-                <p>Interested? <a href="{% url 'sign_up' %}" class="cta-button">Get Started</a></p>
-            </div>
-        </section>
-                <!-- Main Content Section -->
-        <section id="about">
-            <!-- About Us content here -->
-        </section>
-
-        <section id="products">
-            <!-- Product showcase here -->
-        </section>
-
-        <section id="loan">
-            <!-- Loan and Cash Options content here -->
-        </section>
-
-        <!-- Contact Us Section -->
-        <section id="contact">
-            <!-- Contact information and form here -->
-        </section> 
-        {% endif %}
+    {% if user.is_authenticated == False %}
+    <!-- Main Content Section -->
+    <section id="about" class="about">
+        {% block about %}
+            <h1>Welcome to Haffeez</h1>
         {% endblock %}
-    </div>
-    
+        <!-- About Us content here -->
+    </section>
+    {% endif %}
     <footer>
         {% block footer %}
         <div class="footer-content">

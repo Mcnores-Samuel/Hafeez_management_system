@@ -1,6 +1,16 @@
 {% extends "base.html" %}
+{% block sidebar %}
+<div class="sidebar-containter">
+    <nav class="sidebar">
+        <a href="#agent-stock">My Stock</a>
+        <a href="#">My Customers</a>
+        <a href="#">Agents</a>
+        <a href="#">Customer Data</a>
+    </nav>
+</div>
+{% endblock %}
 {% block content %}
-<section class="agents_stock">
+<section class="agents_stock" id="agent-stock">
             <table class="stock-table">
                 <caption>Stock In</caption>
                 <thead>

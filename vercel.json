@@ -1,27 +1,37 @@
 {
-    "version": 2,
-    "builds": [
-      {
-        "src": "cryptics_core_1/wsgi.py",
-        "use": "@vercel/python",
-        "config": {
-          "maxLambdaSize": "15mb",
-          "runtime": "python3.8"
-        }
+  "version": 2,
+  "builds": [
+    {
+      "src": "cryptics_core_1/wsgi.py",
+      "use": "@vercel/python",
+      "config": {
+        "maxLambdaSize": "15mb",
+        "runtime": "python3.8",
+        "buildCommand": "python manage.py collectstatic --noinput"
       }
-    ],
-    "routes": [
-      {
-        "src": "/api/(.*)",
-        "dest": "cryptics_core_1/wsgi.py"
-      },
-      {
-        "src": "/(.*)",
-        "dest": "cryptics_core_1/wsgi.py"
-      }
-    ],
-    "env": {
-      "PYTHONUNBUFFERED": "1",
-      "DJANGO_SETTINGS_MODULE": "cryptics_core_1.settings" 
     }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "cryptics_core_1/wsgi.py"
+    },
+    {
+      "src": "/static/(.*)",
+      "dest": "/static/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "cryptics_core_1/wsgi.py"
+    }
+  ],
+  "env": {
+    "PYTHONUNBUFFERED": "1",
+    "DJANGO_SETTINGS_MODULE": "cryptics_core_1.settings"
+  }
 }
+
+
+
+
+

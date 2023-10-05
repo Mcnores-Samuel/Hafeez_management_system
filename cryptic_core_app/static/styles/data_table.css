@@ -7,6 +7,8 @@
     overflow-y: auto;
     box-sizing: border-box;
     width: 100%;
+    margin-top: 5rem;
+    margin-left: 10rem;
 }
 
 .stock-table {
@@ -15,10 +17,6 @@
     margin-bottom: 2rem;
     border-left: 1px solid #80808066;
     border-right: 1px solid #80808066;
-}
-
-.main-stock-table {
-    margin-left: 10rem;
 }
 
 .stock-table th, .stock-table td {
@@ -33,6 +31,7 @@
     font-size: 12px;
     position: sticky;
     top: 0px;
+    z-index: 2;
 }
 
 .stock-table tr:hover {
@@ -51,7 +50,6 @@ caption {
 }
 
 
-
 td > a > i, .data-card a > i{
     font-weight: bold;
     font-size: 2rem;
@@ -62,6 +60,39 @@ td > a > i, .data-card a > i{
 td > a > i:hover, .data-card a > i:hover {
     transform: scale(1.5);
     cursor: pointer;
+}
+/* Hide the default checkbox */
+#checkbox[type="checkbox"] {
+    display: none;
+  }
+
+  /* Style the label to create a custom checkbox appearance */
+.agents_stock .checkbox, .agents_stock .Notcheckbox {
+    position: relative;
+    cursor: pointer;
+  }
+
+
+  /* Style the label text */
+.agents_stock .checkbox::after {
+    content: "✔";
+    font-size: 16px;
+    font-weight: bold;
+    color: #32e010;
+    opacity: 0;
+}
+
+.agents_stock .Notcheckbox::after {
+    content: "✖";
+    font-size: 16px;
+    font-weight: bold;
+    color: #ff0000;
+    opacity: 0;
+}
+
+.agents_stock #checkbox[type="checkbox"]:checked + .checkbox::after,
+.agents_stock #checkbox[type="checkbox"]:checked + .Notcheckbox::after {
+    opacity: 1;
 }
 
 @media screen and (max-width: 50rem) {

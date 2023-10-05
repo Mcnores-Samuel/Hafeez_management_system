@@ -1,11 +1,19 @@
 from django.contrib import admin
-from .models import *
-from .forms import AgentStockForm
+from .models.customer_details import CustomerData
+from .models.agent_profile import AgentProfile
+from .models.customer_order import PhoneData
+from .models.user_profile import UserProfile
+from .models.main_storage import MainStorage
+from .models.reference import phone_reference
+from .models.agent_stock import AgentStock
+from .forms.agent_stock_form import AgentStockForm
 from django.contrib.auth.admin import UserAdmin
 
 
 admin.site.site_header = "HAFEEZ MANAGEMENT SYSTEM"
 admin.site.site_title = "Hafeez"
+admin.site.index_title = "Welcome to Hafeez Management System"
+
 
 @admin.register(UserProfile)
 class UserAdminModel(UserAdmin):
@@ -20,7 +28,7 @@ class MainStorageData(admin.ModelAdmin):
     list_display = (
         'device_imei', 'phone_type', 'in_stock',
         'sales_type', 'contract_no', 'entry_date',
-        'stock_out_date', 'assigned'
+        'stock_out_date', 'assigned', 'sold'
     )
     list_filter = ('in_stock', 'entry_date')
     search_fields = ('device_imei', 'phone_type')
@@ -31,15 +39,16 @@ class PhoneReferenceAdmin(admin.ModelAdmin):
     list_display = ("phone", "initial_deposit", "merchant")
 
     def initial_deposit(self, obj):
-        return f"{obj.deposit:,}"
+        return f"MK{obj.deposit:,}".replace(',', ' ')
     
     def merchant(self, obj):
-        return f"{obj.merchant_price:,}"
+        return f"MK{obj.merchant_price:,}".replace(',', ' ')
 
 
 @admin.register(AgentProfile)
 class AgentProfileAdmin(admin.ModelAdmin):
-    list_display = ('user', 'is_agent')
+    list_display = ('user', 'is_agent', 'contact_number',
+                    'location', 'longitude', 'latitude')
 
 
 @admin.register(AgentStock)

@@ -2,6 +2,15 @@ from django.shortcuts import redirect
 from django.urls import reverse
 
 class RedirectAuthenticatedUsersMiddleware:
+    """Middleware that redirects authenticated users to the home page.
+    preventing them from accessing the sign in page.
+
+    Args:
+        get_response (function): The next middleware in the chain or the view.
+    
+    Returns:
+        HttpResponse: The response object.
+    """
     def __init__(self, get_response):
         self.get_response = get_response
 
