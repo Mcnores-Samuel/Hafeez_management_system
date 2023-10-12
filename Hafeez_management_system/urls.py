@@ -27,8 +27,6 @@ urlpatterns = [
     path('system_core_1/', include('system_core_1.urls')),
     path('', RedirectView.as_view(url='/system_core_1/')),
     path('email/', include(email_urls)),
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
+]
+urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
