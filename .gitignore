@@ -2,9 +2,11 @@
 *.bak
 __pycache__/
 
-env_iron/
+venv/
 
 # Database
 *.sqlite3
 .vercel
 data_api.py
+*/migrations/*
+!*/migrations/__init__.py

@@ -1,0 +1,18 @@
+.placeholders section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 400px;
+    margin-bottom: 10px;
+    margin-top: 20px;
+    text-align: center;
+    backdrop-filter: blur(20px);
+    border-radius: 12px;
+}
+
+@media screen and (max-width: 50rem) {
+    .placeholders section {
+        width: 100%;
+    }
+}

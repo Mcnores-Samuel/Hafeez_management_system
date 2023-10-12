@@ -1,0 +1,108 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="{% static 'styles/common.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/data_table.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/base_header.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/forms.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/spinner.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/sections.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/profile.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/agent_stock_mobile.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/admin_sects_display.css' %}">
+    <link rel="icon" href="{% static 'images/icon.png' %}" type="image/png">
+    <script src="{% static 'scripts/navigation.js' %}" defer></script>
+    <script src="{% static 'scripts/spinner.js' %}" defer></script>
+    <script src="{% static 'scripts/placeholders.js' %}" defer></script>
+    <script src="{% static 'scripts/data_updates.js' %}" defer></script>
+    <title>{% block title %}Hafeez{% endblock %}</title>
+    <!-- Common CSS and JavaScript files -->
+</head>
+<body>
+    <div class="loader"></div>
+    <header>
+        {% block header %}
+        <!-- Custom header content for Template 1 -->
+        <div class="topbar">
+            <div class="logo">HE</div>
+            <div class="brandname">Hafeez Enterprise</div>
+            <span class="menu"><i class='bx bx-menu'></i></span>
+        </div>
+        <nav class="heading">
+            <div class="logo">HE</div>
+            <div class="brandname">Hafeez Enterprise</div>
+            <ul class="navigation">
+                <li><a href="{% url 'home_page' %}">Home</a></li>
+                <li><a href="#">Products</a></li>
+                <li><a href="#">Services</a></li>
+                <li><a href="#">About Us</a></li>
+                <li><a href="#">Contact Us</a></li>
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+                {% endif %}
+            </ul>
+        {% if user.is_authenticated %}
+            <button type="submit" class="profile">{{ profile }}</button>
+            <ul class="mobile-set" style="display: none;">
+                <li class="settings"><a href="{% url 'profile' %}">Settings</a></li>
+                <li><a href="{% url 'sign_out' %}">Sign Out</a></li>
+            </ul>
+        {% else %}
+            <ul>
+                <li><a href="{% url 'sign_in' %}">Sign In</a></li>
+                <li><a href="{% url 'sign_up' %}">Sign Up</a></li>
+            </ul>
+        {% endif %}
+        <div class="sidebar">
+            {% block sidebar %}
+            {% endblock %}
+        </div>
+        {% endblock %}
+    </header>
+        <div class="content">
+            {% block content %}
+            {% if not user.is_authenticated %}
+            <section class="landing-page">
+                <div class="hero-content">
+                    <h1>Get Your Dream Phone Today!</h1>
+                    <p>Affordable Smartphones With Flexible Payment Options</p>
+                    <p>You can choose to pay by <strong>Cash</strong> or <strong>Loan</strong></p>
+                    <p>Interested? <a href="{% url 'sign_up' %}" class="cta-button">Get Started</a></p>
+                </div>
+            </section>
+            {% endif %}
+            <section id="products" class="products">
+                <!-- Product showcase here -->
+                {% for product in products %}
+                <div class="data-card-home-page">
+                    <p>Model: <span>{{ product.phone_type }}</span></p>
+                </div>
+                {% endfor %}
+            </section>
+
+            <section id="loan">
+                <!-- Loan and Cash Options content here -->
+            </section>
+
+            <!-- Contact Us Section -->
+            <section id="contact">
+                <!-- Contact information and form here -->
+            </section>
+            {% endblock %}
+        </div>
+    <footer>
+        {% block footer %}
+        <div class="footer-content">
+            <p>Copyright &copy; 2023 Hafeez Enterprise</p>
+            <div class="social-icons">
+                <!-- Add social media icons and links here -->
+            </div>
+        </div>
+        {% endblock %}
+    </footer>
+</body>
+</html>
