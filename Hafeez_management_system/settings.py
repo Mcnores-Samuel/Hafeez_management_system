@@ -153,6 +153,7 @@ AUTH_USER_MODEL = 'system_core_1.UserProfile'
 def verified_callback(user):
     user.is_active = True
 
+EMAIL_MAIL_CALLBACK = 'Hafeez_management_system.email.verified_callback'
 
 EMAIL_VERIFIED_CALLBACK = verified_callback
 EMAIL_FROM_ADDRESS = os.environ.get('EMAIL_FROM_ADDRESS')
