@@ -16,20 +16,12 @@
       "dest": "Hafeez_management_system/wsgi.py"
     },
     {
-      "src": "/static/(.*)",
-      "dest": "staticfiles/$1"
-    },
-    {
-      "src": "/media/(.*)",
-      "dest": "media/$1"
-    },
-    {
       "src": "/(.*)",
       "dest": "Hafeez_management_system/wsgi.py"
     }
   ],
   "env": {
     "PYTHONUNBUFFERED": "1",
-    "DJANGO_SETTINGS_MODULE": "Hafeez_management_system.settings"
+    "DJANGO_SETTINGS_MODULE": "Hafeez_management_system.settings" 
   }
 }
