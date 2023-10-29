@@ -8,8 +8,10 @@ from django.contrib.auth.decorators import login_required
 from ..models.agent_profile import AgentProfile
 from ..models.agent_stock import AgentStock
 from ..models.agent_profile import Agent_sign_up_code
+from ..models.user_profile import UserAvatar
 from uuid import uuid4
 from django.shortcuts import redirect
+
 
 
 @login_required
@@ -50,12 +52,14 @@ def dashboard(request):
         except IndexError:
             agent_code = "No code available"
 
+        avatar = UserAvatar.objects.get(user=request.user)
         context = {
             'profile': user.email[0],
             'user': user,
-            'agent_code': agent_code
+            'agent_code': agent_code,
+            'avatar': avatar
         }
-        return render(request, 'users/main.html', context)
+        return render(request, 'users/admin_sites/main.html', context)
     elif request.user.groups.filter(name='agents').exists() or request.user.is_superuser:
         user = request.user
         agent_profile = AgentProfile.objects.get(user=user)
@@ -63,6 +67,7 @@ def dashboard(request):
         stock_in = AgentStock.objects.filter(agent=agent_profile, in_stock=True)
         pending = AgentStock.objects.filter(agent=agent_profile, in_stock=False,
                                              sales_type='Loan', contract_number=None)
+        avatar = UserAvatar.objects.get(user=request.user)
         context = {
             'profile': user.email[0],
             'user': user,
@@ -70,9 +75,10 @@ def dashboard(request):
             'stock_in': stock_in,
             'total_stock_in': len(stock_in),
             'total_stock_out': len(stock_out),
-            'pending': len(pending)
+            'pending': len(pending),
+            'avatar': avatar
         }
-        return render(request, 'users/agents.html', context)
+        return render(request, 'users/agent_sites/agents.html', context)
     else:
         return render(request, 'users/regular_user.html', {'user': request.user})
     

@@ -12,7 +12,7 @@ class SignUpForm(UserCreationForm):
     to access user privillegies
     """
     ROLES = [
-        ('regular', 'Regular User'),
+        ('regular', 'Customer'),
         ('agent', 'Agent'),
     ]
 

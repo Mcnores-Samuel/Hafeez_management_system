@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="about-header">
+        <h1>Terms and Conditions</h1>
+        <p>Please read the following terms and conditions carefully before using our services.</p>
+    </div>
+    <div class="content-container">
+        <h2>1. Introduction</h2>
+        <p>By using our services, you agree to these terms and conditions. If you do not agree with any part of these terms, please do not use our services.</p>
+
+        <h2>2. Service Use</h2>
+        <p>Our services are intended for personal and non-commercial use. You must not use our services in any way that is unlawful or violates these terms.</p>
+
+        <h2>3. Privacy</h2>
+        <p>Your use of our services is also governed by our <a href="{% url 'privacy' %}">Privacy Policy</a>.</p>
+
+        <h2>4. Product Sales</h2>
+        <p>We reserve the right to refuse service, terminate accounts, or cancel orders at our discretion. Products and prices are subject to change without notice.</p>
+
+        <h2>5. Warranty</h2>
+        <p>All products come with a warranty, and the terms and conditions of warranties are detailed in product documentation.</p>
+
+        <h2>6. Limitation of Liability</h2>
+        <p>We are not liable for any indirect, incidental, or consequential damages arising from your use of our services.</p>
+
+        <h2>7. Changes to Terms</h2>
+        <p>We may update these terms and conditions from time to time. Please check this page periodically for changes.</p>
+
+        <h2>8. Contact Us</h2>
+        <p>If you have any questions about these terms and conditions, please <a href="{% url 'contact' %}">contact us</a>.</p>
+    </div>
+{% endblock %}

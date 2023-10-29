@@ -46,7 +46,7 @@ def sign_up(request):
                 user.is_active = False
                 user.save()
                 send_email(user)
-                return redirect(reverse('sign_in'))
+                return render(request, 'authentication/confirm_email.html', {'user': user})
             elif role == 'agent':
                 agent_code = form.cleaned_data['agent_code']
                 sign_up_code = Agent_sign_up_code.objects.filter(code=agent_code, used=False)
@@ -60,7 +60,7 @@ def sign_up(request):
                     user.groups.add(agen_group)
                     agent_profile = AgentProfile.objects.create(user=user)
                     agent_profile.is_agent = True
-                    return redirect(reverse('sign_in'))
+                    return render(request, 'authentication/confirm_email.html', {'user': user})
                 else:
                     form.add_error(None, "Invalid Agent code!!, please Enter a valid code")
     else:
@@ -121,6 +121,14 @@ def sign_in(request):
     else:
         form = SignInForm()
     return render(request, 'authentication/sign_in.html', {'form': form, 'user': user})
+
+@login_required
+def resend_confirmation_email(request):
+    user = request.user
+    if not user.is_active:
+        send_email(user)
+    return render(request, 'authentication/confirm_email.html')
+
 
 @login_required
 def sign_out(request):

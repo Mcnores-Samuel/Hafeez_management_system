@@ -11,7 +11,7 @@ inventory of phones in your application.
 from django.db import models
 
 
-class phone_reference(models.Model):
+class Phone_reference(models.Model):
     """This model holds static information on phone's payment methods.
 
     The PhoneReference model represents reference data for different phone models
@@ -37,9 +37,10 @@ class phone_reference(models.Model):
     - Changes to this model can affect the phone selection process in the application,
       so it should be kept up-to-date and accurate.
     """
-    phone = models.CharField(max_length=30)
-    deposit = models.DecimalField(max_digits=10, decimal_places=2)
-    merchant_price = models.DecimalField(max_digits=10, decimal_places=2)
+    phone = models.CharField(max_length=30, unique=True)
+    deposit = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    merchant_price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    cash_price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
 
     class Meta:
         app_label = 'system_core_1'

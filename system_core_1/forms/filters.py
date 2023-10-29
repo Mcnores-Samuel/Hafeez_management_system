@@ -9,7 +9,7 @@ class FilterMainStorege(django_filters.FilterSet):
     """Filter for the main storage."""
     class Meta:
         model = MainStorage
-        fields = ('in_stock', 'assigned', 'phone_type', 'entry_date')
+        fields = ('in_stock', 'assigned', 'phone_type',)
 
 class FilterAgentAndData(django_filters.FilterSet):
     """Filter for the agent and data."""

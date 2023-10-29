@@ -1,13 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
 <section class="sign_up_form">
-    <div class="infor">
-    </div>
     <div class="form_container">
-        {% if user.is_active == False %}
-            <h2>Activate your account</h2>
-            <p>We have sent you an email, please confirm your email address to complete registration.</p>
-        {% endif %}
         <h2>Sign in</h2>
         <form method="post" class="sign_in">
             {% csrf_token %}

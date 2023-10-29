@@ -10,6 +10,7 @@ Classes:
 from django.db import models
 from django.conf import settings
 
+
 class AgentProfile(models.Model):
   """The Agents model represents the individuals who facilitate the sales
   process. It includes fields to store relevant information about each agent,

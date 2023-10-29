@@ -25,6 +25,7 @@ The contract_number links the customer to a specific contract, and referral
 captures any relevant referral information.
 """
 from django.db import models
+from .agent_profile import AgentProfile
 
 
 class CustomerData(models.Model):
@@ -54,6 +55,7 @@ class CustomerData(models.Model):
     """
     created_at = models.DateTimeField(null=True)
     update_at = models.DateTimeField()
+    agent = models.ForeignKey(AgentProfile, on_delete=models.CASCADE, null=True)
     customer_name = models.CharField(max_length=50)
     national_id = models.CharField(max_length=9)
     customer_contact = models.CharField(max_length=13)

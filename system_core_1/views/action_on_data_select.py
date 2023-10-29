@@ -27,4 +27,4 @@ def action_on_click(request, data_id):
             return redirect('main_storage')
     else:
         form = AssignAgentForm()
-    return render(request, 'users/admin_action.html', {'form': form})
+    return render(request, 'users/admin_sites/admin_action.html', {'form': form})

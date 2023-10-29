@@ -49,20 +49,20 @@ class AgentStock(models.Model):
     phone_type = models.CharField(max_length=25, blank=True)
     collection_date = models.DateField()
     sales_type = models.CharField(max_length=10, choices=TYPES, default="Loan")
-    contract_number = models.CharField(max_length=8,null=True)
+    contract_number = models.CharField(max_length=9,null=True)
     in_stock = models.BooleanField(default=True)
     stock_out_date = models.DateField()
     sold = models.BooleanField(default=False)
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        """Dynamically populate choices for imei_number from MainStorage"""
-        self._update_imei_number_choices()
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
+    #     """Dynamically populate choices for imei_number from MainStorage"""
+    #     self._update_imei_number_choices()
 
-    def _update_imei_number_choices(self):
-        in_stock_phones = MainStorage.objects.filter(in_stock=True)
-        choices = [(phone.device_imei, phone.device_imei) for phone in in_stock_phones]
-        self._meta.get_field('imei_number').choices = choices
+    # def _update_imei_number_choices(self):
+    #     in_stock_phones = MainStorage.objects.filter(in_stock=True)
+    #     choices = [(phone.device_imei, phone.device_imei) for phone in in_stock_phones]
+    #     self._meta.get_field('imei_number').choices = choices
 
     class Meta:
         indexes = [

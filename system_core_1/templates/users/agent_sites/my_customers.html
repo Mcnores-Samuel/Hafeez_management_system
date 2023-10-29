@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block content %}
+<section>
+    {% for customer, customer_phone in data_by_customer %}
+        <div class="customer-data-card">
+            <img src="" alt="">
+            <p>{{ customer.customer_name }}</p>
+            <p>{{ customer.national_id }}</p>
+            <p>{{ customer.customer_contact }}</p>
+            <p>{{ customer.second_contact }}</p>
+            <p>{{ customer.first_witness_name }}</p>
+            <p>{{ customer.first_witness_contact }}</p>
+            <p>{{ customer.second_witness_name }}</p>
+            <p>{{ customer.second_witness_contact }}</p>
+            <p>{{ customer.customer_location }}</p>
+            <p>{{ customer.nearest_school }}</p>
+            <p>{{ customer.nearest_market_church_hospital }}</p>
+            <p>{{ customer.customer_email }}</p>
+            <p>{{ customer.working_status }}</p>
+            {% for phone in customer_phone %}
+                <p>{{ phone.phone_type }}</p>
+                <p>{{ phone.imei_number }}</p>
+                <p>{{ phone.contract_number }}</p>
+            {% endfor %}
+        </div>
+    {% endfor %}
+</section>
+{% endblock %}

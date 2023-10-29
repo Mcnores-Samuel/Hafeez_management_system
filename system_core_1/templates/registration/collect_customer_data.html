@@ -2,6 +2,7 @@
 {% block content %}
 <section class="sign_up_form">
     <div class="form_container custom">
+        <div class="data_intake_guide"></div>
         <h2>Customer Data</h2>
         <form method="post" class="sign_up customer-form">
             {% csrf_token %}
@@ -12,6 +13,7 @@
             <div class="role">
                 <label for="{{ form.payment_period.id_for_label }}">Payment Period:</label>
                 {{ form.payment_period }}
+                <div class="customer_data_errors">{{ form.payment_period.errors }}</div>
             </div>
             <div class="form-group">
                 {{ form.customer_name }}
@@ -34,10 +36,12 @@
             </div>
             <div class="form-group">
                 {{ form.first_witness_name }}
+                <div class="customer_data_errors">{{ form.first_witness_name.errors }}</div>
                 <label for="{{ form.first_witness_name.id_for_label }}">First Witness Name:</label>
             </div>
             <div class="form-group">
                 {{ form.first_witness_contact }}
+                <div class="customer_data_errors">{{ form.first_witness_contact.errors }}</div>
                 <label for="{{ form.first_witness_contact.id_for_label }}">First Witness Contact:</label>
             </div>
             <div class="form-group">
@@ -50,14 +54,17 @@
             </div>
             <div class="form-group">
                 {{ form.customer_location }}
+                <div class="customer_data_errors">{{ form.customer_location.errors }}</div>
                 <label for="{{ form.customer_location.id_for_label }}">Customer Location:</label>
             </div>
             <div class="form-group">
                 {{ form.nearest_school }}
+                <div class="customer_data_errors">{{ form.nearest_school.errors }}</div>
                 <label for="{{ form.nearest_school.id_for_label }}">Nearest School:</label>
             </div>
             <div class="form-group">
                 {{ form.nearest_market_church_hospital }}
+                <div class="customer_data_errors">{{ form.nearest_market_church_hospital.errors }}</div>
                 <label for="{{ form.nearest_market_church_hospital.id_for_label }}">Nearest Market/Church/Hospital:</label>
             </div>
             <div class="form-group">

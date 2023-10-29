@@ -34,7 +34,7 @@ class PhoneData(models.Model):
     agent = models.ForeignKey(AgentProfile, on_delete=models.CASCADE)
     phone_type = models.CharField(max_length=25, choices=PHONELIST, default='S18 (4+64)')
     imei_number = models.CharField(max_length=15, unique=True)
-    contract_number = models.CharField(max_length=8,null=True)
+    contract_number = models.CharField(max_length=9,null=True)
     selling_price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     cost_price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     payment_period = models.CharField(max_length=50, null=True)

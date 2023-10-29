@@ -10,6 +10,9 @@ from ..forms.sign_in_form import SignInForm
 from django_email_verification import verify_view, verify_token
 from django.http import HttpResponse
 from ..models.main_storage import MainStorage
+from ..models.reference import Phone_reference
+from ..models.user_profile import UserAvatar
+
 
 def home_page(request):
     """The `home_page` view function is the main entry point for unauthenticated users
@@ -57,11 +60,70 @@ def home_page(request):
                 form.add_error(None, "Invalid username or password")
     else:
         form = SignInForm()
-    products = MainStorage.objects.filter(in_stock=True).order_by('id')[:18]
-    context = {'form': form, 'products': products}
+    products = {}
+    itel = MainStorage.objects.filter(in_stock=True, category="Itel").order_by('id')
+    tecno = MainStorage.objects.filter(in_stock=True, category="Tecno").order_by('id')
+    infinix = MainStorage.objects.filter(in_stock=True, category="Infinix").order_by('id')
+    redmi = MainStorage.objects.filter(in_stock=True, category="Redmi").order_by('id')
+    phone_list = []
+    count = 0
+    unique_phone_types = set()
+    for phone in itel:
+        if phone.phone_type not in unique_phone_types:
+            phone_list.append(phone)
+            unique_phone_types.add(phone.phone_type)
+            count += 1
+        if count == 6:
+            break
+    products['itel'] = phone_list
+    unique_phone_types.clear()
+
+    phone_list = []
+    count = 0
+    unique_phone_types = set()
+    for phone in tecno:
+        if phone.phone_type not in unique_phone_types:
+            phone_list.append(phone)
+            unique_phone_types.add(phone.phone_type)
+            count += 1
+        if count == 6:
+            break
+    products['tecno'] = phone_list
+    unique_phone_types.clear()
+
+    phone_list = []
+    count = 0
+    unique_phone_types = set()
+    for phone in infinix:
+        if phone.phone_type not in unique_phone_types:
+            phone_list.append(phone)
+            unique_phone_types.add(phone.phone_type)
+            count += 1
+        if count == 6:
+            break
+    products['infinix'] = phone_list
+    unique_phone_types.clear()
+
+    phone_list = []
+    count = 0
+    unique_phone_types = set()
+    for phone in redmi:
+        if phone.phone_type not in unique_phone_types:
+            phone_list.append(phone)
+            unique_phone_types.add(phone.phone_type)
+            count += 1
+        if count == 6:
+            break
+    products['redmi'] = phone_list
+    unique_phone_types.clear()
+    prices = Phone_reference.objects.all()
+    context = {'form': form, 'products': products, 'prices': prices}
     if request.user.is_authenticated:
+        avatar = UserAvatar.objects.get(user=request.user)
+        context['avatar'] = avatar
         context['profile'] = request.user.email[0]
     return render(request, 'base.html', context)
+
 
 @verify_view
 def confirm(request, token):
@@ -70,3 +132,52 @@ def confirm(request, token):
     """
     success, user = verify_token(token)
     return HttpResponse(f'Account verified, {user.username}' if success else 'Invalid token')
+
+
+def products(request, data_id=None):
+    """The `products` view function is responsible for handling the display of the
+    application's products page.
+    """
+    return render(request, 'users/general-sites/products.html')
+
+
+def about(request):
+    """The `about` view function is responsible for handling the display of the
+    application's about page.
+    """
+    return render(request, 'users/general-sites/about.html')
+
+
+def contact(request):
+    """The `contact` view function is responsible for handling the display of the
+    application's contact page.
+    """
+    return render(request, 'users/general-sites/contact.html')
+
+
+def services(request):
+    """The `services` view function is responsible for handling the display of the
+    application's services page.
+    """
+    return render(request, 'users/general-sites/services.html')
+
+
+def faq(request):
+    """The `faq` view function is responsible for handling the display of the
+    application's faq page.
+    """
+    return render(request, 'users/general-sites/faq.html')
+
+
+def terms(request):
+    """The `terms` view function is responsible for handling the display of the
+    application's terms page.
+    """
+    return render(request, 'users/general-sites/terms.html')
+
+
+def privacy(request):
+    """The `privacy` view function is responsible for handling the display of the
+    application's privacy page.
+    """
+    return render(request, 'users/general-sites/privacy.html')

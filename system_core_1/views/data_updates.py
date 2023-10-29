@@ -7,9 +7,12 @@ from ..forms.user_profile_update_form import UserProfileForm
 from ..models.agent_profile import AgentProfile
 from ..models.agent_stock import AgentStock
 from ..models.main_storage import MainStorage
-from ..models.reference import phone_reference
+from ..models.reference import Phone_reference
 from ..models.customer_order import PhoneData
 from django.http import JsonResponse
+from ..forms.Product_assignment_form  import ProductAssignmentForm
+from ..forms.users import UserAvatarForm
+from ..models.user_profile import UserAvatar
 
 @login_required
 def profile(request):
@@ -23,21 +26,22 @@ def profile(request):
     """
     user = request.user
     profile_form = None
-    if request.method == 'POST':
-        if 'first_name' in request.POST:
-            profile_form = UserProfileForm(request.POST, instance=user)
-            if profile_form.is_valid():
-                profile_form.save()
-                messages.success(request, 'Your profile information was successfully updated.')
-                return redirect('profile')
+    if request.method == 'POST' and 'first_name' in request.POST:
+        profile_form = UserProfileForm(request.POST, instance=user)
+        if profile_form.is_valid():
+            profile_form.save()
+            messages.success(request, 'Your profile information was successfully updated.')
+            return redirect('profile')
     else:
         profile_form = UserProfileForm(instance=user)
+    avatar = UserAvatar.objects.get(user=request.user)
     context = {
             'profile': user.email[0],
             'user': user,
             'profile_form': profile_form,
+            'avatar': avatar
         }
-    return render(request, 'users/profile.html', context)
+    return render(request, 'users/general-sites/profile.html', context)
 
 @login_required
 def change_password(request):
@@ -65,7 +69,7 @@ def change_password(request):
         'password_form': password_form,
     }
     
-    return render(request, 'users/change_password.html', context)
+    return render(request, 'users/general-sites/change_password.html', context)
 
 @login_required
 def in_stock(request):
@@ -82,14 +86,14 @@ def in_stock(request):
         user = request.user
         agent_profile = AgentProfile.objects.get(user=user)
         stock_in = AgentStock.objects.filter(agent=agent_profile, in_stock=True)
-        reference = phone_reference.objects.all()
+        reference = Phone_reference.objects.all()
         context = {
             'profile': user.email[0],
             'user': user,
             'stock_in': stock_in,
             'reference_list': reference
         }
-    return render(request, 'users/in_stock.html', context)
+    return render(request, 'users/agent_sites/in_stock.html', context)
 
 @login_required
 def stock_out(request):
@@ -111,7 +115,7 @@ def stock_out(request):
             'user': user,
             'stock_out': stock_out
         }
-    return render(request, 'users/stock_out.html', context)
+    return render(request, 'users/agent_sites/stock_out.html', context)
 
 @login_required
 def add_contract_number(request):
@@ -139,4 +143,4 @@ def add_contract_number(request):
                 phone_sold.save()
                 main_storage.save()
             return JsonResponse({'message': 'Data added successfully'})
-    return render(request, 'users/agents.html')
+    return render(request, 'users/agent-sites/agents.html')

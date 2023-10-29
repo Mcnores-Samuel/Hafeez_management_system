@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from django import forms
-from ..models.reference import phone_reference
+from ..models.reference import Phone_reference
 from ..models.main_storage import MainStorage
 from ..models.agent_stock import AgentStock
 from ..models.customer_details import CustomerData
@@ -97,12 +97,29 @@ class CombinedDataForm(forms.Form):
             required_fields = [
                 'customer_name', 'national_id', 'customer_contact',
                 'first_witness_name', 'first_witness_contact', 'payment_period',
-                'customer_location'
+                'customer_location', 'nearest_school', 'nearest_market_church_hospital'
             ]
             for field_name in required_fields:
                 field_value = cleaned_data.get(field_name)
                 if not field_value:
-                    self.add_error(field_name, f'{field_name.replace("_", " ")} required')
+                    if field_name == 'payment_period':
+                        self.add_error(field_name, 'Please select a payment period')
+                    elif field_name == 'customer_name':
+                        self.add_error(field_name, 'Please enter customer name')
+                    elif field_name == 'national_id':
+                        self.add_error(field_name, 'Please enter customer national ID')
+                    elif field_name == 'customer_contact':
+                        self.add_error(field_name, 'Please enter customer contact')
+                    elif field_name == 'first_witness_name':
+                        self.add_error(field_name, 'Please enter first witness name')
+                    elif field_name == 'first_witness_contact':
+                        self.add_error(field_name, 'Please enter first witness contact')
+                    elif field_name == 'customer_location':
+                        self.add_error(field_name, 'Please enter customer location')
+                    elif field_name == 'nearest_school':
+                        self.add_error(field_name, 'Please enter nearest school')
+                    elif field_name == 'nearest_market_church_hospital':
+                        self.add_error(field_name, 'Please enter nearest market, church or hospital')
         return cleaned_data
 
     def process_cash_payment(self, data_id):
@@ -123,7 +140,7 @@ class CombinedDataForm(forms.Form):
                 without the need for collecting customer data.
         """
         selected_device = AgentStock.objects.get(id=data_id)
-        phone_reference_instance = phone_reference.objects.get(
+        phone_reference_instance = Phone_reference.objects.get(
             phone=selected_device.phone_type
         )
 
@@ -175,7 +192,7 @@ class CombinedDataForm(forms.Form):
                 data along with transaction details, facilitating customer and phone data management in the database.
         """
         selected_device = AgentStock.objects.get(id=data_id)
-        phone_reference_instance = phone_reference.objects.get(
+        phone_reference_instance = Phone_reference.objects.get(
             phone=selected_device.phone_type
             )
         
@@ -210,6 +227,7 @@ class CombinedDataForm(forms.Form):
             customer_data = CustomerData(
                 created_at=timezone.now(),
                 update_at=timezone.now(),
+                agent=self.user.agentprofile if self.user else None,
                 customer_name=self.cleaned_data['customer_name'],
                 national_id=self.cleaned_data['national_id'],
                 customer_contact=self.cleaned_data['customer_contact'],

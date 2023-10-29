@@ -6,7 +6,15 @@ from .views import (registration_view, data_updates, customer_registrar,
 
 urlpatterns =[
     path('', home_page.home_page, name='home_page'),
+    path('products/', home_page.products, name='products'),
+    path('about/', home_page.about, name='about'),
+    path('faq/', home_page.faq, name='faq'),
+    path('terms/', home_page.terms, name='terms'),
+    path('contact/', home_page.contact, name='contact'),
+    path('services/', home_page.services, name='services'),
+    path('privacy/', home_page.privacy, name='privacy'),
     path('sign_up/', registration_view.sign_up, name='sign_up'),
+    path('resend_confirmation_email', registration_view.resend_confirmation_email, name='resend_confirmation_email'),
     path('generate_agent_code/', user_dashboard.generate_agent_code, name='generate_agent_code'),
     path('sign_in/', registration_view.sign_in, name='sign_in'),
     path('sign_out/', registration_view.sign_out, name='sign_out'),
@@ -20,6 +28,7 @@ urlpatterns =[
     path('users/', central_display.users, name='users'),
     path('main_storage/', central_display.main_storage, name='main_storage'),
     path('agents_and_data/', central_display.agents_and_data, name='agents_and_data'),
+    path('my_customers/', central_display.my_customers, name='my_customers'),
     path('action_on_click/<int:data_id>/', action_on_data_select.action_on_click, name='action_on_click'),
     # reseting user password
     path('password_reset/', auth_views.PasswordResetView.as_view(template_name='registration/reset_form.html'), name='password_reset'),

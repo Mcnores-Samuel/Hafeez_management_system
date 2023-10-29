@@ -1,4 +1,5 @@
 {% load static %}
+{% load plus_r %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,16 +15,21 @@
     <link rel="stylesheet" href="{% static 'styles/profile.css' %}">
     <link rel="stylesheet" href="{% static 'styles/agent_stock_mobile.css' %}">
     <link rel="stylesheet" href="{% static 'styles/admin_sects_display.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/products_layout.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/footer.css' %}">
     <link rel="icon" href="{% static 'images/icon.png' %}" type="image/png">
     <script src="{% static 'scripts/navigation.js' %}" defer></script>
-    <script src="{% static 'scripts/spinner.js' %}" defer></script>
     <script src="{% static 'scripts/placeholders.js' %}" defer></script>
     <script src="{% static 'scripts/data_updates.js' %}" defer></script>
+    <script src="{% static 'scripts/sign_up_guide.js' %}" defer></script>
+    <script src="{% static 'scripts/data_intake_guide.js' %}" defer></script>
+    <script src="{% static 'scripts/auto_submit_filter.js' %}" defer></script>
     <title>{% block title %}Hafeez{% endblock %}</title>
     <!-- Common CSS and JavaScript files -->
 </head>
 <body>
-    <div class="loader"></div>
+    <button class="scroll-back"><i class='bx bxs-up-arrow-square'></i></button>
+    <div class="loader"></i></div>
     <header>
         {% block header %}
         <!-- Custom header content for Template 1 -->
@@ -36,25 +42,29 @@
             <div class="logo">HE</div>
             <div class="brandname">Hafeez Enterprise</div>
             <ul class="navigation">
-                <li><a href="{% url 'home_page' %}">Home</a></li>
-                <li><a href="#">Products</a></li>
-                <li><a href="#">Services</a></li>
-                <li><a href="#">About Us</a></li>
-                <li><a href="#">Contact Us</a></li>
+                <li><a href="{% url 'home_page' %}"><i class='bx bxs-home'></i> Home</a></li>
+                <li><a href="{% url 'products' %}"><i class='bx bxl-product-hunt'></i> Products</a></li>
+                <li><a href="{% url 'services' %}"><i class='bx bxl-stripe'></i> Services</a></li>
+                <li><a href="{% url 'about' %}">About Us</a></li>
+                <li><a href="{% url 'contact' %}"><i class='bx bxs-contact'></i> Contact Us</a></li>
                 {% if user.is_authenticated %}
-                    <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+                    <li><a href="{% url 'dashboard' %}"><i class='bx bxs-dashboard'></i> Dashboard</a></li>
                 {% endif %}
             </ul>
         {% if user.is_authenticated %}
-            <button type="submit" class="profile">{{ profile }}</button>
+            {% if avatar.image %}
+                <button type="submit" class="profile"><img src="{{ avatar.image.url }}" alt=""></button>
+            {% else %}
+                <button type="submit" class="profile">{{ profile }}</button>
+            {% endif %}
             <ul class="mobile-set" style="display: none;">
-                <li class="settings"><a href="{% url 'profile' %}">Settings</a></li>
-                <li><a href="{% url 'sign_out' %}">Sign Out</a></li>
+                <li class="settings"><a href="{% url 'profile' %}"><i class='bx bx-cog' ></i> Settings</a></li>
+                <li><a href="{% url 'sign_out' %}"><i class='bx bx-log-out'></i> Sign Out</a></li>
             </ul>
         {% else %}
             <ul>
-                <li><a href="{% url 'sign_in' %}">Sign In</a></li>
-                <li><a href="{% url 'sign_up' %}">Sign Up</a></li>
+                <li><a href="{% url 'sign_in' %}"><i class='bx bx-log-in'></i> Sign In</a></li>
+                <li><a href="{% url 'sign_up' %}"><i class='bx bx-log-in-circle'></i> Sign Up</a></li>
             </ul>
         {% endif %}
         <div class="sidebar">
@@ -65,44 +75,150 @@
     </header>
         <div class="content">
             {% block content %}
-            {% if not user.is_authenticated %}
-            <section class="landing-page">
-                <div class="hero-content">
-                    <h1>Get Your Dream Phone Today!</h1>
-                    <p>Affordable Smartphones With Flexible Payment Options</p>
-                    <p>You can choose to pay by <strong>Cash</strong> or <strong>Loan</strong></p>
-                    <p>Interested? <a href="{% url 'sign_up' %}" class="cta-button">Get Started</a></p>
-                </div>
-            </section>
-            {% endif %}
             <section id="products" class="products">
                 <!-- Product showcase here -->
-                {% for product in products %}
-                <div class="data-card-home-page">
-                    <p>Model: <span>{{ product.phone_type }}</span></p>
+                <span class="category-btn" ><i class='bx bx-category' data-tooltip="Categories"></i></span>
+                <article class="Categories">
+                    <h2>Categories <span class="Categories-icon"><i class='bx bx-chevrons-down bx-fade-down'></i></span></h2>
+                    <ul class="Categories-menu">
+                        <a href="#itel"><li>Itel</li></a>
+                        <a href="#tecno"><li>Tecno</li></a>
+                        <a href="#infinix"><li>Infinix</li></a>
+                        <a href="#redmi"><li>Redmi</li></a>
+                    </ul>
+                </article>
+                <div class="Categories-extended">
+                    <div class="slideshow-container">
+
+                        <div class="mySlides fade">
+                          <div class="numbertext"></div>
+                          <img src="{% static 'media/images/ad1.jpeg' %}">
+                          <div class="text"></div>
+                        </div>
+                        
+                        <div class="mySlides fade">
+                          <div class="numbertext"></div>
+                          <img src="{% static 'media/images/ad2.jpeg' %}">
+                          <div class="text"></div>
+                        </div>
+                        
+                        <div class="mySlides fade">
+                          <div class="numbertext"></div>
+                          <img src="{% static 'media/images/ad3.jpeg' %}">
+                          <div class="text"></div>
+                        </div>
+                        <div class="mySlides fade">
+                            <div class="numbertext"></div>
+                            <img src="{% static 'media/images/ad4.jpeg' %}">
+                            <div class="text"></div>
+                        </div>
+                        <div class="mySlides fade">
+                            <div class="numbertext"></div>
+                            <img src="{% static 'media/images/ad5.jpeg' %}">
+                            <div class="text"></div>
+                        </div>
+                        <div class="mySlides fade">
+                            <div class="numbertext"></div>
+                            <img src="{% static 'media/images/ad6.jpeg' %}">
+                            <div class="text"></div>
+                        </div>
+                    </div>
+                        <br>
+                    <div style="text-align:center">
+                        <span class="dot"></span> 
+                        <span class="dot"></span> 
+                        <span class="dot"></span>
+                        <span class="dot"></span> 
+                        <span class="dot"></span> 
+                        <span class="dot"></span> 
+                    </div>
+                    {% for category, products_list in products.items %}
+                    {% if products_list %}
+                    <article class="Itel" id="{{ category }}">
+                        <h1>{{ category }}</h1>
+                        <div class="items">
+                            {% for product in products_list %}
+                            <div class="item">
+                                <div class="item-img">
+                                    {% if product.image %}
+                                        <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                                    {% endif %}
+                                </div>
+                                <div class="item-details">
+                                    <h3>{{ product.name }}</h3>
+                                    {% for price in prices %}
+                                        {% if price.phone == product.phone_type %}
+                                            <p>Price: <span class="price">{{ price.cash_price|format_price }} Cash</span></p>
+                                        {% endif %}
+                                    {% endfor %}
+                                    <p>RAM: <span>{{ product.spec|plus_r }}GB</span></p>
+                                    <p>ROM: <span>{{ product.spec|rom }}GB</span></p>
+                                    <p>Screen: <span class="screen_d">{{ product.screen_size }}</span></p>
+                                    <p>Camera: <span>{{ product.camera }}</span></p>
+                                    <p>Battery: <span>{{ product.battery }}</span></p>
+                                    <p>OS: <span>{{ product.os }}</span></p>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </article>
+                    {% endif %}
+                    {% endfor %}
                 </div>
-                {% endfor %}
             </section>
 
-            <section id="loan">
+            <section id="About">
                 <!-- Loan and Cash Options content here -->
             </section>
 
             <!-- Contact Us Section -->
             <section id="contact">
                 <!-- Contact information and form here -->
+
             </section>
             {% endblock %}
         </div>
-    <footer>
-        {% block footer %}
-        <div class="footer-content">
-            <p>Copyright &copy; 2023 Hafeez Enterprise</p>
-            <div class="social-icons">
-                <!-- Add social media icons and links here -->
+        <footer class="footer">
+            {% block footer %}
+            <div class="footer-content">
+                    <div class="footer-logo">
+                        <h2>Hafeez Enterprise</h2>
+                        <p>Your Trusted Phone Retailer</p>
+                        <div class="social-icons">
+                            <!-- Add social media icons and links here -->
+                            <a href="#"><i class='bx bxl-twitter'></i></a>
+                            <a href="#"><i class='bx bxl-whatsapp'></i></a>
+                            <a href="#"><i class='bx bxl-facebook'></i></a>
+                            <a href="#"><i class='bx bxl-instagram'></i></a>
+                        </div>
+                    </div>
+                    <div class="footer-links">
+                        <h2>Products</h2>
+                        <ul>
+                            <li><a href="#">Phones</a></li>
+                            <li><a href="#">Accessories</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-links">
+                        <h2>Support</h2>
+                        <ul>
+                            <li><a href="{% url 'faq' %}">FAQ</a></li>
+                            <li><a href="{% url 'contact' %}">Contact us</a></li>
+                        </ul>
+                    </div>
+                    <div class="foot-links">
+                        <h2>Legal</h2>
+                        <ul>
+                            <li><a href="{% url 'privacy' %}">Privacy Policy</a></li>
+                            <li><a href="{% url 'terms' %}">Terms of Use</a></li>
+                        </ul>
+                    </div>
             </div>
-        </div>
-        {% endblock %}
-    </footer>
+            <div class="foot-bottom">
+                <p>&copy; 2023 Hafeez Enterprise. All rights reserved.</p>
+            </div>
+            {% endblock %}
+        </footer>
+        <script src="{% static 'scripts/spinner.js' %}"></script>
 </body>
 </html>

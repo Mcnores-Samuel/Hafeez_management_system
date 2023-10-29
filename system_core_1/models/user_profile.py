@@ -10,6 +10,7 @@ Classes:
 """
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
+from django.conf import settings
 
 
 class UserProfileManager(BaseUserManager):
@@ -89,5 +90,17 @@ class UserProfile(AbstractUser):
   USERNAME_FIELD = 'email'
   REQUIRED_FIELDS = []
 
+  class Meta:
+      app_label = 'system_core_1'
+
   def __str__(self):
     return self.username
+  
+
+class UserAvatar(models.Model):
+    """The UserAvatar model represents the avatars of the users of the application."""
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='avatars/', null=True, blank=True)
+
+    def __str__(self):
+        return self.user.username
