@@ -9,6 +9,7 @@ from ..forms.customer_data import CombinedDataForm
 from ..models.agent_stock import AgentStock
 from django.http import HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
+from ..models.main_storage import MainStorage
 
 
 @login_required
@@ -47,24 +48,19 @@ def combinedData_collection(request, data_id):
     This view assumes user authentication and validation of agent status have been
     handled in the authentication system and AgentProfile model.
     """
-    if request.user.is_authenticated and request.user.agentprofile.is_agent:
-        agent_profile = request.user.agentprofile
-        has_stock = AgentStock.objects.filter(agent=agent_profile, in_stock=True)
-        if has_stock:
-            if request.method == 'POST':
-                form = CombinedDataForm(request.POST, user=request.user)
-                if form.is_valid():
-                    payment_method = form.cleaned_data['payment_method']
-                    if payment_method == 'Cash':
-                        phone_data = form.process_cash_payment(data_id)
-                        return redirect('dashboard')
-                    elif payment_method == 'Loan':
-                        customer_data, phone_data = form.process_loan_payment(data_id)
-                        return redirect('dashboard')
-            else:
-                form = CombinedDataForm(user=request.user)
-            return render(request, 'registration/collect_customer_data.html', {'form': form})
+    if request.user.is_authenticated and request.user.groups.filter(name='staff_members').exists():
+        if request.method == 'POST':
+            form = CombinedDataForm(request.POST, user=request.user)
+            if form.is_valid():
+                payment_method = form.cleaned_data['payment_method']
+                if payment_method == 'Cash':
+                    phone_data = form.process_cash_payment(data_id)
+                    return redirect('dashboard')
+                elif payment_method == 'Loan':
+                    customer_data, phone_data = form.process_loan_payment(data_id)
+                    return redirect('dashboard')
         else:
-            return render(request, 'authentication/out_of_stock.html')
+            form = CombinedDataForm(user=request.user)
+        return render(request, 'registration/collect_customer_data.html', {'form': form})
     else:
         return HttpResponseForbidden("Access Denied")

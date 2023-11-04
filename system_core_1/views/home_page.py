@@ -61,10 +61,14 @@ def home_page(request):
     else:
         form = SignInForm()
     products = {}
-    itel = MainStorage.objects.filter(in_stock=True, category="Itel").order_by('id')
-    tecno = MainStorage.objects.filter(in_stock=True, category="Tecno").order_by('id')
-    infinix = MainStorage.objects.filter(in_stock=True, category="Infinix").order_by('id')
-    redmi = MainStorage.objects.filter(in_stock=True, category="Redmi").order_by('id')
+    itel = MainStorage.objects.filter(in_stock=True,
+                                      category="Itel", sold=False).order_by('id')
+    tecno = MainStorage.objects.filter(in_stock=True,
+                                       category="Tecno", sold=False).order_by('id')
+    infinix = MainStorage.objects.filter(in_stock=True,
+                                         category="Infinix", sold=False).order_by('id')
+    redmi = MainStorage.objects.filter(in_stock=True,
+                                       category="Redmi", sold=False).order_by('id')
     phone_list = []
     count = 0
     unique_phone_types = set()
@@ -119,7 +123,7 @@ def home_page(request):
     prices = Phone_reference.objects.all()
     context = {'form': form, 'products': products, 'prices': prices}
     if request.user.is_authenticated:
-        avatar = UserAvatar.objects.get(user=request.user)
+        avatar = UserAvatar.objects.get(user=request.user) if UserAvatar.objects.filter(user=request.user).exists() else None
         context['avatar'] = avatar
         context['profile'] = request.user.email[0]
     return render(request, 'base.html', context)

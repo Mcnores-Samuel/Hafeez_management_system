@@ -1,7 +1,8 @@
 from django.urls import path, include
 from django.contrib.auth import views as auth_views
 from .views import (registration_view, data_updates, customer_registrar,
-                    central_display, home_page, user_dashboard, action_on_data_select)
+                    central_display, home_page, user_dashboard, action_on_data_select,
+                    search_and_filters)
 
 
 urlpatterns =[
@@ -23,13 +24,16 @@ urlpatterns =[
     path('change_password/', data_updates.change_password, name='change_password'),
     path('combinedData_collection/<int:data_id>/', customer_registrar.combinedData_collection, name='combinedData_collection'),
     path('add_contract_number/', data_updates.add_contract_number, name='add_contract_number'),
+    path('verify_stock_recieved/', data_updates.verify_stock_recieved, name='verify_stock_recieved'),
     path('in_stock/', data_updates.in_stock, name='in_stock'),
     path('stock_out/', data_updates.stock_out, name='stock_out'),
     path('users/', central_display.users, name='users'),
     path('main_storage/', central_display.main_storage, name='main_storage'),
     path('agents_and_data/', central_display.agents_and_data, name='agents_and_data'),
     path('my_customers/', central_display.my_customers, name='my_customers'),
-    path('action_on_click/<int:data_id>/', action_on_data_select.action_on_click, name='action_on_click'),
+    path('deploy_device/<int:data_id>/', action_on_data_select.deploy_device, name='deploy_device'),
+    path('create_contract/<int:data_id>/', action_on_data_select.create_contract, name='create_contract'),
+    path('data_search/', search_and_filters.data_search, name='data_search'),
     # reseting user password
     path('password_reset/', auth_views.PasswordResetView.as_view(template_name='registration/reset_form.html'), name='password_reset'),
     path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(template_name='registration/reset_done.html'), name='password_reset_done'),

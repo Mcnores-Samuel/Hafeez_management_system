@@ -1,17 +1,54 @@
 {% extends 'base.html' %}
+{% load plus_r %}
 {% block content %}
 <p>Go to: <span><a href="{% url 'stock_out' %}">Stock Out</a></span></p>
+{% if stock_in %}
 {% for item in stock_in %}
 <div class="data-card">
-    <p>Device Imei: <span>{{ item.imei_number }}</span></p>
+    <p>Recieved: 
+            {% if item.recieved %}
+            <span class="verified">
+                <input type="checkbox" id="checkbox" checked disabled>
+                <label for="checkbox" class="checkbox"></label>
+            </span>
+        {% else %}
+            <span class="verify_button">
+                <form action="" method="post" class="recieved_form">
+                    {% csrf_token %}
+                    <input type="hidden" name="device_imei" value="{{ item.device_imei }}">
+                    <button type="submit" class="recieved-btn" onclick="recieved()">verify</button>
+                </form>
+            </span>
+        {% endif %}
+    </p>
+    <p>Category: <span>{{ item.category }}</span></p>
+    <p>Name: <span>{{ item.name }}</span></p>
+    <p>Device Imei: <span>{{ item.device_imei }}</span></p>
     <p>Model: <span>{{ item.phone_type }}</span></p>
+    <p>Spec: <span>{{ item.spec }}</span></p>
+    <p>Entry date: <span>{{ item.entry_date }}</span></p>
     {% for element in reference_list %}
-
         {% if element.phone == item.phone_type %}
-           <p>Initial Deposit: <span>Mk {{ element.deposit }}</span></p>
+           <p>Initial Deposit: <span>{{ element.deposit|format_price }}</span></p>
         {% endif %}
     {% endfor %}
-    <p>Sale: <span><a href="{% url 'combinedData_collection' data_id=item.id %}"><i class='bx bx-chevrons-right'></i></a></span></p>
+    <p>Sale:
+        {% if item.recieved is True %}
+        <span>
+            <a href="{% url 'combinedData_collection' data_id=item.id %}"><i class='bx bx-chevrons-right'></i></a>
+        </span>
+        {% else %}
+        <span>
+            disabled
+        </span>
+        {% endif %}
+    </p>
 </div>
 {% endfor %}
+{% else %}
+<div class="data-card">
+    <p>No data available</p>
+    <p>please request for stock from the shop if you have not done so.</p>
+</div>
+{% endif %}
 {% endblock %}

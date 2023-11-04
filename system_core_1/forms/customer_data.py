@@ -85,6 +85,7 @@ class CombinedDataForm(forms.Form):
     customer_email = forms.CharField(max_length=50, required=False, widget=forms.TextInput({ "placeholder": "Customer's email address"}))
     payment_period = forms.ChoiceField(choices=PAYMENT_PERIOD, required=False, widget=forms.RadioSelect)
 
+
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
@@ -139,38 +140,12 @@ class CombinedDataForm(forms.Form):
                 the phone purchasing process. It ensures that the transaction details are recorded
                 without the need for collecting customer data.
         """
-        selected_device = AgentStock.objects.get(id=data_id)
-        phone_reference_instance = Phone_reference.objects.get(
-            phone=selected_device.phone_type
-        )
-
-        try:
-            main_storage_phone = MainStorage.objects.get(
-                device_imei=selected_device.imei_number,
-                phone_type=selected_device.phone_type,
-                in_stock=True
-                )
-            main_storage_phone.in_stock = False
-            main_storage_phone.sold = True
-            main_storage_phone.stock_out_date = timezone.now()
-            main_storage_phone.sales_type = 'Cash'
-            main_storage_phone.save()
-        except MainStorage.DoesNotExist:
-            pass
-
-        try:
-            agent_stock_phone = AgentStock.objects.get(
-                imei_number=selected_device.imei_number,
-                phone_type=selected_device.phone_type,
-                in_stock=True
-                )
-            agent_stock_phone.in_stock = False
-            agent_stock_phone.sold = True
-            agent_stock_phone.stock_out_date = timezone.now()
-            agent_stock_phone.sales_type = 'Cash'
-            agent_stock_phone.save()
-        except AgentStock.DoesNotExist:
-            pass
+        selected_device = MainStorage.objects.get(id=data_id)
+        selected_device.in_stock = False
+        selected_device.sold = True
+        selected_device.stock_out_date = timezone.now()
+        selected_device.sales_type = 'Cash'
+        selected_device.save()
 
     def process_loan_payment(self, data_id):
         """
@@ -191,39 +166,19 @@ class CombinedDataForm(forms.Form):
                 during the phone purchasing process. It ensures the collection of essential customer
                 data along with transaction details, facilitating customer and phone data management in the database.
         """
-        selected_device = AgentStock.objects.get(id=data_id)
+        selected_device = MainStorage.objects.get(id=data_id)
         phone_reference_instance = Phone_reference.objects.get(
             phone=selected_device.phone_type
-            )
-        
-        try:
-            main_storage_phone = MainStorage.objects.get(
-                device_imei=selected_device.imei_number,
-                phone_type=selected_device.phone_type,
-                in_stock=True
-                )
-            main_storage_phone.in_stock = False
-            main_storage_phone.sold = True
-            main_storage_phone.stock_out_date = timezone.now()
-            main_storage_phone.sales_type = selected_device.sales_type
-            main_storage_phone.save()
-        except MainStorage.DoesNotExist:
-            pass
+        )
+        selected_device.in_stock = False
+        selected_device.sold = True
+        selected_device.sales_type = 'Loan'
+        selected_device.stock_out_date = timezone.now()
+        selected_device.save()
 
-        try:
-            agent_stock_phone = AgentStock.objects.get(
-                imei_number=selected_device.imei_number,
-                phone_type=selected_device.phone_type,
-                in_stock=True
-                )
-            agent_stock_phone.in_stock = False
-            agent_stock_phone.sold = True
-            agent_stock_phone.stock_out_date = timezone.now()
-            agent_stock_phone.save()
-        except AgentStock.DoesNotExist:
-            pass
+        self.user = selected_device.agent
 
-        if main_storage_phone and agent_stock_phone:
+        if selected_device:
             customer_data = CustomerData(
                 created_at=timezone.now(),
                 update_at=timezone.now(),
@@ -246,7 +201,7 @@ class CombinedDataForm(forms.Form):
             phone_data = PhoneData(
                 customer=customer_data,
                 agent=self.user.agentprofile if self.user else None,
-                imei_number=selected_device.imei_number,
+                imei_number=selected_device.device_imei,
                 phone_type=selected_device.phone_type,
                 selling_price=phone_reference_instance.merchant_price,
                 deposit=phone_reference_instance.deposit,

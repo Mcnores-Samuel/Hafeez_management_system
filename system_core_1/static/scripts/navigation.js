@@ -71,22 +71,27 @@ window.addEventListener('resize', () => {
   closeMenu();
 });
 
-const enable = document.querySelector('.category-btn');
-const category = document.querySelector('.Categories');
+try {
+  const enable = document.querySelector('.category-btn');
+  const category = document.querySelector('.Categories');
 
-enable.addEventListener('click', () => {
-  category.classList.toggle('show-category');
-  category.style.display = 'block';
-  if (category.classList.contains('show-category')) {
-    enable.innerHTML = '<i class="bx bx-x"></i>';
-    enable.classList.add('close-category');
-  }
-  else {
-    enable.innerHTML = '<i class="bx bx-category"></i>';
-    enable.classList.remove('close-category');
-    category.style.display = 'none';
-  }
-});
+  enable.addEventListener('click', () => {
+    category.classList.toggle('show-category');
+    category.style.display = 'block';
+    if (category.classList.contains('show-category')) {
+      enable.innerHTML = '<i class="bx bx-x"></i>';
+      enable.classList.add('close-category');
+    }
+    else {
+      enable.innerHTML = '<i class="bx bx-category"></i>';
+      enable.classList.remove('close-category');
+      category.style.display = 'none';
+    }
+  });
+}
+catch(err) {
+  console.log(err);
+}
 
 profile.addEventListener('click', () => {
   if (!isProfileSettingsDisplayed) {

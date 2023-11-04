@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+<form method="post" action="{% url 'data_search' %}" class="search-form" id="queryset">
+    {% csrf_token %}
+    <input type="text"  name="search_query">
+    <button type="submit" id="search_query"><i class='bx bx-search'></i></button>
+</form>
+<section class="agents_stock main-table" id="search_results">
+</section>
+{% endblock %}

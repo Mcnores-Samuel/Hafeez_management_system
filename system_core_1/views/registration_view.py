@@ -110,6 +110,8 @@ def sign_in(request):
                         request.session.set_expiry(0)
                     if user.is_staff:
                         return redirect(reverse('dashboard'))
+                    elif user.groups.filter(name='staff_members').exists():
+                        return redirect(reverse('dashboard'))
                     elif user.groups.filter(name='agents').exists():
                         return redirect(reverse('dashboard'))
                     else:

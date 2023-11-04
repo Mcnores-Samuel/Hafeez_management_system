@@ -1,26 +1,13 @@
-{% extends 'users/admin_sites/main.html' %}
+{% extends 'base.html' %}
 {% block content %}
-<form method="post" action="{% url 'main_storage' %}" class="search_filter">
+<form method="post" action="{% url 'data_search' %}" class="search-form" id="queryset">
     {% csrf_token %}
-    <div class="fields"></div>
+    <label for="search_query">Search: </label>
     <input type="text"  name="search_query">
-    <button type="submit" class="search-btn"><i class='bx bx-search'></i></button>
+    <button type="submit" id="search_query"><i class='bx bx-search'></i></button>
 </form>
-<form method="get" class="select_filter" id="filter-form">
-    <h1>Filters >></h1>
-    <div class="fields">
-        <label for="">{{ filter.form.phone_type.label_tag }}</label>
-        {{ filter.form.phone_type }}
-    </div>
-    <div class="fields">
-        <label for="">{{ filter.form.in_stock.label_tag }}</label>
-        {{ filter.form.in_stock }}
-    </div>
-    <div class="fields">
-        <label for="">{{ filter.form.assigned.label_tag }}</label>
-        {{ filter.form.assigned }}
-    </div>
-</form>
+<section class="agents_stock main-table" id="search_results">
+</section>
 <section class="agents_stock main-table">
     <table class="stock-table main-stock-table">
         <caption>Main Stock::: <span>Total Items Found: {{ data|length }}</span></caption>
@@ -100,9 +87,9 @@
                             <label for="checkbox" class="Notcheckbox"></label>
                         </td>
                     {% endif %}
-                    {% if not item.assigned %}
+                    {% if item.assigned and not item.sold %}
                         <td>
-                            <a href="{% url 'deploy_device' data_id=item.id %}"><i class='bx bx-chevrons-right'></i></a>
+                            <a href="{% url 'combinedData_collection' data_id=item.id %}"><i class='bx bx-chevrons-right'></i></a>
                         </td>
                     {% else %}
                         <td>
@@ -115,70 +102,4 @@
         </tbody>
     </table>
 </section>
-<div class="data-card">
-    <p>Number of items: {{ data|length }}</p>
-</div>
-{% for item in data %}
-<div class="data-card">
-    <p>Agent: <span>{{ item.agent }}</span></p>
-    <p>Device Imei: <span>{{ item.device_imei }}</span></p>
-    <p>Model: <span>{{ item.phone_type }}</span></p>
-    <p>Spec: <span>{{ item.spec }}</span></p>
-    <p>Category: <span>{{ item.category }}</span></p>
-    <p>Name: <span>{{ item.name }}</span></p>
-    <p>In stock:
-    {% if item.in_stock %}
-        <span>
-            <input type="checkbox" id="checkbox" checked disabled>
-            <label for="checkbox" class="checkbox"></label>
-        </span>
-    {% else %}
-        <span>
-            <input type="checkbox" id="checkbox" checked disabled>
-            <label for="checkbox" class="Notcheckbox"></label>
-        </span>
-    {% endif %}</p>
-    <p>Sales type: <span>{{ item.sales_type }}</span></p>
-    <p>Contract number: <span>{{ item.contract_no }}</span></p>
-    <p>Entry date: <span>{{ item.entry_date }}</span></p>
-    <p>Stock out date: <span>{{ item.stock_out_date }}</span></p>
-    <p>Assigned:
-    {% if item.assigned %}
-        <span>
-            <input type="checkbox" id="checkbox" checked disabled>
-            <label for="checkbox" class="checkbox"></label>
-        </span>
-    {% else %}
-        <span>
-            <input type="checkbox" id="checkbox" checked disabled>
-            <label for="checkbox" class="Notcheckbox"></label>
-        </span>
-    {% endif %}</p>
-    <p>Deploy:
-        {% if not item.assigned %}
-        <span>
-            <a href="{% url 'deploy_device' data_id=item.id %}"><i class='bx bx-chevrons-right'></i></a>
-        </span>
-    {% else %}
-        <span>
-            <input type="checkbox" id="checkbox" checked disabled>
-            <label for="checkbox" class="Notcheckbox"></label>
-        </span>   
-    {% endif %}
-    </p>
-    <p>Sold:
-        {% if item.sold %}
-            <span>
-                <input type="checkbox" id="checkbox" checked disabled>
-                <label for="checkbox" class="checkbox"></label>
-            </span>
-        {% else %}
-            <span>
-                <input type="checkbox" id="checkbox" checked disabled>
-                <label for="checkbox" class="Notcheckbox"></label>
-            </span>
-        {% endif %}
-    </p>
-</div>
-{% endfor %}
 {% endblock %}

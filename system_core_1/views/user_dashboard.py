@@ -11,6 +11,9 @@ from ..models.agent_profile import Agent_sign_up_code
 from ..models.user_profile import UserAvatar
 from uuid import uuid4
 from django.shortcuts import redirect
+from ..models.main_storage import MainStorage
+from ..forms.search_filters import FilterMainStoregeForm
+from .search_and_filters import data_search
 
 
 
@@ -52,7 +55,7 @@ def dashboard(request):
         except IndexError:
             agent_code = "No code available"
 
-        avatar = UserAvatar.objects.get(user=request.user)
+        avatar = UserAvatar.objects.get(user=request.user) if UserAvatar.objects.filter(user=request.user).exists() else None
         context = {
             'profile': user.email[0],
             'user': user,
@@ -60,24 +63,35 @@ def dashboard(request):
             'avatar': avatar
         }
         return render(request, 'users/admin_sites/main.html', context)
-    elif request.user.groups.filter(name='agents').exists() or request.user.is_superuser:
+    elif request.user.groups.filter(name='staff_members').exists():
         user = request.user
-        agent_profile = AgentProfile.objects.get(user=user)
-        stock_out = AgentStock.objects.filter(agent=agent_profile, in_stock=False)
-        stock_in = AgentStock.objects.filter(agent=agent_profile, in_stock=True)
-        pending = AgentStock.objects.filter(agent=agent_profile, in_stock=False,
-                                             sales_type='Loan', contract_number=None)
-        avatar = UserAvatar.objects.get(user=request.user)
+        avatar = UserAvatar.objects.get(user=request.user) if UserAvatar.objects.filter(user=request.user).exists() else None
         context = {
             'profile': user.email[0],
             'user': user,
-            'stock_out': stock_out,
-            'stock_in': stock_in,
-            'total_stock_in': len(stock_in),
-            'total_stock_out': len(stock_out),
-            'pending': len(pending),
             'avatar': avatar
         }
+        return render(request, 'users/staff_sites/staff.html', context)
+    elif request.user.groups.filter(name='agents').exists():
+        user = request.user
+        agent_profile = AgentProfile.objects.get(user=user)
+        if agent_profile:
+            stock_out = MainStorage.objects.filter(agent=user, in_stock=False, assigned=True)
+            stock_in = MainStorage.objects.filter(agent=user, in_stock=True, assigned=True)
+            pending = MainStorage.objects.filter(agent=user, in_stock=False, assigned=False,
+                                                sales_type='Loan', contract_no=None)
+            avatar = UserAvatar.objects.get(user=request.user) if UserAvatar.objects.filter(user=request.user).exists() else None
+            context = {
+                'profile': user.email[0],
+                'user': user,
+                'stock_out': stock_out,
+                'stock_in': stock_in,
+                'total_stock_in': len(stock_in),
+                'total_stock_out': len(stock_out),
+                'pending': len(pending),
+                'avatar': avatar
+            }
+
         return render(request, 'users/agent_sites/agents.html', context)
     else:
         return render(request, 'users/regular_user.html', {'user': request.user})

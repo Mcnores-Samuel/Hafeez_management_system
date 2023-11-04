@@ -85,6 +85,7 @@ class MainStorage(models.Model):
     paid = models.BooleanField(default=False)
     image = models.ImageField(upload_to='product_images/', null=True, blank=True)
     agent = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
+    recieved = models.BooleanField(default=False)
 
     class Meta:
         indexes = [
