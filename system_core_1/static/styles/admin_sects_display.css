@@ -32,7 +32,7 @@
 .search_filter {
     position: fixed;
     display: flex;
-    right: 1rem;
+    right: 3rem;
     justify-content: space-evenly;
     top: 5rem;
     z-index: 3;
@@ -80,7 +80,7 @@
     display: flex;
     justify-content: space-evenly;
     border: 1px solid #80808066;
-    margin-left: 5rem;
+    margin-left: 6rem;
     width: 60%;
     padding: 3px;
     border-radius: 5px;

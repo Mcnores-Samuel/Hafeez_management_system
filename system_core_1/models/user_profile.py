@@ -99,8 +99,28 @@ class UserProfile(AbstractUser):
 
 class UserAvatar(models.Model):
     """The UserAvatar model represents the avatars of the users of the application."""
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, unique=True)
     image = models.ImageField(upload_to='avatars/', null=True, blank=True)
 
     def __str__(self):
         return self.user.username
+
+    class Meta:
+        app_label = 'system_core_1'
+        verbose_name = 'User Avatar'
+        verbose_name_plural = 'User Avatars'
+
+
+class Employee(models.Model):
+    """The Employee model represents the employees of the application."""
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, unique=True)
+    role = models.CharField(max_length=100, blank=True, null=True)
+    department = models.CharField(max_length=100, blank=True, null=True)
+
+    def __str__(self):
+        return self.user.username
+
+    class Meta:
+        app_label = 'system_core_1'
+        verbose_name = 'Employee'
+        verbose_name_plural = 'Employees'

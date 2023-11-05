@@ -5,12 +5,10 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 from ..forms.user_profile_update_form import UserProfileForm
 from ..models.agent_profile import AgentProfile
-from ..models.agent_stock import AgentStock
 from ..models.main_storage import MainStorage
 from ..models.reference import Phone_reference
 from ..models.customer_order import PhoneData
 from django.http import JsonResponse
-from ..forms.Product_assignment_form  import ProductAssignmentForm
 from ..forms.users import UserAvatarForm
 from ..models.user_profile import UserAvatar
 
@@ -34,7 +32,7 @@ def profile(request):
             return redirect('profile')
     else:
         profile_form = UserProfileForm(instance=user)
-    avatar = UserAvatar.objects.get(user=request.user)
+    avatar = UserAvatar.objects.get(user=request.user) if UserAvatar.objects.filter(user=request.user).exists() else None
     context = {
             'profile': user.email[0],
             'user': user,
@@ -85,14 +83,16 @@ def in_stock(request):
     if request.user.groups.filter(name='agents').exists():
         user = request.user
         agent_profile = AgentProfile.objects.get(user=user)
-        stock_in = AgentStock.objects.filter(agent=agent_profile, in_stock=True)
-        reference = Phone_reference.objects.all()
-        context = {
-            'profile': user.email[0],
-            'user': user,
-            'stock_in': stock_in,
-            'reference_list': reference
-        }
+        if agent_profile:
+            stock_in = MainStorage.objects.filter(agent=user, in_stock=True,
+                                                  assigned=True).all()
+            reference = Phone_reference.objects.all()
+            context = {
+                'profile': user.email[0],
+                'user': user,
+                'stock_in': stock_in,
+                'reference_list': reference
+            }
     return render(request, 'users/agent_sites/in_stock.html', context)
 
 @login_required
@@ -109,12 +109,14 @@ def stock_out(request):
     if request.user.groups.filter(name='agents').exists():
         user = request.user
         agent_profile = AgentProfile.objects.get(user=user)
-        stock_out = AgentStock.objects.filter(agent=agent_profile, in_stock=False)
-        context = {
-            'profile': user.email[0],
-            'user': user,
-            'stock_out': stock_out
-        }
+        if agent_profile:
+            stock_out = MainStorage.objects.filter(agent=user, in_stock=False,
+                                                   assigned=True).all().order_by('-stock_out_date')
+            context = {
+                'profile': user.email[0],
+                'user': user,
+                'stock_out': stock_out,
+            }
     return render(request, 'users/agent_sites/stock_out.html', context)
 
 @login_required
@@ -129,18 +131,38 @@ def add_contract_number(request):
         HttpResponse: The response object.
     """
     if request.method == 'POST':
-        imei_number = request.POST.get('imei_number', None)
+        imei_number = request.POST.get('device_imei', None)
         contract_number = request.POST.get('contract_number', None)
         if contract_number and imei_number:
-            agent_stock = AgentStock.objects.get(imei_number=imei_number, in_stock=False)
-            phone_sold = PhoneData.objects.get(imei_number=imei_number)
             main_storage = MainStorage.objects.get(device_imei=imei_number)
-            if agent_stock and phone_sold:
-                agent_stock.contract_number = contract_number
+            phone_sold = PhoneData.objects.get(imei_number=imei_number)
+            if main_storage and phone_sold:
                 phone_sold.contract_number = contract_number
                 main_storage.contract_no = contract_number
-                agent_stock.save()
                 phone_sold.save()
                 main_storage.save()
             return JsonResponse({'message': 'Data added successfully'})
-    return render(request, 'users/agent-sites/agents.html')
+    return render(request, 'users/agent_sites/agents.html')
+
+@login_required
+def verify_stock_recieved(request):
+    """Verifies the stock recieved by the agent.
+    user must be an agent to access this view.
+
+    Args:
+        request (HttpRequest): The request object.
+
+    Returns:
+        HttpResponse: The response object.
+    """
+    if request.method == 'POST':
+        imei_number = request.POST.get('device_imei', None)
+        if imei_number:
+            main_storage = MainStorage.objects.get(device_imei=imei_number)
+            if main_storage:
+                main_storage.recieved = True
+                main_storage.save()
+            return JsonResponse({'message': 'verified successfully'})
+        else:
+            return JsonResponse({'message': 'Error verifying stock'})
+    return render(request, 'users/agent_sites/agents.html')

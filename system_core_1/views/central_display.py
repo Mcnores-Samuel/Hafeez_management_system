@@ -14,6 +14,7 @@ from ..forms.search_filters import FilterMainStoregeForm
 from ..forms.filters import FilterAgentAndData
 from django.db.models import Q
 from ..models.user_profile import UserAvatar
+from .search_and_filters import search
 
 @login_required
 def users(request):
@@ -30,7 +31,7 @@ def users(request):
         user = request.user
         all_users = UserProfile.objects.all().order_by('id')
         agents = AgentProfile.objects.all().order_by('id')
-        avatar = UserAvatar.objects.get(user=request.user)
+        avatar = UserAvatar.objects.get(user=request.user) if UserAvatar.objects.filter(user=request.user).exists() else None
         content = {'users': all_users,
                    'agents': agents,
                    'profile': user.email[0],
@@ -57,30 +58,18 @@ def main_storage(request):
     content = None
     if request.user.is_staff:
         user = request.user
-        queryset = MainStorage.objects.all().order_by('id')
+        queryset = MainStorage.objects.filter(in_stock=True, sold=False,
+                                              assigned=False).order_by('id')
         filter = FilterMainStorege(request.GET, queryset=queryset)
-        search_filter = FilterMainStoregeForm(request.GET)
         if filter.is_valid():
             queryset = filter.qs
-        
-        if search_filter.is_valid():
-            search_query = search_filter.cleaned_data.get('search_query')
-
+        if request.method == 'POST':
+            search_query = request.POST.get('search_query', None)
             if search_query:
-                queryset = queryset.filter(
-                    Q(phone_type__icontains=search_query) |
-                    Q(device_imei__icontains=search_query) |
-                    Q(contract_no__icontains=search_query) |
-                    Q(sales_type__icontains=search_query) |
-                    Q(entry_date__icontains=search_query) |
-                    Q(stock_out_date__icontains=search_query) |
-                    Q(agent__username__icontains=search_query) |
-                    Q(category__icontains=search_query)
-                )
-        avatar = UserAvatar.objects.get(user=request.user)
+                queryset = search(search_query)
+        avatar = UserAvatar.objects.get(user=request.user) if UserAvatar.objects.filter(user=request.user).exists() else None
         content = {'data': queryset,
                    'filter': filter,
-                   'search_filter': search_filter,
                    'profile': user.email[0],
                    'avatar': avatar}
     return render(request, 'users/admin_sites/main_stock.html', content)

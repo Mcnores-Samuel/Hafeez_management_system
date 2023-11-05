@@ -4,6 +4,8 @@ __pycache__/
 
 venv/
 
+media/
+
 # Database
 *.sqlite3
 .vercel

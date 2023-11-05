@@ -17,6 +17,35 @@ function save_contract_number() {
 }
 
 
+function showNotification(message, type = 'info') {
+    const notification = document.getElementById('notification');
+    notification.textContent = message;
+    notification.className = `notification ${type}`;
+    notification.style.display = 'block';
+
+    setTimeout(() => {
+        notification.style.display = 'none';
+    }, 3000);
+}
+
+function recieved() {
+    const form = document.querySelector('.recieved_form');
+    const formData = new FormData(form);
+
+    fetch('/system_core_1/verify_stock_recieved/', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        const verified = document.querySelector('.verified');
+        showNotification(data.message, 'success');
+        verified.innerHTML = `<input type="checkbox" id="checkbox" checked disabled>
+        <label for="checkbox" class="checkbox"></label>`;
+    })
+}
+
+
 const textToCopy = document.querySelector('.text-to-copy');
 const copyButton = document.querySelector('.copy-button');
 

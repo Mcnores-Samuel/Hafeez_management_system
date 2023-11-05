@@ -7,6 +7,7 @@ from .models.main_storage import MainStorage
 from .models.reference import Phone_reference
 from .models.agent_stock import AgentStock
 from django.contrib.auth.admin import UserAdmin
+from .models.user_profile import Employee
 
 
 admin.site.site_header = "HAFEEZ MANAGEMENT SYSTEM"
@@ -25,14 +26,15 @@ class UserAdminModel(UserAdmin):
 
 @admin.register(MainStorage)
 class MainStorageData(admin.ModelAdmin):
-    list_display = ('agent', 'device_imei', 'category', 'name', 'phone_type',
+    list_display = ('agent', 'recieved', 'device_imei', 'category', 'name', 'phone_type',
                     'spec', 'screen_size', 'os', 'battery', 'camera', 'in_stock',
                     'sales_type', 'contract_no', 'entry_date', 'stock_out_date',
                     'assigned', 'sold', 'paid', 'image'
     )
     search_fields = ('device_imei', 'phone_type', 'entry_date', 'category', 'agent__username')
 
-    actions = ['update_images']
+    actions = ['update_images', 'verify_stock_recieved',
+               'unverify_stock_recieved', 'unassign_select']
 
     def update_images(self, request, queryset):
         # Get the image from the first selected object
@@ -43,6 +45,41 @@ class MainStorageData(admin.ModelAdmin):
             phone.save()
 
     update_images.short_description = "Update selected phones with the same image"
+
+    def verify_stock_recieved(self, request, queryset):
+        """Verify stock recieved by the agent"""
+        for obj in queryset:
+            if obj:
+                obj.recieved = True
+                obj.save()
+    verify_stock_recieved.short_description = "Verify stock recieved"
+
+    def unverify_stock_recieved(self, request, queryset):
+        """Unverify stock recieved by the agent"""
+        for obj in queryset:
+            if obj:
+                obj.recieved = False
+                obj.save()
+    unverify_stock_recieved.short_description = "Unverify stock recieved"
+
+    def unassign_select(self, request, queryset):
+        """Unassign the phone from an agent in MainStorage when requested"""
+        for obj in queryset:
+            try:
+                device = MainStorage.objects.get(device_imei=obj.device_imei, in_stock=True,
+                                                 assigned=True)
+                device.agent = None
+                device.recieved = False
+                device.assigned = False
+                device.in_stock = True
+                device.sold = False
+                device.contract_no = '##'
+                device.sales_type = '##'
+                device.stock_out_date = device.entry_date
+                device.save()
+            except MainStorage.DoesNotExist:
+                pass
+    unassign_select.short_description = "Unassign selected phones"
 
 
 @admin.register(Phone_reference)
@@ -77,20 +114,6 @@ class AgentStockAdmin(admin.ModelAdmin):
     
     def agent_name(self, obj):
         return obj.agent.user.username
-
-    # form = AgentStockForm
-
-    # def save_model(self, request, obj, form, change):
-    #     """Update MainStorage when assigning a phone to an agent"""
-    #     if obj.in_stock and obj.agent:
-    #         try:
-    #             main_storage_phone = MainStorage.objects.get(
-    #                 device_imei=obj.imei_number, in_stock=True)
-    #             main_storage_phone.assigned = True
-    #             main_storage_phone.save()
-    #         except MainStorage.DoesNotExist:
-    #             pass
-    #     super().save_model(request, obj, form, change)
 
     def delete_selected(self, request, queryset):
         """Unassign the phone from an agent in MainStorage when it's deleted"""
@@ -137,7 +160,7 @@ class CustomerDataAdmin(admin.ModelAdmin):
 
 @admin.register(PhoneData)
 class PhoneDataAdmin(admin.ModelAdmin):
-    list_display = ('customer_name', 'agent', 'phone_name',
+    list_display = ('customer_name', 'agent_name', 'phone_name',
                     'imei_number', "contract_number", 'selling_price',
                     'cost_price', 'deposit', 'payment_period')
     search_fields = ('customer__customer_name', 'agent__user__username',
@@ -145,6 +168,9 @@ class PhoneDataAdmin(admin.ModelAdmin):
 
     def customer_name(self, obj):
         return obj.customer.customer_name
+    
+    def agent_name(self, obj):
+        return obj.agent.user.username
 
     def phone_name(self, obj):
         return obj.phone_type
@@ -154,3 +180,10 @@ class PhoneDataAdmin(admin.ModelAdmin):
 class UserAvatarAdmin(admin.ModelAdmin):
     list_display = ('user', 'image')
     search_fields = ('user__username',)
+
+
+@admin.register(Employee)
+class EmployeeAdmin(admin.ModelAdmin):
+    list_display = ('user', 'role', 'department')
+    search_fields = ('user__username', 'role', 'department')
+    fields = ('user', 'role', 'department')

@@ -10,6 +10,24 @@
     border-radius: 8px;
 }
 
+.recieved-btn {
+    background: transparent;
+    width: 60px;
+    height: 30px;
+    color: red;
+    border: none;
+    border-radius: 15px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.recieved-btn:hover {
+    background: transparent;
+    opacity: 0.8;
+    color: green;
+}
+
 @media screen and (max-width: 50rem) {
 
     .mobile-display {
@@ -69,7 +87,7 @@
     .data-card {
         display: block;
         width: 100%;
-        border: 1px solid gray;
+        box-shadow: 0px 0px 20px #80808066;
         margin: 20px;
         border-radius: 8px;
     }
@@ -84,5 +102,11 @@
         font-size: 1.2rem;
         font-weight: bold;
         cursor: pointer;
+    }
+
+    .recieved_form {
+        position: absolute;
+        top: 10px;
+        right: 10px;
     }
 }

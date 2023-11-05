@@ -42,7 +42,7 @@
 
 
 .stock-table tr:hover {
-    background-color: #11363a;
+    background-color: rgb(18, 54, 59, .65);
     color: #ffffff;
 }
 

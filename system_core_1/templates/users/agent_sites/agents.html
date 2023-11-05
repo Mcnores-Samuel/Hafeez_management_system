@@ -18,7 +18,11 @@
             <li><a href="#"><i class='bx bxs-data'></i> My Stock</a></li>
             <li><a href="#"><i class='bx bx-group'></i> My Customers</a></li>
         </ul>
-        <button type="submit" class="profile">{{ profile }}</button>
+        {% if avatar.image %}
+            <button type="submit" class="profile"><img src="{{ avatar.image.url }}" alt=""></button>
+        {% else %}
+            <button type="submit" class="profile">{{ profile }}</button>
+        {% endif %}
         <ul class="mobile-set" style="display: none;">
             <li class="settings"><a href="{% url 'profile' %}"><i class='bx bx-cog' ></i> Settings</a></li>
             <li><a href="{% url 'sign_out' %}"><i class='bx bx-log-out'></i> Sign Out</a></li>
@@ -40,19 +44,48 @@
                 <caption>Stock In</caption>
                 <thead>
                     <tr>
+                        <th>category</th>
+                        <th>name</th>
                         <th>imei</th>
-                        <th>phone</th>
+                        <th>model</th>
+                        <th>Spec</th>
+                        <th>entry date</th>
+                        <th>recieved</th>
                         <th>sale</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for item in stock_in %}
                         <tr>
-                            <td>{{ item.imei_number }}</td>
+                            <td>{{ item.category }}</td>
+                            <td>{{ item.name }}</td>
+                            <td>{{ item.device_imei }}</td>
                             <td>{{ item.phone_type }}</td>
-                            <td>
-                                <a href="{% url 'combinedData_collection' data_id=item.id %}"><i class='bx bx-chevrons-right'></i></a>
-                            </td>
+                            <td>{{ item.spec }}</td>
+                            <td>{{ item.entry_date }}</td>
+                            {% if item.recieved %}:
+                                <td class="verified">
+                                    <input type="checkbox" id="checkbox" checked disabled>
+                                    <label for="checkbox" class="checkbox"></label>
+                                </td>
+                            {% else %}
+                                <td>
+                                    <form action="" method="post" class="recieved_form">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="device_imei" value="{{ item.device_imei }}">
+                                        <button type="submit" class="recieved-btn" onclick="recieved()">verify</button>
+                                    </form>
+                                </td>
+                            {% endif %}
+                            {% if item.recieved is True %}
+                                <td>
+                                    <a href="{% url 'combinedData_collection' data_id=item.id %}"><i class='bx bx-chevrons-right'></i></a>
+                                </td>
+                                {% else %}
+                                <td>
+                                    disabled
+                                </td>
+                            {% endif %}
                         </tr>
                     {% endfor %}
                 </tbody>
@@ -61,9 +94,12 @@
                 <caption>Stock Out</caption>
                 <thead>
                     <tr>
+                        <th>category</th>
+                        <th>name</th>
                         <th>imei</th>
-                        <th>phone</th>
-                        <th>assigned on</th>
+                        <th>model</th>
+                        <th>Spec</th>
+                        <th>Entry date</th>
                         <th>sold on</th>
                         <th>contract No</th>
                     </tr>
@@ -71,20 +107,23 @@
                 <tbody>
                     {% for item in stock_out %}
                     <tr>
-                        <td>{{ item.imei_number }}</td>
+                        <td>{{ item.category }}</td>
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.device_imei }}</td>
                         <td>{{ item.phone_type }}</td>
-                        <td>{{ item.collection_date }}</td>
+                        <td>{{ item.spec }}</td>
+                        <td>{{ item.entry_date }}</td>
                         <td>{{ item.stock_out_date }}</td>
-                        {% if item.contract_number and item.sales_type == 'Loan' %}
-                            <td>{{ item.contract_number}}</td>
-                        {% elif not item.contract_number and item.sales_type == 'Cash' %}
-                            <td>{{ item.contract_number}}</td>
+                        {% if item.contract_no and item.sales_type == 'Loan' and item.contract_no != '##' %}
+                            <td>{{ item.contract_no }}</td>
+                        {% elif not item.contract_no and item.sales_type == 'Cash' or item.contract_no == '##' and item.sales_type == 'Cash' %}
+                            <td>No contract</td>
                         {% else %}
                             <td>
                                 <form action="" method="post" class="contract_number_form">
                                     {% csrf_token %}
                                     <input type="text" name="contract_number" placeholder="Add contract number" maxlength="9" minlength="9" pattern="[A]{1}[0-9]{8}">
-                                    <input type="hidden" name="imei_number" value="{{ item.imei_number }}">
+                                    <input type="hidden" name="device_imei" value="{{ item.device_imei }}">
                                     <button type="submit" class="contract_number-btn" onclick="save_contract_number()">save</button>
                                 </form>
                             </td>
