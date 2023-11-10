@@ -26,6 +26,7 @@ captures any relevant referral information.
 """
 from django.db import models
 from .agent_profile import AgentProfile
+from django.utils import timezone
 
 
 class CustomerData(models.Model):
@@ -53,14 +54,18 @@ class CustomerData(models.Model):
     maintaining accurate records of customers engaged in your loan-based
     phone sales program.
     """
-    created_at = models.DateTimeField(null=True)
-    update_at = models.DateTimeField()
+    created_at = models.DateField(default=timezone.now)
+    update_at = models.DateField(default=timezone.now)
     agent = models.ForeignKey(AgentProfile, on_delete=models.CASCADE, null=True)
+    approved = models.BooleanField(default=False)
+    rejected = models.BooleanField(default=False)
+    pending = models.BooleanField(default=True)
     customer_name = models.CharField(max_length=50)
     national_id = models.CharField(max_length=9)
     customer_contact = models.CharField(max_length=13)
     second_contact = models.CharField(max_length=13, null=True)
     first_witness_name = models.CharField(max_length=50)
+    witness_id_no = models.CharField(max_length=9, null=True, blank=True)
     first_witness_contact = models.CharField(max_length=13)
     second_witness_name = models.CharField(max_length=50)
     second_witness_contact = models.CharField(max_length=13)
@@ -68,7 +73,10 @@ class CustomerData(models.Model):
     nearest_school = models.CharField(max_length=50)
     nearest_market_church_hospital = models.CharField(max_length=50)
     customer_email = models.CharField(max_length=50, null=True)
-    working_status = models.CharField(max_length=50, blank=True, null=True)
+    workplace = models.CharField(max_length=100, blank=True, null=True)
+    employer_or_coleague = models.CharField(max_length=100, blank=True, null=True)
+    employer_or_coleague_contact = models.CharField(max_length=13, blank=True, null=True)
+    account_name = models.CharField(max_length=100, blank=True, null=True)
 
     class Meta:
         app_label = 'system_core_1'

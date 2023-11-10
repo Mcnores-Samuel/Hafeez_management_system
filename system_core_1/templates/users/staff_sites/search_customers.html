@@ -2,10 +2,9 @@
 {% load plus_r %}
 {%load static%}
 {% block content %}
-<a href="{% url 'search_customers' %}" class="search_customers">Search customers</a>
-<form method="post" action="{% url 'data_search' %}" class="search-form" id="queryset">
+<form method="post" action="{% url 'search_customers' %}" class="search-form" id="queryset">
     {% csrf_token %}
-    <input type="search" id="search"  name="search_query" placeholder="Device imei or contract number">
+    <input type="search" id="search"  name="search_query" placeholder="agent customers, customer name, account name etc">
     <button type="submit" id="search_query"><i class='bx bx-search'></i></button>
 </form>
 <section class="customer_data_container">

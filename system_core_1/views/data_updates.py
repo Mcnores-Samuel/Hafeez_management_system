@@ -9,8 +9,9 @@ from ..models.main_storage import MainStorage
 from ..models.reference import Phone_reference
 from ..models.customer_order import PhoneData
 from django.http import JsonResponse
-from ..forms.users import UserAvatarForm
 from ..models.user_profile import UserAvatar
+from ..models.customer_details import CustomerData
+from django.utils import timezone
 
 @login_required
 def profile(request):
@@ -110,8 +111,12 @@ def stock_out(request):
         user = request.user
         agent_profile = AgentProfile.objects.get(user=user)
         if agent_profile:
+            current_month = timezone.now().date().month
+            current_year = timezone.now().date().year
             stock_out = MainStorage.objects.filter(agent=user, in_stock=False,
-                                                   assigned=True).all().order_by('-stock_out_date')
+                                                   assigned=True,
+                                                   stock_out_date__month=current_month,
+                                                   stock_out_date__year=current_year)
             context = {
                 'profile': user.email[0],
                 'user': user,
@@ -131,7 +136,7 @@ def add_contract_number(request):
         HttpResponse: The response object.
     """
     if request.method == 'POST':
-        imei_number = request.POST.get('device_imei', None)
+        imei_number = request.POST.get('imei_number', None)
         contract_number = request.POST.get('contract_number', None)
         if contract_number and imei_number:
             main_storage = MainStorage.objects.get(device_imei=imei_number)
@@ -141,8 +146,7 @@ def add_contract_number(request):
                 main_storage.contract_no = contract_number
                 phone_sold.save()
                 main_storage.save()
-            return JsonResponse({'message': 'Data added successfully'})
-    return render(request, 'users/agent_sites/agents.html')
+    return redirect('dashboard')
 
 @login_required
 def verify_stock_recieved(request):
@@ -166,3 +170,24 @@ def verify_stock_recieved(request):
         else:
             return JsonResponse({'message': 'Error verifying stock'})
     return render(request, 'users/agent_sites/agents.html')
+
+
+@login_required
+def update_customer_data(request):
+    """Updates customer data.
+    user must be an agent to access this view.
+
+    Args:
+        request (HttpRequest): The request object.
+
+    Returns:
+        HttpResponse: The response object.
+    """
+    if request.method == 'POST':
+        account_name = request.POST.get('account_name', None)
+        customer_id = request.POST.get('customer_id', None)
+        customer = CustomerData.objects.get(id=customer_id)
+        if customer:
+            customer.account_name = account_name
+            customer.save()
+    return redirect('dashboard')

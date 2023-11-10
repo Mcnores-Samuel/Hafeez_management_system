@@ -16,14 +16,8 @@
         {{ item.contract_no }}
     {% elif not item.contract_no and item.sales_type == 'Cash' or item.contract_no == '##' and item.sales_type == 'Cash' %}
         Not a contract
-    {% else %}
-            <form action="" method="post" class="contract_number_form">
-                {% csrf_token %}
-                <input type="text" name="contract_number" placeholder="add contract number" maxlength="9" minlength="9" pattern="[A]{1}[0-9]{8}" required>
-                <input type="hidden" name="device_imei" value="{{ item.device_imei }}">
-                <button type="submit" class="contract_number-btn" onclick="save_contract_number()">save</button>
-            </form>
-    {% endif %}</span>
+    {% endif %}
+    </span>
     </p>
 </div>
 {% endfor %}

@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 {% block content %}
-<section class="sign_up_form">
+<section class="sign_up_form custom_sign_up_form">
     <div class="form_container custom">
         <div class="data_intake_guide"></div>
-        <h2>Customer Data</h2>
+        <h2>Customer Details</h2>
         <form method="post" class="sign_up customer-form">
             {% csrf_token %}
             <div class="role">
@@ -18,17 +18,17 @@
             <div class="form-group">
                 {{ form.customer_name }}
                 <div class="customer_data_errors">{{ form.customer_name.errors }}</div>
-                <label for="{{ form.customer_name.id_for_label }}">Customer Name:</label>
+                <label for="{{ form.customer_name.id_for_label }}">Customer Name <span class="required">(required)</span></label>
             </div>
             <div class="form-group">
                 {{ form.national_id }}
                 <div class="customer_data_errors">{{ form.national_id.errors }}</div>
-                <label for="{{ form.national_id.id_for_label }}">National ID:</label>
+                <label for="{{ form.national_id.id_for_label }}">National ID <span class="required">(required)</span></label>
             </div>
             <div class="form-group">
                 {{ form.customer_contact }}
                 <div class="customer_data_errors">{{ form.customer_contact.errors }}</div>
-                <label for="{{ form.customer_contact.id_for_label }}">Customer Contact:</label>
+                <label for="{{ form.customer_contact.id_for_label }}">Customer Contact <span class="required">(required)</span></label>
             </div>
             <div class="form-group">
                 {{ form.second_contact }}
@@ -37,12 +37,17 @@
             <div class="form-group">
                 {{ form.first_witness_name }}
                 <div class="customer_data_errors">{{ form.first_witness_name.errors }}</div>
-                <label for="{{ form.first_witness_name.id_for_label }}">First Witness Name:</label>
+                <label for="{{ form.first_witness_name.id_for_label }}">First Witness Name <span class="required">(required)</span></label>
+            </div>
+            <div class="form-group">
+                {{ form.witness_id_no }}
+                <div class="customer_data_errors">{{ form.witness_id_no.errors }}</div>
+                <label for="{{ form.witness_id_no.id_for_label }}">Witness ID No</label>
             </div>
             <div class="form-group">
                 {{ form.first_witness_contact }}
                 <div class="customer_data_errors">{{ form.first_witness_contact.errors }}</div>
-                <label for="{{ form.first_witness_contact.id_for_label }}">First Witness Contact:</label>
+                <label for="{{ form.first_witness_contact.id_for_label }}">First Witness Contact <span class="required">(required)</span></label>
             </div>
             <div class="form-group">
                 {{ form.second_witness_name }}
@@ -55,21 +60,33 @@
             <div class="form-group">
                 {{ form.customer_location }}
                 <div class="customer_data_errors">{{ form.customer_location.errors }}</div>
-                <label for="{{ form.customer_location.id_for_label }}">Customer Location:</label>
+                <label for="{{ form.customer_location.id_for_label }}">Customer Location <span class="required">(required)</span></label>
             </div>
             <div class="form-group">
                 {{ form.nearest_school }}
                 <div class="customer_data_errors">{{ form.nearest_school.errors }}</div>
-                <label for="{{ form.nearest_school.id_for_label }}">Nearest School:</label>
+                <label for="{{ form.nearest_school.id_for_label }}">Nearest School <span class="required">(required)</span></label>
             </div>
             <div class="form-group">
                 {{ form.nearest_market_church_hospital }}
                 <div class="customer_data_errors">{{ form.nearest_market_church_hospital.errors }}</div>
-                <label for="{{ form.nearest_market_church_hospital.id_for_label }}">Nearest Market/Church/Hospital:</label>
+                <label for="{{ form.nearest_market_church_hospital.id_for_label }}">Nearest Market/Church/Hospital <span class="required">(required)</span></label>
             </div>
             <div class="form-group">
                 {{ form.customer_email }}
                 <label for="{{ form.customer_email.id_for_label }}">Customer Email:</label>
+            </div>
+            <div class="form-group">
+                {{ form.workplace }}
+                <label for="{{ form.workplace.id_for_label }}">Customer workplace:</label>
+            </div>
+            <div class="form-group">
+                {{ form.employer_or_coleague }}
+                <label for="{{ form.employer_or_coleague.id_for_label }}">Employer or coleague:</label>
+            </div>
+            <div class="form-group">
+                {{ form.employer_or_coleague_contact }}
+                <label for="{{ form.employer_or_coleague_contact.id_for_label }}">Employer or coleague contact:</label>
             </div>
             <button type="submit" class="submit">submit</button>
         </form>

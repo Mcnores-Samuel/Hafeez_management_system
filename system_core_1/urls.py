@@ -2,7 +2,7 @@ from django.urls import path, include
 from django.contrib.auth import views as auth_views
 from .views import (registration_view, data_updates, customer_registrar,
                     central_display, home_page, user_dashboard, action_on_data_select,
-                    search_and_filters)
+                    search_and_filters, auto_fill_responder, approve_contracts)
 
 
 urlpatterns =[
@@ -30,10 +30,14 @@ urlpatterns =[
     path('users/', central_display.users, name='users'),
     path('main_storage/', central_display.main_storage, name='main_storage'),
     path('agents_and_data/', central_display.agents_and_data, name='agents_and_data'),
-    path('my_customers/', central_display.my_customers, name='my_customers'),
     path('deploy_device/<int:data_id>/', action_on_data_select.deploy_device, name='deploy_device'),
     path('create_contract/<int:data_id>/', action_on_data_select.create_contract, name='create_contract'),
     path('data_search/', search_and_filters.data_search, name='data_search'),
+    path('search_customers/', search_and_filters.search_customers, name='search_customers'),
+    path('update_customer_data/', data_updates.update_customer_data, name='update_customer_data'),
+    path('get_item_data/', auto_fill_responder.get_item_data, name='get_item_data'),
+    path('approve_contracts/', approve_contracts.approve_contracts, name='approve_contracts'),
+    path('decline_contracts/', approve_contracts.decline_contracts, name='decline_contracts'),
     # reseting user password
     path('password_reset/', auth_views.PasswordResetView.as_view(template_name='registration/reset_form.html'), name='password_reset'),
     path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(template_name='registration/reset_done.html'), name='password_reset_done'),

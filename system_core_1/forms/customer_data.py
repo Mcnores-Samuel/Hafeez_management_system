@@ -76,6 +76,7 @@ class CombinedDataForm(forms.Form):
     customer_contact = forms.CharField(max_length=13, required=False, widget=forms.TextInput({ "placeholder": "Primary contact number"}))
     second_contact = forms.CharField(max_length=13, required=False, widget=forms.TextInput({ "placeholder": "A secondary contact number.(optional)"}))
     first_witness_name = forms.CharField(max_length=50, required=False, widget=forms.TextInput({ "placeholder": "First witness full name"}))
+    witness_id_no = forms.CharField(max_length=9, required=False, widget=forms.TextInput({ "placeholder": "First witness national ID number"}))
     first_witness_contact = forms.CharField(max_length=13, required=False, widget=forms.TextInput({ "placeholder": "First witness primary contact"}))
     second_witness_name = forms.CharField(max_length=50, required=False, widget=forms.TextInput({ "placeholder": "Second witness full name"}))
     second_witness_contact = forms.CharField(max_length=13, required=False, widget=forms.TextInput({ "placeholder": "Second witness primary contact"}))
@@ -84,6 +85,9 @@ class CombinedDataForm(forms.Form):
     nearest_market_church_hospital = forms.CharField(max_length=50, required=False, widget=forms.TextInput({ "placeholder": "Nearest market, church or hospital if any"}))
     customer_email = forms.CharField(max_length=50, required=False, widget=forms.TextInput({ "placeholder": "Customer's email address"}))
     payment_period = forms.ChoiceField(choices=PAYMENT_PERIOD, required=False, widget=forms.RadioSelect)
+    workplace = forms.CharField(max_length=100, required=False, widget=forms.TextInput({ "placeholder": "Customer's workplace"}))
+    employer_or_coleague = forms.CharField(max_length=100, required=False, widget=forms.TextInput({ "placeholder": "Customer's employer or coleague"}))
+    employer_or_coleague_contact = forms.CharField(max_length=13, required=False, widget=forms.TextInput({ "placeholder": "Customer's employer or coleague contact"}))
 
 
     def __init__(self, *args, **kwargs):
@@ -188,6 +192,7 @@ class CombinedDataForm(forms.Form):
                 customer_contact=self.cleaned_data['customer_contact'],
                 second_contact=self.cleaned_data['second_contact'],
                 first_witness_name=self.cleaned_data['first_witness_name'],
+                witness_id_no=self.cleaned_data['witness_id_no'],
                 first_witness_contact=self.cleaned_data['first_witness_contact'],
                 second_witness_name=self.cleaned_data['second_witness_name'],
                 second_witness_contact=self.cleaned_data['second_witness_contact'],
@@ -195,6 +200,9 @@ class CombinedDataForm(forms.Form):
                 nearest_school=self.cleaned_data['nearest_school'],
                 nearest_market_church_hospital=self.cleaned_data['nearest_market_church_hospital'],
                 customer_email=self.cleaned_data['customer_email'],
+                workplace=self.cleaned_data['workplace'],
+                employer_or_coleague=self.cleaned_data['employer_or_coleague'],
+                employer_or_coleague_contact=self.cleaned_data['employer_or_coleague_contact'],
             )
             customer_data.save()
 

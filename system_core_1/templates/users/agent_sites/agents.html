@@ -33,7 +33,6 @@
         <nav>
             <a href="{% url 'dashboard' %}"><i class='bx bxs-dashboard'></i></a>
             <a href="#"><i class='bx bxs-data'></i></a>
-            <a href="{% url 'my_customers' %}"><i class='bx bx-group'></i></a>
         </nav>
     </din>
     {% endblock %}
@@ -51,7 +50,6 @@
                         <th>Spec</th>
                         <th>entry date</th>
                         <th>recieved</th>
-                        <th>sale</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -75,15 +73,6 @@
                                         <input type="hidden" name="device_imei" value="{{ item.device_imei }}">
                                         <button type="submit" class="recieved-btn" onclick="recieved()">verify</button>
                                     </form>
-                                </td>
-                            {% endif %}
-                            {% if item.recieved is True %}
-                                <td>
-                                    <a href="{% url 'combinedData_collection' data_id=item.id %}"><i class='bx bx-chevrons-right'></i></a>
-                                </td>
-                                {% else %}
-                                <td>
-                                    disabled
                                 </td>
                             {% endif %}
                         </tr>
@@ -144,8 +133,7 @@
     <div class="stock_out">
         <h2>Stock out</h2>
         <div>
-            <p>Total sales: <span>{{ total_stock_out }}</span></p>
-            <p>Pending actions: <span>{{ pending }}</span></p>
+            <p>Total Monthly Sales: <span>{{ total_stock_out }}</span></p>
         </div>
         <a href="{% url 'stock_out' %}"><button class="view-button">view Details</button></a>
     </div>

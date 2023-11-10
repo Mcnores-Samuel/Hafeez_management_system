@@ -14,6 +14,8 @@ from django.shortcuts import redirect
 from ..models.main_storage import MainStorage
 from ..forms.search_filters import FilterMainStoregeForm
 from .search_and_filters import data_search
+from ..models.customer_details import CustomerData
+from django.utils import timezone
 
 
 
@@ -66,7 +68,13 @@ def dashboard(request):
     elif request.user.groups.filter(name='staff_members').exists():
         user = request.user
         avatar = UserAvatar.objects.get(user=request.user) if UserAvatar.objects.filter(user=request.user).exists() else None
+        current_week = timezone.now().date()
+        monday = current_week - timezone.timedelta(days=current_week.weekday())
+        sunday = monday + timezone.timedelta(days=6)
+        customers = CustomerData.objects.filter(created_at__range=[monday, sunday]).order_by('-created_at')
+        customers = [(customer, list(customer.phonedata_set.all())) for customer in customers]
         context = {
+            'customers': customers,
             'profile': user.email[0],
             'user': user,
             'avatar': avatar
@@ -76,7 +84,12 @@ def dashboard(request):
         user = request.user
         agent_profile = AgentProfile.objects.get(user=user)
         if agent_profile:
-            stock_out = MainStorage.objects.filter(agent=user, in_stock=False, assigned=True)
+            current_month = timezone.now().date().month
+            current_year = timezone.now().date().year
+            stock_out = MainStorage.objects.filter(agent=user, in_stock=False,
+                                                   assigned=True,
+                                                   stock_out_date__month=current_month,
+                                                   stock_out_date__year=current_year)
             stock_in = MainStorage.objects.filter(agent=user, in_stock=True, assigned=True)
             pending = MainStorage.objects.filter(agent=user, in_stock=False, assigned=False,
                                                 sales_type='Loan', contract_no=None)

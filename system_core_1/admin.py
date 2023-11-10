@@ -19,22 +19,33 @@ admin.site.index_title = "Welcome to Hafeez Management System"
 class UserAdminModel(UserAdmin):
     list_display = (
         'email', 'username', 'first_name', 'last_name',
-        'phone_number', 'is_staff', 'is_active', 'date_joined',
+        'phone_number', 'location', 'is_staff', 'is_active', 'date_joined',
         'last_login'
     )
 
 
 @admin.register(MainStorage)
 class MainStorageData(admin.ModelAdmin):
-    list_display = ('agent', 'recieved', 'device_imei', 'category', 'name', 'phone_type',
+    list_display = ('assigned_to', 'recieved', 'device_imei', 'category', 'name', 'phone_type',
                     'spec', 'screen_size', 'os', 'battery', 'camera', 'in_stock',
-                    'sales_type', 'contract_no', 'entry_date', 'stock_out_date',
+                    'sales_type', 'contract_no', 'assigned_from', 'updated_by', 'entry_date', 'stock_out_date',
                     'assigned', 'sold', 'paid', 'image'
     )
-    search_fields = ('device_imei', 'phone_type', 'entry_date', 'category', 'agent__username')
+    search_fields = ('device_imei', 'phone_type', 'entry_date', 'category', 'agent__username',
+                     'contract_no', 'sales_type', 'stock_out_date', 'assigned', 'sold', 'paid')
+    list_filter = ('in_stock', 'category', 'updated_by', 'sales_type', 'assigned', 'sold', 'paid')
+
+
 
     actions = ['update_images', 'verify_stock_recieved',
-               'unverify_stock_recieved', 'unassign_select']
+               'unverify_stock_recieved', 'unassign_select', 'mark_as_sold',]
+    
+    class Meta:
+        ordering = ['-entry_date']
+        js = ('/static/scripts/admin_autofill.js',)
+
+    def assigned_to(self, obj):
+        return obj.agent
 
     def update_images(self, request, queryset):
         # Get the image from the first selected object
@@ -43,8 +54,18 @@ class MainStorageData(admin.ModelAdmin):
         for phone in queryset:
             phone.image = image
             phone.save()
-
     update_images.short_description = "Update selected phones with the same image"
+    
+    def mark_as_sold(self, request, queryset):
+        """Mark the phone as sold"""
+        for obj in queryset:
+            if obj:
+                obj.in_stock = False
+                obj.assigned = True
+                obj.recieved = True
+                obj.sold = True
+                obj.save()
+    mark_as_sold.short_description = "Mark as sold"
 
     def verify_stock_recieved(self, request, queryset):
         """Verify stock recieved by the agent"""
@@ -102,59 +123,16 @@ class AgentProfileAdmin(admin.ModelAdmin):
                     'location', 'longitude', 'latitude')
 
 
-@admin.register(AgentStock)
-class AgentStockAdmin(admin.ModelAdmin):
-    list_display = ('agent_name', 'device_imei', 'phone_type', 'sales_type', 'collection_date', 'in_stock',
-                    'stock_out_date', 'contract_number')
-    list_filter = ('in_stock', 'collection_date')
-    search_fields = ('imei_number', 'phone_type', 'agent__user__username')
-
-    def device_imei(self, obj):
-        return obj.imei_number
-    
-    def agent_name(self, obj):
-        return obj.agent.user.username
-
-    def delete_selected(self, request, queryset):
-        """Unassign the phone from an agent in MainStorage when it's deleted"""
-        for obj in queryset:
-            if obj:
-                try:
-                    main_storage_phone = MainStorage.objects.get(
-                        device_imei=obj.imei_number, in_stock=True)
-                    main_storage_phone.assigned = False
-                    main_storage_phone.in_stock = True
-                    main_storage_phone.sold = False
-                    main_storage_phone.contract_no = '##'
-                    main_storage_phone.sales_type = '##'
-                    main_storage_phone.stock_out_date = main_storage_phone.entry_date
-                    main_storage_phone.save()
-
-                except MainStorage.DoesNotExist:
-                    main_storage_phone = MainStorage.objects.get(
-                        device_imei=obj.imei_number, in_stock=False,
-                        assigned=True)
-                    main_storage_phone.assigned = False
-                    main_storage_phone.in_stock = True
-                    main_storage_phone.sold = False
-                    main_storage_phone.contract_no = '##'
-                    main_storage_phone.sales_type = '##'
-                    main_storage_phone.stock_out_date = main_storage_phone.entry_date
-                    main_storage_phone.save()
-                except MainStorage.DoesNotExist:
-                    pass
-            obj.delete()
-    actions = [delete_selected]
-
-
 @admin.register(CustomerData)
 class CustomerDataAdmin(admin.ModelAdmin):
-    list_display = ("customer_name", "national_id",
+    list_display = ("customer_name", "approved", "pending", "rejected", "national_id",
                     "customer_contact", "second_contact", "customer_email",
                     "first_witness_name", "first_witness_contact",
                     "second_witness_name", "second_witness_contact",
                     "customer_location", "nearest_school",
-                    "nearest_market_church_hospital", "created_at")
+                    "nearest_market_church_hospital", "created_at",
+                    "workplace", "employer_or_coleague", "employer_or_coleague_contact",
+                    "account_name")
     search_fields = ('customer_name', 'customer_contact', 'national_id')
     
 

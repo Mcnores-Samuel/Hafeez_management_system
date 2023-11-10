@@ -3,6 +3,16 @@
     height: 300px;
 }
 
+.search_customers {
+    margin: 16px;
+    font-size: 20px;
+    font-weight: bold;
+    color: blue;
+    border: 1px solid #80808066;
+    border-radius: 5px;
+    padding: 5px;
+}
+
 .about-header {
     background-color: rgb(128, 128, 128, .75);
     color: #fff;

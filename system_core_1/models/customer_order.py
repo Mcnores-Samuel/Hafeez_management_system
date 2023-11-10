@@ -10,15 +10,15 @@ from .agent_profile import AgentProfile
 
 
 PHONELIST = (
-        ("S18 (4+64)", "S18 (4+64)"), ("A60 (2+32)", "A60 (2+32)"),
-        ("A04 (2+32)", "A04 (2+32)"), ("A18 (1+32)", "A18 (1+32)"),
-        ("Camon 20 (8+256)", "Camon 20 (8+256)"), ("Camon 19 (4+128)", "Camon 19 (4+128)"),
-        ("Spark 10 (8+128)", "Spark 10 (8+128)"), ("Spark 10C (8+128)", "Spark 10C (8+128)"),
-        ("Spark 10C (4+128)", "Spark 10C (4+128)"), ("Spark 8C (2+64)", "Spark 8C (2+64)"),
-        ("Pop 7 pro (4+64)", "Pop 7 pro (4+64)"), ("Pop 7 pro (3+64)", "Pop 7 pro (3+64)"),
-        ("Pop 7 (2+64)", "Pop 7 (2+64)"),
-    ) 
-
+        ("S18", "S18"), ("A60", "A60"),
+        ("A04", "A04"), ("A18", "A18"),
+        ("C20", "C20"), ("C19", "C19"),
+        ("S10", "S10"), ("10C8G", "10C8G"),
+        ("10C", "10C"), ("8C", "8C"),
+        ("P7P4G", "P7P4G"), ("P7P3G", "P7P3G"),
+        ("P7", "P7"), ("S9", "S9"), ('9T', '9T'),
+        ("S8", "S8"), ("S7", "S7"),
+    )
 
 class PhoneData(models.Model):
     """The PhoneData model establishes a relationship with the Customers and
@@ -32,7 +32,7 @@ class PhoneData(models.Model):
     """
     customer = models.ForeignKey(CustomerData, on_delete=models.CASCADE)
     agent = models.ForeignKey(AgentProfile, on_delete=models.CASCADE)
-    phone_type = models.CharField(max_length=25, choices=PHONELIST, default='S18 (4+64)')
+    phone_type = models.CharField(max_length=25, choices=PHONELIST, default='S18')
     imei_number = models.CharField(max_length=15, unique=True)
     contract_number = models.CharField(max_length=9,null=True)
     selling_price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)

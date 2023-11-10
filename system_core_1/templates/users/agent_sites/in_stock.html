@@ -32,17 +32,6 @@
            <p>Initial Deposit: <span>{{ element.deposit|format_price }}</span></p>
         {% endif %}
     {% endfor %}
-    <p>Sale:
-        {% if item.recieved is True %}
-        <span>
-            <a href="{% url 'combinedData_collection' data_id=item.id %}"><i class='bx bx-chevrons-right'></i></a>
-        </span>
-        {% else %}
-        <span>
-            disabled
-        </span>
-        {% endif %}
-    </p>
 </div>
 {% endfor %}
 {% else %}

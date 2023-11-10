@@ -15,6 +15,8 @@ from ..forms.filters import FilterAgentAndData
 from django.db.models import Q
 from ..models.user_profile import UserAvatar
 from .search_and_filters import search
+from django.utils import timezone
+from django.shortcuts import redirect
 
 @login_required
 def users(request):
@@ -98,30 +100,3 @@ def agents_and_data(request):
                    'profile': user.email[0],
                      'avatar': avatar}
     return render(request, 'users/admin_sites/admin_agent_view.html', content)
-
-
-
-def my_customers(request):
-    """The `my_customers` view function is responsible for handling the display of
-    all customers and their phone data.
-
-    Functionality:
-    - Checks if the user is authenticated and is an agent. Only agents are allowed
-      to access this view.
-    - Renders the my customers page, displaying all customers and their phone data.
-    - Implements pagination functionality.
-
-    Note:
-    This view assumes user authentication and validation of agent status have been
-    handled in the authentication system and AgentProfile model.
-    """
-    data_by_customer = []
-    user = request.user
-    if user.groups.filter(name='agents').exists():
-        print("User ID:", user.id)
-        customer_data = CustomerData.objects.filter(agent=user.id).order_by('id')
-        print("Customer Data:", customer_data)
-        data_by_customer = [(customer, list(customer.phonedata_set.all())) for customer in customer_data]
-    print(data_by_customer)
-    return render(request, 'users/agent_sites/my_customers.html', {'data_by_customer': data_by_customer,
-                                                               'profile': user.email[0]})
