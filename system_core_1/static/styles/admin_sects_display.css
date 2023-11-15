@@ -162,6 +162,11 @@
     padding-bottom: 3rem;
 }
 
+.summary-container > div.agent_sales {
+    grid-column: 1 / 4;
+    height: 450px;
+}
+
 .summary-container > .agent_code {
     display: flex;
     justify-content: space-evenly;
@@ -189,13 +194,16 @@
     grid-column: 1 / 3;
 }
 
+
+.agent_sales > div,
 .weekly_sales > div {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
 }
 
+.agent_sales > div > a,
 .weekly_sales > div > a {
-    margin-left: 2.5rem;
+    margin-left: 3rem;
     font-weight: bold;
 }
 

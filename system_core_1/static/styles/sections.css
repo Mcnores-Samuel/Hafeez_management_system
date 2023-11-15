@@ -81,6 +81,10 @@
     font-weight: normal;
 }
 
+.copied {
+    color: green;
+}
+
 .service-list {
     list-style: disc;
     padding-left: 20px;

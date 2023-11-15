@@ -4,6 +4,7 @@ showNotification = require('./data_updates.js').showNotification;
 function copyText(elementId) {
     // Get the text from the span
     let textToCopy = document.querySelector("#"+elementId).innerText;
+    let textcontainer = document.querySelector("#"+elementId);
 
     // Create a temporary textarea element
     let textarea = document.createElement('textarea');
@@ -17,5 +18,5 @@ function copyText(elementId) {
     // Remove the temporary textarea
     document.body.removeChild(textarea);
     showNotification(textToCopy + ' copied!', 'success');
-
+    textcontainer.classList.add('copied');
 }

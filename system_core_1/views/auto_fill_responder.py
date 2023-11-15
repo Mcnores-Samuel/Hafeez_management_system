@@ -6,5 +6,4 @@ def get_item_data(request):
         item_id = request.GET.get('item_id', None)
         data = MainStorage.objects.get(id=item_id).values()
         data = list(data)
-        print(data)
         return JsonResponse(data)

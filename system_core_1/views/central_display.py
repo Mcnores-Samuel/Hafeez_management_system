@@ -8,15 +8,11 @@ from django.contrib.auth.decorators import login_required
 from ..models.agent_profile import AgentProfile
 from ..models.user_profile import UserProfile
 from ..models.main_storage import MainStorage
-from ..models.customer_details import CustomerData
 from ..forms.filters import FilterMainStorege
-from ..forms.search_filters import FilterMainStoregeForm
 from ..forms.filters import FilterAgentAndData
-from django.db.models import Q
 from ..models.user_profile import UserAvatar
 from .search_and_filters import search
-from django.utils import timezone
-from django.shortcuts import redirect
+
 
 @login_required
 def users(request):

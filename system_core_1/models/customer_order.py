@@ -17,7 +17,7 @@ PHONELIST = (
         ("10C", "10C"), ("8C", "8C"),
         ("P7P4G", "P7P4G"), ("P7P3G", "P7P3G"),
         ("P7", "P7"), ("S9", "S9"), ('9T', '9T'),
-        ("S8", "S8"), ("S7", "S7"),
+        ("S8", "S8"), ("S7", "S7"), ("S10Pro", "S10Pro")
     )
 
 class PhoneData(models.Model):

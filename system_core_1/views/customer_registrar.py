@@ -6,10 +6,8 @@ process by agents.
 """
 from django.shortcuts import render, redirect
 from ..forms.customer_data import CombinedDataForm
-from ..models.agent_stock import AgentStock
 from django.http import HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
-from ..models.main_storage import MainStorage
 
 
 @login_required
@@ -58,6 +56,8 @@ def combinedData_collection(request, data_id):
                     return redirect('dashboard')
                 elif payment_method == 'Loan':
                     customer_data, phone_data = form.process_loan_payment(data_id)
+                    if customer_data and phone_data:
+                        return redirect('dashboard')
                     return redirect('dashboard')
         else:
             form = CombinedDataForm(user=request.user)

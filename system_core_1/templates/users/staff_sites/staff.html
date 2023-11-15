@@ -13,25 +13,25 @@
         {% for customer, phone_list in customers %}
             <section class="customer_data">
             <p>Date: <span>{{ customer.created_at }}</span></p>
-            <p>name: <span id="customer_name" onclick="copyText('customer_name')">{{ customer.customer_name }}</span></p>
-            <p>ID No: <span id="Id_no" onclick="copyText('Id_no')">{{ customer.national_id }}</span></p>
-            <p>first contact: <span id="f_contact" onclick="copyText('f_contact')">{{ customer.customer_contact }}</span></p>
-            <p>second contact: <span id="S_contact" onclick="copyText('S_contact')">{{ customer.second_contact }}</span></p>
-            <p>First witness: <span id="f_witness" onclick="copyText('f_witness')">{{ customer.first_witness_name }}</span></p>
-            <P>First witness ID No: <span id="witness_id_no" onclick="copyText('witness_id_no')">{{ custom.witness_id_no }}</span></P>
-            <p>First witness contact: <span id="f_w_contact" onclick="copyText('f_w_contact')">{{ customer.first_witness_contact }}</span></p>
-            <p>Second witness: <span id="s_witness" onclick="copyText('s_witness')">{{ customer.second_witness_name }}</span></p>
-            <p>Second witness contact: <span id="s_w_contact" onclick="copyText('s_w_contact')">{{ customer.second_witness_contact }}</span></p>
-            <p>Location: <span id="location" onclick="copyText('location')">{{ customer.customer_location }}</span></p>
-            <p>Nearest School: <span id="n_school" onclick="copyText('n_school')">{{ customer.nearest_school }}</span></p>
-            <p>Nearest Market<br>/church/hospital</br>: <span id="n_M_or_C" onclick="copyText('n_M_or_C')">{{ customer.nearest_market_church_hospital }}</span></p>
-            <p>Email: <span id="f_witness" onclick="copyText('f_witness')">{{ customer.customer_email }}</span></p>
+            <p>name: <span id="customer_name_{{ customer.id }}" onclick="copyText('customer_name_{{ customer.id }}')">{{ customer.customer_name }}</span></p>
+            <p>ID No: <span id="Id_no_{{ customer.id }}" onclick="copyText('Id_no_{{ customer.id }}')">{{ customer.national_id }}</span></p>
+            <p>first contact: <span id="f_contact_{{ customer.id }}" onclick="copyText('f_contact_{{ customer.id }}')">{{ customer.customer_contact }}</span></p>
+            <p>second contact: <span id="S_contact_{{ customer.id }}" onclick="copyText('S_contact_{{ customer.id }}')">{{ customer.second_contact }}</span></p>
+            <p>First witness: <span id="f_witness_{{ customer.id }}" onclick="copyText('f_witness_{{ customer.id }}')">{{ customer.first_witness_name }}</span></p>
+            <P>First witness ID No: <span id="witness_id_no_{{ customer.id }}" onclick="copyText('witness_id_no_{{ customer.id }}')">{{ customer.witness_id_no }}</span></P>
+            <p>First witness contact: <span id="f_w_contact_{{ customer.id }}" onclick="copyText('f_w_contact_{{ customer.id }}')">{{ customer.first_witness_contact }}</span></p>
+            <p>Second witness: <span id="s_witness_{{ customer.id }}" onclick="copyText('s_witness_{{ customer.id }}')">{{ customer.second_witness_name }}</span></p>
+            <p>Second witness contact: <span id="s_w_contact_{{ customer.id }}" onclick="copyText('s_w_contact_{{ customer.id }}')">{{ customer.second_witness_contact }}</span></p>
+            <p>Location: <span id="location_{{ customer.id }}" onclick="copyText('location_{{ customer.id }}')">{{ customer.customer_location }}</span></p>
+            <p>Nearest School: <span id="n_school_{{ customer.id }}" onclick="copyText('n_school_{{ customer.id }}')">{{ customer.nearest_school }}</span></p>
+            <p>Nearest Market<br>/church/hospital</br>: <span id="n_M_or_C_{{ customer.id }}" onclick="copyText('n_M_or_C_{{ customer.id }}')">{{ customer.nearest_market_church_hospital }}</span></p>
+            <p>Email: <span id="email_{{ customer.id }}" onclick="copyText('email_{{ customer.id }}')">{{ customer.customer_email }}</span></p>
                 {% for phone in phone_list %}
-                    <p>agent: <span id="agent" onclick="copyText('agent')">{{ phone.agent.user.username }}</span></p>
-                    <p>Device model: <span id="model" onclick="copyText('model')">{{ phone.phone_type }}</span></p>
-                    <p>Device imei: <span id="imei_no" onclick="copyText('imei_no')">{{ phone.imei_number }}</span></p>
+                    <p>agent: <span id="agent_{{ customer.id }}" onclick="copyText('agent_{{ customer.id }}')">{{ phone.agent.user.username }}</span></p>
+                    <p>Device model: <span id="model_{{ customer.id }}" onclick="copyText('model_{{ customer.id }}')">{{ phone.phone_type }}</span></p>
+                    <p>Device imei: <span id="imei_no_{{ customer.id }}" onclick="copyText('imei_no_{{ customer.id }}')">{{ phone.imei_number }}</span></p>
                     <p>contract number: 
-                        <span id="contracts" onclick="copyText('contracts')">
+                        <span id="contracts_{{ customer.id }}" onclick="copyText('contracts_{{ customer.id }}')">
                             {% if phone.contract_number %}
                                 {{ phone.contract_number }}
                             {% else %}
@@ -44,14 +44,14 @@
                             {% endif %}
                         </span>
                     </p>
-                    <p>payment period: <span id="payment" onclick="copyText('payment')">{{ phone.payment_period }}</span></p>
-                    <p>deposit: <span id="deposit" onclick="copyText('deposit')">{{ phone.deposit|format_price }}</span></p>
+                    <p>payment period: <span id="payment_{{ customer.id }}" onclick="copyText('payment_{{ customer.id }}')">{{ phone.payment_period }}</span></p>
+                    <p>deposit: <span id="deposit_{{ customer.id }}" onclick="copyText('deposit_{{ customer.id }}')">{{ phone.deposit|format_price }}</span></p>
                 {% endfor %}
-                <p>workplace: <span id="workplace" onclick="copyText('workplace')">{{ customer.workplace}}</span></p>
-                <p>employer or coleague: <span id="emp_or_coll" onclick="copyText('emp_or_coll')">{{ customer.employer_or_coleague }}</span></p>
+                <p>workplace: <span id="workplace_{{ customer.id }}" onclick="copyText('workplace_{{ customer.id }}')">{{ customer.workplace}}</span></p>
+                <p>employer or coleague: <span id="emp_or_coll_{{ customer.id }}" onclick="copyText('emp_or_coll_{{ customer.id }}')">{{ customer.employer_or_coleague }}</span></p>
                 <p>employer or coleague
-                    contact: <span id="emp_contact" onclick="copyText('emp_contact')">{{ customer.employer_or_coleague_contact }}</span></p>
-                <p>Account name: <span id="account_name" onclick="copyText('account_name')">
+                    contact: <span id="emp_contact_{{ customer.id }}" onclick="copyText('emp_contact_{{ customer.id }}')">{{ customer.employer_or_coleague_contact }}</span></p>
+                <p>Account name: <span id="account_name_{{ customer.id }}" onclick="copyText('account_name_{{ customer.id }}')">
                     {% if customer.account_name %}
                         {{ customer.account_name }}
                     {% else %}

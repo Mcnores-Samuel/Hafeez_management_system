@@ -74,9 +74,11 @@ window.addEventListener('resize', () => {
 try {
   const enable = document.querySelector('.category-btn');
   const category = document.querySelector('.Categories');
+  const details_section = document.querySelector('.Categories-extended');
 
   enable.addEventListener('click', () => {
     category.classList.toggle('show-category');
+    details_section.classList.toggle('resize-details');
     category.style.display = 'block';
     if (category.classList.contains('show-category')) {
       enable.innerHTML = '<i class="bx bx-x"></i>';

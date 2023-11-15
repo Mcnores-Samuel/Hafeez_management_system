@@ -6,14 +6,11 @@ for authenticated users into the application.
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from ..models.agent_profile import AgentProfile
-from ..models.agent_stock import AgentStock
 from ..models.agent_profile import Agent_sign_up_code
-from ..models.user_profile import UserAvatar
+from ..models.user_profile import UserAvatar, UserProfile
 from uuid import uuid4
 from django.shortcuts import redirect
-from ..models.main_storage import MainStorage
-from ..forms.search_filters import FilterMainStoregeForm
-from .search_and_filters import data_search
+from ..models.main_storage import MainStorage, Airtel_mifi_storage
 from ..models.customer_details import CustomerData
 from django.utils import timezone
 
@@ -104,8 +101,37 @@ def dashboard(request):
                 'pending': len(pending),
                 'avatar': avatar
             }
-
         return render(request, 'users/agent_sites/agents.html', context)
+    elif request.user.groups.filter(name='airtel_agents').exists():
+        stock_in = Airtel_mifi_storage.objects.filter(agent=request.user, in_stock=True)
+        stock_out = Airtel_mifi_storage.objects.filter(agent=request.user, in_stock=False)
+        avatar = UserAvatar.objects.get(user=request.user) if UserAvatar.objects.filter(user=request.user).exists() else None
+        context = {
+            'profile': request.user.email[0],
+            'user': request.user,
+            'stock_in': stock_in,
+            'stock_out': stock_out,
+            'total_stock_in': len(stock_in),
+            'total_stock_out': len(stock_out),
+            'avatar': avatar
+        }
+        return render(request, 'users/airtel_agents/airtel_agents.html', context)
+    
+    elif request.user.groups.filter(name='Airtel_Supervisor').exists():
+        airtel_agents = UserProfile.objects.filter(groups__name='airtel_agents')
+        total_sales_by_agents = {}
+        for agent in airtel_agents:
+            total_sales_by_agents[agent] = len(Airtel_mifi_storage.objects.filter(agent=agent.id,
+                                                                                 in_stock=False, pending=True))
+        avatar = UserAvatar.objects.get(user=request.user) if UserAvatar.objects.filter(user=request.user).exists() else None
+        context = {
+            'profile': request.user.email[0],
+            'user': request.user,
+            'airtel_agents': airtel_agents,
+            'total_sales_by_agents': total_sales_by_agents,
+            'avatar': avatar
+        }
+        return render(request, 'users/airtel_supervisor/dashboard.html', context) 
     else:
         return render(request, 'users/regular_user.html', {'user': request.user})
     

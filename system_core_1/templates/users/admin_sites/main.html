@@ -60,19 +60,24 @@
             <div class="daily_sales">
                 <div>
                     <h3>Daily Sales</h3>
-                    <a href="/">Full Analysis</a>
+                    <a href="{% url 'get_daily_sales_json' %}">Full Analysis</a>
                 </div>
                 <canvas class="daily_sales_chart" aria-label="chart" height="350"></canvas>
             </div>
             <div class="weekly_sales">
                 <div>
                     <h3>Weekly Sales</h3>
-                    <a href="/">Full Analysis</a>
+                    <a href="{% url 'get_weekly_sales_json' %}">Full Analysis</a>
                 </div>
                 <canvas class="Weekly_sales_chart" aria-label="chart" height="350"></canvas>
             </div>
-            <div class="projects">
-                <h3>Weekly Profit</h3>
+            <div class="agent_sales">
+                <div>
+                    <h3>Sales by agent Monthly</h3>
+                    <a href="{% url 'get_sale_by_agent_monthy' %}">Full Analysis</a>
+                </div>
+                <p class="status"></p>
+                <canvas class="sales_by_agent_chart" aria-label="chart" height="350"></canvas>
             </div>
             <div class="w-loss">
                 <h3>Weekly Loss</h3>

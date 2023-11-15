@@ -45,6 +45,21 @@ function recieved() {
     })
 }
 
+function add_pending() {
+    const form = document.querySelector('.sold_form');
+    const formData = new FormData(form);
+
+    fetch('/system_core_1/sale_aitel_device/', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        form.reset();
+        showNotification(data.message, 'success');
+    })
+}
+
 
 const textToCopy = document.querySelector('.text-to-copy');
 const copyButton = document.querySelector('.copy-button');

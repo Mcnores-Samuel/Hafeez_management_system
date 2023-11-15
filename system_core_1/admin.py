@@ -5,9 +5,9 @@ from .models.customer_order import PhoneData
 from .models.user_profile import UserProfile, UserAvatar
 from .models.main_storage import MainStorage
 from .models.reference import Phone_reference
-from .models.agent_stock import AgentStock
 from django.contrib.auth.admin import UserAdmin
 from .models.user_profile import Employee
+from .models.main_storage import Airtel_mifi_storage
 
 
 admin.site.site_header = "HAFEEZ MANAGEMENT SYSTEM"
@@ -27,13 +27,14 @@ class UserAdminModel(UserAdmin):
 @admin.register(MainStorage)
 class MainStorageData(admin.ModelAdmin):
     list_display = ('assigned_to', 'recieved', 'device_imei', 'category', 'name', 'phone_type',
-                    'spec', 'screen_size', 'os', 'battery', 'camera', 'in_stock',
+                    'spec', 'screen_size', 'os', 'battery', 'camera', 'in_stock', 'pending',
                     'sales_type', 'contract_no', 'assigned_from', 'updated_by', 'entry_date', 'stock_out_date',
                     'assigned', 'sold', 'paid', 'image'
     )
     search_fields = ('device_imei', 'phone_type', 'entry_date', 'category', 'agent__username',
                      'contract_no', 'sales_type', 'stock_out_date', 'assigned', 'sold', 'paid')
-    list_filter = ('in_stock', 'category', 'updated_by', 'sales_type', 'assigned', 'sold', 'paid')
+    list_filter = ('in_stock', 'category', 'updated_by', 'sales_type', 'assigned', 'sold', 'paid',
+                   'entry_date', 'stock_out_date', 'assigned_from')
 
 
 
@@ -165,3 +166,23 @@ class EmployeeAdmin(admin.ModelAdmin):
     list_display = ('user', 'role', 'department')
     search_fields = ('user__username', 'role', 'department')
     fields = ('user', 'role', 'department')
+
+
+@admin.register(Airtel_mifi_storage)
+class Aitel_mifi_storageAdmin(admin.ModelAdmin):
+    """This model represent the entire stock available and sold in all posts"""
+    list_display = ('assigned_to', 'recieved', 'device_imei', 'phone_number', 'device',
+                    'pending', 'active', 'inactive', 'in_stock',
+                    'assigned', 'entry_date', 'stock_out_date',
+                    'cash_recieved', 'paid', 'image'
+                    )
+    
+    search_fields = ('device_imei', 'device', 'entry_date',
+                     'stock_out_date', 'agent__username')
+    
+    list_filter = ('in_stock', 'device', 'assigned', 'paid',
+                     'entry_date', 'stock_out_date')
+
+    def assigned_to(self, obj):
+        """Return the agent to whom the phone is assigned"""
+        return obj.agent

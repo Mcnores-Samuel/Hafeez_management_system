@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load plus_r %}
+{% block content %}
+    {% if airtel_agents %}
+        {% for agent in airtel_agents %}
+        <div class="user_cards">
+            <p>New sales: <span>{{ total_sales_by_agents }}</span></p>
+            <p>Agent: <span>{{ agent.username }}</span></p>
+            <p>Email: <span>{{ agent.email }}</span></p>
+        </div>
+        {% endfor %}
+    {% endif %}
+<div class="divider"></div>
+{% endblock %}

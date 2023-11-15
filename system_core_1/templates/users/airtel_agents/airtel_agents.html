@@ -1,0 +1,204 @@
+{% extends "base.html" %}
+{% block header %}
+    <div class="topbar">
+        <div class="logo">HE</div>
+        <div class="brandname">Hafeez Enterprise</div>
+        <span class="menu"><i class='bx bx-menu'></i></span>
+    </div>
+    <nav class="heading">
+        <div class="logo">HE</div>
+        <div class="brandname">Hafeez Enterprise</div>
+        <ul class="navigation">
+            <li><a href="{% url 'home_page' %}"><i class='bx bxs-home'></i> Home</a></li>
+            <li><a href="{% url 'products' %}"><i class='bx bxl-product-hunt'></i> Products</a></li>
+            <li><a href="{% url 'services' %}">Services</a></li>
+        </ul>
+        <ul class="admin-drop-menu">
+            <li><a href="{% url 'dashboard' %}"><i class='bx bxs-dashboard'></i> Dashboard</a></li>
+            <li><a href="#"><i class='bx bxs-data'></i> My Stock</a></li>
+            <li><a href="#"><i class='bx bx-group'></i> My Customers</a></li>
+        </ul>
+        {% if avatar.image %}
+            <button type="submit" class="profile"><img src="{{ avatar.image.url }}" alt=""></button>
+        {% else %}
+            <button type="submit" class="profile">{{ profile }}</button>
+        {% endif %}
+        <ul class="mobile-set" style="display: none;">
+            <li class="settings"><a href="{% url 'profile' %}"><i class='bx bx-cog' ></i> Settings</a></li>
+            <li><a href="{% url 'sign_out' %}"><i class='bx bx-log-out'></i> Sign Out</a></li>
+        </ul>
+    </nav>
+    {% block sidebar %}
+    <din class="sidebar-containter">
+        <nav>
+            <a href="{% url 'dashboard' %}"><i class='bx bxs-dashboard'></i></a>
+            <a href="#"><i class='bx bxs-data'></i></a>
+        </nav>
+    </din>
+    {% endblock %}
+{% endblock %}
+{% block content %}
+<section class="agents_stock" id="agent-stock">
+            <table class="stock-table">
+                <caption>Stock In</caption>
+                <thead>
+                    <tr>
+                        <th>Device</th>
+                        <th>imei</th>
+                        <th>Phone number</th>
+                        <th>active</th>
+                        <th>inactive</th>
+                        <th>entry date</th>
+                        <th>recieved</th>
+                        <th>Sold</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in stock_in %}
+                        <tr>
+                            <td>{{ item.device }}</td>
+                            <td>{{ item.device_imei }}</td>
+                            <td>{{ item.phone_number }}</td>
+                            {% if item.active %}
+                                <td class="verified">
+                                    <input type="checkbox" id="checkbox" checked disabled>
+                                    <label for="checkbox" class="checkbox"></label>
+                                </td>
+                            {% else %}
+                                <td>
+                                    <input type="checkbox" id="checkbox" checked disabled>
+                                    <label for="checkbox" class="Notcheckbox"></label>
+                                </td>
+                            {% endif %}
+                            {% if item.inactive %}
+                                <td class="verified">
+                                    <input type="checkbox" id="checkbox" checked disabled>
+                                    <label for="checkbox" class="checkbox"></label>
+                                </td>
+                            {% else %}
+                                <td>
+                                    <input type="checkbox" id="checkbox" checked disabled>
+                                    <label for="checkbox" class="Notcheckbox"></label>
+                                </td>
+                            {% endif %}
+                            <td>{{ item.entry_date }}</td>
+                            {% if item.recieved %}:
+                                <td class="verified">
+                                    <input type="checkbox" id="checkbox" checked disabled>
+                                    <label for="checkbox" class="checkbox"></label>
+                                </td>
+                            {% else %}
+                                <td>
+                                    <form action="" method="post" class="recieved_form">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="device_imei" value="{{ item.device_imei }}">
+                                        <button type="submit" class="recieved-btn" onclick="recieved()">verify</button>
+                                    </form>
+                                </td>
+                            {% endif %}
+                            {% if item.pending and item.active %}
+                                <td class="verified">
+                                    <input type="checkbox" id="checkbox" checked disabled>
+                                    <label for="checkbox" class="checkbox"></label>
+                                </td>
+                            {% elif item.pending and not item.active %}
+                                <td class="pending">
+                                    <span class="pending">pending</span>
+                                </td>
+                            {% else %}
+                                <td>
+                                    <form action="" method="post" class="sold_form">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="device_imei" value="{{ item.device_imei }}">
+                                        <button type="submit" class="recieved-btn" onclick="add_pending()">Sale</button>
+                                    </form>
+                                </td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <table class="stock-table">
+                <caption>Stock Out</caption>
+                <thead>
+                    <tr>
+                        <th>Device</th>
+                        <th>imei number</th>
+                        <th>Entry date</th>
+                        <th>Stock out date</th>
+                        <th>sold on</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in stock_out %}
+                    <tr>
+                        <td>{{ item.category }}</td>
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.device_imei }}</td>
+                        <td>{{ item.phone_type }}</td>
+                        <td>{{ item.spec }}</td>
+                        <td>{{ item.entry_date }}</td>
+                        <td>{{ item.stock_out_date }}</td>
+                        <td>{{ item.sold_on }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+</section>
+<section class="mobile-display">
+    <div class="in_stock">
+        <h2>Stock In</h2>
+        <div>
+            <p>Total devices: <span>{{ total_stock_in }}</span></p>
+        </div>
+        <a href="{% url 'in_stock' %}"><button class="view-button">view details</button></a>
+    </div>
+    <div class="stock_out">
+        <h2>Stock out</h2>
+        <div>
+            <p>Total Monthly Sales: <span>{{ total_stock_out }}</span></p>
+        </div>
+        <a href="{% url 'stock_out' %}"><button class="view-button">view Details</button></a>
+    </div>
+</section>
+{% endblock %}
+{% block footer %}
+    <!-- Custom footer content for Template 1 -->
+        <div class="footer-content-custom">
+            <div class="footer-logo">
+                <h2>Hafeez Enterprise</h2>
+                <p>Your Trusted Phone Retailer</p>
+                <div class="social-icons">
+                    <!-- Add social media icons and links here -->
+                    <a href="#"><i class='bx bxl-twitter'></i></a>
+                    <a href="#"><i class='bx bxl-whatsapp'></i></a>
+                    <a href="#"><i class='bx bxl-facebook'></i></a>
+                    <a href="#"><i class='bx bxl-instagram'></i></a>
+                </div>
+            </div>
+            <div class="footer-links">
+                <h2>Products</h2>
+                <ul>
+                    <li><a href="#">Phones</a></li>
+                    <li><a href="#">Accessories</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h2>Support</h2>
+                <ul>
+                    <li><a href="{% url 'faq' %}">FAQ</a></li>
+                    <li><a href="{% url 'contact' %}">Contact us</a></li>
+                </ul>
+            </div>
+            <div class="foot-links">
+                <h2>Legal</h2>
+                <ul>
+                    <li><a href="{% url 'privacy' %}">Privacy Policy</a></li>
+                    <li><a href="{% url 'terms' %}">Terms of Use</a></li>
+                </ul>
+            </div>
+    </div>
+    <div class="footer-bottom-custom">
+        <p>&copy; 2023 Hafeez Enterprise. All rights reserved.</p>
+    </div>
+{% endblock %}
