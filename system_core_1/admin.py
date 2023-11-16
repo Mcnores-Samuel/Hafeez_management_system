@@ -27,13 +27,13 @@ class UserAdminModel(UserAdmin):
 @admin.register(MainStorage)
 class MainStorageData(admin.ModelAdmin):
     list_display = ('assigned_to', 'recieved', 'device_imei', 'category', 'name', 'phone_type',
-                    'spec', 'screen_size', 'os', 'battery', 'camera', 'in_stock', 'pending',
+                    'spec', 'screen_size', 'os', 'battery', 'camera', 'in_stock', 'pending', 'missing',
                     'sales_type', 'contract_no', 'assigned_from', 'updated_by', 'entry_date', 'stock_out_date',
                     'assigned', 'sold', 'paid', 'image'
     )
     search_fields = ('device_imei', 'phone_type', 'entry_date', 'category', 'agent__username',
                      'contract_no', 'sales_type', 'stock_out_date', 'assigned', 'sold', 'paid')
-    list_filter = ('in_stock', 'category', 'updated_by', 'sales_type', 'assigned', 'sold', 'paid',
+    list_filter = ('in_stock', 'missing', 'category', 'updated_by', 'sales_type', 'assigned', 'sold', 'paid',
                    'entry_date', 'stock_out_date', 'assigned_from')
 
 
@@ -169,7 +169,7 @@ class EmployeeAdmin(admin.ModelAdmin):
 
 
 @admin.register(Airtel_mifi_storage)
-class Aitel_mifi_storageAdmin(admin.ModelAdmin):
+class Airtel_mifi_storageAdmin(admin.ModelAdmin):
     """This model represent the entire stock available and sold in all posts"""
     list_display = ('assigned_to', 'recieved', 'device_imei', 'phone_number', 'device',
                     'pending', 'active', 'inactive', 'in_stock',
