@@ -2,7 +2,6 @@
 from django import forms
 from ..models.reference import Phone_reference
 from ..models.main_storage import MainStorage
-from ..models.agent_stock import AgentStock
 from ..models.customer_details import CustomerData
 from ..models.customer_order import PhoneData
 from django.utils import timezone
@@ -76,6 +75,7 @@ class CombinedDataForm(forms.Form):
     customer_contact = forms.CharField(max_length=13, required=False, widget=forms.TextInput({ "placeholder": "Primary contact number"}))
     second_contact = forms.CharField(max_length=13, required=False, widget=forms.TextInput({ "placeholder": "A secondary contact number.(optional)"}))
     first_witness_name = forms.CharField(max_length=50, required=False, widget=forms.TextInput({ "placeholder": "First witness full name"}))
+    witness_id_no = forms.CharField(max_length=9, required=False, widget=forms.TextInput({ "placeholder": "First witness national ID number"}))
     first_witness_contact = forms.CharField(max_length=13, required=False, widget=forms.TextInput({ "placeholder": "First witness primary contact"}))
     second_witness_name = forms.CharField(max_length=50, required=False, widget=forms.TextInput({ "placeholder": "Second witness full name"}))
     second_witness_contact = forms.CharField(max_length=13, required=False, widget=forms.TextInput({ "placeholder": "Second witness primary contact"}))
@@ -84,6 +84,9 @@ class CombinedDataForm(forms.Form):
     nearest_market_church_hospital = forms.CharField(max_length=50, required=False, widget=forms.TextInput({ "placeholder": "Nearest market, church or hospital if any"}))
     customer_email = forms.CharField(max_length=50, required=False, widget=forms.TextInput({ "placeholder": "Customer's email address"}))
     payment_period = forms.ChoiceField(choices=PAYMENT_PERIOD, required=False, widget=forms.RadioSelect)
+    workplace = forms.CharField(max_length=100, required=False, widget=forms.TextInput({ "placeholder": "Customer's workplace"}))
+    employer_or_coleague = forms.CharField(max_length=100, required=False, widget=forms.TextInput({ "placeholder": "Customer's employer or coleague"}))
+    employer_or_coleague_contact = forms.CharField(max_length=13, required=False, widget=forms.TextInput({ "placeholder": "Customer's employer or coleague contact"}))
 
 
     def __init__(self, *args, **kwargs):
@@ -166,46 +169,54 @@ class CombinedDataForm(forms.Form):
                 during the phone purchasing process. It ensures the collection of essential customer
                 data along with transaction details, facilitating customer and phone data management in the database.
         """
-        selected_device = MainStorage.objects.get(id=data_id)
-        phone_reference_instance = Phone_reference.objects.get(
-            phone=selected_device.phone_type
-        )
-        selected_device.in_stock = False
-        selected_device.sold = True
-        selected_device.sales_type = 'Loan'
-        selected_device.stock_out_date = timezone.now()
-        selected_device.save()
-
-        self.user = selected_device.agent
-
-        if selected_device:
-            customer_data = CustomerData(
-                created_at=timezone.now(),
-                update_at=timezone.now(),
-                agent=self.user.agentprofile if self.user else None,
-                customer_name=self.cleaned_data['customer_name'],
-                national_id=self.cleaned_data['national_id'],
-                customer_contact=self.cleaned_data['customer_contact'],
-                second_contact=self.cleaned_data['second_contact'],
-                first_witness_name=self.cleaned_data['first_witness_name'],
-                first_witness_contact=self.cleaned_data['first_witness_contact'],
-                second_witness_name=self.cleaned_data['second_witness_name'],
-                second_witness_contact=self.cleaned_data['second_witness_contact'],
-                customer_location=self.cleaned_data['customer_location'],
-                nearest_school=self.cleaned_data['nearest_school'],
-                nearest_market_church_hospital=self.cleaned_data['nearest_market_church_hospital'],
-                customer_email=self.cleaned_data['customer_email'],
+        check_if_sold_already = PhoneData.objects.filter(imei_number=data_id)
+        if not check_if_sold_already:
+            selected_device = MainStorage.objects.get(id=data_id)
+            phone_reference_instance = Phone_reference.objects.get(
+                phone=selected_device.phone_type
             )
-            customer_data.save()
+            selected_device.in_stock = False
+            selected_device.sold = True
+            selected_device.sales_type = 'Loan'
+            selected_device.stock_out_date = timezone.now()
+            selected_device.save()
 
-            phone_data = PhoneData(
-                customer=customer_data,
-                agent=self.user.agentprofile if self.user else None,
-                imei_number=selected_device.device_imei,
-                phone_type=selected_device.phone_type,
-                selling_price=phone_reference_instance.merchant_price,
-                deposit=phone_reference_instance.deposit,
-                payment_period=self.cleaned_data['payment_period'],
-            )
-            phone_data.save()
-        return customer_data, phone_data
+            self.user = selected_device.agent
+
+            if selected_device:
+                customer_data = CustomerData(
+                    created_at=timezone.now(),
+                    update_at=timezone.now(),
+                    agent=self.user.agentprofile if self.user else None,
+                    customer_name=self.cleaned_data['customer_name'],
+                    national_id=self.cleaned_data['national_id'],
+                    customer_contact=self.cleaned_data['customer_contact'],
+                    second_contact=self.cleaned_data['second_contact'],
+                    first_witness_name=self.cleaned_data['first_witness_name'],
+                    witness_id_no=self.cleaned_data['witness_id_no'],
+                    first_witness_contact=self.cleaned_data['first_witness_contact'],
+                    second_witness_name=self.cleaned_data['second_witness_name'],
+                    second_witness_contact=self.cleaned_data['second_witness_contact'],
+                    customer_location=self.cleaned_data['customer_location'],
+                    nearest_school=self.cleaned_data['nearest_school'],
+                    nearest_market_church_hospital=self.cleaned_data['nearest_market_church_hospital'],
+                    customer_email=self.cleaned_data['customer_email'],
+                    workplace=self.cleaned_data['workplace'],
+                    employer_or_coleague=self.cleaned_data['employer_or_coleague'],
+                    employer_or_coleague_contact=self.cleaned_data['employer_or_coleague_contact'],
+                )
+                customer_data.save()
+
+                phone_data = PhoneData(
+                    customer=customer_data,
+                    agent=self.user.agentprofile if self.user else None,
+                    imei_number=selected_device.device_imei,
+                    phone_type=selected_device.phone_type,
+                    selling_price=phone_reference_instance.merchant_price,
+                    deposit=phone_reference_instance.deposit,
+                    payment_period=self.cleaned_data['payment_period'],
+                )
+                phone_data.save()
+            return customer_data, phone_data
+        else:
+            return None, None

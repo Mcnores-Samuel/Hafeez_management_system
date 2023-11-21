@@ -5,27 +5,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="{% static 'styles/common.css' %}">
-    <link rel="stylesheet" href="{% static 'styles/data_table.css' %}">
     <link rel="stylesheet" href="{% static 'styles/base_header.css' %}">
     <link rel="stylesheet" href="{% static 'styles/forms.css' %}">
     <link rel="stylesheet" href="{% static 'styles/spinner.css' %}">
     <link rel="stylesheet" href="{% static 'styles/sections.css' %}">
-    <link rel="stylesheet" href="{% static 'styles/profile.css' %}">
-    <link rel="stylesheet" href="{% static 'styles/agent_stock_mobile.css' %}">
-    <link rel="stylesheet" href="{% static 'styles/admin_sects_display.css' %}">
-    <link rel="stylesheet" href="{% static 'styles/products_layout.css' %}">
     <link rel="stylesheet" href="{% static 'styles/footer.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/profile.css' %}">
     <link rel="icon" href="{% static 'images/icon.png' %}" type="image/png">
     <script src="{% static 'scripts/navigation.js' %}" defer></script>
     <script src="{% static 'scripts/placeholders.js' %}" defer></script>
-    <script src="{% static 'scripts/data_updates.js' %}" defer></script>
-    <script src="{% static 'scripts/sign_up_guide.js' %}" defer></script>
     <script src="{% static 'scripts/data_intake_guide.js' %}" defer></script>
-    <script src="{% static 'scripts/auto_submit_filter.js' %}" defer></script>
     <title>{% block title %}Hafeez{% endblock %}</title>
     <!-- Common CSS and JavaScript files -->
+    {% block head %}
+    <link rel="stylesheet" href="{% static 'styles/home_page.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/products_layout.css' %}">
+    <script src="{% static 'scripts/sign_up_guide.js' %}" defer></script>
+    {% endblock %}
 </head>
 <body>
     <button class="scroll-back"><i class='bx bxs-up-arrow-square'></i></button>

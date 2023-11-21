@@ -7,10 +7,9 @@
     <script src="{% static 'scripts/copytext.js' %}" defer></script>
 {% endblock %}
 {% block content %}
-<a href="{% url 'search_customers' %}" class="search_customers">Search customers</a>
-<form method="post" action="{% url 'data_search' %}" class="search-form" id="queryset">
+<form method="post" action="{% url 'search_customers' %}" class="search-form" id="queryset">
     {% csrf_token %}
-    <input type="search" id="search"  name="search_query" placeholder="Device imei or contract number">
+    <input type="search" id="search"  name="search_query" placeholder="agent customers, customer name, account name etc">
     <button type="submit" id="search_query"><i class='bx bx-search'></i></button>
 </form>
 <section class="customer_data_container">
@@ -23,7 +22,7 @@
             <p>first contact: <span id="f_contact_{{ customer.id }}" onclick="copyText('f_contact_{{ customer.id }}')">{{ customer.customer_contact }}</span></p>
             <p>second contact: <span id="S_contact_{{ customer.id }}" onclick="copyText('S_contact_{{ customer.id }}')">{{ customer.second_contact }}</span></p>
             <p>First witness: <span id="f_witness_{{ customer.id }}" onclick="copyText('f_witness_{{ customer.id }}')">{{ customer.first_witness_name }}</span></p>
-            <P>First witness ID No: <span id="witness_id_no_{{ customer.id }}" onclick="copyText('witness_id_no_{{ customer.id }}')">{{ customer.witness_id_no }}</span></P>
+            <P>First witness ID No: <span id="witness_id_no_{{ customer.id }}" onclick="copyText('witness_id_no_{{ customer.id }}')">{{ custom.witness_id_no }}</span></P>
             <p>First witness contact: <span id="f_w_contact_{{ customer.id }}" onclick="copyText('f_w_contact_{{ customer.id }}')">{{ customer.first_witness_contact }}</span></p>
             <p>Second witness: <span id="s_witness_{{ customer.id }}" onclick="copyText('s_witness_{{ customer.id }}')">{{ customer.second_witness_name }}</span></p>
             <p>Second witness contact: <span id="s_w_contact_{{ customer.id }}" onclick="copyText('s_w_contact_{{ customer.id }}')">{{ customer.second_witness_contact }}</span></p>

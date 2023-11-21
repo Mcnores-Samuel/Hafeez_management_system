@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load plus_r %}
+{%load static%}
+{% block head %}
+    <link rel="stylesheet" href="{% static 'styles/data_table.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/agent_stock_mobile.css' %}">
+{% endblock %}
+{% block content %}
+<p>Go to: <span><a href="{% url 'stock_out' %}">Stock Out</a></span></p>
+{% if stock_in %}
+{% for item in stock_in %}
+<div class="data-card">
+    <p>Recieved: 
+            {% if item.recieved %}
+            <span class="verified">
+                <input type="checkbox" id="checkbox" checked disabled>
+                <label for="checkbox" class="checkbox"></label>
+            </span>
+        {% else %}
+            <span class="verify_button">
+                <form action="" method="post" class="recieved_form">
+                    {% csrf_token %}
+                    <input type="hidden" name="device_imei" value="{{ item.device_imei }}">
+                    <button type="submit" class="recieved-btn" onclick="recieved()">verify</button>
+                </form>
+            </span>
+        {% endif %}
+    </p>
+    <p>Device: <span>{{ item.device }}</span></p>
+    <p>Device Imei: <span>{{ item.device_imei }}</span></p>
+    <p>Phone number: <span>{{ item.phone_number }}</span></p>
+    <p>Entry date: <span>{{ item.entry_date }}</span></p>
+    <p>active:
+        {% if item.active %}
+        <span class="verified">
+            <input type="checkbox" id="checkbox" checked disabled>
+            <label for="checkbox" class="checkbox"></label>
+        </span>
+        {% else %}
+        <span>
+            <input type="checkbox" id="checkbox" checked disabled>
+            <label for="checkbox" class="Notcheckbox"></label>
+        </span>
+        {% endif %}
+    </p>
+    <p>inactive:
+        {% if item.inactive %}
+            <span class="verified">
+                <input type="checkbox" id="checkbox" checked disabled>
+                <label for="checkbox" class="checkbox"></label>
+            </span>
+        {% else %}
+            <span>
+                <input type="checkbox" id="checkbox" checked disabled>
+                <label for="checkbox" class="Notcheckbox"></label>
+            </span>
+        {% endif %}
+    </p>
+    <p>sold:
+        {% if item.pending and item.active %}
+            <span class="verified">
+                <input type="checkbox" id="checkbox" checked disabled>
+                <label for="checkbox" class="checkbox"></label>
+            </span>
+        {% elif item.pending and not item.active %}
+            <span class="pending">pending</span>
+        {% else %}
+            <span>
+                <form action="" method="post" class="sold_form">
+                    {% csrf_token %}
+                    <input type="hidden" name="device_imei" value="{{ item.device_imei }}">
+                    <button type="submit" class="recieved-btn" onclick="add_pending()">Sale</button>
+                </form>
+            </span>
+        {% endif %}
+    </p>
+</div>
+{% endfor %}
+{% else %}
+<div class="data-card">
+    <p>No data available</p>
+    <p>please request for stock from the shop if you have not done so.</p>
+</div>
+{% endif %}
+{% endblock %}

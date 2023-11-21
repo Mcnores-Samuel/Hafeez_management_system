@@ -10,23 +10,6 @@
     border-radius: 8px;
 }
 
-.recieved-btn {
-    background: transparent;
-    width: 60px;
-    height: 30px;
-    color: red;
-    border: none;
-    border-radius: 15px;
-    font-size: 1.2rem;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.recieved-btn:hover {
-    background: transparent;
-    opacity: 0.8;
-    color: green;
-}
 
 @media screen and (max-width: 50rem) {
 

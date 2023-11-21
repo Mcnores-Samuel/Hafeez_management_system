@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load static %}
+{%load static%}
 {% block head %}
     <link rel="stylesheet" href="{% static 'styles/data_table.css' %}">
     <link rel="stylesheet" href="{% static 'styles/agent_stock_mobile.css' %}">
@@ -49,23 +49,44 @@
                 <caption>Stock In</caption>
                 <thead>
                     <tr>
-                        <th>category</th>
-                        <th>name</th>
+                        <th>Device</th>
                         <th>imei</th>
-                        <th>model</th>
-                        <th>Spec</th>
+                        <th>Phone number</th>
+                        <th>active</th>
+                        <th>inactive</th>
                         <th>entry date</th>
                         <th>recieved</th>
+                        <th>Sold</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for item in stock_in %}
                         <tr>
-                            <td>{{ item.category }}</td>
-                            <td>{{ item.name }}</td>
+                            <td>{{ item.device }}</td>
                             <td>{{ item.device_imei }}</td>
-                            <td>{{ item.phone_type }}</td>
-                            <td>{{ item.spec }}</td>
+                            <td>{{ item.phone_number }}</td>
+                            {% if item.active %}
+                                <td class="verified">
+                                    <input type="checkbox" id="checkbox" checked disabled>
+                                    <label for="checkbox" class="checkbox"></label>
+                                </td>
+                            {% else %}
+                                <td>
+                                    <input type="checkbox" id="checkbox" checked disabled>
+                                    <label for="checkbox" class="Notcheckbox"></label>
+                                </td>
+                            {% endif %}
+                            {% if item.inactive %}
+                                <td class="verified">
+                                    <input type="checkbox" id="checkbox" checked disabled>
+                                    <label for="checkbox" class="checkbox"></label>
+                                </td>
+                            {% else %}
+                                <td>
+                                    <input type="checkbox" id="checkbox" checked disabled>
+                                    <label for="checkbox" class="Notcheckbox"></label>
+                                </td>
+                            {% endif %}
                             <td>{{ item.entry_date }}</td>
                             {% if item.recieved %}:
                                 <td class="verified">
@@ -81,6 +102,24 @@
                                     </form>
                                 </td>
                             {% endif %}
+                            {% if item.pending and item.active %}
+                                <td class="verified">
+                                    <input type="checkbox" id="checkbox" checked disabled>
+                                    <label for="checkbox" class="checkbox"></label>
+                                </td>
+                            {% elif item.pending and not item.active %}
+                                <td class="pending">
+                                    <span class="pending">pending</span>
+                                </td>
+                            {% else %}
+                                <td>
+                                    <form action="" method="post" class="sold_form">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="device_imei" value="{{ item.device_imei }}">
+                                        <button type="submit" class="recieved-btn" onclick="add_pending()">Sale</button>
+                                    </form>
+                                </td>
+                            {% endif %}
                         </tr>
                     {% endfor %}
                 </tbody>
@@ -89,14 +128,11 @@
                 <caption>Stock Out</caption>
                 <thead>
                     <tr>
-                        <th>category</th>
-                        <th>name</th>
-                        <th>imei</th>
-                        <th>model</th>
-                        <th>Spec</th>
+                        <th>Device</th>
+                        <th>imei number</th>
                         <th>Entry date</th>
+                        <th>Stock out date</th>
                         <th>sold on</th>
-                        <th>contract No</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -109,20 +145,7 @@
                         <td>{{ item.spec }}</td>
                         <td>{{ item.entry_date }}</td>
                         <td>{{ item.stock_out_date }}</td>
-                        {% if item.contract_no and item.sales_type == 'Loan' and item.contract_no != '##' %}
-                            <td>{{ item.contract_no }}</td>
-                        {% elif not item.contract_no and item.sales_type == 'Cash' or item.contract_no == '##' and item.sales_type == 'Cash' %}
-                            <td>No contract</td>
-                        {% else %}
-                            <td>
-                                <form action="" method="post" class="contract_number_form">
-                                    {% csrf_token %}
-                                    <input type="text" name="contract_number" placeholder="Add contract number" maxlength="9" minlength="9" pattern="[A]{1}[0-9]{8}">
-                                    <input type="hidden" name="device_imei" value="{{ item.device_imei }}">
-                                    <button type="submit" class="contract_number-btn" onclick="save_contract_number()">save</button>
-                                </form>
-                            </td>
-                        {% endif %}
+                        <td>{{ item.sold_on }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>

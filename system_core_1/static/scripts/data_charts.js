@@ -6,216 +6,283 @@ const months = [
     "November", "December"
 ];
 
-let monthly_ctx = null;
-let monthly_chart = null;
-let weekly_sales_chart = null;
-let weekly_ctx = null;
-let daily_sales_chart = null;
-let daily_ctx = null;
 
-function update_monthly_Chart() {
-    if (monthly_chart === null) {
-        monthly_ctx = document.querySelector('.products').getContext('2d');
+let weeklySalesChart = null;
+let weeklyCtx = null;
+
+let salesByAgentChart = null;
+let salesByAgentCtx = null;
+
+let dailyCtx = null;
+let dailySalesChart = null;
+
+/**
+ * Update the monthly sales chart
+ * @returns {void}
+ * @async - This function is asynchronous
+ * @function updateMonthlyChart - Update the monthly sales chart
+ * @memberof module:system_core_1/static/scripts/data_charts.js
+ * @inner - updateMonthlyChart
+ * @param {void} - This function does not take any parameters
+ * @example - updateMonthlyChart();
+ * updateMonthlyChart();
+ * @requires jQuery from jquery
+ * @requires Chart  from chart.js
+ */
+function updateDailyChart() {
+
+    if (dailySalesChart === null) {
+        dailyCtx = $('.daily_sales_chart').get(0).getContext('2d');
     }
-    
-    let date = new Date()
-    let labels_list = []
-    let nums = []
-    let chart_type = "line"
-    
-    fetch("/get_models_json/")
-    .then(response => response.json())
-    .then(data => {
-        for(let i = 0; i < data.length; i++) {
-            if (data.length > 20){
-                chart_type = "line"
-            }
-            labels_list.push(data[i].type)
-            nums.push(data[i].total)
-        }
+
+    let date = new Date();
+    let chartType = "line";
+
+    function fetchAndUpdateDailyData() {
+        let modelList = [];
+        let total = [];
         
-        if (monthly_chart === null) {
-            monthly_chart = new Chart(monthly_ctx, {
-                type: chart_type,
-                data: {
-                    labels: labels_list,
-                    datasets: [{
-                        label: months[date.getMonth()] + " Data",
-                        data: nums,
-                        backgroundColor: ["#000C66", "blue", "green", "yellow", "gray"],
-                        borderColor: ["#000C66", "blue", "green", "yellow", "gray"],
-                        borderWidth: 2
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    events: ["mousemove"],
-                    interaction: {
-                        mode: "nearest",
-                    },
-                    plugins: {
-                        title: {
-                           display: true,
-                           text: 'Monthy Inventory Analysis',
-                           color: 'navy',
-                           position: 'bottom',
-                           align: 'center',
-                           font: {
-                              weight: 'bold'
-                           },
-                           padding: 8,
-                           fullSize: true,
-                        }
-                    }
-                }
-            });
-        } else {
-            monthly_chart.data.labels = labels_list;
-            monthly_chart.data.datasets[0].data = nums;
-            monthly_chart.update();
-        }
-    })
-    .catch(err => console.error(err));
-}
+        $.ajax({
+            url: "/system_core_1/get_daily_sales_json/",
+            method: "GET",
+            contentType: "application/json",
+            beforeSend: function () {
+                const load = $('.loading-message-daily')
+                load.addClass('loading-message');
+            },
+            success: function (data) {
+                const load = $('.loading-message-daily')
+                load.removeClass('loading-message');
 
-function update_daily_Chart() {
-    if (daily_sales_chart === null) {
-        daily_ctx = document.querySelector('.daily_sales_chart').getContext('2d');
-    }
-    
-    let date = new Date()
-    let model_list = []
-    let total = []
-    let chart_type = "line"
-    
-    fetch("/daily_entries_json/")
-    .then(response => response.json())
-    .then(data => {
-        for(let i = 0; i < data.length; i++) {
-            model_list.push(data[i].type)
-            total.push(data[i].total)
-        }
-        
-        if (daily_sales_chart === null) {
-            daily_sales_chart = new Chart(daily_ctx, {
-                type: chart_type,
-                data: {
-                    labels: model_list,
-                    datasets: [{
-                        label: date.toDateString(),
-                        data: total,
-                        backgroundColor: ["#877B89", "blue", "green", "yellow", "gray"],
-                        borderColor: ["#877B89", "blue", "green", "yellow", "gray"],
-                        borderWidth: 2
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    events: ["mousemove"],
-                    interaction: {
-                        mode: "nearest",
-                    },
-                    plugins: {
-                        title: {
-                           display: true,
-                           text: 'Daily Sales Analysis',
-                           color: 'navy',
-                           position: 'bottom',
-                           align: 'center',
-                           font: {
-                              weight: 'bold'
-                           },
-                           padding: 8,
-                           fullSize: true,
-                        }
-                    }
-                }
-            });
-        } else {
-            daily_sales_chart.data.labels = labels_list;
-            daily_sales_chart.data.datasets[0].data = nums;
-            daily_sales_chart.update();
-        }
-    })
-    .catch(err => console.error(err));
-}
+                $.each(data, function (model, value) {
+                    modelList.push(model);
+                    total.push(value);
+                });
 
-function update_weekly_Chart() {
-    if (weekly_sales_chart === null) {
-        weekly_ctx = document.querySelector('.Weekly_sales_chart').getContext('2d');
-    }
-    let labels_list = ["M", "T", "W", "T", "F", "S", "S"]
-    let nums = []
-    let count = 0
-    let chart_type = "line"
-    
-    fetch("/get_weekly_sales_json/")
-    .then(response => response.json())
-    .then(data => {
-        for (const dayData of data) {
-            for (const dayName in dayData) {
-                if (dayData.hasOwnProperty(dayName)) {
-                    const items = dayData[dayName];
-                    for (const item of items) {
-                        count++;
-                    }
-                    nums.push(count)
+                if (dailySalesChart === null) {
+                    dailySalesChart = new Chart(dailyCtx, {
+                        type: chartType,
+                        data: {
+                            labels: modelList,
+                            datasets: [{
+                                label: date.toDateString(),
+                                data: total,
+                                backgroundColor: ["#877B89", "blue", "green", "yellow", "gray"],
+                                borderColor: ["#877B89", "blue", "green", "yellow", "gray"],
+                                borderWidth: 2
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            events: ["mousemove"],
+                            interaction: {
+                                mode: "nearest",
+                            },
+                            plugins: {
+                                title: {
+                                    display: true,
+                                    text: 'Daily Sales Analysis',
+                                    color: 'navy',
+                                    position: 'bottom',
+                                    align: 'center',
+                                    font: {
+                                        weight: 'bold'
+                                    },
+                                    padding: 8,
+                                    fullSize: true,
+                                }
+                            }
+                        }
+                    });
+                } else {
+                    dailySalesChart.data.labels = labelsList;
+                    dailySalesChart.data.datasets[0].data = nums;
+                    dailySalesChart.update();
                 }
-                count = 0
+                setTimeout(fetchAndUpdateDailyData, 5 * 60 * 1000);
+            },
+            error: function (err) {
+                console.error(err);
             }
-        }
-        if (weekly_sales_chart === null) {
-            weekly_sales_chart = new Chart(weekly_ctx, {
-                type: chart_type,
-                data: {
-                    labels: labels_list,
-                    datasets: [{
-                        label: "This week",
-                        data: nums,
-                        backgroundColor: ["brown"],
-                        borderColor: ["rgb(47, 79, 79, 0.7)"],
-                        borderWidth: 2
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    events: ["mousemove"],
-                    interaction: {
-                        mode: "nearest",
-                    },
-                    plugins: {
-                        title: {
-                           display: true,
-                           text: 'Weekly Sales Analysis',
-                           color: 'navy',
-                           position: 'bottom',
-                           align: 'center',
-                           font: {
-                              weight: 'bold'
-                           },
-                           padding: 8,
-                           fullSize: true,
+        });
+    }
+    fetchAndUpdateDailyData();
+}
+updateDailyChart();
+
+
+function updateWeeklyChart() {
+    if (weeklySalesChart === null) {
+        weeklyCtx = $('.Weekly_sales_chart').get(0).getContext('2d');
+    }
+    
+    let labelsList = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+    let chartType = "line";
+
+    function fetchAndUpdateWeeklyData() {
+        let nums = [];
+
+        $.ajax({
+            url: "/system_core_1/get_weekly_sales_json/",
+            method: "GET",
+            contentType: "application/json",
+            beforeSend: function () {
+                const load = $('.loading-message-weekly')
+                load.addClass('loading-message');
+            },
+            success: function (data) {
+                const load = $('.loading-message-weekly')
+                load.removeClass('loading-message');
+
+                Object.keys(data).forEach(day => {
+                    let salesData = data[day];
+                    let total = salesData.length;
+                    nums.push(total);
+                });
+
+                if (weeklySalesChart === null) {
+                    weeklySalesChart = new Chart(weeklyCtx, {
+                        type: chartType,
+                        data: {
+                            labels: labelsList,
+                            datasets: [{
+                                label: "This week",
+                                data: nums,
+                                backgroundColor: ["brown"],
+                                borderColor: ["rgb(47, 79, 79, 0.7)"],
+                                borderWidth: 2
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            events: ["mousemove"],
+                            interaction: {
+                                mode: "nearest",
+                            },
+                            plugins: {
+                                title: {
+                                    display: true,
+                                    text: 'Weekly Sales Analysis',
+                                    color: 'navy',
+                                    position: 'bottom',
+                                    align: 'center',
+                                    font: {
+                                        weight: 'bold'
+                                    },
+                                    padding: 8,
+                                    fullSize: true,
+                                },
+                                dataLabels: {
+                                    formatter: (value) => {
+                                        return value + '%';
+                                    }
+
+                                },
+                            }
                         }
-                    }
+                    });
+                } else {
+                    weeklySalesChart.data.labels = labelsList;
+                    weeklySalesChart.data.datasets[0].data = nums;
+                    weeklySalesChart.update();
                 }
-            });
-        } else {
-            weekly_sales_chart.data.labels = labels_list;
-            weekly_sales_chart.data.datasets[0].data = nums;
-            weekly_sales_chart.update();
-        }
-    })
-    .catch(err => console.error(err));
+                setTimeout(fetchAndUpdateWeeklyData, 5 * 60 * 1000);
+            },
+            error: function (err) {
+                console.error(err);
+            }
+        });
+    }
+    fetchAndUpdateWeeklyData();
+}
+updateWeeklyChart();
+
+
+
+function updateSalesByAgentChart() {
+    if (salesByAgentChart === null) {
+        salesByAgentCtx = $('.sales_by_agent_chart').get(0).getContext('2d');
+    }
+    let date = new Date();
+    let chartType = "bar";
+    
+    function fetchAndUpdateAgentMonthly() {
+        let labelsList = [];
+        let nums = [];
+
+        $.ajax({
+            url: "/system_core_1/get_sale_by_agent_monthy/",
+            method: "GET",
+            contentType: "application/json",
+            beforeSend: function () {
+                const load = $('.loading-message-monthly')
+                load.addClass('loading-message');
+            },
+            success: function (data) {
+                const load = $('.loading-message-monthly')
+                load.removeClass('loading-message');
+
+                Object.keys(data).forEach(agent => {
+                    if (agent !== "Total") {
+                        labelsList.push(agent);
+                        nums.push(data[agent]);
+                    }
+                });
+
+                if (salesByAgentChart === null) {
+                    salesByAgentChart = new Chart(salesByAgentCtx, {
+                        type: chartType,
+                        data: {
+                            labels: labelsList,
+                            datasets: [{
+                                label: months[date.getMonth()] + " Total Sales " + `${data['Total']}`,
+                                data: nums,
+                                backgroundColor: ["#23435c"],
+                                borderColor: ["#23435c"],
+                                borderWidth: 2
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            events: ["mousemove"],
+                            interaction: {
+                                mode: "nearest",
+                            },
+                            plugins: {
+                                title: {
+                                    display: true,
+                                    text: 'Sales by Agent',
+                                    color: 'navy',
+                                    position: 'bottom',
+                                    align: 'center',
+                                    font: {
+                                        weight: 'bold'
+                                    },
+                                    padding: 8,
+                                    fullSize: true,
+                                }
+                            },
+                            indexAxis: 'y',
+                            barPercentage: 0.7,
+                            categoryPercentage: 0.7
+                        }
+                    });
+                } else {
+                    salesByAgentChart.data.labels = labelsList;
+                    salesByAgentChart.data.datasets[0].data = nums;
+                    salesByAgentChart.update();
+                }
+                setTimeout(fetchAndUpdateAgentMonthly, 5 * 60 * 1000);
+            },
+            error: function (err) {
+                console.error(err);
+            }
+        });
+    }
+    fetchAndUpdateAgentMonthly();
 }
 
-document.addEventListener('DOMContentLoaded', function () {
-    update_monthly_Chart()
-    update_weekly_Chart()
-    update_daily_Chart()
-    setInterval(update_monthly_Chart, 10 * 60 * 1000);
-    setInterval(update_weekly_Chart, 10 * 60 * 1000);
-    setInterval(update_daily_Chart, 10 * 60 * 1000);
-});
+updateSalesByAgentChart();
