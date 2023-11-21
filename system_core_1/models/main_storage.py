@@ -178,7 +178,7 @@ class MainStorage(models.Model):
 
 
 DEVICES = (
-    ("MIFI", "MIFI"), ("ROUTER (IUD)", "ROUTER (IUD)"),
+    ("MIFI", "MIFI"), ("ROUTER (IDU)", "ROUTER (IDU)"),
 )
 
 class Airtel_mifi_storage(models.Model):

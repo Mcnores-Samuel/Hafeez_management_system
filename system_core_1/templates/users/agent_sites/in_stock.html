@@ -1,5 +1,10 @@
 {% extends 'base.html' %}
 {% load plus_r %}
+{%load static%}
+{% block head %}
+    <link rel="stylesheet" href="{% static 'styles/data_table.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/agent_stock_mobile.css' %}">
+{% endblock %}
 {% block content %}
 <p>Go to: <span><a href="{% url 'stock_out' %}">Stock Out</a></span></p>
 {% if stock_in %}

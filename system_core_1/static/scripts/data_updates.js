@@ -59,17 +59,3 @@ function add_pending() {
         showNotification(data.message, 'success');
     })
 }
-
-
-const textToCopy = document.querySelector('.text-to-copy');
-const copyButton = document.querySelector('.copy-button');
-
-copyButton.addEventListener('click', () => {
-    const textarea = document.createElement('textarea');
-    textarea.value = textToCopy.innerText;
-    document.body.appendChild(textarea);
-    textarea.select();
-    document.execCommand('copy');
-    document.body.removeChild(textarea);
-    copyButton.innerText = 'Copied!';
-});

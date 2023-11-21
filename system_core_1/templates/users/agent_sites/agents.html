@@ -1,4 +1,10 @@
 {% extends "base.html" %}
+{% load static %}
+{% block head %}
+    <link rel="stylesheet" href="{% static 'styles/data_table.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/agent_stock_mobile.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/admin_sects_display.css' %}">
+{% endblock %}
 {% block header %}
     <div class="topbar">
         <div class="logo">HE</div>

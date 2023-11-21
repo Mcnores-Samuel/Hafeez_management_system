@@ -122,7 +122,7 @@ def dashboard(request):
         total_sales_by_agents = {}
         for agent in airtel_agents:
             total_sales_by_agents[agent] = len(Airtel_mifi_storage.objects.filter(agent=agent.id,
-                                                                                 in_stock=False, pending=True))
+                                                                                 in_stock=True, pending=True))
         avatar = UserAvatar.objects.get(user=request.user) if UserAvatar.objects.filter(user=request.user).exists() else None
         context = {
             'profile': request.user.email[0],

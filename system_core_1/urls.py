@@ -39,9 +39,11 @@ urlpatterns =[
     path('approve_contracts/', approve_contracts.approve_contracts, name='approve_contracts'),
     path('decline_contracts/', approve_contracts.decline_contracts, name='decline_contracts'),
     path('sale_aitel_device/', approve_contracts.sale_aitel_device, name='sale_aitel_device'),
+    # produces data for charts in dashboard
     path('get_daily_sales_json/', data_for_charts.get_daily_sales_json, name='get_daily_sales_json'),
     path('get_weekly_sales_json/', data_for_charts.get_weekly_sales_json, name='get_weekly_sales_json'),
     path('get_sale_by_agent_monthy/', data_for_charts.get_sale_by_agent_monthy, name='get_sale_by_agent_monthy'),
+    path('get_agents_stock_json/', data_for_charts.get_agents_stock_json, name='get_agents_stock_json'),
     # reseting user password
     path('password_reset/', auth_views.PasswordResetView.as_view(template_name='registration/reset_form.html'), name='password_reset'),
     path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(template_name='registration/reset_done.html'), name='password_reset_done'),

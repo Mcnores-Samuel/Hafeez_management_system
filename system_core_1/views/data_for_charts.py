@@ -49,10 +49,28 @@ def get_sale_by_agent_monthy(request):
         sales_by_agent = {}
         current_month = timezone.now().date().month
         current_year = timezone.now().date().year
+        total_sales = MainStorage.objects.filter(stock_out_date__month=current_month,
+                                                 stock_out_date__year=current_year,
+                                                 sold=True, in_stock=False)
         for agent in agents:
             sales_by_agent[str(agent.user.username).lower().capitalize()] = len(MainStorage.objects.filter(agent=agent.user,
                                                                                  stock_out_date__month=current_month,
                                                                                  stock_out_date__year=current_year,
                                                                                  sold=True, in_stock=False))
+        sales_by_agent['Total'] = len(total_sales)
         return JsonResponse(sales_by_agent)
+    return JsonResponse({'error': 'Invalid request.'})
+
+
+@login_required
+def get_agents_stock_json(request):
+    """Returns a JSON object containing the agents and their stocks."""
+    if request.method == 'GET':
+        agents = AgentProfile.objects.all().order_by('user__username')
+        stocks = {}
+        for agent in agents:
+            stocks[str(agent.user.username).lower().capitalize()] = len(MainStorage.objects.filter(agent=agent.user,
+                                                                                                 in_stock=True, sold=False))
+        stocks['Total'] = len(MainStorage.objects.filter(in_stock=True, sold=False, assigned=True))
+        return JsonResponse(stocks)
     return JsonResponse({'error': 'Invalid request.'})

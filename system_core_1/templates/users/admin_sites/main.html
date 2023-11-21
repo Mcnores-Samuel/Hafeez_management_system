@@ -1,5 +1,15 @@
 {% extends "base.html" %}
 {% load static %}
+{% block head %}
+    <link rel="stylesheet" href="{% static 'styles/admin_sects_display.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/data_table.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/agent_stock_mobile.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/loading-message.css' %}">
+    <script src="{% static 'scripts/data_charts.js' %}" defer></script>
+    <script src="{% static 'scripts/auto_submit_filter.js' %}" defer></script>
+    <script src="{% static 'scripts/copyCode.js' %}" defer></script>
+    <script src="{% static 'scripts/stocks_stats.js' %}" defer></script>
+{% endblock %}
 {% block header %}
     <!-- Custom header content for Template 1 -->
     <div class="topbar">
@@ -58,29 +68,36 @@
                 <a href="{% url 'generate_agent_code' %}"><button type="submit">generate new code</button></a>
             </div>
             <div class="daily_sales">
-                <div>
+                <div class="description">
                     <h3>Daily Sales</h3>
                     <a href="{% url 'get_daily_sales_json' %}">Full Analysis</a>
                 </div>
+                <div class="loading-message-daily"></div>
                 <canvas class="daily_sales_chart" aria-label="chart" height="350"></canvas>
             </div>
             <div class="weekly_sales">
-                <div>
+                <div class="description">
                     <h3>Weekly Sales</h3>
                     <a href="{% url 'get_weekly_sales_json' %}">Full Analysis</a>
                 </div>
+                <div class="loading-message-weekly"></div>
                 <canvas class="Weekly_sales_chart" aria-label="chart" height="350"></canvas>
             </div>
             <div class="agent_sales">
-                <div>
+                <div class="description">
                     <h3>Sales by agent Monthly</h3>
                     <a href="{% url 'get_sale_by_agent_monthy' %}">Full Analysis</a>
                 </div>
-                <p class="status"></p>
+                <div class="loading-message-monthly"></div>
                 <canvas class="sales_by_agent_chart" aria-label="chart" height="350"></canvas>
             </div>
-            <div class="w-loss">
-                <h3>Weekly Loss</h3>
+            <div class="all_agents_stock">
+                <div class="description">
+                    <h3>In stock</h3>
+                    <a href="{% url 'get_agents_stock_json' %}">Full Analysis</a>
+                </div>
+                <div class="loading-message-stock"></div>
+                <canvas class="all_agents_stock_chart" aria-label="chart" height="350"></canvas>
             </div>
             <div class="projects">
                 <h3>Deposites</h3>

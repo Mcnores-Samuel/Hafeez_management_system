@@ -1,4 +1,9 @@
 {% extends 'base.html' %}
+{% load static %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'styles/data_table.css' %}">
+<link rel="stylesheet" href="{% static 'styles/agent_stock_mobile.css' %}">
+{% endblock %}
 {% block content %}
 <form method="post" action="{% url 'data_search' %}" class="search-form" id="queryset">
     {% csrf_token %}
