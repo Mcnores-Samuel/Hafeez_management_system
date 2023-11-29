@@ -58,7 +58,8 @@ def get_sale_by_agent_monthy(request):
                                                                                  stock_out_date__year=current_year,
                                                                                  sold=True, in_stock=False))
         sales_by_agent['Total'] = len(total_sales)
-        return JsonResponse(sales_by_agent)
+        sales_by_agent = sorted(sales_by_agent.items(), key=lambda x: x[1], reverse=True)
+        return JsonResponse(sales_by_agent, safe=False)
     return JsonResponse({'error': 'Invalid request.'})
 
 

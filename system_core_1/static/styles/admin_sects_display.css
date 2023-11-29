@@ -201,6 +201,11 @@
     height: 350px;
 }
 
+.all_agents_stock_chart {
+    height: 100%;
+    width: 100%;
+}
+
 
 .description {
     position: relative;

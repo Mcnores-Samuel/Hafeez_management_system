@@ -5,6 +5,10 @@
 	border-bottom: 1px solid gainsboro;
 }
 
+.controls > button:hover {
+	background: transparent;
+}
+
 .profile-container {
 	display: grid;
 	grid-template-columns: repeat(4, 1fr);
@@ -32,12 +36,13 @@
 	border: none;
 	padding: 5px;
 	background: transparent;
-    font-size: 1.2rem;
+    font-size: 1rem;
     font-weight: bolder;
 }
 
 button:hover {
 	background-color: #23435c;
+	color: white;
 }
 
 button:active {
@@ -71,8 +76,7 @@ button:active {
 
 .userprofile .user-data p span {
 	font-weight: bold;
-	color: #4accba;
-	font-size: 1.2rem;
+	font-size: 1rem;
 }
 
 .danger-zone {

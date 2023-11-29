@@ -13,6 +13,7 @@ from ..models.user_profile import UserAvatar
 from ..models.customer_details import CustomerData
 from django.utils import timezone
 
+
 @login_required
 def profile(request):
     """Display the user's profile.
@@ -42,6 +43,7 @@ def profile(request):
         }
     return render(request, 'users/general-sites/profile.html', context)
 
+
 @login_required
 def change_password(request):
     """Change the user's password.
@@ -69,6 +71,7 @@ def change_password(request):
     }
     
     return render(request, 'users/general-sites/change_password.html', context)
+
 
 @login_required
 def in_stock(request):
@@ -105,6 +108,7 @@ def in_stock(request):
         }
         return render(request, 'users/airtel_agents/in_stock.html', context)
     return render(request, 'users/agent_sites/in_stock.html', context)
+
 
 @login_required
 def stock_out(request):
@@ -147,6 +151,7 @@ def stock_out(request):
         return render(request, 'users/airtel_agents/stock_out.html', context)
     return render(request, 'users/agent_sites/stock_out.html', context)
 
+
 @login_required
 def add_contract_number(request):
     """Adds contract number to the phone sold.
@@ -171,6 +176,7 @@ def add_contract_number(request):
                 main_storage.save()
     return redirect('dashboard')
 
+
 @login_required
 def verify_stock_recieved(request):
     """Verifies the stock recieved by the agent.
@@ -192,7 +198,7 @@ def verify_stock_recieved(request):
                     main_storage.save()
                 return JsonResponse({'message': 'verified successfully'})
             else:
-                return JsonResponse({'message': 'Error verifying stock'})
+                return JsonResponse({'message': 'imei number not found'})
             
         elif request.user.groups.filter(name='airtel_agents').exists():
             imei_number = request.POST.get('device_imei', None)
@@ -203,8 +209,8 @@ def verify_stock_recieved(request):
                     main_storage.save()
                 return JsonResponse({'message': 'verified successfully'})
             else:
-                return JsonResponse({'message': 'Error verifying stock'})
-    return render(request, 'users/agent_sites/agents.html')
+                return JsonResponse({'message': 'imei number not found'})
+    return redirect('dashboard')
 
 
 @login_required

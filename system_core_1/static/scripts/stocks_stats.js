@@ -2,11 +2,8 @@ let allAgentsStocks = null;
 let allAgentCtx = null;
 
 function inStockStats() {
-    if (allAgentsStocks === null) {
-        allAgentCtx = $('.all_agents_stock_chart').get(0).getContext('2d');
-    }
-
-    let chartType = "doughnut";
+    let allAgentsStocks = null;
+    let allAgentCtx = $('.all_agents_stock_chart').get(0);
 
     function updateChart() {
         let labelsList = [];
@@ -29,70 +26,29 @@ function inStockStats() {
                         labelsList.push(key);
                         dataList.push(data[key]);
                     }
-                }
-                );
+                });
+
+                const layout = {
+                    title: `${data.Total}` + ' In Stock',
+                    margin: { t: 50, b: 50, l: 50, r: 50 },
+                    plot_bgcolor: 'rgba(0,0,0,0)',
+                    paper_bgcolor: 'rgba(0,0,0,0)'
+                };
 
                 if (allAgentsStocks === null) {
-                    allAgentsStocks = new Chart(allAgentCtx, {
-                        type: chartType,
-                        data: {
-                            labels: labelsList,
-                            datasets: [{
-                                label: 'In Stock',
-                                data: dataList,
-                                backgroundColor: ['#0B666A', '#97FEED', '#2B2A4C',
-                                '#FF9B42', '#FFD56F', '#411020', '#FFCA3A', '#E11299',
-                                '#060047', '#4D455D', '#1A4D2E', '#3AB0FF', '#38928f',
-                                '#fffffb', '#264720', '#217799'
-                                ]
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            legend: {
-                                display: false
-                            },
-                            title: {
-                                display: true,
-                                text: 'Stocks'
-                            },
-                            animation: {
-                                animateScale: true,
-                                animateRotate: true
-                            },
-                            maintainAspectRatio: false,
-                            scales: {
-                                yAxes: [{
-                                    ticks: {
-                                        beginAtZero: true,
-                                        stepSize: 1
-                                    }
-                                }]
-                            },
-                            barPercentage: 0.7,
-                            categoryPercentage: 0.7,
-                            plugins: {
-                                title: {
-                                    display: true,
-                                    text: `${data.Total}` + ' In Stock',
-                                    color: 'navy',
-                                    position: 'bottom',
-                                    font: {
-                                        weight: 'bold'
-                                    },
-                                    padding: 8,
-                                    fullSize: true,
-                                }
-                            }
-
-                        }
-                    });
-
+                    allAgentsStocks = Plotly.newPlot(allAgentCtx, [{
+                        labels: labelsList,
+                        values: dataList,
+                        hole: .4,
+                        type: 'pie',
+                    }], layout, { responsive: true, displaylogo: false });
                 } else {
-                    allAgentsStocks.data.labels = labelsList;
-                    allAgentsStocks.data.datasets[0].data = dataList;
-                    allAgentsStocks.update();
+                    Plotly.react(allAgentCtx, [{
+                        labels: labelsList,
+                        values: dataList,
+                        hole: .4,
+                        type: 'pie',
+                    }], layout, { responsive: true, displaylogo: false });
                 }
                 setTimeout(updateChart, 5 * 60 * 1000);
             },
@@ -103,4 +59,5 @@ function inStockStats() {
     }
     updateChart();
 }
+
 inStockStats();

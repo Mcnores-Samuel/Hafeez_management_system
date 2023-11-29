@@ -29,7 +29,7 @@ class MainStorageData(admin.ModelAdmin):
     list_display = ('assigned_to', 'recieved', 'device_imei', 'category', 'name', 'phone_type',
                     'spec', 'screen_size', 'os', 'battery', 'camera', 'in_stock', 'pending', 'missing',
                     'sales_type', 'contract_no', 'assigned_from', 'updated_by', 'entry_date', 'stock_out_date',
-                    'assigned', 'sold', 'paid', 'image'
+                    'assigned', 'sold', 'paid', 'image', 'comment'
     )
     search_fields = ('device_imei', 'phone_type', 'entry_date', 'category', 'agent__username',
                      'contract_no', 'sales_type', 'stock_out_date', 'assigned', 'sold', 'paid')
@@ -39,7 +39,8 @@ class MainStorageData(admin.ModelAdmin):
 
 
     actions = ['update_images', 'verify_stock_recieved',
-               'unverify_stock_recieved', 'unassign_select', 'mark_as_sold',]
+               'unverify_stock_recieved', 'unassign_select', 'mark_as_sold',
+               'missing']
     
     class Meta:
         ordering = ['-entry_date']
@@ -47,6 +48,14 @@ class MainStorageData(admin.ModelAdmin):
 
     def assigned_to(self, obj):
         return obj.agent
+    
+    def missing(self, request, queryset):
+        for obj in queryset:
+            if obj:
+                obj.missing = True
+                obj.save()
+    missing.short_description = "Mark as missing"
+
 
     def update_images(self, request, queryset):
         # Get the image from the first selected object
@@ -174,7 +183,7 @@ class Airtel_mifi_storageAdmin(admin.ModelAdmin):
     list_display = ('assigned_to', 'recieved', 'device_imei', 'phone_number', 'device',
                     'pending', 'active', 'inactive', 'in_stock',
                     'assigned', 'entry_date', 'stock_out_date',
-                    'cash_recieved', 'paid', 'image'
+                    'cash_recieved', 'paid', 'image', 'comment'
                     )
     
     search_fields = ('device_imei', 'device', 'entry_date',
