@@ -224,12 +224,11 @@ function updateSalesByAgentChart() {
                 const load = $('.loading-message-monthly')
                 load.removeClass('loading-message');
 
-                Object.keys(data).forEach(agent => {
-                    if (agent !== "Total") {
-                        labelsList.push(agent);
-                        nums.push(data[agent]);
-                    }
-                });
+                const totalData = data.find(item => item[0] === "Total");
+                const total = totalData ? totalData[1] : 0;
+                const filteredData = data.filter(item => item[0] !== "Total");
+                labelsList = filteredData.map(item => item[0]);
+                nums = filteredData.map(item => item[1]);
 
                 if (salesByAgentChart === null) {
                     salesByAgentChart = new Chart(salesByAgentCtx, {
@@ -237,7 +236,7 @@ function updateSalesByAgentChart() {
                         data: {
                             labels: labelsList,
                             datasets: [{
-                                label: months[date.getMonth()] + " Total Sales " + `${data['Total']}`,
+                                label: months[date.getMonth()] + " Total Sales " + `${total}`,
                                 data: nums,
                                 backgroundColor: ["#23435c"],
                                 borderColor: ["#23435c"],
@@ -254,7 +253,7 @@ function updateSalesByAgentChart() {
                             plugins: {
                                 title: {
                                     display: true,
-                                    text: 'Sales by Agent',
+                                    text: 'Sales by Agents',
                                     color: 'navy',
                                     position: 'bottom',
                                     align: 'center',
@@ -273,6 +272,7 @@ function updateSalesByAgentChart() {
                 } else {
                     salesByAgentChart.data.labels = labelsList;
                     salesByAgentChart.data.datasets[0].data = nums;
+                    salesByAgentChart.data.datasets[0].label = months[date.getMonth()] + " Total Sales " + `${total}`;
                     salesByAgentChart.update();
                 }
                 setTimeout(fetchAndUpdateAgentMonthly, 5 * 60 * 1000);

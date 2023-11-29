@@ -9,6 +9,8 @@
     <script src="{% static 'scripts/auto_submit_filter.js' %}" defer></script>
     <script src="{% static 'scripts/copyCode.js' %}" defer></script>
     <script src="{% static 'scripts/stocks_stats.js' %}" defer></script>
+    <script src='https://cdn.plot.ly/plotly-2.27.0.min.js'></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 {% endblock %}
 {% block header %}
     <!-- Custom header content for Template 1 -->
@@ -97,7 +99,7 @@
                     <a href="{% url 'get_agents_stock_json' %}">Full Analysis</a>
                 </div>
                 <div class="loading-message-stock"></div>
-                <canvas class="all_agents_stock_chart" aria-label="chart" height="350"></canvas>
+                <div class="all_agents_stock_chart"></div>
             </div>
             <div class="projects">
                 <h3>Deposites</h3>

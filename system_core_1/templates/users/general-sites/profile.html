@@ -28,6 +28,10 @@
             <form method="post" class="sign_up" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="form-group">
+                    {{ profile_form.email }}
+                    <label for="{{ profile_form.email.id_for_label }}">Email:</label>
+                </div>
+                <div class="form-group">
                     {{ profile_form.first_name }}
                     <label for="{{ profile_form.first_name.id_for_label }}">Enter your first name:</label>
                 </div>
@@ -38,6 +42,10 @@
                 <div class="form-group">
                     {{ profile_form.phone_number }}
                     <label for="{{ profile_form.phone_number.id_for_label }}">Enter your phone number:</label>
+                </div>
+                <div class="form-group">
+                    {{ profile_form.location }}
+                    <label for="{{ profile_form.location.id_for_label }}">Enter your location:</label>
                 </div>
                 <button type="submit">Save</button>
             </form>

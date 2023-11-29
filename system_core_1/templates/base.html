@@ -7,7 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="{% static 'styles/common.css' %}">
     <link rel="stylesheet" href="{% static 'styles/base_header.css' %}">
     <link rel="stylesheet" href="{% static 'styles/forms.css' %}">
@@ -64,7 +63,7 @@
             </ul>
         {% else %}
             <ul>
-                <li><a href="{% url 'sign_in' %}"><i class='bx bx-log-in'></i> Sign In</a></li>
+                <li><a href="{% url 'sign_in' %}"><i class='bx bx-log-in'></i> Log In</a></li>
                 <li><a href="{% url 'sign_up' %}"><i class='bx bx-log-in-circle'></i> Sign Up</a></li>
             </ul>
         {% endif %}

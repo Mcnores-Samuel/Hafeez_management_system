@@ -170,6 +170,7 @@ class MainStorage(models.Model):
     missing = models.BooleanField(default=False)
     assigned_from = models.CharField(max_length=50, null=True, blank=True)
     updated_by = models.CharField(max_length=50, null=True, blank=True)
+    comment = models.CharField(max_length=256, null=True, blank=True)
 
     class Meta:
         indexes = [
@@ -211,6 +212,7 @@ class Airtel_mifi_storage(models.Model):
     cash_recieved = models.BooleanField(default=False)
     paid = models.BooleanField(default=False)
     image = models.ImageField(upload_to='product_images/', null=True, blank=True)
+    comment = models.CharField(max_length=256, null=True, blank=True)
 
     class Meta:
         indexes = [

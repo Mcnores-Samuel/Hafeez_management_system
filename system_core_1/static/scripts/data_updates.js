@@ -18,7 +18,7 @@ function save_contract_number() {
 
 
 function showNotification(message, type = 'info') {
-    const notification = document.getElementById('notification');
+    const notification = document.querySelector('#notification');
     notification.textContent = message;
     notification.className = `notification ${type}`;
     notification.style.display = 'block';
@@ -57,5 +57,7 @@ function add_pending() {
     .then(data => {
         form.reset();
         showNotification(data.message, 'success');
-    })
+    }).catch(error => {
+        showNotification(error.message, 'error');
+    });
 }
