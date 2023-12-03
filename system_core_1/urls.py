@@ -4,6 +4,12 @@ from .views import (registration_view, data_updates, customer_registrar,
                     central_display, home_page, user_dashboard, action_on_data_select,
                     search_and_filters, auto_fill_responder, approve_contracts,
                     data_for_charts)
+from .views.staff_sites.approve import (
+    approved, get_approved_data, approve, get_total_to_approve)
+from .views.staff_sites.new_entries import (get_new_entries, get_new_entries_total, mark_as_read)
+from .views.staff_sites.edit_customer_data import edit_customer_data
+from .views.staff_sites.delete_data import delete_customer_data
+from .views.staff_sites.rejected import total_rejected, get_rejected
 
 
 urlpatterns =[
@@ -44,6 +50,17 @@ urlpatterns =[
     path('get_weekly_sales_json/', data_for_charts.get_weekly_sales_json, name='get_weekly_sales_json'),
     path('get_sale_by_agent_monthy/', data_for_charts.get_sale_by_agent_monthy, name='get_sale_by_agent_monthy'),
     path('get_agents_stock_json/', data_for_charts.get_agents_stock_json, name='get_agents_stock_json'),
+    path('get_approved/', approved, name='approved'),
+    path('get_approved_data/', get_approved_data, name='get_approved_data'),
+    path('get_new_entries/', get_new_entries, name='get_new_entries'),
+    path('get_new_entries_total/', get_new_entries_total, name='get_new_entries_total'),
+    path('mark_as_read/', mark_as_read, name='mark_as_read'),
+    path('approve/', approve, name='approve'),
+    path('get_total_to_approve/', get_total_to_approve, name='get_total_to_approve'),
+    path('edit_customer_data/<int:customer_id>', edit_customer_data, name='edit_customer_data'),
+    path('delete_customer_data/', delete_customer_data, name='delete_customer_data'),
+    path('total_rejected/', total_rejected, name='total_rejected'),
+    path('get_rejected/', get_rejected, name='get_rejected'),
     # reseting user password
     path('password_reset/', auth_views.PasswordResetView.as_view(template_name='registration/reset_form.html'), name='password_reset'),
     path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(template_name='registration/reset_done.html'), name='password_reset_done'),

@@ -169,8 +169,8 @@ class CombinedDataForm(forms.Form):
                 during the phone purchasing process. It ensures the collection of essential customer
                 data along with transaction details, facilitating customer and phone data management in the database.
         """
-        check_if_sold_already = PhoneData.objects.filter(imei_number=data_id)
-        if not check_if_sold_already:
+        check_if_sold_already = MainStorage.objects.get(id=data_id)
+        if not check_if_sold_already.sold:
             selected_device = MainStorage.objects.get(id=data_id)
             phone_reference_instance = Phone_reference.objects.get(
                 phone=selected_device.phone_type
@@ -219,4 +219,4 @@ class CombinedDataForm(forms.Form):
                 phone_data.save()
             return customer_data, phone_data
         else:
-            return None, None
+            return 'already sold', 'already sold'

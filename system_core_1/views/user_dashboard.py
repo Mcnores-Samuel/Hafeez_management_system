@@ -65,18 +65,12 @@ def dashboard(request):
     elif request.user.groups.filter(name='staff_members').exists():
         user = request.user
         avatar = UserAvatar.objects.get(user=request.user) if UserAvatar.objects.filter(user=request.user).exists() else None
-        current_week = timezone.now().date()
-        monday = current_week - timezone.timedelta(days=current_week.weekday())
-        sunday = monday + timezone.timedelta(days=6)
-        customers = CustomerData.objects.filter(created_at__range=[monday, sunday]).order_by('-created_at')
-        customers = [(customer, list(customer.phonedata_set.all())) for customer in customers]
         context = {
-            'customers': customers,
             'profile': user.email[0],
             'user': user,
             'avatar': avatar
         }
-        return render(request, 'users/staff_sites/staff.html', context)
+        return render(request, 'users/staff_sites/staff.html')
     elif request.user.groups.filter(name='agents').exists():
         user = request.user
         agent_profile = AgentProfile.objects.get(user=user)

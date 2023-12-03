@@ -174,6 +174,7 @@ def add_contract_number(request):
                 main_storage.contract_no = contract_number
                 phone_sold.save()
                 main_storage.save()
+                messages.success(request, 'contract number added successfully')
     return redirect('dashboard')
 
 
@@ -231,4 +232,5 @@ def update_customer_data(request):
         if customer:
             customer.account_name = account_name
             customer.save()
+            messages.success(request, 'customer data updated successfully')
     return redirect('dashboard')

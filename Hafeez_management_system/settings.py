@@ -53,9 +53,11 @@ INSTALLED_APPS = [
     'django_filters',
     'django_email_verification',
     'storages',
+    'django_bootstrap5',
 ]
 
 FILTERS_EMPTY_CHOICE_LABEL = 'All'
+MESSAGE_STORAGE = "django.contrib.messages.storage.cookie.CookieStorage"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

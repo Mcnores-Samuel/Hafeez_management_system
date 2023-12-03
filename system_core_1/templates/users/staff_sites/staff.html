@@ -1,103 +1,73 @@
 {% extends 'base.html' %}
 {% load plus_r %}
 {%load static%}
+{% load django_bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
 {% block head %}
-    <link rel="stylesheet" href="{% static 'styles/customer_data_layout.css' %}">
-    <script src="{% static 'scripts/data_updates.js' %}" defer></script>
-    <script src="{% static 'scripts/copytext.js' %}" defer></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="{% static 'scripts/staff_lib/approve.js' %}" defer></script>
+    <script src="{% static 'scripts/staff_lib/new_entries.js' %}" defer></script>
+    <script src="{% static 'scripts/staff_lib/get_total.js' %}" defer></script>
+    <script src="{% static 'scripts/staff_lib/total_rejected.js' %}" defer></script>
 {% endblock %}
 {% block content %}
+{% bootstrap_messages %}
 <a href="{% url 'search_customers' %}" class="search_customers">Search customers</a>
 <form method="post" action="{% url 'data_search' %}" class="search-form" id="queryset">
     {% csrf_token %}
     <input type="search" id="search"  name="search_query" placeholder="Device imei or contract number">
     <button type="submit" id="search_query"><i class='bx bx-search'></i></button>
 </form>
-<section class="customer_data_container">
-    {% if customers %}
-        {% for customer, phone_list in customers %}
-            <section class="customer_data">
-            <p>Date: <span>{{ customer.created_at }}</span></p>
-            <p>name: <span id="customer_name_{{ customer.id }}" onclick="copyText('customer_name_{{ customer.id }}')">{{ customer.customer_name }}</span></p>
-            <p>ID No: <span id="Id_no_{{ customer.id }}" onclick="copyText('Id_no_{{ customer.id }}')">{{ customer.national_id }}</span></p>
-            <p>first contact: <span id="f_contact_{{ customer.id }}" onclick="copyText('f_contact_{{ customer.id }}')">{{ customer.customer_contact }}</span></p>
-            <p>second contact: <span id="S_contact_{{ customer.id }}" onclick="copyText('S_contact_{{ customer.id }}')">{{ customer.second_contact }}</span></p>
-            <p>First witness: <span id="f_witness_{{ customer.id }}" onclick="copyText('f_witness_{{ customer.id }}')">{{ customer.first_witness_name }}</span></p>
-            <P>First witness ID No: <span id="witness_id_no_{{ customer.id }}" onclick="copyText('witness_id_no_{{ customer.id }}')">{{ customer.witness_id_no }}</span></P>
-            <p>First witness contact: <span id="f_w_contact_{{ customer.id }}" onclick="copyText('f_w_contact_{{ customer.id }}')">{{ customer.first_witness_contact }}</span></p>
-            <p>Second witness: <span id="s_witness_{{ customer.id }}" onclick="copyText('s_witness_{{ customer.id }}')">{{ customer.second_witness_name }}</span></p>
-            <p>Second witness contact: <span id="s_w_contact_{{ customer.id }}" onclick="copyText('s_w_contact_{{ customer.id }}')">{{ customer.second_witness_contact }}</span></p>
-            <p>Location: <span id="location_{{ customer.id }}" onclick="copyText('location_{{ customer.id }}')">{{ customer.customer_location }}</span></p>
-            <p>Nearest School: <span id="n_school_{{ customer.id }}" onclick="copyText('n_school_{{ customer.id }}')">{{ customer.nearest_school }}</span></p>
-            <p>Nearest Market<br>/church/hospital</br>: <span id="n_M_or_C_{{ customer.id }}" onclick="copyText('n_M_or_C_{{ customer.id }}')">{{ customer.nearest_market_church_hospital }}</span></p>
-            <p>Email: <span id="email_{{ customer.id }}" onclick="copyText('email_{{ customer.id }}')">{{ customer.customer_email }}</span></p>
-                {% for phone in phone_list %}
-                    <p>agent: <span id="agent_{{ customer.id }}" onclick="copyText('agent_{{ customer.id }}')">{{ phone.agent.user.username }}</span></p>
-                    <p>Device model: <span id="model_{{ customer.id }}" onclick="copyText('model_{{ customer.id }}')">{{ phone.phone_type }}</span></p>
-                    <p>Device imei: <span id="imei_no_{{ customer.id }}" onclick="copyText('imei_no_{{ customer.id }}')">{{ phone.imei_number }}</span></p>
-                    <p>contract number: 
-                        <span id="contracts_{{ customer.id }}" onclick="copyText('contracts_{{ customer.id }}')">
-                            {% if phone.contract_number %}
-                                {{ phone.contract_number }}
-                            {% else %}
-                                    <form action="{% url 'add_contract_number' %}" method="post" class="contract_number_form">
-                                        {% csrf_token %}
-                                        <input type="text" name="contract_number" placeholder="add contract number" maxlength="9" minlength="9" pattern="[A]{1}[0-9]{8}" required>
-                                        <input type="hidden" name="imei_number" value="{{ phone.imei_number }}">
-                                        <button type="submit" class="contract_number-btn">save</button>
-                                    </form>
-                            {% endif %}
-                        </span>
-                    </p>
-                    <p>payment period: <span id="payment_{{ customer.id }}" onclick="copyText('payment_{{ customer.id }}')">{{ phone.payment_period }}</span></p>
-                    <p>deposit: <span id="deposit_{{ customer.id }}" onclick="copyText('deposit_{{ customer.id }}')">{{ phone.deposit|format_price }}</span></p>
-                {% endfor %}
-                <p>workplace: <span id="workplace_{{ customer.id }}" onclick="copyText('workplace_{{ customer.id }}')">{{ customer.workplace}}</span></p>
-                <p>employer or coleague: <span id="emp_or_coll_{{ customer.id }}" onclick="copyText('emp_or_coll_{{ customer.id }}')">{{ customer.employer_or_coleague }}</span></p>
-                <p>employer or coleague
-                    contact: <span id="emp_contact_{{ customer.id }}" onclick="copyText('emp_contact_{{ customer.id }}')">{{ customer.employer_or_coleague_contact }}</span></p>
-                <p>Account name: <span id="account_name_{{ customer.id }}" onclick="copyText('account_name_{{ customer.id }}')">
-                    {% if customer.account_name %}
-                        {{ customer.account_name }}
-                    {% else %}
-                        <form action="{% url 'update_customer_data' %}" method="post" class="contract_number_form">
-                            {% csrf_token %}
-                            <input type="text" name="account_name" placeholder="add account name" required>
-                            <input type="hidden" name="customer_id" value="{{ customer.id }}">
-                            <button type="submit" class="contract_number-btn">save</button>
-                        </form>
-                    {% endif %}
-                </span></p>
-                {% if customer.pending %}
-                    <p>status: <span class="pending">pending</span></p>
-                {% elif customer.rejected %}
-                    <p>status: <span class="rejected">rejected</span></p>
-                {% else %}
-                    <p>status: <span class="approved">approved</span></p>
-                {% endif %}
-
-                {% if customer.pending %}
-                    <form action="{% url 'approve_contracts' %}" method="post" class="approve_customer_form">
-                        {% csrf_token %}
-                        <input type="hidden" name="customer_id" value="{{ customer.id }}">
-                        <button type="submit" class="approve_customer-btn">Approved</button>
-                    </form>
-                {% endif %}
-
-                {% if not customer.rejected  and not customer.approved %}
-                    <form action="{% url 'decline_contracts' %}" method="post" class="delete_customer_form">
-                        {% csrf_token %}
-                        <input type="hidden" name="customer_id" value="{{ customer.id }}">
-                        <button type="submit" class="delete_customer-btn">Rejected</button>
-                    </form>
-                {% endif %}
-            </section>
-        {% endfor %}
-    {% else %}
-        <section class="customer_data">
-            <p>No data available</p>
-        </section>
-    {% endif %}
-</section>
+<br><br><br>
+<div class="container-md shadow-lg p-3 mb-5 bg-body rounded rounded-3">
+    <div class="container-fluid">
+        <div class="row gy-5">
+            <div class="col-sm-6">
+              <div class="card border-primary">
+                <div class="card-body d-flex">
+                    <button type="button" class="btn btn-primary" disabled>
+                        New Entries <span class="badge bg-secondary new-entries-notice">0</span>
+                    </button>
+                    <a href="{% url 'get_new_entries' %}" class="btn btn-primary ms-auto p-2 bd-highlight">Upload</a>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="card border-info">
+                <div class="card-body d-flex">
+                    <button type="button" class="btn btn-info" disabled>
+                        pending <span class="badge bg-secondary total-to-approve">0</span>
+                    </button>
+                  <a href="{% url 'approve' %}" class="btn btn-info ms-auto p-2 bd-highlight">Approve</a>
+                </div>
+              </div>
+            </div>
+        </div>
+        <br><br>
+        <div class="row gy-5">
+            <div class="col-sm-6">
+              <div class="card border-success">
+                <div class="card-body d-flex">
+                    <button type="button" class="btn btn-success" disabled>
+                        Approved <span class="badge bg-secondary approved-notice">0</span>
+                    </button>
+                  <a href="{% url 'get_approved_data' %}" class="btn btn-success ms-auto p-2 bd-highlight">View Details</a>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="card border-danger">
+                <div class="card-body d-flex">
+                    <button type="button" class="btn btn-danger" disabled>
+                        Rejected <span class="badge bg-secondary total-rejected">0</span>
+                    </button>
+                  <a href="{% url 'get_rejected' %}" class="btn btn-danger ms-auto p-2 bd-highlight">View Details</a>
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="divider"></div>
 {% endblock %}

@@ -8,6 +8,7 @@ from django.shortcuts import render, redirect
 from ..forms.customer_data import CombinedDataForm
 from django.http import HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 
 @login_required
@@ -56,8 +57,10 @@ def combinedData_collection(request, data_id):
                     return redirect('dashboard')
                 elif payment_method == 'Loan':
                     customer_data, phone_data = form.process_loan_payment(data_id)
-                    if customer_data and phone_data:
+                    if customer_data == 'already sold' or phone_data == 'already sold':
+                        messages.warning(request, 'Already sold, please select another device')
                         return redirect('dashboard')
+                    messages.success(request, 'data collected successfully, ready for approval')
                     return redirect('dashboard')
         else:
             form = CombinedDataForm(user=request.user)
