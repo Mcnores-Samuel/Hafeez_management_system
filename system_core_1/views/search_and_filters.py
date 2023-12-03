@@ -17,6 +17,8 @@ from django.db.models import Q
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from ..models.customer_details import CustomerData
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
 
 @login_required
 def data_search(request):
@@ -67,7 +69,6 @@ def search_customers(request):
     """The `search_customers` view function is responsible for handling the search
     functionality for all data in the application.
     """
-    customers = []
     if request.method == 'POST':
         search_query = request.POST.get('search_query', None)
         queryset = []
@@ -84,4 +85,19 @@ def search_customers(request):
                     Q(account_name__icontains=search_query)
                 ).order_by('-created_at')
         customers = [(customer, list(customer.phonedata_set.all())) for customer in queryset]
-    return render(request, 'users/staff_sites/search_customers.html', {'customers': customers})
+
+        paginator = Paginator(customers, 6)
+        page_number = request.POST.get('page')
+        
+        try:
+            customers = paginator.page(page_number)
+        except PageNotAnInteger:
+            customers = paginator.page(1)
+        except EmptyPage:
+            customers = paginator.page(paginator.num_pages)
+
+        context = {
+            'customers': customers
+        }
+        return render(request, 'users/staff_sites/search_customers.html', context)
+    return render(request, 'users/staff_sites/search_customers.html')
