@@ -60,6 +60,7 @@ class CustomerData(models.Model):
     approved = models.BooleanField(default=False)
     rejected = models.BooleanField(default=False)
     pending = models.BooleanField(default=True)
+    read = models.BooleanField(default=False)
     customer_name = models.CharField(max_length=50)
     national_id = models.CharField(max_length=9)
     customer_contact = models.CharField(max_length=13)
