@@ -33,9 +33,17 @@ PHONELIST = (
         ("S10Pro", "S10Pro"),
         ("S10", "S10"), ("10C8G", "10C8G"),
         ("10C", "10C"), ("8C", "8C"),
-        ("P7P4G", "P7P4G"), ("P7P3G", "P7P3G"),
+        ('P8', 'P8'), ("P7P4G", "P7P4G"), ("P7P3G", "P7P3G"),
         ("P7", "P7"), ("S9", "S9"), ('9T', '9T'),
-        ("S8", "S8"), ("S7", "S7"),
+        ("S8", "S8"), ("S7", "S7"), ('it2163', 'it2163'),
+        ('it5607', 'it5607'), ('it5606', 'it5606'), ('it2160', 'it2160'),
+        ('it2171', 'it2171'), ('it2172', 'it2172'),
+        ('13C', '13C'), ('13C Pro', '13C Pro'),
+        ('Redmi 12', 'Redmi 12'), ('Redmi 12 Pro', 'Redmi 12 Pro'),
+        ('12C', '12C'), ('12C Pro', '12C Pro'),
+        ('Note 12S', 'Note 12S'), ('Note 12S Pro', 'Note 12S Pro'),
+        ('A2+', 'A2+'), ('A2', 'A2'), ('A1', 'A1'),
+        ('Redmi 10', 'Redmi 10'), ('Redmi 10A', 'Redmi 10A'),
     )
 
 category = (
@@ -61,6 +69,7 @@ spec = (
 
 screen_size = (
     ("6.8 inch HD+ display", "6.8 inch HD+ display"),
+    ("6.7 inch HD+ display", "6.7 inch HD+ display"),
     ("6.6 inch HD+ display", "6.6 inch HD+ display"),
     ("6.5 inch HD+ display", "6.5 inch HD+ display"),
     ("6.52 inch HD+ display", "6.52 inch HD+ display"),
@@ -68,6 +77,8 @@ screen_size = (
     ("6.52 inch HD+ display", "6.52 inch HD+ display"),
     ("6.3 inch HD+ display", "6.3 inch HD+ display"),
     ("5.5 inch HD+ display", "5.5 inch HD+ display"),
+    ("1.77 inch display", "1.77 inch display"),
+
 )
 
 battery = (
@@ -148,16 +159,16 @@ class MainStorage(models.Model):
     """
     device_imei = models.CharField(max_length=15, unique=True)
     name = models.CharField(max_length=50, null=True)
-    phone_type = models.CharField(max_length=25, choices=PHONELIST, default='S18')
+    phone_type = models.CharField(max_length=25, choices=PHONELIST, blank=True, null=True)
     category = models.CharField(max_length=25, null=True, choices=category, default='Tecno')
-    spec = models.CharField(max_length=25, null=True, choices=spec, default='8+256')
-    screen_size = models.CharField(max_length=25, null=True, choices=screen_size, default='6.8 inch HD+ display')
-    battery = models.CharField(max_length=25, null=True, choices=battery, default='6000mAh')
-    camera = models.CharField(max_length=25, null=True, choices=camera, default='200MP')
-    os = models.CharField(max_length=25, null=True, choices=OS, default='Android 13')
+    spec = models.CharField(max_length=25, null=True, choices=spec, blank=True)
+    screen_size = models.CharField(max_length=25, null=True, choices=screen_size, blank=True)
+    battery = models.CharField(max_length=25, null=True, choices=battery, blank=True)
+    camera = models.CharField(max_length=25, null=True, choices=camera, blank=True)
+    os = models.CharField(max_length=25, null=True, choices=OS, blank=True)
     in_stock = models.BooleanField(default=True)
     sales_type = models.CharField(max_length=10, null=True, choices=sales_type, default='##')
-    contract_no = models.CharField(max_length=9, null=True)
+    contract_no = models.CharField(max_length=9, null=True, default='##')
     entry_date = models.DateField()
     stock_out_date = models.DateField()
     assigned = models.BooleanField(default=False)
@@ -201,6 +212,7 @@ class Airtel_mifi_storage(models.Model):
     recieved = models.BooleanField(default=False)
     device_imei = models.CharField(max_length=15, unique=True)
     phone_number = models.CharField(max_length=15, unique=True, null=True, blank=True)
+    secondary_phone_number = models.CharField(max_length=15, unique=True, null=True, blank=True)
     device = models.CharField(max_length=25, choices=DEVICES, default='MIFI')
     pending = models.BooleanField(default=False)
     active = models.BooleanField(default=False)

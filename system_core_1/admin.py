@@ -35,8 +35,8 @@ class MainStorageData(admin.ModelAdmin):
                      'contract_no', 'sales_type', 'stock_out_date', 'assigned', 'sold', 'paid')
     list_filter = ('in_stock', 'missing', 'category', 'updated_by', 'sales_type', 'assigned', 'sold', 'paid',
                    'entry_date', 'stock_out_date', 'assigned_from')
-
-
+    
+    list_per_page = 50
 
     actions = ['update_images', 'verify_stock_recieved',
                'unverify_stock_recieved', 'unassign_select', 'mark_as_sold',
@@ -153,6 +153,8 @@ class PhoneDataAdmin(admin.ModelAdmin):
                     'cost_price', 'deposit', 'payment_period')
     search_fields = ('customer__customer_name', 'agent__user__username',
                      'phone_type', 'imei_number', 'contract_number')
+    
+    list_per_page = 20
 
     def customer_name(self, obj):
         return obj.customer.customer_name
@@ -180,7 +182,7 @@ class EmployeeAdmin(admin.ModelAdmin):
 @admin.register(Airtel_mifi_storage)
 class Airtel_mifi_storageAdmin(admin.ModelAdmin):
     """This model represent the entire stock available and sold in all posts"""
-    list_display = ('assigned_to', 'recieved', 'device_imei', 'phone_number', 'device',
+    list_display = ('assigned_to', 'recieved', 'device_imei', 'phone_number', 'secondary_phone_number', 'device',
                     'pending', 'active', 'inactive', 'in_stock',
                     'assigned', 'entry_date', 'stock_out_date',
                     'cash_recieved', 'paid', 'image', 'comment'

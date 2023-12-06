@@ -197,11 +197,16 @@
 }
 
 .summary-container > .all_agents_stock {
-    grid-column: 1 / 4;
+    grid-column: 1 / 3;
     height: 350px;
 }
 
-.all_agents_stock_chart {
+.summary-container > .shop_stock {
+    grid-column: 3 / 4;
+    height: 350px;
+}
+
+.all_agents_stock_chart, .main_stock_chart {
     height: 100%;
     width: 100%;
 }
