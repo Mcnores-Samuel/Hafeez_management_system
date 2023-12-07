@@ -112,6 +112,27 @@ class MainStorageData(admin.ModelAdmin):
                 pass
     unassign_select.short_description = "Unassign selected phones"
 
+    def save_model(self, request, obj, form, change):
+        """Override the save_model method to add the current user to the agent field"""
+        data = MainStorage.objects.filter(name=obj.name).first()
+        #auto fill the other filled with the related model
+        if not change:
+            if data:
+                obj.category = data.category
+                obj.phone_type = data.phone_type
+                obj.spec = data.spec
+                obj.screen_size = data.screen_size
+                obj.battery = data.battery
+                obj.camera = data.camera
+                obj.os = data.os
+                obj.sales_type = data.sales_type
+                obj.contract_no = data.contract_no
+                if not obj.assigned_from:
+                    obj.assigned_from = data.assigned_from
+                obj.updated_by = request.user.username
+        obj.save()
+        return super().save_model(request, obj, form, change)
+
 
 @admin.register(Phone_reference)
 class PhoneReferenceAdmin(admin.ModelAdmin):
