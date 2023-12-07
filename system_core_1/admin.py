@@ -114,8 +114,9 @@ class MainStorageData(admin.ModelAdmin):
 
     def save_model(self, request, obj, form, change):
         """Override the save_model method to add the current user to the agent field"""
-        data = MainStorage.objects.filter(name=obj.name).first()
-        #auto fill the other filled with the related model
+        data = MainStorage.objects.filter(name=obj.name, in_stock=True).first()
+
+        # Auto fill the other fields with the related model
         if not change:
             if data:
                 obj.category = data.category
@@ -130,6 +131,12 @@ class MainStorageData(admin.ModelAdmin):
                 if not obj.assigned_from:
                     obj.assigned_from = data.assigned_from
                 obj.updated_by = request.user.username
+                obj.recieved = True
+                obj.assigned = True
+            else:
+                form.instance = obj  # Set the instance in the form
+                return form  # Return to the form if data is not found
+
         obj.save()
         return super().save_model(request, obj, form, change)
 
