@@ -70,7 +70,7 @@ class MainStorageData(admin.ModelAdmin):
     search_fields = ('device_imei', 'phone_type', 'entry_date', 'category', 'agent__username',
                      'contract_no', 'sales_type', 'stock_out_date', 'assigned', 'sold', 'paid')
     list_filter = ('in_stock', 'missing', 'category', 'updated_by', 'sales_type', 'assigned', 'sold', 'paid',
-                   'entry_date', 'stock_out_date', 'assigned_from', YesterdayFilter)
+                   'entry_date', 'stock_out_date', 'assigned_from', YesterdayFilter, YearMonthFilter)
     
     list_per_page = 50
 
