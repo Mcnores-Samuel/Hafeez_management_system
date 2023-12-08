@@ -8,6 +8,8 @@ from .models.reference import Phone_reference
 from django.contrib.auth.admin import UserAdmin
 from .models.user_profile import Employee
 from .models.main_storage import Airtel_mifi_storage
+from django.utils.translation import gettext_lazy as _
+from datetime import date, timedelta
 
 
 admin.site.site_header = "HAFEEZ MANAGEMENT SYSTEM"
@@ -23,6 +25,21 @@ class UserAdminModel(UserAdmin):
         'last_login'
     )
 
+class YesterdayFilter(admin.SimpleListFilter):
+    title = _('Entry Date (Yesterday)')
+    parameter_name = 'entry_date_yesterday'
+
+    def lookups(self, request, model_admin):
+        return (
+            ('yesterday', _('Yesterday')),
+        )
+
+    def queryset(self, request, queryset):
+        if self.value() == 'yesterday':
+            yesterday = date.today() - timedelta(days=1)
+            return queryset.filter(entry_date=yesterday)
+
+
 
 @admin.register(MainStorage)
 class MainStorageData(admin.ModelAdmin):
@@ -34,7 +51,7 @@ class MainStorageData(admin.ModelAdmin):
     search_fields = ('device_imei', 'phone_type', 'entry_date', 'category', 'agent__username',
                      'contract_no', 'sales_type', 'stock_out_date', 'assigned', 'sold', 'paid')
     list_filter = ('in_stock', 'missing', 'category', 'updated_by', 'sales_type', 'assigned', 'sold', 'paid',
-                   'entry_date', 'stock_out_date', 'assigned_from')
+                   'entry_date', 'stock_out_date', 'assigned_from', YesterdayFilter)
     
     list_per_page = 50
 
