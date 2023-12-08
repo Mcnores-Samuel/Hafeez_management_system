@@ -51,6 +51,10 @@ category = (
     ("Itel", "Itel"),
     ("Infinix", "Infinix"),
     ("Redmi", "Redmi"),
+    ("Samsung", "Samsung"),
+    ("Vivo", "Vivo"),
+    ("Oppo", "Oppo"),
+    ("Villaon", "Villaon"),
 )
 
 spec = (
