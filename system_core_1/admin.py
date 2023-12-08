@@ -10,6 +10,9 @@ from .models.user_profile import Employee
 from .models.main_storage import Airtel_mifi_storage
 from django.utils.translation import gettext_lazy as _
 from datetime import date, timedelta
+from calendar import month_name
+from datetime import datetime
+
 
 
 admin.site.site_header = "HAFEEZ MANAGEMENT SYSTEM"
@@ -38,6 +41,22 @@ class YesterdayFilter(admin.SimpleListFilter):
         if self.value() == 'yesterday':
             yesterday = date.today() - timedelta(days=1)
             return queryset.filter(entry_date=yesterday)
+        
+
+
+class YearMonthFilter(admin.SimpleListFilter):
+    title = _('Stock Out Date (Year-Month)')
+    parameter_name = 'stock_out_date_year_month'
+
+    def lookups(self, request, model_admin):
+        months = [(str(i), month_name[i]) for i in range(1, 13)]
+        return months
+
+    def queryset(self, request, queryset):
+        if self.value():
+            year = datetime.now().year  # You can specify a different year if needed
+            month = int(self.value())
+            return queryset.filter(stock_out_date__year=year, stock_out_date__month=month)
 
 
 
