@@ -51,3 +51,4 @@ class PhoneData(models.Model):
 
     class Meta:
         app_label = 'system_core_1'
+        

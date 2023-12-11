@@ -184,6 +184,7 @@ class MainStorage(models.Model):
     contract_no = models.CharField(max_length=9, null=True, default='##')
     entry_date = models.DateField()
     stock_out_date = models.DateField()
+    collected_on = models.DateField(default=timezone.now)
     assigned = models.BooleanField(default=False)
     sold = models.BooleanField(default=False)
     paid = models.BooleanField(default=False)
@@ -200,6 +201,9 @@ class MainStorage(models.Model):
         indexes = [
             models.Index(fields=['device_imei', 'phone_type', 'in_stock', 'assigned'])
         ]
+    
+    def __str__(self):
+        return self.device_imei + ' ' + self.name
 
 
 DEVICES = (
@@ -234,6 +238,7 @@ class Airtel_mifi_storage(models.Model):
     assigned = models.BooleanField(default=False)
     entry_date = models.DateField(default=timezone.now)
     stock_out_date = models.DateField(default=timezone.now)
+    collected_on = models.DateField(default=timezone.now)
     cash_recieved = models.BooleanField(default=False)
     paid = models.BooleanField(default=False)
     image = models.ImageField(upload_to='product_images/', null=True, blank=True)
@@ -243,3 +248,6 @@ class Airtel_mifi_storage(models.Model):
         indexes = [
             models.Index(fields=['device_imei', 'device', 'in_stock', 'assigned'])
         ]
+
+    def __str__(self):
+        return self.device_imei + ' ' + self.device

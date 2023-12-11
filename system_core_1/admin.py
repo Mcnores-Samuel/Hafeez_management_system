@@ -65,7 +65,7 @@ class MainStorageData(admin.ModelAdmin):
     list_display = ('assigned_to', 'recieved', 'device_imei', 'category', 'name', 'phone_type',
                     'spec', 'screen_size', 'os', 'battery', 'camera', 'in_stock', 'pending', 'missing',
                     'sales_type', 'contract_no', 'assigned_from', 'updated_by', 'entry_date', 'stock_out_date',
-                    'assigned', 'sold', 'paid', 'image', 'comment'
+                    'collected_on', 'assigned', 'sold', 'paid', 'image', 'comment'
     )
     search_fields = ('device_imei', 'phone_type', 'entry_date', 'category', 'agent__username',
                      'contract_no', 'sales_type', 'stock_out_date', 'assigned', 'sold', 'paid')
@@ -80,7 +80,6 @@ class MainStorageData(admin.ModelAdmin):
     
     class Meta:
         ordering = ['-entry_date']
-        js = ('/static/scripts/admin_autofill.js',)
 
     def assigned_to(self, obj):
         return obj.agent
@@ -152,8 +151,6 @@ class MainStorageData(admin.ModelAdmin):
         """Override the save_model method to add the current user to the agent field"""
         data = MainStorage.objects.filter(name=obj.name,
                                           in_stock=True).first()
-
-        # Auto fill the other fields with the related model
         if not change and data:
                 obj.category = data.category
                 obj.phone_type = data.phone_type
@@ -178,16 +175,41 @@ class MainStorageData(admin.ModelAdmin):
 
 @admin.register(Phone_reference)
 class PhoneReferenceAdmin(admin.ModelAdmin):
-    list_display = ("phone", "initial_deposit", "merchant", 'cash')
+    list_display = ("phone", "initial_deposit", "merchant", 'starting_cash_price',
+                    'cost_price', 'final_cash_price', 'price_added_on',
+                    'price_changed_on', 'current_month')
 
     def initial_deposit(self, obj):
+        """Return the initial deposit amount for the phone"""
         return f"MK{obj.deposit:,}".replace(',', ' ')
     
     def merchant(self, obj):
+        """Return the merchant price for the phone"""
         return f"MK{obj.merchant_price:,}".replace(',', ' ')
     
-    def cash(self, obj):
+    def starting_cash_price(self, obj):
+        """Return the starting cash price for the phone"""
         return f"MK{obj.cash_price:,}".replace(',', ' ')
+    
+    def cost_price(self, obj):
+        """Return the cost price for the phone"""
+        return f"MK{obj.cost_price:,}".replace(',', ' ')
+
+    def final_cash_price(self, obj):
+        """Return the final cash price for the phone"""
+        return f"MK{obj.final_cash_price:,}".replace(',', ' ')
+
+    def price_added_on(self, obj):
+        """Return the date on which the price was added"""
+        return obj.price_added_on.strftime("%d %B %Y")
+
+    def price_changed_on(self, obj):
+        """Return the date on which the price was changed"""
+        return obj.price_changed_on.strftime("%d %B %Y")
+
+    def current_month(self, obj):
+        """Return the current month"""
+        return obj.current_month
 
 
 @admin.register(AgentProfile)

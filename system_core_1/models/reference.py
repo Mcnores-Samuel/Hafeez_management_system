@@ -9,6 +9,7 @@ and pricing information. This model is essential for managing and organizing the
 inventory of phones in your application.
 """
 from django.db import models
+from django.utils import timezone
 
 
 class Phone_reference(models.Model):
@@ -41,6 +42,11 @@ class Phone_reference(models.Model):
     deposit = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     merchant_price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     cash_price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    cost_price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    final_cash_price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    price_added_on = models.DateTimeField(auto_now_add=True)
+    price_changed_on = models.DateTimeField(auto_now=True)
+    current_month = models.CharField(max_length=20, null=True, default=timezone.now().strftime("%B"))
 
     class Meta:
         app_label = 'system_core_1'
