@@ -69,8 +69,8 @@ class MainStorageData(admin.ModelAdmin):
     )
     search_fields = ('device_imei', 'phone_type', 'entry_date', 'category', 'agent__username',
                      'contract_no', 'sales_type', 'stock_out_date', 'assigned', 'sold', 'paid')
-    list_filter = ('in_stock', 'missing', 'category', 'updated_by', 'sales_type', 'assigned', 'sold', 'paid',
-                   'entry_date', 'stock_out_date', 'assigned_from', YesterdayFilter, YearMonthFilter)
+    list_filter = ('in_stock', 'missing', 'category', 'sales_type', 'assigned', 'sold', 'paid',
+                   'agent__username', 'entry_date', 'stock_out_date', YesterdayFilter, YearMonthFilter)
     
     list_per_page = 50
 
@@ -178,6 +178,10 @@ class PhoneReferenceAdmin(admin.ModelAdmin):
     list_display = ("phone", "initial_deposit", "merchant", 'starting_cash_price',
                     'cost_price', 'final_cash_price', 'price_added_on',
                     'price_changed_on', 'current_month')
+    search_fields = ('phone', 'deposit', 'merchant_price', 'cash_price',
+                        'cost_price', 'final_cash_price', 'price_added_on',
+                        'price_changed_on', 'current_month')
+    list_filter = ('phone', 'price_added_on', 'price_changed_on', 'current_month')
 
     def initial_deposit(self, obj):
         """Return the initial deposit amount for the phone"""
@@ -269,7 +273,7 @@ class Airtel_mifi_storageAdmin(admin.ModelAdmin):
     """This model represent the entire stock available and sold in all posts"""
     list_display = ('assigned_to', 'recieved', 'device_imei', 'phone_number', 'secondary_phone_number', 'device',
                     'pending', 'active', 'inactive', 'in_stock',
-                    'assigned', 'entry_date', 'stock_out_date',
+                    'assigned', 'entry_date', 'stock_out_date', 'collected_on',
                     'cash_recieved', 'paid', 'image', 'comment'
                     )
     
@@ -277,7 +281,7 @@ class Airtel_mifi_storageAdmin(admin.ModelAdmin):
                      'stock_out_date', 'agent__username')
     
     list_filter = ('in_stock', 'device', 'assigned', 'paid',
-                     'entry_date', 'stock_out_date')
+                     'entry_date', 'collected_on', 'stock_out_date', 'agent__username')
 
     def assigned_to(self, obj):
         """Return the agent to whom the phone is assigned"""
