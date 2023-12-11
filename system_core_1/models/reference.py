@@ -44,8 +44,8 @@ class Phone_reference(models.Model):
     cash_price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     cost_price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     final_cash_price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
-    price_added_on = models.DateTimeField(auto_now_add=True)
-    price_changed_on = models.DateTimeField(auto_now=True)
+    price_added_on = models.DateTimeField(default=timezone.now)
+    price_changed_on = models.DateTimeField(default=timezone.now)
     current_month = models.CharField(max_length=20, null=True, default=timezone.now().strftime("%B"))
 
     class Meta:
