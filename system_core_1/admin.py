@@ -12,6 +12,7 @@ from django.utils.translation import gettext_lazy as _
 from datetime import date, timedelta
 from calendar import month_name
 from datetime import datetime
+from django.contrib.auth.models import Group
 
 
 
@@ -41,6 +42,34 @@ class YesterdayFilter(admin.SimpleListFilter):
         if self.value() == 'yesterday':
             yesterday = date.today() - timedelta(days=1)
             return queryset.filter(entry_date=yesterday)
+
+
+class AgentNameFilter(admin.SimpleListFilter):
+    title = 'Agent Names'
+    parameter_name = 'agent_names'
+
+    def lookups(self, request, model_admin):
+        agent_group = Group.objects.get(name='agent')
+        special_sales_group = Group.objects.get(name='special_sales')
+
+        agent_users = UserProfile.objects.filter(groups=agent_group)
+        special_sales_users = UserProfile.objects.filter(groups=special_sales_group)
+
+        agent_names = (
+            (user.id, user.username) for user in agent_users
+        )
+        special_sales_names = (
+            (user.id, user.username) for user in special_sales_users
+        )
+
+        return (
+            ('agent', tuple(agent_names)),
+            ('special_sales', tuple(special_sales_names)),
+        )
+
+    def queryset(self, request, queryset):
+        if self.value():
+            return queryset.filter(agent_id=self.value())
         
 
 
@@ -70,7 +99,7 @@ class MainStorageData(admin.ModelAdmin):
     search_fields = ('device_imei', 'phone_type', 'entry_date', 'category', 'agent__username',
                      'contract_no', 'sales_type', 'stock_out_date', 'assigned', 'sold', 'paid')
     list_filter = ('in_stock', 'missing', 'category', 'sales_type', 'assigned', 'sold', 'paid',
-                   'agents', 'entry_date', 'stock_out_date', YesterdayFilter, YearMonthFilter)
+                   AgentNameFilter, 'entry_date', 'stock_out_date', YesterdayFilter, YearMonthFilter)
     
     list_per_page = 50
 
@@ -80,11 +109,6 @@ class MainStorageData(admin.ModelAdmin):
     
     class Meta:
         ordering = ['-entry_date']
-
-    def agents(self, obj):
-        if (obj.agent.groups.filter(name='agent').exists() or
-            obj.agent.groups.filter(name='special_sales').exists()):
-            return obj.agent.username
 
     def assigned_to(self, obj):
         return obj.agent
@@ -273,6 +297,28 @@ class EmployeeAdmin(admin.ModelAdmin):
     fields = ('user', 'role', 'department')
 
 
+class AirtelAgentNameFilter(admin.SimpleListFilter):
+    title = 'Agent Names'
+    parameter_name = 'agent_names'
+
+    def lookups(self, request, model_admin):
+        agent_group = Group.objects.get(name='airtel_agents')
+
+        agent_users = UserProfile.objects.filter(groups=agent_group)
+
+        agent_names = (
+            (user.id, user.username) for user in agent_users
+        )
+
+        return (
+            ('agent', tuple(agent_names)),
+        )
+
+    def queryset(self, request, queryset):
+        if self.value():
+            return queryset.filter(agent_id=self.value())
+
+
 @admin.register(Airtel_mifi_storage)
 class Airtel_mifi_storageAdmin(admin.ModelAdmin):
     """This model represent the entire stock available and sold in all posts"""
@@ -286,12 +332,7 @@ class Airtel_mifi_storageAdmin(admin.ModelAdmin):
                      'stock_out_date', 'agent__username')
     
     list_filter = ('in_stock', 'device', 'assigned', 'paid',
-                     'entry_date', 'collected_on', 'stock_out_date', 'agents')
-    
-    def agents(self, obj):
-        """Return the agent to whom the phone is assigned"""
-        if obj.agent.groups.filter(name='airtel_agents').exists():
-            return obj.agent.username
+                     'entry_date', 'collected_on', 'stock_out_date', AirtelAgentNameFilter)
 
     def assigned_to(self, obj):
         """Return the agent to whom the phone is assigned"""
