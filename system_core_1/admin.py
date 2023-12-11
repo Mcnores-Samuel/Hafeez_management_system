@@ -70,7 +70,7 @@ class MainStorageData(admin.ModelAdmin):
     search_fields = ('device_imei', 'phone_type', 'entry_date', 'category', 'agent__username',
                      'contract_no', 'sales_type', 'stock_out_date', 'assigned', 'sold', 'paid')
     list_filter = ('in_stock', 'missing', 'category', 'sales_type', 'assigned', 'sold', 'paid',
-                   'agent__username', 'entry_date', 'stock_out_date', YesterdayFilter, YearMonthFilter)
+                   'agents', 'entry_date', 'stock_out_date', YesterdayFilter, YearMonthFilter)
     
     list_per_page = 50
 
@@ -80,6 +80,11 @@ class MainStorageData(admin.ModelAdmin):
     
     class Meta:
         ordering = ['-entry_date']
+
+    def agents(self, obj):
+        if (obj.agent.groups.filter(name='agent').exists() or
+            obj.agent.groups.filter(name='special_sales').exists()):
+            return obj.agent.username
 
     def assigned_to(self, obj):
         return obj.agent
@@ -281,7 +286,12 @@ class Airtel_mifi_storageAdmin(admin.ModelAdmin):
                      'stock_out_date', 'agent__username')
     
     list_filter = ('in_stock', 'device', 'assigned', 'paid',
-                     'entry_date', 'collected_on', 'stock_out_date', 'agent__username')
+                     'entry_date', 'collected_on', 'stock_out_date', 'agents')
+    
+    def agents(self, obj):
+        """Return the agent to whom the phone is assigned"""
+        if obj.agent.groups.filter(name='airtel_agents').exists():
+            return obj.agent.username
 
     def assigned_to(self, obj):
         """Return the agent to whom the phone is assigned"""
