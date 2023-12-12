@@ -191,6 +191,7 @@ class MainStorage(models.Model):
     image = models.ImageField(upload_to='product_images/', null=True, blank=True)
     agent = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
     recieved = models.BooleanField(default=False)
+    on_display = models.BooleanField(default=False)
     pending = models.BooleanField(default=False)
     missing = models.BooleanField(default=False)
     assigned_from = models.CharField(max_length=50, null=True, blank=True)
