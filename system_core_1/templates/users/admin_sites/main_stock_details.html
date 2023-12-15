@@ -1,0 +1,16 @@
+{% extends 'users/admin_sites/main.html' %}
+{% block content %}
+ <div class="main-analysis-container">
+    <div class="summary-container">
+        <div class="agent_sales" style="height: 600px;">
+            <div class="description">
+                <h3>Main Stock Details</h3>
+                <a href="#">Full Analysis</a>
+            </div>
+            <div class="loading-message-main-stock"></div>
+            <canvas class="main_stock_detailed_analysis" aria-label="chart" height="350"></canvas>
+        </div>
+    </div>
+</div>
+{% endblock %}
+    

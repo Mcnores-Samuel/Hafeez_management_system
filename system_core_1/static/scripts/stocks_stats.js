@@ -23,7 +23,7 @@ function inStockStats() {
                 load.removeClass('loading-message');
 
                 Object.keys(data).forEach(function (key) {
-                    if (key !== "Total" && key !== "Hafeez-enterprize") {
+                    if (key !== "Total") {
                         labelsList.push(key);
                         dataList.push(data[key]);
                         total += data[key];
@@ -76,7 +76,7 @@ function main_stock() {
         let dataList = [];
 
         $.ajax({
-            url: "/system_core_1/get_agents_stock_json/",
+            url: "/system_core_1/get_main_stock_analysis/",
             method: "GET",
             contentType: "application/json",
             beforeSend: function () {
@@ -88,7 +88,7 @@ function main_stock() {
                 load.removeClass('loading-message');
 
                 Object.keys(data).forEach(function (key) {
-                    if (key === "Hafeez-enterprize") {
+                    if (key !== "Total") {
                         labelsList.push(key);
                         dataList.push(data[key]);
                     }

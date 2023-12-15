@@ -26,25 +26,6 @@ from django.db import models
 from django.conf import settings
 from django.utils import timezone
 
-# PHONELIST = (
-#         ("S18", "S18"), ("A60", "A60"),
-#         ("A04", "A04"), ("A18", "A18"),
-#         ("C20", "C20"), ("C19", "C19"),
-#         ("S10Pro", "S10Pro"),
-#         ("S10", "S10"), ("10C8G", "10C8G"),
-#         ("10C", "10C"), ("8C", "8C"),
-#         ('P8', 'P8'), ("P7P4G", "P7P4G"), ("P7P3G", "P7P3G"),
-#         ("P7", "P7"), ("S9", "S9"), ('9T', '9T'),
-#         ("S8", "S8"), ("S7", "S7"), ('it2163', 'it2163'),
-#         ('it5607', 'it5607'), ('it5606', 'it5606'), ('it2160', 'it2160'),
-#         ('it2171', 'it2171'), ('it2172', 'it2172'),
-#         ('13C', '13C'), ('13C Pro', '13C Pro'),
-#         ('Redmi 12', 'Redmi 12'), ('Redmi 12 Pro', 'Redmi 12 Pro'),
-#         ('12C', '12C'), ('12C Pro', '12C Pro'),
-#         ('Note 12S', 'Note 12S'), ('Note 12S Pro', 'Note 12S Pro'),
-#         ('A2+', 'A2+'), ('A2', 'A2'), ('A1', 'A1'),
-#         ('Redmi 10', 'Redmi 10'), ('Redmi 10A', 'Redmi 10A'),
-#     )
 
 category = (
     ("Tecno", "Tecno"),
@@ -57,20 +38,6 @@ category = (
     ("Villaon", "Villaon"),
 )
 
-spec = (
-    ("8+256", "8+256"),
-    ("4+256", "4+256"),
-    ("8+128", "8+128"),
-    ("4+128", "4+128"),
-    ("4+64", "4+64"),
-    ("3+64", "3+64"),
-    ("2+64", "2+64"),
-    ("3+32", "3+32"),
-    ("2+32", "2+32"),
-    ("1+32", "1+32"),
-    ("2+16", "2+16"),
-    ("1+16", "1+16"),
-)
 
 screen_size = (
     ("6.8 inch HD+ display", "6.8 inch HD+ display"),
@@ -174,7 +141,7 @@ class MainStorage(models.Model):
     name = models.CharField(max_length=50, null=True)
     phone_type = models.CharField(max_length=25, blank=True, null=True)
     category = models.CharField(max_length=25, null=True, choices=category, default='Tecno')
-    spec = models.CharField(max_length=25, null=True, choices=spec, blank=True)
+    spec = models.CharField(max_length=25, null=True, blank=True)
     screen_size = models.CharField(max_length=25, null=True, choices=screen_size, blank=True)
     battery = models.CharField(max_length=25, null=True, choices=battery, blank=True)
     camera = models.CharField(max_length=25, null=True, choices=camera, blank=True)
@@ -197,6 +164,7 @@ class MainStorage(models.Model):
     assigned_from = models.CharField(max_length=50, null=True, blank=True)
     updated_by = models.CharField(max_length=50, null=True, blank=True)
     comment = models.CharField(max_length=256, null=True, blank=True)
+    supplier = models.CharField(max_length=50, null=True, blank=True)
 
     class Meta:
         indexes = [

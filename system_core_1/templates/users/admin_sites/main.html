@@ -9,6 +9,8 @@
     <script src="{% static 'scripts/auto_submit_filter.js' %}" defer></script>
     <script src="{% static 'scripts/copyCode.js' %}" defer></script>
     <script src="{% static 'scripts/stocks_stats.js' %}" defer></script>
+    <script src="{% static 'scripts/cash_sales_analysis.js' %}" defer></script>
+    <script src="{% static 'scripts/main_stock_details.js' %}" defer></script>
     <script src='https://cdn.plot.ly/plotly-2.27.0.min.js'></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 {% endblock %}
@@ -63,12 +65,6 @@
     <!-- Custom content for Template 1 -->
     <div class="main-analysis-container">
         <div class="summary-container">
-            <div class="agent_code">
-                <p>Agent Sign Up Code:</p>
-                <div class="text-to-copy">{{ agent_code }}</div>
-                <a href="#"><button class="copy-button">Copy</button></a>
-                <a href="{% url 'generate_agent_code' %}"><button type="submit">generate new code</button></a>
-            </div>
             <div class="daily_sales">
                 <div class="description">
                     <h3>Daily Sales</h3>
@@ -87,11 +83,19 @@
             </div>
             <div class="agent_sales">
                 <div class="description">
-                    <h3>Sales by agent Monthly</h3>
+                    <h3>Monthly Sales On Loan</h3>
                     <a href="#">Full Analysis</a>
                 </div>
                 <div class="loading-message-monthly"></div>
                 <canvas class="sales_by_agent_chart" aria-label="chart" height="350"></canvas>
+            </div>
+            <div class="agent_sales">
+                <div class="description">
+                    <h3>Monthly Sales on Cash</h3>
+                    <a href="#">Full Analysis</a>
+                </div>
+                <div class="loading-message-monthly-cash"></div>
+                <canvas class="cash_sales_analysis" aria-label="chart" height="350"></canvas>
             </div>
             <div class="all_agents_stock">
                 <div class="description">
@@ -104,7 +108,7 @@
             <div class="shop_stock">
                 <div class="description">
                     <h3>Main Shop Stock</h3>
-                    <a href="#">Full Analysis</a>
+                    <a href="{% url 'main_shop_details' %}">Full Analysis</a>
                 </div>
                 <div class="loading-message-shop"></div>
                 <div class="main_stock_chart"></div>

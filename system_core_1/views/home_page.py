@@ -186,3 +186,9 @@ def privacy(request):
     application's privacy page.
     """
     return render(request, 'users/general-sites/privacy.html')
+
+def main_shop_details(request):
+    """The `main_storage` view function is responsible for handling the display of the
+    application's main_storage page.
+    """
+    return render(request, 'users/admin_sites/main_stock_details.html')

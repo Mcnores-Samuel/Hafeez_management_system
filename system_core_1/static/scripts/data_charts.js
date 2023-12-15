@@ -213,7 +213,7 @@ function updateSalesByAgentChart() {
         let nums = [];
 
         $.ajax({
-            url: "/system_core_1/get_sale_by_agent_monthy/",
+            url: "/system_core_1/get_sale_by_agent_monthy_loan/",
             method: "GET",
             contentType: "application/json",
             beforeSend: function () {
@@ -236,7 +236,7 @@ function updateSalesByAgentChart() {
                         data: {
                             labels: labelsList,
                             datasets: [{
-                                label: months[date.getMonth()] + " Total Sales " + `${total}`,
+                                label: months[date.getMonth()] + " Total loan Sales " + `${total}`,
                                 data: nums,
                                 backgroundColor: ["#23435c"],
                                 borderColor: ["#23435c"],
@@ -253,7 +253,7 @@ function updateSalesByAgentChart() {
                             plugins: {
                                 title: {
                                     display: true,
-                                    text: 'Sales by Agents',
+                                    text: months[date.getMonth()] + " Sales Analysis",
                                     color: 'navy',
                                     position: 'bottom',
                                     align: 'center',
@@ -272,7 +272,7 @@ function updateSalesByAgentChart() {
                 } else {
                     salesByAgentChart.data.labels = labelsList;
                     salesByAgentChart.data.datasets[0].data = nums;
-                    salesByAgentChart.data.datasets[0].label = months[date.getMonth()] + " Total Sales " + `${total}`;
+                    salesByAgentChart.data.datasets[0].label = months[date.getMonth()] + " Total loan Sales " + `${total}`;
                     salesByAgentChart.update();
                 }
                 setTimeout(fetchAndUpdateAgentMonthly, 5 * 60 * 1000);
