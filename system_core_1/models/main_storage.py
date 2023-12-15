@@ -39,57 +39,6 @@ category = (
 )
 
 
-screen_size = (
-    ("6.8 inch HD+ display", "6.8 inch HD+ display"),
-    ("6.7 inch HD+ display", "6.7 inch HD+ display"),
-    ("6.6 inch HD+ display", "6.6 inch HD+ display"),
-    ("6.5 inch HD+ display", "6.5 inch HD+ display"),
-    ("6.52 inch HD+ display", "6.52 inch HD+ display"),
-    ("6.5 inch HD+ display", "6.5 inch HD+ display"),
-    ("6.52 inch HD+ display", "6.52 inch HD+ display"),
-    ("6.3 inch HD+ display", "6.3 inch HD+ display"),
-    ("5.5 inch HD+ display", "5.5 inch HD+ display"),
-    ("5.45 inch HD+ display", "5.45 inch HD+ display"),
-    ("5.0 inch HD+ display", "5.0 inch HD+ display"),
-    ("4.0 inch HD+ display", "4.0 inch HD+ display"),
-    ("3.5 inch HD+ display", "3.5 inch HD+ display"),
-    ("2.8 inch HD+ display", "2.8 inch HD+ display"),
-    ("2.4 inch HD+ display", "2.4 inch HD+ display"),
-    ("2.0 inch HD+ display", "2.0 inch HD+ display"),
-    ("1.8 inch HD+ display", "1.8 inch HD+ display"),
-    ("1.77 inch display", "1.77 inch display"),
-
-)
-
-battery = (
-    ("6000mAh", "6000mAh"),
-    ("5000mAh", "5000mAh"),
-    ("4000mAh", "4000mAh"),
-    ("3000mAh", "3000mAh"),
-    ("2500mAh", "2500mAh"),
-    ("2000mAh", "2000mAh"),
-    ("1500mAh", "1500mAh"),
-    ("1000mAh", "1000mAh"),
-)
-
-camera = (
-    ("200MP", "200MP"),
-    ("160MP", "160MP"),
-    ("130MP", "130MP"),
-    ("100MP", "100MP"),
-    ("80MP", "80MP"),
-    ("64MP", "64MP"),
-    ("50MP", "50MP"),
-    ("48MP", "48MP"),
-    ("32MP", "32MP"),
-    ("24MP", "24MP"),
-    ("16MP", "16MP"),
-    ("13MP", "13MP"),
-    ("12MP", "12MP"),
-    ("8MP", "8MP"),
-    ("5MP", "5MP"),
-)
-
 OS = (
     ("Android 13", "Android 13"),
     ("Android 12", "Android 12"),
@@ -142,15 +91,15 @@ class MainStorage(models.Model):
     phone_type = models.CharField(max_length=25, blank=True, null=True)
     category = models.CharField(max_length=25, null=True, choices=category, default='Tecno')
     spec = models.CharField(max_length=25, null=True, blank=True)
-    screen_size = models.CharField(max_length=25, null=True, choices=screen_size, blank=True)
-    battery = models.CharField(max_length=25, null=True, choices=battery, blank=True)
-    camera = models.CharField(max_length=25, null=True, choices=camera, blank=True)
+    screen_size = models.CharField(max_length=25, null=True, blank=True)
+    battery = models.CharField(max_length=25, null=True, blank=True)
+    camera = models.CharField(max_length=25, null=True, blank=True)
     os = models.CharField(max_length=25, null=True, choices=OS, blank=True)
     in_stock = models.BooleanField(default=True)
     sales_type = models.CharField(max_length=10, null=True, choices=sales_type, default='##')
     contract_no = models.CharField(max_length=9, null=True, default='##')
-    entry_date = models.DateField()
-    stock_out_date = models.DateField()
+    entry_date = models.DateField(default=timezone.now)
+    stock_out_date = models.DateField(default=timezone.now)
     collected_on = models.DateField(default=timezone.now)
     assigned = models.BooleanField(default=False)
     sold = models.BooleanField(default=False)

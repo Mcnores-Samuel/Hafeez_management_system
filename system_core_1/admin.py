@@ -65,11 +65,11 @@ class MainStorageData(admin.ModelAdmin):
     list_display = ('assigned_to', 'recieved', 'on_display', 'device_imei', 'category', 'name', 'phone_type',
                     'spec', 'screen_size', 'os', 'battery', 'camera', 'in_stock', 'pending', 'missing',
                     'sales_type', 'contract_no', 'assigned_from', 'updated_by', 'entry_date', 'stock_out_date',
-                    'collected_on', 'assigned', 'sold', 'paid', 'image', 'comment'
+                    'collected_on', 'assigned', 'sold', 'paid', 'image', 'comment', 'supplier'
     )
-    search_fields = ('device_imei', 'phone_type', 'entry_date', 'category', 'agent__username',
+    search_fields = ('device_imei', 'name', 'phone_type', 'entry_date', 'category', 'agent__username',
                      'contract_no', 'sales_type', 'stock_out_date', 'assigned', 'sold', 'paid')
-    list_filter = ('in_stock', 'on_display', 'missing', 'category', 'sales_type', 'assigned', 'sold', 'paid',
+    list_filter = ('in_stock', 'on_display', 'missing', 'category', 'supplier', 'sales_type', 'assigned', 'sold', 'paid',
                    'agent__username', 'entry_date', 'stock_out_date', YesterdayFilter, YearMonthFilter)
     
     list_per_page = 50
