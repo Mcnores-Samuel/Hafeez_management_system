@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from django import forms
-from ..models.reference import Phone_reference
+from ..models.reference import Price_reference
 from ..models.main_storage import MainStorage
 from ..models.customer_details import CustomerData
 from ..models.customer_order import PhoneData
@@ -172,7 +172,7 @@ class CombinedDataForm(forms.Form):
         check_if_sold_already = MainStorage.objects.get(id=data_id)
         if not check_if_sold_already.sold:
             selected_device = MainStorage.objects.get(id=data_id)
-            phone_reference_instance = Phone_reference.objects.get(
+            phone_reference_instance = Price_reference.objects.get(
                 phone=selected_device.phone_type
             )
             selected_device.in_stock = False

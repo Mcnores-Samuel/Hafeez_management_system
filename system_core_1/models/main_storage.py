@@ -27,28 +27,6 @@ from django.conf import settings
 from django.utils import timezone
 
 
-category = (
-    ("Tecno", "Tecno"),
-    ("Itel", "Itel"),
-    ("Infinix", "Infinix"),
-    ("Redmi", "Redmi"),
-    ("Samsung", "Samsung"),
-    ("Vivo", "Vivo"),
-    ("Oppo", "Oppo"),
-    ("Villaon", "Villaon"),
-)
-
-
-OS = (
-    ("Android 13", "Android 13"),
-    ("Android 12", "Android 12"),
-    ("Android 11", "Android 11"),
-    ("Android 10", "Android 10"),
-    ("Android 9", "Android 9"),
-    ("Android 8", "Android 8"),
-    ("Android 7", "Android 7"),
-)
-
 sales_type = (
     ("##", "##"),
     ("Cash", "Cash"),
@@ -89,12 +67,12 @@ class MainStorage(models.Model):
     device_imei = models.CharField(max_length=15, unique=True)
     name = models.CharField(max_length=50, null=True)
     phone_type = models.CharField(max_length=25, blank=True, null=True)
-    category = models.CharField(max_length=25, null=True, choices=category, default='Tecno')
+    category = models.CharField(max_length=25, null=True, default='Tecno')
     spec = models.CharField(max_length=25, null=True, blank=True)
     screen_size = models.CharField(max_length=25, null=True, blank=True)
     battery = models.CharField(max_length=25, null=True, blank=True)
     camera = models.CharField(max_length=25, null=True, blank=True)
-    os = models.CharField(max_length=25, null=True, choices=OS, blank=True)
+    os = models.CharField(max_length=25, null=True, blank=True)
     in_stock = models.BooleanField(default=True)
     sales_type = models.CharField(max_length=10, null=True, choices=sales_type, default='##')
     contract_no = models.CharField(max_length=9, null=True, default='##')

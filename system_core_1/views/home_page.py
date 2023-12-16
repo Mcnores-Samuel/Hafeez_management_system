@@ -10,7 +10,7 @@ from ..forms.sign_in_form import SignInForm
 from django_email_verification import verify_view, verify_token
 from django.http import HttpResponse
 from ..models.main_storage import MainStorage
-from ..models.reference import Phone_reference
+from ..models.reference import Price_reference
 from ..models.user_profile import UserAvatar
 
 
@@ -121,7 +121,7 @@ def home_page(request):
             break
     products['redmi'] = phone_list
     unique_phone_types.clear()
-    prices = Phone_reference.objects.all()
+    prices = Price_reference.objects.all()
     context = {'form': form, 'products': products, 'prices': prices}
     if request.user.is_authenticated:
         avatar = UserAvatar.objects.get(user=request.user) if UserAvatar.objects.filter(user=request.user).exists() else None

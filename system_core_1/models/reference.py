@@ -12,7 +12,7 @@ from django.db import models
 from django.utils import timezone
 
 
-class Phone_reference(models.Model):
+class Price_reference(models.Model):
     """This model holds static information on phone's payment methods.
 
     The PhoneReference model represents reference data for different phone models

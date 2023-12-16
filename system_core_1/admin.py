@@ -4,7 +4,7 @@ from .models.agent_profile import AgentProfile
 from .models.customer_order import PhoneData
 from .models.user_profile import UserProfile, UserAvatar
 from .models.main_storage import MainStorage
-from .models.reference import Phone_reference
+from .models.reference import Price_reference
 from django.contrib.auth.admin import UserAdmin
 from .models.user_profile import Employee
 from .models.main_storage import Airtel_mifi_storage
@@ -17,7 +17,7 @@ from datetime import datetime
 
 admin.site.site_header = "HAFEEZ MANAGEMENT SYSTEM"
 admin.site.site_title = "Hafeez"
-admin.site.index_title = "Welcome to Hafeez Management System"
+admin.site.index_title = "Hafeez Management"
 
 
 @admin.register(UserProfile)
@@ -54,7 +54,7 @@ class YearMonthFilter(admin.SimpleListFilter):
 
     def queryset(self, request, queryset):
         if self.value():
-            year = datetime.now().year  # You can specify a different year if needed
+            year = datetime.now().year
             month = int(self.value())
             return queryset.filter(stock_out_date__year=year, stock_out_date__month=month)
 
@@ -173,7 +173,7 @@ class MainStorageData(admin.ModelAdmin):
         return super().save_model(request, obj, form, change)
 
 
-@admin.register(Phone_reference)
+@admin.register(Price_reference)
 class PhoneReferenceAdmin(admin.ModelAdmin):
     list_display = ("phone", "initial_deposit", "merchant", 'starting_cash_price',
                     'cost_price', 'final_cash_price', 'price_added_on',

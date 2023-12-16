@@ -6,7 +6,7 @@ from django.shortcuts import render, redirect
 from ..forms.user_profile_update_form import UserProfileForm
 from ..models.agent_profile import AgentProfile
 from ..models.main_storage import MainStorage, Airtel_mifi_storage
-from ..models.reference import Phone_reference
+from ..models.reference import Price_reference
 from ..models.customer_order import PhoneData
 from django.http import JsonResponse
 from ..models.user_profile import UserAvatar
@@ -90,7 +90,7 @@ def in_stock(request):
         if agent_profile:
             stock_in = MainStorage.objects.filter(agent=user, in_stock=True,
                                                   assigned=True).all().order_by('-entry_date')
-            reference = Phone_reference.objects.all()
+            reference = Price_reference.objects.all()
             context = {
                 'profile': user.email[0],
                 'user': user,

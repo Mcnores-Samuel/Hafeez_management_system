@@ -11,7 +11,6 @@ from ..models.user_profile import UserAvatar, UserProfile
 from uuid import uuid4
 from django.shortcuts import redirect
 from ..models.main_storage import MainStorage, Airtel_mifi_storage
-from ..models.customer_details import CustomerData
 from django.utils import timezone
 
 
