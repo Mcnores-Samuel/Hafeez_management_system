@@ -48,6 +48,10 @@ class AgentProfile(models.Model):
     indexes = [
       models.Index(fields=['user', 'is_agent']),
     ]
+
+  def __str__(self):
+    """Return a human readable representation of the model instance."""
+    return "{}".format(self.user.username)
   
 
 class Agent_sign_up_code(models.Model):

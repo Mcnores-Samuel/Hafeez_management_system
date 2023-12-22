@@ -12,7 +12,8 @@ def delete_customer_data(request):
         customer_id = request.POST.get('customer_id', None)
         if customer_id:
             customer = CustomerData.objects.get(id=customer_id)
-            device = MainStorage.objects.get(device_imei=customer.phonedata_set.all()[0].imei_number)
+            device = MainStorage.objects.get(
+                device_imei=customer.phonedata_set.all()[0].imei_number)
             device.sold = False
             device.in_stock = True
             device.sales_type = '##'

@@ -1,11 +1,15 @@
 {% extends 'users/admin_sites/main.html' %}
+{% load static %}
+{% block scripts %}
+    <script src="{% static 'scripts/main_stock_details.js' %}" defer></script>
+{% endblock %}
 {% block content %}
  <div class="main-analysis-container">
     <div class="summary-container">
         <div class="agent_sales" style="height: 600px;">
             <div class="description">
                 <h3>Main Stock Details</h3>
-                <a href="#">Full Analysis</a>
+                <a href="https://www.hafeezmw.com/admin/system_core_1/mainstorage/?agent__username=Hafeez-Enterprise&in_stock__exact=1" blank>Manage</a>
             </div>
             <div class="loading-message-main-stock"></div>
             <canvas class="main_stock_detailed_analysis" aria-label="chart" height="350"></canvas>

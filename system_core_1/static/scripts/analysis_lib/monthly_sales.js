@@ -1,27 +1,34 @@
-let cash_sales_Chart = null;
-let cash_sales_ctx = null;
+const months = [
+    "January", "February", 
+    "March", "April", "May", 
+    "June", "July", "August",
+    "September", "October", 
+    "November", "December"
+];
 
-function cash_sales_analysis() {
-    if (cash_sales_Chart === null) {
-        cash_sales_ctx = $('.cash_sales_analysis').get(0).getContext('2d');
+function updateSalesByAgentChart(url, dest, chartType, loader) {
+    let salesByAgentChart = null;
+    let salesByAgentCtx = null;
+
+    if (salesByAgentChart === null) {
+        salesByAgentCtx = $(dest).get(0).getContext('2d');
     }
     let date = new Date();
-    let chartType = "bar";
     
     function fetchAndUpdateAgentMonthly() {
         let labelsList = [];
         let nums = [];
 
         $.ajax({
-            url: "/system_core_1/get_sale_by_agent_monthy_cash/",
+            url: url,
             method: "GET",
             contentType: "application/json",
             beforeSend: function () {
-                const load = $('.loading-message-monthly-cash')
+                const load = $(loader)
                 load.addClass('loading-message');
             },
             success: function (data) {
-                const load = $('.loading-message-monthly-cash')
+                const load = $(loader)
                 load.removeClass('loading-message');
 
                 const totalData = data.find(item => item[0] === "Total");
@@ -30,13 +37,13 @@ function cash_sales_analysis() {
                 labelsList = filteredData.map(item => item[0]);
                 nums = filteredData.map(item => item[1]);
 
-                if (cash_sales_Chart === null) {
-                    cash_sales_Chart = new Chart(cash_sales_ctx, {
+                if (salesByAgentChart === null) {
+                    salesByAgentChart = new Chart(salesByAgentCtx, {
                         type: chartType,
                         data: {
                             labels: labelsList,
                             datasets: [{
-                                label: months[date.getMonth()] + " Total Cash Sales " + `${total}`,
+                                label: months[date.getMonth()] + " Total loan Sales " + `${total}`,
                                 data: nums,
                                 backgroundColor: ["#23435c"],
                                 borderColor: ["#23435c"],
@@ -70,10 +77,10 @@ function cash_sales_analysis() {
                         }
                     });
                 } else {
-                    cash_sales_Chart.data.labels = labelsList;
-                    cash_sales_Chart.data.datasets[0].data = nums;
-                    cash_sales_Chart.data.datasets[0].label = months[date.getMonth()] + " Total Cash Sales " + `${total}`;
-                    cash_sales_Chart.update();
+                    salesByAgentChart.data.labels = labelsList;
+                    salesByAgentChart.data.datasets[0].data = nums;
+                    salesByAgentChart.data.datasets[0].label = months[date.getMonth()] + " Total loan Sales " + `${total}`;
+                    salesByAgentChart.update();
                 }
                 setTimeout(fetchAndUpdateAgentMonthly, 5 * 60 * 1000);
             },
@@ -85,4 +92,15 @@ function cash_sales_analysis() {
     fetchAndUpdateAgentMonthly();
 }
 
-cash_sales_analysis();
+const dest_monthly = ".agent_sales_loan_chart";
+const url_monthly = "/system_core_1/get_sale_by_agent_monthy_loan/"
+const loader_monthly = ".agent_sales_loan_chart_loader";
+const dest_monthly2 = ".agent_sales_cash_chart";
+const url_monthly2 = "/system_core_1/get_sale_by_agent_monthy_cash/"
+const loader_monthly2 = ".agent_sales_cash_chart_loader";
+
+
+updateSalesByAgentChart(url_monthly, dest_monthly,
+    "bar", loader_monthly);
+updateSalesByAgentChart(url_monthly2, dest_monthly2,
+    "bar", loader_monthly2);

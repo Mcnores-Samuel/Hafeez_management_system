@@ -44,17 +44,16 @@ class Price_reference(models.Model):
     cash_price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     cost_price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     final_cash_price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    special_retailer_price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     price_added_on = models.DateTimeField(default=timezone.now)
     price_changed_on = models.DateTimeField(default=timezone.now)
     current_month = models.CharField(max_length=20, null=True, default=timezone.now().strftime("%B"))
 
     class Meta:
         app_label = 'system_core_1'
+        verbose_name_plural = 'Price Reference'
+        ordering = ['-price_added_on']
     
     def __str__(self):
         """String representation of the phone reference model"""
         return ("{} {} {}".format(self.phone, self.deposit, self.merchant_price))
-    
-    @classmethod
-    def get_all_phones(cls):
-        return cls.objects.all()

@@ -5,12 +5,14 @@
     <link rel="stylesheet" href="{% static 'styles/data_table.css' %}">
     <link rel="stylesheet" href="{% static 'styles/agent_stock_mobile.css' %}">
     <link rel="stylesheet" href="{% static 'styles/loading-message.css' %}">
-    <script src="{% static 'scripts/data_charts.js' %}" defer></script>
+    {% block scripts %}
     <script src="{% static 'scripts/auto_submit_filter.js' %}" defer></script>
     <script src="{% static 'scripts/copyCode.js' %}" defer></script>
     <script src="{% static 'scripts/stocks_stats.js' %}" defer></script>
-    <script src="{% static 'scripts/cash_sales_analysis.js' %}" defer></script>
-    <script src="{% static 'scripts/main_stock_details.js' %}" defer></script>
+    <script src="{% static 'scripts/analysis_lib/daily_sales.js' %}" defer></script>
+    <script src="{% static 'scripts/analysis_lib/weekly_sales.js' %}" defer></script>
+    <script src="{% static 'scripts/analysis_lib/monthly_sales.js' %}" defer></script>
+    {% endblock %}
     <script src='https://cdn.plot.ly/plotly-2.27.0.min.js'></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 {% endblock %}
@@ -62,40 +64,53 @@
     {% endblock %}
 {% endblock %}
 {% block content %}
-    <!-- Custom content for Template 1 -->
     <div class="main-analysis-container">
         <div class="summary-container">
             <div class="daily_sales">
                 <div class="description">
-                    <h3>Daily Sales</h3>
-                    <a href="#">Full Analysis</a>
+                    <h3>Daily Sales on Loan</h3>
                 </div>
-                <div class="loading-message-daily"></div>
-                <canvas class="daily_sales_chart" aria-label="chart" height="350"></canvas>
+                <div class="daily_sales_loader_loan"></div>
+                <canvas class="daily_sales_chart_loan" aria-label="chart" height="350"></canvas>
             </div>
             <div class="weekly_sales">
                 <div class="description">
-                    <h3>Weekly Sales</h3>
+                    <h3>Weekly Sales on Loan</h3>
                     <a href="#">Full Analysis</a>
                 </div>
-                <div class="loading-message-weekly"></div>
-                <canvas class="Weekly_sales_chart" aria-label="chart" height="350"></canvas>
+                <div class="weekly_sales_loader_loan"></div>
+                <canvas class="Weekly_sales_chart_loan" aria-label="chart" height="350"></canvas>
+            </div>
+            <div class="daily_sales">
+                <div class="description">
+                    <h3>Daily Sales on Cash</h3>
+                </div>
+                <div class="daily_sales_loader_cash"></div>
+                <canvas class="daily_sales_chart_cash" aria-label="chart" height="350"></canvas>
+            </div>
+            <div class="weekly_sales">
+                <div class="description">
+                    <h3>Weekly Sales on Cash</h3>
+                    <a href="#">Full Analysis</a>
+                </div>
+                <div class="weekly_sales_loader_cash"></div>
+                <canvas class="Weekly_sales_chart_cash" aria-label="chart" height="350"></canvas>
             </div>
             <div class="agent_sales">
                 <div class="description">
                     <h3>Monthly Sales On Loan</h3>
                     <a href="#">Full Analysis</a>
                 </div>
-                <div class="loading-message-monthly"></div>
-                <canvas class="sales_by_agent_chart" aria-label="chart" height="350"></canvas>
+                <div class="agent_sales_loan_chart_loader"></div>
+                <canvas class="agent_sales_loan_chart" aria-label="chart" height="350"></canvas>
             </div>
             <div class="agent_sales">
                 <div class="description">
                     <h3>Monthly Sales on Cash</h3>
                     <a href="#">Full Analysis</a>
                 </div>
-                <div class="loading-message-monthly-cash"></div>
-                <canvas class="cash_sales_analysis" aria-label="chart" height="350"></canvas>
+                <div class="agent_sales_cash_chart_loader"></div>
+                <canvas class="agent_sales_cash_chart" aria-label="chart" height="350"></canvas>
             </div>
             <div class="all_agents_stock">
                 <div class="description">

@@ -49,8 +49,10 @@ urlpatterns = [
     path('decline_contracts/', approve_contracts.decline_contracts, name='decline_contracts'),
     path('sale_aitel_device/', approve_contracts.sale_aitel_device, name='sale_aitel_device'),
     # produces data for charts in dashboard
-    path('get_daily_sales_json/', data_for_charts.get_daily_sales_json, name='get_daily_sales_json'),
-    path('get_weekly_sales_json/', data_for_charts.get_weekly_sales_json, name='get_weekly_sales_json'),
+    path('get_daily_sales_json_loan/', data_for_charts.get_daily_sales_json_loan, name='get_daily_sales_json_loan'),
+    path('get_daily_sales_json_cash/', data_for_charts.get_daily_sales_json_cash, name='get_daily_sales_json_cash'),
+    path('get_weekly_sales_json_loan/', data_for_charts.get_weekly_sales_json_loan, name='get_weekly_sales_json_loan'),
+    path('get_weekly_sales_json_cash/', data_for_charts.get_weekly_sales_json_cash, name='get_weekly_sales_json_cash'),
     path('get_sale_by_agent_monthy_loan/', data_for_charts.get_sale_by_agent_monthy_loan, name='get_sale_by_agent_monthy_loan'),
     path('get_sale_by_agent_monthy_cash/', data_for_charts.get_sale_by_agent_monthy_cash, name='get_sale_by_agent_monthy_cash'),
     path('get_agents_stock_json/', data_for_charts.get_agents_stock_json, name='get_agents_stock_json'),

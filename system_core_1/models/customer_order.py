@@ -51,4 +51,11 @@ class PhoneData(models.Model):
 
     class Meta:
         app_label = 'system_core_1'
+        index_together = ('customer', 'agent')
+        ordering = ['-id']
+        verbose_name_plural = 'Customer Orders'
+
+    def __str__(self):
+        """String representation of the phone data model"""
+        return "{} {} {}".format(self.customer, self.phone_type, self.imei_number)
         

@@ -29,7 +29,7 @@ def approve_contracts(request):
         customer.pending = False
         customer.save()
         messages.success(request, 'Contract approved successfully.')
-    return redirect('dashboard')
+    return redirect('dashboard/approve/')
 
 
 @login_required

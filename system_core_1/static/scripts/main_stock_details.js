@@ -95,7 +95,7 @@ function main_stock_chart_details() {
                     });
                 } else {
                     main_stockChart.data.labels = labelsList;
-                    main_stockChart.data.datasets[0].data = nums;
+                    main_stockChart.data.datasets[0].data = total;
                     main_stockChart.update();
                 }
                 setTimeout(fetchAndUpdateDailyData, 5 * 60 * 1000);

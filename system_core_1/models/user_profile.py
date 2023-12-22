@@ -11,6 +11,7 @@ Classes:
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.conf import settings
+from django.utils import timezone
 
 
 class UserProfileManager(BaseUserManager):

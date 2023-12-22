@@ -97,10 +97,11 @@ class MainStorage(models.Model):
         indexes = [
             models.Index(fields=['device_imei', 'phone_type', 'in_stock', 'assigned'])
         ]
-    
-    def __str__(self):
-        return self.device_imei + ' ' + self.name
 
+    def __str__(self):
+        """String representation of the phone data model"""
+        return "Device: {}, Imei: {}".format(self.name, self.device_imei)
+    
 
 DEVICES = (
     ("MIFI", "MIFI"), ("ROUTER (IDU)", "ROUTER (IDU)"),
@@ -144,6 +145,9 @@ class Airtel_mifi_storage(models.Model):
         indexes = [
             models.Index(fields=['device_imei', 'device', 'in_stock', 'assigned'])
         ]
+        verbose_name_plural = 'Airtel Devices'
 
     def __str__(self):
-        return self.device_imei + ' ' + self.device
+        """String representation of the phone data model"""
+        return "Device: {}, Imei: {}, heldby: {}".format(
+            self.device, self.device_imei, self.agent)

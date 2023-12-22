@@ -84,3 +84,8 @@ class CustomerData(models.Model):
         indexes = [
             models.Index(fields=['customer_name', 'national_id', 'customer_contact', 'customer_email']),
         ]
+        verbose_name_plural = 'Customer Details'
+
+    def __str__(self):
+        """String representation of the customer data model"""
+        return ("{} {} {}".format(self.customer_name, self.national_id, self.customer_contact))
