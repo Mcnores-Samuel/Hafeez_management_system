@@ -10,8 +10,6 @@ media/
 *.sqlite3
 .vercel
 data_api.py
-*/migrations/*
-!*/migrations/__init__.py
 credentials.json
 data_api.py
 data_api_v2.py
