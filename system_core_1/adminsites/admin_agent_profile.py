@@ -7,6 +7,5 @@ class AgentProfileAdmin(admin.ModelAdmin):
     list_display = ('user', 'is_agent', 'contact_number',
                     'location', 'longitude', 'latitude')
     search_fields = ('user__username', 'contact_number', 'location')
-    
+
     list_per_page = 20
-    

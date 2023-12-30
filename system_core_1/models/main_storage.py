@@ -34,7 +34,6 @@ sales_type = (
 )
 
 
-
 class MainStorage(models.Model):
     """This model represent the entire stock available and sold in all posts.
 
@@ -101,11 +100,12 @@ class MainStorage(models.Model):
     def __str__(self):
         """String representation of the phone data model"""
         return "Device: {}, Imei: {}".format(self.name, self.device_imei)
-    
+
 
 DEVICES = (
     ("MIFI", "MIFI"), ("ROUTER (IDU)", "ROUTER (IDU)"),
 )
+
 
 class Airtel_mifi_storage(models.Model):
     """This model represent the entire stock available and sold in all posts
@@ -122,9 +122,12 @@ class Airtel_mifi_storage(models.Model):
     - stock_out_date: The date on which the phone was purchased or added to the
       inventory.
     """
-    agent = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
+    agent = models.ForeignKey(settings.AUTH_USER_MODEL,
+                              on_delete=models.CASCADE,
+                              null=True, blank=True)
     recieved = models.BooleanField(default=False)
     device_imei = models.CharField(max_length=15, unique=True)
+    device_imei_2 = models.CharField(max_length=15, unique=True, null=True, blank=True)
     phone_number = models.CharField(max_length=15, unique=True, null=True, blank=True)
     secondary_phone_number = models.CharField(max_length=15, unique=True, null=True, blank=True)
     device = models.CharField(max_length=25, choices=DEVICES, default='MIFI')
@@ -143,7 +146,8 @@ class Airtel_mifi_storage(models.Model):
 
     class Meta:
         indexes = [
-            models.Index(fields=['device_imei', 'device', 'in_stock', 'assigned'])
+            models.Index(fields=['device_imei',
+                                 'device', 'in_stock', 'assigned'])
         ]
         verbose_name_plural = 'Airtel Devices'
 

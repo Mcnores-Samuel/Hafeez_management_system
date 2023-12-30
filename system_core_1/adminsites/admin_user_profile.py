@@ -13,5 +13,3 @@ class UserAdminModel(UserAdmin):
     list_filter = ('is_staff', 'is_superuser', 'is_active', 'groups')
 
     search_fields = ('email', 'username', 'first_name', 'last_name')
-
-    ordering = ('email',)

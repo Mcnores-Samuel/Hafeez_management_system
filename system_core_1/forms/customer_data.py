@@ -146,6 +146,7 @@ class CombinedDataForm(forms.Form):
         selected_device = MainStorage.objects.get(id=data_id)
         selected_device.in_stock = False
         selected_device.sold = True
+        selected_device.pending = True
         selected_device.stock_out_date = timezone.now()
         selected_device.sales_type = 'Cash'
         selected_device.save()
@@ -177,6 +178,7 @@ class CombinedDataForm(forms.Form):
             )
             selected_device.in_stock = False
             selected_device.sold = True
+            selected_device.pending = True
             selected_device.sales_type = 'Loan'
             selected_device.stock_out_date = timezone.now()
             selected_device.save()

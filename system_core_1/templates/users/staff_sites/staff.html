@@ -10,6 +10,9 @@
     <script src="{% static 'scripts/staff_lib/new_entries.js' %}" defer></script>
     <script src="{% static 'scripts/staff_lib/get_total.js' %}" defer></script>
     <script src="{% static 'scripts/staff_lib/total_rejected.js' %}" defer></script>
+    <script src="{% static 'scripts/analysis_lib/daily_sales.js' %}" defer></script>
+    <link rel="stylesheet" href="{% static 'styles/loading-message.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/admin_sects_display.css' %}">
 {% endblock %}
 {% block content %}
 {% bootstrap_messages %}
@@ -68,6 +71,24 @@
             </div>
         </div>
     </div>
+</div>
+<div class="main-analysis-container container">
+  <div class="summary-container">
+    <div class="daily_sales pending-sales">
+      <div class="description">
+          <h3 class="fs-6">Daily Sales on Loan</h3>
+      </div>
+      <div class="daily_sales_loader_loan"></div>
+      <canvas class="daily_sales_chart_loan" aria-label="chart" height="350"></canvas>
+    </div>
+    <div class="weekly_sales pending-sales">
+      <div class="description">
+          <h3 class="fs-6">Daily Sales on Cash</h3>
+      </div>
+      <div class="daily_sales_loader_cash"></div>
+      <canvas class="daily_sales_chart_cash" aria-label="chart" height="350"></canvas>
+    </div>
+  </div>
 </div>
 <div class="divider"></div>
 {% endblock %}

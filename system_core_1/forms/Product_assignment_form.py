@@ -17,6 +17,7 @@ PHONELIST = (
 
 
 class ProductAssignmentForm(forms.Form):
-    phone_type = forms.ChoiceField(label='Phone type', required=True,
-                                    choices=PHONELIST)
+    phone_type = forms.ChoiceField(
+        label='Phone type', required=True,
+        choices=PHONELIST)
     image = forms.ImageField(label='Image', required=False)

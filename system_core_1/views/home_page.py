@@ -69,12 +69,13 @@ def home_page(request):
                                          category="Infinix", sold=False).order_by('id')
     redmi = MainStorage.objects.filter(in_stock=True,
                                        category="Redmi", sold=False).order_by('id')
-    skip = ['it2163', 'it5607', 'it5606', 'it2160', 'it2171', 'it2172']
+    
     phone_list = []
     count = 0
     unique_phone_types = set()
     for phone in itel:
-        if phone.phone_type not in unique_phone_types and phone.phone_type not in skip:
+        if (phone.phone_type not in unique_phone_types
+            and not str(phone.phone_type).startswith('it')):
             phone_list.append(phone)
             unique_phone_types.add(phone.phone_type)
             count += 1

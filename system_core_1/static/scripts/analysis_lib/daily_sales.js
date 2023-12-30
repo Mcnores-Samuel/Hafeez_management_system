@@ -71,7 +71,50 @@ function updateDailyChart(url, dest, chartType, loader) {
                                     padding: 8,
                                     fullSize: true,
                                 }
-                            }
+                            },
+                            scales: {
+                                x: {
+                                    grid: {
+                                        display: false
+                                    },
+                                    ticks: {
+                                        color: "navy",
+                                        font: {
+                                            weight: 'bold'
+                                        },
+                                    },
+                                },
+                                y: {
+                                    grid: {
+                                        display: false
+                                    },
+                                    ticks: {
+                                        color: "navy",
+                                        font: {
+                                            weight: 'bold'
+                                        },
+                                    },
+                                }
+                            },
+                            animation: {
+                                tension: {
+                                    duration: 1000,
+                                    easing: 'linear',
+                                    from: 1,
+                                    to: 0,
+                                    loop: true
+                                },
+                                responsive: true,
+                            },
+                            hover: {
+                                mode: 'nearest',
+                                intersect: true
+                            },
+                            tooltips: {
+                                mode: 'nearest',
+                                intersect: true
+                            },
+                            
                         }
                     });
                 } else {
