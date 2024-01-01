@@ -35,6 +35,9 @@ SERVER_DOMAIN2 = os.environ.get('SERVER_DOMAIN2', default=".railway.app")
 OTHER_DOMAIN = os.environ.get('OTHER_DOMAIN')
 ALLOWED_HOSTS = [MAIN_DOMAIN, SUBDOMAIN_NAME, SERVER_DOMAIN1,
                  SERVER_DOMAIN2, OTHER_DOMAIN, 'localhost']
+CRSF_COOKIE_SECURE = True
+CRSF_TRUSTED_ORIGINS = [MAIN_DOMAIN, SUBDOMAIN_NAME, SERVER_DOMAIN1,
+                        SERVER_DOMAIN2, OTHER_DOMAIN, 'localhost']
 
 SESSION_COOKIE_SECURE = True
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
