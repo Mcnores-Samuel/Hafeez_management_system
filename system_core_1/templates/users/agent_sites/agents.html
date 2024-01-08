@@ -1,189 +1,325 @@
-{% extends "base.html" %}
 {% load static %}
-{% block head %}
-    <link rel="stylesheet" href="{% static 'styles/data_table.css' %}">
-    <link rel="stylesheet" href="{% static 'styles/agent_stock_mobile.css' %}">
-    <link rel="stylesheet" href="{% static 'styles/admin_sects_display.css' %}">
-    <link rel="stylesheet" href="{% static 'styles/customer_data_layout.css' %}">
-    <script src="{% static 'scripts/data_updates.js' %}"></script>
-{% endblock %}
-{% block header %}
-    <div class="topbar">
-        <div class="logo">HE</div>
-        <div class="brandname">Hafeez Enterprise</div>
-        <span class="menu"><i class='bx bx-menu'></i></span>
-    </div>
-    <nav class="heading">
-        <div class="logo">HE</div>
-        <div class="brandname">Hafeez Enterprise</div>
-        <ul class="navigation">
-            <li><a href="{% url 'home_page' %}"><i class='bx bxs-home'></i> Home</a></li>
-            <li><a href="{% url 'products' %}"><i class='bx bxl-product-hunt'></i> Products</a></li>
-            <li><a href="{% url 'services' %}">Services</a></li>
-        </ul>
-        <ul class="admin-drop-menu">
-            <li><a href="{% url 'dashboard' %}"><i class='bx bxs-dashboard'></i> Dashboard</a></li>
-            <li><a href="#"><i class='bx bxs-data'></i> My Stock</a></li>
-            <li><a href="#"><i class='bx bx-group'></i> My Customers</a></li>
-        </ul>
-        {% if avatar.image %}
-            <button type="submit" class="profile"><img src="{{ avatar.image.url }}" alt=""></button>
-        {% else %}
-            <button type="submit" class="profile">{{ profile }}</button>
-        {% endif %}
-        <ul class="mobile-set" style="display: none;">
-            <li class="settings"><a href="{% url 'profile' %}"><i class='bx bx-cog' ></i> Settings</a></li>
-            <li><a href="{% url 'sign_out' %}"><i class='bx bx-log-out'></i> Sign Out</a></li>
-        </ul>
-    </nav>
-    {% block sidebar %}
-    <din class="sidebar-containter">
-        <nav>
-            <a href="{% url 'dashboard' %}"><i class='bx bxs-dashboard'></i></a>
-            <a href="#"><i class='bx bxs-data'></i></a>
-        </nav>
-    </din>
-    {% endblock %}
-{% endblock %}
-{% block content %}
-<section class="agents_stock" id="agent-stock">
-            <table class="stock-table">
-                <caption>Stock In</caption>
-                <thead>
-                    <tr>
-                        <th>category</th>
-                        <th>name</th>
-                        <th>imei</th>
-                        <th>model</th>
-                        <th>Spec</th>
-                        <th>entry date</th>
-                        <th>recieved</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for item in stock_in %}
-                        <tr>
-                            <td>{{ item.category }}</td>
-                            <td>{{ item.name }}</td>
-                            <td>{{ item.device_imei }}</td>
-                            <td>{{ item.phone_type }}</td>
-                            <td>{{ item.spec }}</td>
-                            <td>{{ item.entry_date }}</td>
-                            {% if item.recieved %}:
-                                <td class="verified">
-                                    <input type="checkbox" id="checkbox" checked disabled>
-                                    <label for="checkbox" class="checkbox"></label>
-                                </td>
-                            {% else %}
-                                <td>
-                                    <form action="" method="post" class="recieved_form">
-                                        {% csrf_token %}
-                                        <input type="hidden" name="device_imei" value="{{ item.device_imei }}">
-                                        <button type="submit" class="recieved-btn" onclick="recieved()">verify</button>
-                                    </form>
-                                </td>
-                            {% endif %}
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-            <table class="stock-table">
-                <caption>Stock Out</caption>
-                <thead>
-                    <tr>
-                        <th>category</th>
-                        <th>name</th>
-                        <th>imei</th>
-                        <th>model</th>
-                        <th>Spec</th>
-                        <th>Entry date</th>
-                        <th>sold on</th>
-                        <th>contract No</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for item in stock_out %}
-                    <tr>
-                        <td>{{ item.category }}</td>
-                        <td>{{ item.name }}</td>
-                        <td>{{ item.device_imei }}</td>
-                        <td>{{ item.phone_type }}</td>
-                        <td>{{ item.spec }}</td>
-                        <td>{{ item.entry_date }}</td>
-                        <td>{{ item.stock_out_date }}</td>
-                        {% if item.contract_no and item.sales_type == 'Loan' and item.contract_no != '##' %}
-                            <td>{{ item.contract_no }}</td>
-                        {% elif not item.contract_no and item.sales_type == 'Cash' or item.contract_no == '##' and item.sales_type == 'Cash' %}
-                            <td>No contract</td>
-                        {% else %}
-                            <td>
-                                <form action="" method="post" class="contract_number_form">
-                                    {% csrf_token %}
-                                    <input type="text" name="contract_number" placeholder="Add contract number" maxlength="9" minlength="9" pattern="[A]{1}[0-9]{8}">
-                                    <input type="hidden" name="device_imei" value="{{ item.device_imei }}">
-                                    <button type="submit" class="contract_number-btn" onclick="save_contract_number()">save</button>
-                                </form>
-                            </td>
-                        {% endif %}
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-</section>
-<section class="mobile-display">
-    <div class="in_stock">
-        <h2>Stock In</h2>
-        <div>
-            <p>Total devices: <span>{{ total_stock_in }}</span></p>
-        </div>
-        <a href="{% url 'in_stock' %}"><button class="view-button">view details</button></a>
-    </div>
-    <div class="stock_out">
-        <h2>Stock out</h2>
-        <div>
-            <p>Total Monthly Sales: <span>{{ total_stock_out }}</span></p>
-        </div>
-        <a href="{% url 'stock_out' %}"><button class="view-button">view Details</button></a>
-    </div>
-</section>
-{% endblock %}
-{% block footer %}
-    <!-- Custom footer content for Template 1 -->
-        <div class="footer-content-custom">
-            <div class="footer-logo">
-                <h2>Hafeez Enterprise</h2>
-                <p>Your Trusted Phone Retailer</p>
-                <div class="social-icons">
-                    <!-- Add social media icons and links here -->
-                    <a href="#"><i class='bx bxl-twitter'></i></a>
-                    <a href="#"><i class='bx bxl-whatsapp'></i></a>
-                    <a href="#"><i class='bx bxl-facebook'></i></a>
-                    <a href="#"><i class='bx bxl-instagram'></i></a>
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Dashboard</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link rel="stylesheet" href="{% static 'styles/data_table.css' %}">
+        <link rel="stylesheet" href="{% static 'styles/base_header.css' %}">
+        <link rel="stylesheet" href="{% static 'styles/agent_stock_mobile.css' %}">
+        <link rel="stylesheet" href="{% static 'styles/admin_sects_display.css' %}">
+        <link rel="stylesheet" href="{% static 'styles/customer_data_layout.css' %}">
+        <link rel="stylesheet" href="{% static 'styles/agents_dashboard.css' %}">
+        <link rel="stylesheet" href="{% static 'styles/loading-message.css' %}">
+        <script src="{% static 'scripts/data_updates.js' %}"></script>
+        <script src="{% static 'scripts/analysis_lib/agent_stock.js' %}" defer></script>
+        <script src="{% static 'scripts/analysis_lib/agent_sales.js' %}" defer></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    </head>
+    <body>
+        <div class="w-100">
+            <div class="row">
+                <div class="col-md-2 col-12">
+                    <div class="topbar">
+                        <div class="logo">HE</div>
+                        <button class="btn d-md-none menu-btn menu" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarCollapse" aria-expanded="false" aria-controls="sidebarCollapse">
+                            <span class="material-icons">
+                                menu
+                                </span>
+                        </button>
+                    </div>
+                    <br>
+                    <div class="collapse d-md-block wrapper" id="sidebarCollapse">
+                        <div class="sidebar">
+                            <div class="topbar-wrapper heading bg-success ">
+                                <div class="logo">HE</div>
+                                <div class="text-center text-fs text-light brandname">Hafeez Enterprise</div>
+                            </div>
+                            <ul class="navbar-nav flex-column">
+                                <li class="nav-item">
+                                    <a class="nav-link d-flex align-items-center" href=""
+                                    data-bs-toggle="tooltip" 
+                                    title="Dashboard">
+                                        <span class="material-icons fs-3">
+                                            dashboard
+                                        </span>
+                                        <span class="text"> Dashboard</span>
+                                    </a>
+                                <li class="nav-item">
+                                    <a class="nav-link d-flex align-items-center" href="{% url 'home_page' %}"
+                                    data-bs-toggle="tooltip" 
+                                    title="Home">
+                                    <span class="material-icons fs-3">
+                                        home
+                                        </span>
+                                        <span class="text"> Home</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link d-flex align-items-center" href=""
+                                    data-bs-toggle="tooltip"
+                                    title="In stock">
+                                    <span class="material-icons fs-3">
+                                        inventory
+                                    </span>
+                                    <span class="text"> My Stock</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link d-flex align-items-center" href="#"
+                                    data-bs-toggle="tooltip"
+                                    title="Stock Out">
+                                    <span class="material-icons fs-3">
+                                    outbound
+                                    </span>
+                                    <span class="text"> My Sales</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link d-flex align-items-center" href="#"
+                                    data-bs-toggle="tooltip" 
+                                    title="Tips and Updates">
+                                    <span class="material-icons fs-3">
+                                        tips_and_updates
+                                    </span>
+                                    <span class="text"> Tips and Updates</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link d-flex align-items-center" href=""
+                                    data-bs-toggle="tooltip" 
+                                    title="Profile">
+                                        <span class="material-icons fs-3">
+                                            account_circle
+                                        </span>
+                                        <span class="text"> Profile</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                <a class="nav-link d-flex align-items-center" href="{% url 'sign_out' %}"
+                                    data-bs-toggle="tooltip" 
+                                    title="Logout">
+                                        <span class="material-icons fs-3">
+                                            logout
+                                        </span>
+                                        <span class="text"> Logout</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link d-flex align-items-center" href=""
+                                    data-bs-toggle="tooltip" 
+                                    title="feedback">
+                                        <span class="material-icons fs-3">
+                                        feedback
+                                        </span>
+                                        <span class="text"> Feedback</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="footer-links">
-                <h2>Products</h2>
-                <ul>
-                    <li><a href="#">Phones</a></li>
-                    <li><a href="#">Accessories</a></li>
-                </ul>
-            </div>
-            <div class="footer-links">
-                <h2>Support</h2>
-                <ul>
-                    <li><a href="{% url 'faq' %}">FAQ</a></li>
-                    <li><a href="{% url 'contact' %}">Contact us</a></li>
-                </ul>
-            </div>
-            <div class="foot-links">
-                <h2>Legal</h2>
-                <ul>
-                    <li><a href="{% url 'privacy' %}">Privacy Policy</a></li>
-                    <li><a href="{% url 'terms' %}">Terms of Use</a></li>
-                </ul>
-            </div>
+            <section class="presentaion">
+                <div class="top-display d-flex position-relative bg-light">
+                    <form action="" method="get" class="d-flex position-relative search-form">
+                        <input type="search" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
+                        <button type="submit" class="btn btn-outline-light btn-primary search-btn">
+                            <span class="material-icons search-icon">
+                                search
+                            </span>
+                        </button>
+                    </form>
+                    <div class="notify">
+                        <div class="dropdown">
+                            <button class="btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                <span class="material-icons">
+                                    notifications
+                                </span>
+                                <span class="badge bg-danger">1</span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a class="dropdown-item" href="#">
+                                        <div class="d-flex">
+                                                <span class="material-icons">
+                                                    notifications
+                                                </span>
+                                            <div class="">
+                                                <p>Notification 1</p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="profile  position-absolute end-0">
+                        <div class="dropdown">
+                            <button class="btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                <span class="material-icons">
+                                    account_circle
+                                </span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a class="dropdown-item" href="#">
+                                        <div class="d-flex">
+                                            <div class="icon">
+                                                <span class="material-icons">
+                                                    account_circle
+                                                </span>
+                                            </div>
+                                            <div class="">
+                                                <p>Profile</p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#">
+                                        <div class="d-flex">
+                                            <div class="icon">
+                                                <span class="material-icons">
+                                                    logout
+                                                </span>
+                                            </div>
+                                            <div class="">
+                                                <p>Logout</p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <section class="charts-and-data">
+                    <div class="row gy-3">
+                        <div class="col-md-3 col-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="icon">
+                                            <span class="material-icons">
+                                                inventory
+                                            </span>
+                                        </div>
+                                        <div class="">
+                                            <p>My Stock</p>
+                                            <p>{{ total_stock_in }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="icon ">
+                                            <span class="material-icons">
+                                                outbound
+                                            </span>
+                                        </div>
+                                        <div class="">
+                                            <p>Monthly Sales</p>
+                                            <p>{{ total_stock_out }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="">
+                                        <p>Monthly Target</p>
+                                        <div class="">
+                                            <div class="progress">
+                                                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="25" style="width: 100%"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="material-icons">
+                                            credit_score
+                                        </span>
+                                        <div class="">
+                                            <p>Commission</p>
+                                            <p>100</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <br>
+                <section class="charts_by_chartjs">
+                    <div class="row gy-3">
+                        <div class="col-md-6 col-12">
+                            <div class="card">
+                                <div class="card-header text-center">
+                                    <h4>Stock</h4>
+                                </div>
+                                <div class="card-body">
+                                    <div class="loading-message-agent-stock"></div>
+                                    <canvas class="StockChart" width="400" height="400"></canvas>
+                                </div>
+                                <a href="#" class="card-footer">
+                                    View
+                                </a>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="col-md-6 col-12">
+                            <div class="card">
+                                <div class="card-header text-center">
+                                    <h4>Sales</h4>
+                                </div>
+                                <div class="card-body">
+                                    <canvas class="salesChart" width="400" height="400"></canvas>
+                                </div>
+                                <a href="#" class="card-footer">
+                                    View
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <br>
+                <section class="yearly_analysis">
+                    <div class="row">
+                        <div class="col-md-6 col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4>Yearly Sales</h4>
+                                </div>
+                                <div class="card-body">
+                                    <canvas id="yearlySalesChart" width="400" height="400"></canvas>
+                                </div>
+                                <a href="#" class="card-footer">
+                                    View
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </section>
     </div>
-    <div class="footer-bottom-custom">
-        <p>&copy; 2023 Hafeez Enterprise. All rights reserved.</p>
-    </div>
-{% endblock %}
+    <script src="{% static 'scripts/spinner.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    </body>
+</html>

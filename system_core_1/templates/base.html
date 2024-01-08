@@ -1,19 +1,22 @@
 {% load static %}
 {% load plus_r %}
+{% load django_bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    rel="stylesheet">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="{% static 'styles/common.css' %}">
     <link rel="stylesheet" href="{% static 'styles/base_header.css' %}">
     <link rel="stylesheet" href="{% static 'styles/forms.css' %}">
     <link rel="stylesheet" href="{% static 'styles/spinner.css' %}">
-    <link rel="stylesheet" href="{% static 'styles/sections.css' %}">
-    <link rel="stylesheet" href="{% static 'styles/footer.css' %}">
-    <link rel="stylesheet" href="{% static 'styles/profile.css' %}">
     <link rel="icon" href="{% static 'images/icon.png' %}" type="image/png">
     <script src="{% static 'scripts/navigation.js' %}" defer></script>
     <script src="{% static 'scripts/placeholders.js' %}" defer></script>
@@ -21,8 +24,6 @@
     <title>{% block title %}Hafeez{% endblock %}</title>
     <!-- Common CSS and JavaScript files -->
     {% block head %}
-    <link rel="stylesheet" href="{% static 'styles/home_page.css' %}">
-    <link rel="stylesheet" href="{% static 'styles/products_layout.css' %}">
     <script src="{% static 'scripts/sign_up_guide.js' %}" defer></script>
     {% endblock %}
 </head>
@@ -42,11 +43,6 @@
             <div class="logo">HE</div>
             <div class="brandname">Hafeez Enterprise</div>
             <ul class="navigation">
-                <li><a href="{% url 'home_page' %}"><i class='bx bxs-home'></i> Home</a></li>
-                <li><a href="{% url 'products' %}"><i class='bx bxl-product-hunt'></i> Products</a></li>
-                <li><a href="{% url 'services' %}"><i class='bx bxl-stripe'></i> Services</a></li>
-                <li><a href="{% url 'about' %}">About Us</a></li>
-                <li><a href="{% url 'contact' %}"><i class='bx bxs-contact'></i> Contact Us</a></li>
                 {% if user.is_authenticated %}
                     <li><a href="{% url 'dashboard' %}"><i class='bx bxs-dashboard'></i> Dashboard</a></li>
                 {% endif %}
@@ -73,154 +69,59 @@
         </div>
         {% endblock %}
     </header>
-        <div class="content">
-            {% block content %}
-            <section id="products" class="products">
-                <!-- Product showcase here -->
-                <span class="category-btn" ><i class='bx bx-category' data-tooltip="Categories"></i></span>
-                <article class="Categories">
-                    <h2>Categories <span class="Categories-icon"><i class='bx bx-chevrons-down bx-fade-down'></i></span></h2>
-                    <ul class="Categories-menu">
-                        <a href="#itel"><li>Itel</li></a>
-                        <a href="#tecno"><li>Tecno</li></a>
-                        <a href="#infinix"><li>Infinix</li></a>
-                        <a href="#redmi"><li>Redmi</li></a>
-                    </ul>
-                </article>
-                <div class="Categories-extended">
-                    <div class="slideshow-container">
-
-                        <div class="mySlides fade">
-                          <div class="numbertext"></div>
-                          <img src="{% static 'media/images/ad1.jpeg' %}">
-                          <div class="text"></div>
-                        </div>
-                        
-                        <div class="mySlides fade">
-                          <div class="numbertext"></div>
-                          <img src="{% static 'media/images/ad2.jpeg' %}">
-                          <div class="text"></div>
-                        </div>
-                        
-                        <div class="mySlides fade">
-                          <div class="numbertext"></div>
-                          <img src="{% static 'media/images/ad3.jpeg' %}">
-                          <div class="text"></div>
-                        </div>
-                        <div class="mySlides fade">
-                            <div class="numbertext"></div>
-                            <img src="{% static 'media/images/ad4.jpeg' %}">
-                            <div class="text"></div>
-                        </div>
-                        <div class="mySlides fade">
-                            <div class="numbertext"></div>
-                            <img src="{% static 'media/images/ad5.jpeg' %}">
-                            <div class="text"></div>
-                        </div>
-                        <div class="mySlides fade">
-                            <div class="numbertext"></div>
-                            <img src="{% static 'media/images/ad6.jpeg' %}">
-                            <div class="text"></div>
-                        </div>
-                    </div>
-                        <br>
-                    <div style="text-align:center">
-                        <span class="dot"></span> 
-                        <span class="dot"></span> 
-                        <span class="dot"></span>
-                        <span class="dot"></span> 
-                        <span class="dot"></span> 
-                        <span class="dot"></span> 
-                    </div>
-                    {% for category, products_list in products.items %}
-                    {% if products_list %}
-                    <article class="Itel" id="{{ category }}">
-                        <h1>{{ category }}</h1>
-                        <div class="items">
-                            {% for product in products_list %}
-                            <div class="item">
-                                <div class="item-img">
-                                    {% if product.image %}
-                                        <img src="{{ product.image.url }}" alt="{{ product.name }}">
-                                    {% endif %}
-                                </div>
-                                <div class="item-details">
-                                    <h3>{{ product.name }}</h3>
-                                    {% for price in prices %}
-                                        {% if price.phone == product.phone_type %}
-                                            <p>Price: <span class="price">{{ price.cash_price|format_price }} Cash</span></p>
-                                        {% endif %}
-                                    {% endfor %}
-                                    <p>RAM: <span>{{ product.spec|plus_r }}GB</span></p>
-                                    <p>ROM: <span>{{ product.spec|rom }}GB</span></p>
-                                    <p>Screen: <span class="screen_d">{{ product.screen_size }}</span></p>
-                                    <p>Camera: <span>{{ product.camera }}</span></p>
-                                    <p>Battery: <span>{{ product.battery }}</span></p>
-                                    <p>OS: <span>{{ product.os }}</span></p>
-                                </div>
-                            </div>
-                            {% endfor %}
-                        </div>
-                    </article>
-                    {% endif %}
-                    {% endfor %}
-                </div>
-            </section>
-
-            <section id="About">
-                <!-- Loan and Cash Options content here -->
-            </section>
-
-            <!-- Contact Us Section -->
-            <section id="contact">
-                <!-- Contact information and form here -->
-
-            </section>
+    <div class="container-fluid w-100">
+        <div>
+            {% block messages %}
+                {% bootstrap_messages %}
             {% endblock %}
         </div>
-        <footer class="footer">
-            {% block footer %}
-            <div class="footer-content">
-                    <div class="footer-logo">
-                        <h2>Hafeez Enterprise</h2>
-                        <p>Your Trusted Phone Retailer</p>
-                        <div class="social-icons">
-                            <!-- Add social media icons and links here -->
-                            <a href="#"><i class='bx bxl-twitter'></i></a>
-                            <a href="#"><i class='bx bxl-whatsapp'></i></a>
-                            <a href="#"><i class='bx bxl-facebook'></i></a>
-                            <a href="#"><i class='bx bxl-instagram'></i></a>
-                        </div>
+        {% block content %}
+        <section class="sign_up_form">
+            <div class="form_container">
+                <div class="d-flex justify-content-center">
+                    <div class="logo">HE</div>
+                    <div class="brandname">Hafeez Enterprise</div>
+                </div>
+                <br>
+                <h2>Login</h2>
+                <form method="post" class="sign_in">
+                    {% csrf_token %}
+                    <div class="form-group sign_in_group">
+                        <span class="icon"><i class='bx bx-envelope'></i></span>
+                        {{ form.email }}
+                        <label for="{{ form.email.id_for_label }}">Email:</label>
                     </div>
-                    <div class="footer-links">
-                        <h2>Products</h2>
-                        <ul>
-                            <li><a href="#">Phones</a></li>
-                            <li><a href="#">Accessories</a></li>
-                        </ul>
+                    <div class="form-group sign_in_group">
+                        <span class="icon"><i class='bx bx-lock-alt'></i></span>
+                        {{ form.password }}
+                        <label for="{{ form.password.id_for_label }}">Password:</label>
                     </div>
-                    <div class="footer-links">
-                        <h2>Support</h2>
-                        <ul>
-                            <li><a href="{% url 'faq' %}">FAQ</a></li>
-                            <li><a href="{% url 'contact' %}">Contact us</a></li>
-                        </ul>
+                    {% for error in form.non_field_errors %}
+                    <p class="error_message">{{ error }}</p>
+                    {% endfor %}
+                    <div class="form-check">
+                        {{ form.remember_me }}
+                        <label class="form-check-label" for="{{ form.remember_me.id_for_label }}">Remember Me</label>
                     </div>
-                    <div class="foot-links">
-                        <h2>Legal</h2>
-                        <ul>
-                            <li><a href="{% url 'privacy' %}">Privacy Policy</a></li>
-                            <li><a href="{% url 'terms' %}">Terms of Use</a></li>
-                        </ul>
+                    <button type="submit" class="btn btn-primary w-100">Login</button>
+                    <div class="text-center fs-6">OR</div>
+                    <a href="{% url 'sign_up' %}" class="btn btn-primary w-100">Sign Up</a>
+                    <div class="forget"><a href="{% url 'password_reset' %}">Forgot Password?</a>
                     </div>
+                </form>
             </div>
-            <div class="foot-bottom">
-                <p>&copy; 2023 Hafeez Enterprise. All rights reserved.</p>
-            </div>
-            {% endblock %}
-        </footer>
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-        <script src="{% static 'scripts/spinner.js' %}"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+        </section>
+        {% endblock %}
+    </div>
+    <footer>
+        {% block footer %}
+        <div>
+            <p>&copy; 2023 Hafeez Enterprise. All rights reserved.</p>
+        </div>
+        {% endblock %}
+    </footer>
+    <script src="{% static 'scripts/spinner.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    
 </body>
 </html>

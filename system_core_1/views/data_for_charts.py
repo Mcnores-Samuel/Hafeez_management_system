@@ -96,3 +96,12 @@ def get_main_stock_analysis(request):
         stock['Total'] = len(data_set)
         return JsonResponse(stock)
     return JsonResponse({'error': 'Invalid request.'})
+
+@login_required
+def get_individual_agent_stock(request):
+    """Returns a JSON object containing the individual agent's stock."""
+    if request.method == 'GET':
+        agent = request.user
+        stock = MainStorageAnalysis().get_agent_stock_in(agent)
+        return JsonResponse(stock)
+    return JsonResponse({'error': 'Invalid request.'})

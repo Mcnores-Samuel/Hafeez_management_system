@@ -64,3 +64,27 @@ class MainStorageAnalysis:
         sales_by_agent['Total'] = len(total_sales)
         sales_by_agent = sorted(sales_by_agent.items(), key=lambda x: x[1], reverse=True)
         return sales_by_agent
+    
+    def get_agent_stock_in(self, agent):
+        """Returns a dictionary containing the agent's stock in data."""
+        stock_in = MainStorage.objects.filter(
+            agent=agent,
+            in_stock=True, assigned=True,
+            missing=False, sold=False)
+        stock = {}
+        for data in stock_in:
+            stock[data.phone_type] = stock.get(data.phone_type, 0) + 1
+        return stock
+    
+    def get_agent_stock_out(self, agent):
+        current_month = timezone.now().date().month
+        current_year = timezone.now().date().year
+        stock_out = MainStorage.objects.filter(
+            agent=agent, in_stock=False,
+            assigned=True,
+            stock_out_date__month=current_month,
+            stock_out_date__year=current_year)
+        stock = {}
+        for data in stock_out:
+            stock[data.phone_type] = stock.get(data.phone_type, 0) + 1
+        return stock

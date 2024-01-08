@@ -28,9 +28,9 @@
         <div class="brandname">Hafeez Enterprise</div>
         <ul class="navigation">
             <li><a href="{% url 'home_page' %}"><i class='bx bxs-home'></i> Home</a></li>
-            <li><a href="{% url 'products' %}"><i class='bx bxl-product-hunt'></i> Products</a></li>
-            <li><a href="{% url 'services' %}"><i class='bx bxl-stripe'></i> Services</a></li>
-            <li><a href="{% url 'admin:index' %}"><i class='bx bxs-dashboard'></i> Admin Dashboard</a></li>
+            {% if user.is_authenticated and user.is_superuser %}
+                <li><a href="{{ admin_url }}"><i class='bx bxs-dashboard'></i> Admin Dashboard</a></li>
+            {% endif %}
         </ul>
         <ul class="admin-drop-menu">
             <li><a href="{% url 'dashboard' %}"><i class='bx bxs-dashboard'></i> Dashboard</a></li>
@@ -50,18 +50,6 @@
             <li><a href="{% url 'sign_out' %}"><i class='bx bx-log-out'></i> Sign Out</a></li>
         </ul>
     </nav>
-    {% block sidebar %}
-    <din class="sidebar-containter">
-        <nav>
-            <a href="{% url 'dashboard' %}"><i class='bx bxs-dashboard'></i></a>
-            <a href="{% url 'users' %}"><i class='bx bx-group'></i></a>
-            <a href="{% url 'main_storage' %}"><img src="{% static 'images/warehouse-alt.svg' %}" alt=""></i></a>
-            <a href="#"><i class='bx bxs-data'></i></a>
-            <a href="{% url 'agents_and_data' %}"><img src="{% static 'images/employee.png' %}" alt=""></a>
-            <a href="#"><img src="{% static 'images/customer.png' %}" alt="" srcset=""></a>
-        </nav>
-    </din>
-    {% endblock %}
 {% endblock %}
 {% block content %}
     <div class="main-analysis-container">
@@ -97,6 +85,7 @@
                 <canvas class="Weekly_sales_chart_cash" aria-label="chart" height="350"></canvas>
             </div>
             <div class="agent_sales">
+                
                 <div class="description">
                     <h3>Monthly Sales On Loan</h3>
                     <a href="#">Full Analysis</a>
@@ -150,45 +139,5 @@
                 <h3>Total loans</h3>
             </div>
         </div>
-    </div>
-{% endblock %}
-{% block footer %}
-    <!-- Custom footer content for Template 1 -->
-        <div class="footer-content-custom">
-            <div class="footer-logo">
-                <h2>Hafeez Enterprise</h2>
-                <p>Your Trusted Phone Retailer</p>
-                <div class="social-icons">
-                    <!-- Add social media icons and links here -->
-                    <a href="#"><i class='bx bxl-twitter'></i></a>
-                    <a href="#"><i class='bx bxl-whatsapp'></i></a>
-                    <a href="#"><i class='bx bxl-facebook'></i></a>
-                    <a href="#"><i class='bx bxl-instagram'></i></a>
-                </div>
-            </div>
-            <div class="footer-links">
-                <h2>Products</h2>
-                <ul>
-                    <li><a href="#">Phones</a></li>
-                    <li><a href="#">Accessories</a></li>
-                </ul>
-            </div>
-            <div class="footer-links">
-                <h2>Support</h2>
-                <ul>
-                    <li><a href="{% url 'faq' %}">FAQ</a></li>
-                    <li><a href="{% url 'contact' %}">Contact us</a></li>
-                </ul>
-            </div>
-            <div class="foot-links">
-                <h2>Legal</h2>
-                <ul>
-                    <li><a href="{% url 'privacy' %}">Privacy Policy</a></li>
-                    <li><a href="{% url 'terms' %}">Terms of Use</a></li>
-                </ul>
-            </div>
-    </div>
-    <div class="footer-bottom-custom">
-        <p>&copy; 2023 Hafeez Enterprise. All rights reserved.</p>
     </div>
 {% endblock %}

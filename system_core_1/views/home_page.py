@@ -9,9 +9,8 @@ from django.contrib.auth import login, authenticate
 from ..forms.sign_in_form import SignInForm
 from django_email_verification import verify_view, verify_token
 from django.http import HttpResponse
-from ..models.main_storage import MainStorage
-from ..models.reference import Price_reference
 from ..models.user_profile import UserAvatar
+from django.contrib import messages
 
 
 def home_page(request):
@@ -49,85 +48,27 @@ def home_page(request):
                 if user.is_active:
                     login(request, user)
                     if user.is_staff:
+                        messages.success(request, f'Welcome {user.username}!!')
                         return redirect(reverse('dashboard'))
                     elif user.groups.filter(name='agents').exists():
+                        messages.success(request, f'Welcome {user.username}!!')
                         return redirect(reverse('dashboard'))
                     else:
+                        messages.success(request, f'Welcome {user.username}!!')
                         return redirect(reverse('dashboard'))
                 else:
-                    form.add_error(None, "Please!! activate your account")
+                    messages.error(request, 'Your account is not active')
             else:
-                form.add_error(None, "Invalid username or password")
+                messages.error(request, 'Invalid login credentials')
     else:
         form = SignInForm()
-    products = {}
-    itel = MainStorage.objects.filter(in_stock=True,
-                                      category="Itel", sold=False).order_by('id')
-    tecno = MainStorage.objects.filter(in_stock=True,
-                                       category="Tecno", sold=False).order_by('id')
-    infinix = MainStorage.objects.filter(in_stock=True,
-                                         category="Infinix", sold=False).order_by('id')
-    redmi = MainStorage.objects.filter(in_stock=True,
-                                       category="Redmi", sold=False).order_by('id')
-    
-    phone_list = []
-    count = 0
-    unique_phone_types = set()
-    for phone in itel:
-        if (phone.phone_type not in unique_phone_types
-            and not str(phone.phone_type).startswith('it')):
-            phone_list.append(phone)
-            unique_phone_types.add(phone.phone_type)
-            count += 1
-        if count == 6:
-            break
-    products['itel'] = phone_list
-    unique_phone_types.clear()
 
-    phone_list = []
-    count = 0
-    unique_phone_types = set()
-    for phone in tecno:
-        if phone.phone_type not in unique_phone_types:
-            phone_list.append(phone)
-            unique_phone_types.add(phone.phone_type)
-            count += 1
-        if count == 6:
-            break
-    products['tecno'] = phone_list
-    unique_phone_types.clear()
-
-    phone_list = []
-    count = 0
-    unique_phone_types = set()
-    for phone in infinix:
-        if phone.phone_type not in unique_phone_types:
-            phone_list.append(phone)
-            unique_phone_types.add(phone.phone_type)
-            count += 1
-        if count == 6:
-            break
-    products['infinix'] = phone_list
-    unique_phone_types.clear()
-
-    phone_list = []
-    count = 0
-    unique_phone_types = set()
-    for phone in redmi:
-        if phone.phone_type not in unique_phone_types:
-            phone_list.append(phone)
-            unique_phone_types.add(phone.phone_type)
-            count += 1
-        if count == 6:
-            break
-    products['redmi'] = phone_list
-    unique_phone_types.clear()
-    prices = Price_reference.objects.all()
-    context = {'form': form, 'products': products, 'prices': prices}
+    context = {'form': form}
     if request.user.is_authenticated:
         avatar = UserAvatar.objects.get(user=request.user) if UserAvatar.objects.filter(user=request.user).exists() else None
         context['avatar'] = avatar
         context['profile'] = request.user.email[0]
+        return redirect(reverse('dashboard'))
     return render(request, 'base.html', context)
 
 

@@ -20,7 +20,7 @@ from .models.user_profile import Employee
 from .models.main_storage import Airtel_mifi_storage
 
 
-
+admin.site.site_url = "/system_core_1/dashboard"
 admin.site.site_header = "HAFEEZ MANAGEMENT SYSTEM"
 admin.site.site_title = "Hafeez"
 admin.site.index_title = "Hafeez Management"

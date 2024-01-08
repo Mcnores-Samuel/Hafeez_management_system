@@ -12,7 +12,7 @@ from uuid import uuid4
 from django.shortcuts import redirect
 from ..models.main_storage import MainStorage, Airtel_mifi_storage
 from django.utils import timezone
-
+import os
 
 
 @login_required
@@ -44,20 +44,12 @@ def dashboard(request):
     """
     if request.user.is_staff:
         user = request.user
-        agent_code = Agent_sign_up_code.objects.all()
-        try:
-            if agent_code[0].used == False:
-                agent_code = agent_code[0].code
-            else:
-                agent_code = "No code available"
-        except IndexError:
-            agent_code = "No code available"
-
+        admin_url = '/' + os.environ.get('ADMIN_URL') + '/'
         avatar = UserAvatar.objects.get(user=request.user) if UserAvatar.objects.filter(user=request.user).exists() else None
         context = {
             'profile': user.email[0],
             'user': user,
-            'agent_code': agent_code,
+            'admin_url': admin_url,
             'avatar': avatar
         }
         return render(request, 'users/admin_sites/main.html', context)
@@ -127,7 +119,7 @@ def dashboard(request):
         return render(request, 'users/airtel_supervisor/dashboard.html', context) 
     else:
         return render(request, 'users/regular_user.html', {'user': request.user})
-    
+   
 
 @login_required
 def generate_agent_code(request):

@@ -20,10 +20,12 @@ from django.views.generic import RedirectView
 from django.conf import settings
 from django.conf.urls.static import static
 from django_email_verification import urls as email_urls
+import os
 
+admin_url = os.environ.get('ADMIN_URL') + '/'
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path(admin_url, admin.site.urls),
     path('system_core_1/', include('system_core_1.urls')),
     path('', RedirectView.as_view(url='/system_core_1/')),
     path('email/', include(email_urls)),
