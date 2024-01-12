@@ -77,6 +77,7 @@ class MainStorageAnalysis:
         return stock
     
     def get_agent_stock_out(self, agent):
+        """Returns a dictionary containing the agent's stock out data."""
         current_month = timezone.now().date().month
         current_year = timezone.now().date().year
         stock_out = MainStorage.objects.filter(
@@ -87,4 +88,20 @@ class MainStorageAnalysis:
         stock = {}
         for data in stock_out:
             stock[data.phone_type] = stock.get(data.phone_type, 0) + 1
+        stock = sorted(stock.items(), key=lambda x: x[1], reverse=True)
         return stock
+    
+    def get_sales_for_all_months(self, agent):
+        """Returns a dictionary containing the agent's sales for all months."""
+        months = ['January', 'February', 'March', 'April', 'May',
+                  'June', 'July', 'August', 'September', 'October',
+                  'November', 'December']
+        year = timezone.now().date().year
+        sales = {}
+        for month in months:
+            sales[month] = len(MainStorage.objects.filter(
+                agent=agent, in_stock=False,
+                assigned=True,
+                stock_out_date__month=months.index(month)+1,
+                stock_out_date__year=year))
+        return sales

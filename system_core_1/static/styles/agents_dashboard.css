@@ -91,6 +91,7 @@
         width: 100%;
         height: 100%;
         position: relative;
+        background-color: white;
     }
 
     .wrapper .sidebar ul li {
@@ -98,7 +99,7 @@
     }
 
     .wrapper .sidebar ul li a {
-        color: #fff;
+        color: black;
         display: block;
         text-decoration: none;
     }

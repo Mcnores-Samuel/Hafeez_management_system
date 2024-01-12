@@ -8,6 +8,8 @@ from django.contrib.auth.decorators import login_required
 from ..models.agent_profile import AgentProfile
 from ..models.agent_profile import Agent_sign_up_code
 from ..models.user_profile import UserAvatar, UserProfile
+from ..data_analysis_engine.admin_panel.calc_commitions import CalcCommissions
+from ..models.commission import Commission
 from uuid import uuid4
 from django.shortcuts import redirect
 from ..models.main_storage import MainStorage, Airtel_mifi_storage
@@ -68,23 +70,25 @@ def dashboard(request):
         if agent_profile:
             current_month = timezone.now().date().month
             current_year = timezone.now().date().year
-            stock_out = MainStorage.objects.filter(agent=user, in_stock=False,
-                                                   assigned=True,
-                                                   stock_out_date__month=current_month,
-                                                   stock_out_date__year=current_year)
-            stock_in = MainStorage.objects.filter(agent=user, in_stock=True, assigned=True)
-            pending = MainStorage.objects.filter(agent=user, in_stock=False, assigned=False,
-                                                sales_type='Loan', contract_no=None)
+            stock_out = MainStorage.objects.filter(
+                agent=user, in_stock=False,
+                assigned=True,
+                stock_out_date__month=current_month,
+                stock_out_date__year=current_year).count()
+            stock_in = MainStorage.objects.filter(
+                agent=user, in_stock=True, assigned=True).count()
+            CalcCommissions().update_commission(
+                user, stock_out
+            )
             avatar = UserAvatar.objects.get(user=request.user) if UserAvatar.objects.filter(user=request.user).exists() else None
             context = {
                 'profile': user.email[0],
                 'user': user,
-                'stock_out': stock_out,
-                'stock_in': stock_in,
-                'total_stock_in': len(stock_in),
-                'total_stock_out': len(stock_out),
-                'pending': len(pending),
-                'avatar': avatar
+                'total_stock_in': stock_in,
+                'total_stock_out': stock_out,
+                'avatar': avatar,
+                'progress': CalcCommissions().target_progress(user),
+                'commission': CalcCommissions().calc_commission(user)
             }
         return render(request, 'users/agent_sites/agents.html', context)
     elif request.user.groups.filter(name='airtel_agents').exists():

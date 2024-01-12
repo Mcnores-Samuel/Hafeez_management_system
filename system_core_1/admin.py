@@ -9,6 +9,9 @@ from .adminsites.admin_agent_profile import AgentProfileAdmin
 from .adminsites.admin_user_avatars import UserAvatarAdmin
 from .adminsites.admin_employees import EmployeeAdmin
 from .adminsites.admin_special_orders import SpecialOrdersAdmin
+from .adminsites.admin_feedback import FeedbackAdmin
+from .adminsites.admin_notification import NotificationsAdmin
+from .adminsites.admin_commission import CommissionAdmin
 from .models.special_orders import SpecialOrders
 from .models.customer_details import CustomerData
 from .models.agent_profile import AgentProfile
@@ -18,6 +21,9 @@ from .models.main_storage import MainStorage
 from .models.reference import Price_reference
 from .models.user_profile import Employee
 from .models.main_storage import Airtel_mifi_storage
+from .models.feedback import Feedback
+from .models.notifications import Notifications
+from .models.commission import Commission
 
 
 admin.site.site_url = "/system_core_1/dashboard"
@@ -35,3 +41,6 @@ admin.site.register(AgentProfile, AgentProfileAdmin)
 admin.site.register(UserAvatar, UserAvatarAdmin)
 admin.site.register(Employee, EmployeeAdmin)
 admin.site.register(SpecialOrders, SpecialOrdersAdmin)
+admin.site.register(Feedback, FeedbackAdmin)
+admin.site.register(Notifications, NotificationsAdmin)
+admin.site.register(Commission, CommissionAdmin)

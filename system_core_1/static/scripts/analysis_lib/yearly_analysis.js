@@ -1,37 +1,36 @@
-let agent_sales_stockChart = null;
-let agent_sales_stockctx = null;
+function yearly_sales_analysis(url, dest, chartType, loader) {
+    let sales_analystChart = null;
+    let yearly_analysisctx = null;
 
-
-function agent_stock_chart_sales() {
-
-    if (agent_sales_stockChart === null) {
-        agent_sales_stockctx = $('.salesChart').get(0).getContext('2d');
+    if (sales_analystChart === null) {
+        yearly_analysisctx = $(dest).get(0).getContext('2d');
     }
 
     let date = new Date();
-    let chartType = "bar";
 
     function fetchAndUpdateDailyData() {
         let modelList = [];
         let total = [];
         
         $.ajax({
-            url: "/system_core_1/get_individual_agent_stock_out/",
+            url: url,
             method: "GET",
             contentType: "application/json",
             beforeSend: function () {
-                const load = $('.loading-message-main-stock')
+                const load = $(loader);
                 load.addClass('loading-message');
             },
             success: function (data) {
-                const load = $('.loading-message-main-stock')
+                const load = $(loader);
                 load.removeClass('loading-message');
 
-                modelList = data.map(item => item[0])
-                total = data.map(item => item[1])
-
-                if (agent_sales_stockChart === null) {
-                    agent_sales_stockChart = new Chart(agent_sales_stockctx, {
+                $.each(data, function (key, value) {
+                    modelList.push(key);
+                    total.push(value);
+                });
+                
+                if (sales_analystChart === null) {
+                    sales_analystChart = new Chart(yearly_analysisctx, {
                         type: chartType,
                         data: {
                             labels: modelList,
@@ -53,7 +52,7 @@ function agent_stock_chart_sales() {
                             plugins: {
                                 title: {
                                     display: true,
-                                    text: 'Sales Analysis',
+                                    text: 'Daily Sales Analysis',
                                     color: 'navy',
                                     position: 'bottom',
                                     align: 'center',
@@ -64,9 +63,6 @@ function agent_stock_chart_sales() {
                                     fullSize: true,
                                 }
                             },
-                            indexAxis: 'y',
-                            barPercentage: 0.7,
-                            categoryPercentage: 0.7,
                             scales: {
                                 x: {
                                     grid: {
@@ -93,12 +89,13 @@ function agent_stock_chart_sales() {
                                     },
                                 },
                             },
+ 
                         }
                     });
                 } else {
-                    agent_sales_stockChart.data.labels = labelsList;
-                    agent_sales_stockChart.data.datasets[0].data = total;
-                    agent_sales_stockChart.update();
+                    sales_analystChart.data.labels = labelsList;
+                    sales_analystChart.data.datasets[0].data = total;
+                    sales_analystChart.update();
                 }
                 setTimeout(fetchAndUpdateDailyData, 5 * 60 * 1000);
             },
@@ -109,4 +106,9 @@ function agent_stock_chart_sales() {
     }
     fetchAndUpdateDailyData();
 }
-agent_stock_chart_sales();
+
+const url_yearly = "/system_core_1/get_yearly_sales/"
+const dest_yearly = ".yearly_sales_chart";
+const chartType_yearly = "bar";
+const loader_yearly = ".yearly_sales_chart_loader";
+yearly_sales_analysis(url_yearly, dest_yearly, chartType_yearly, loader_yearly);

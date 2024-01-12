@@ -2,6 +2,11 @@
 {% block content %}
 <section class="sign_up_form">
     <div class="form_container">
+        <div class="d-flex justify-content-center">
+            <div class="logo">HE</div>
+            <div class="brandname">Hafeez Enterprise</div>
+        </div>
+        <br>
         <h2>Login</h2>
         <form method="post" class="sign_in">
             {% csrf_token %}
@@ -22,8 +27,11 @@
                 {{ form.remember_me }}
                 <label class="form-check-label" for="{{ form.remember_me.id_for_label }}">Remember Me</label>
             </div>
-            <button type="submit" class="btn btn-primary">Login</button>
-            <div class="forget"><a href="{% url 'password_reset' %}">Forgot Password?</a></div>
+            <button type="submit" class="btn btn-primary w-100">Login</button>
+            <div class="text-center fs-6">OR</div>
+            <a href="{% url 'sign_up' %}" class="btn btn-primary w-100">Sign Up</a>
+            <div class="forget"><a href="{% url 'password_reset' %}">Forgot Password?</a>
+            </div>
         </form>
     </div>
 </section>

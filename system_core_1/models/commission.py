@@ -12,8 +12,11 @@ from .user_profile import UserProfile
 class Commission(models.Model):
     agent = models.ForeignKey(
         UserProfile, on_delete=models.CASCADE)
-    total_devies_sold = models.IntegerField()
+    total_devices_sold = models.IntegerField()
     amount = models.DecimalField(
+        max_digits=10,
+        decimal_places=2)
+    target = models.DecimalField(
         max_digits=10,
         decimal_places=2)
     month = models.CharField(

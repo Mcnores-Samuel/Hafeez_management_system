@@ -97,6 +97,7 @@ def get_main_stock_analysis(request):
         return JsonResponse(stock)
     return JsonResponse({'error': 'Invalid request.'})
 
+
 @login_required
 def get_individual_agent_stock(request):
     """Returns a JSON object containing the individual agent's stock."""
@@ -104,4 +105,23 @@ def get_individual_agent_stock(request):
         agent = request.user
         stock = MainStorageAnalysis().get_agent_stock_in(agent)
         return JsonResponse(stock)
+    return JsonResponse({'error': 'Invalid request.'})
+
+
+@login_required
+def get_individual_agent_stock_out(request):
+    """Returns a JSON object containing the individual agent's stock."""
+    if request.method == 'GET':
+        agent = request.user
+        stock = MainStorageAnalysis().get_agent_stock_out(agent)
+        return JsonResponse(stock, safe=False)
+    return JsonResponse({'error': 'Invalid request.'})
+
+
+@login_required
+def get_yearly_sales(request):
+    """Returns a JSON object containing the yearly sales data."""
+    if request.method == 'GET':
+        sales = MainStorageAnalysis().get_sales_for_all_months(request.user)
+        return JsonResponse(sales, safe=False)
     return JsonResponse({'error': 'Invalid request.'})

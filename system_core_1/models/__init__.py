@@ -6,3 +6,6 @@ from .main_storage import MainStorage
 from .main_storage import Airtel_mifi_storage
 from .reference import  Price_reference
 from .special_orders import SpecialOrders
+from .feedback import Feedback
+from .notifications import Notifications
+from .commission import Commission
