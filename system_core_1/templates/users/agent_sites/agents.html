@@ -18,6 +18,11 @@
         <script src="{% static 'scripts/analysis_lib/agent_sales.js' %}" defer></script>
         <script src="{% static 'scripts/analysis_lib/yearly_analysis.js' %}" defer></script>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <style>
+            .progress-bar {
+            width: {{ progress }}%;
+            }
+        </style>
     </head>
     <body>
         <div class="row w-100">
@@ -243,7 +248,7 @@
                                         <div class="progress">
                                             <div class="progress-bar progress-bar-striped progress-bar-animated"
                                             role="progressbar" aria-valuenow="{{ progress }}" aria-valuemin="0"
-                                            aria-valuemax="30" style="width: progress"></div>
+                                            aria-valuemax="30">{{ progress }}%</div>
                                         </div>
                                     </div>
                                 </div>
