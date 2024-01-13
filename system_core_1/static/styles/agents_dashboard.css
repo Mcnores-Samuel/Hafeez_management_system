@@ -75,7 +75,9 @@
 }
 
 .profile {
-    top: 2px;
+    position: absolute;
+    right: 0;
+    top: 3px;
 }
 
 .text-fs {
@@ -120,12 +122,34 @@
 
     .presentaion {
         margin-left: 0;
-        padding: 15px;
         width: 100%;
     }
 
     .row {
         padding: 0;
         margin: 0;
+    }
+
+    .top-display {
+        padding: 8px;
+        height: 100%;
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+    .search-form {
+        width: 100%;
+        margin-left: 0;
+    }
+
+    .notify {
+        position: relative;
+        right: 0;
+    }
+
+    .profile {
+        position: relative;
+        top: 0;
     }
 }
