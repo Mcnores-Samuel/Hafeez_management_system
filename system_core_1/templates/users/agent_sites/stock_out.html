@@ -1,34 +1,56 @@
-{% extends 'base.html' %}
+{% extends 'users/agent_sites/agents.html' %}
+{% load plus_r %}
 {% load static %}
 {% block head %}
-    <link rel="stylesheet" href="{% static 'styles/data_table.css' %}">
     <link rel="stylesheet" href="{% static 'styles/agent_stock_mobile.css' %}">
 {% endblock %}
 {% block content %}
-<p>Go to: <span><a href="{% url 'in_stock' %}">Stock In</a></span></p>
-{% if stock_out %}
-{% for item in stock_out %}
-<div class="data-card">
-    <p>Category: <span>{{ item.category }}</span></p>
-    <p>Name: <span>{{ item.name }}</span></p>
-    <p>Device Imei: <span>{{ item.device_imei }}</span></p>
-    <p>Model: <span>{{ item.phone_type }}</span></p>
-    <p>Spec: <span>{{ item.spec }}</span></p>
-    <p>Assigned on: <span>{{ item.entry_date }}</span></p>
-    <p>Sold on: <span>{{ item.stock_out_date }}</span></p>
-    <p>Contract No:
-    <span>{% if item.contract_no and item.sales_type == 'Loan' and item.contract_no != '##' %}
-        {{ item.contract_no }}
-    {% elif not item.contract_no and item.sales_type == 'Cash' or item.contract_no == '##' and item.sales_type == 'Cash' %}
-        Not a contract
-    {% endif %}
-    </span>
-    </p>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="text-center">Sales</h1>
+        </div>
+    </div>
+    <div class="row">
+        {% for item in sales %}
+        <div class="col-md-4 col-sm-6 mb-4">
+            <div class="card">
+                <div class="card-header  text-center">
+                    <h4 class="card-title">{{ item.name }}</h4>
+                </div>
+                <div class="card-body">
+                    <p class="card-text"><strong class="text-info">Category:</strong> <span>{{ item.category }}</span></p>
+                    <p class="card-text"><strong class="text-info">Device IMEI:</strong> <span>{{ item.device_imei }}</span></p>
+                    <p class="card-text"><strong class="text-info">Spec:</strong> <span>{{ item.spec }}</span></p>
+                    <p class="card-text"><strong class="text-info">Collected On:</strong> <span>{{ item.collected_on }}</span></p>
+                    <p class="card-text"><strong class="text-info">Sold On:</strong> <span>{{ item.stock_out_date }}</span></p>
+                    {% if item.sales_type == "Loan" %}
+                    <p class="card-text"><strong class="text-info">Sales Type:</strong> <span>{{ item.sales_type }}</span></p>
+                    <p class="card-text"><strong class="text-info">Contract No:</strong> <span>{{ item.contract_no }}</span></p>
+                    {% else %}
+                    <p class="card-text"><strong class="text-info">Sales Type:</strong> <span>{{ item.sales_type }}</span></p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
 </div>
-{% endfor %}
-{% else %}
-<div class="data-card">
-    <p>No data available</p>
+<div class="container w-100">
+    <div class="pagination container-fluid w-100 d-flex justify-content-center">
+        <span class="step-links w-100 d-flex justify-content-around">
+            {% if sales.has_previous %}
+                <a href="?page=1" class="btn btn-primary">first</a>
+                <a href="?page={{ sales.previous_page_number }}" class="btn btn-primary">previous</a>
+            {% endif %}
+            <span class="current fs-5">
+                Page {{ sales.number }} of {{ sales.paginator.num_pages }}.
+            </span>
+            {% if sales.has_next %}
+                <a href="?page={{ sales.next_page_number }}" class="btn btn-primary">next</a>
+                <a href="?page={{ sales.paginator.num_pages }}" class="btn btn-primary">last</a>
+            {% endif %}
+        </span>
+    </div>
 </div>
-{% endif %}
 {% endblock %}

@@ -1,4 +1,5 @@
 {% load static %}
+{% load plus_r %}
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -8,15 +9,18 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
         <link rel="stylesheet" href="{% static 'styles/common.css' %}">
         <link rel="stylesheet" href="{% static 'styles/base_header.css' %}">
-        <link rel="stylesheet" href="{% static 'styles/agent_stock_mobile.css' %}">
         <link rel="stylesheet" href="{% static 'styles/agents_dashboard.css' %}">
+        {% block head %}
         <link rel="stylesheet" href="{% static 'styles/loading-message.css' %}">
         <script src="{% static 'scripts/data_updates.js' %}"></script>
         <script src="{% static 'scripts/analysis_lib/agent_stock.js' %}" defer></script>
         <script src="{% static 'scripts/analysis_lib/agent_sales.js' %}" defer></script>
         <script src="{% static 'scripts/analysis_lib/yearly_analysis.js' %}" defer></script>
+        {% endblock %}
+        <script src="{% static 'scripts/placeholders.js' %}" defer></script>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <style>
             .progress-bar {
@@ -25,6 +29,7 @@
         </style>
     </head>
     <body>
+        <button class="scroll-back"><i class='bx bxs-up-arrow-square'></i></button>
         <div class="row w-100">
             <div class="col-md-2 col-12">
                 <div class="topbar">
@@ -44,7 +49,7 @@
                         </div>
                         <ul class="navbar-nav flex-column">
                             <li class="nav-item">
-                                <a class="nav-link d-flex align-items-center" href=""
+                                <a class="nav-link d-flex align-items-center" href="{% url 'dashboard' %}"
                                 data-bs-toggle="tooltip" 
                                 title="Dashboard">
                                     <span class="material-icons fs-3">
@@ -63,7 +68,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link d-flex align-items-center" href=""
+                                <a class="nav-link d-flex align-items-center" href="{% url 'in_stock' %}"
                                 data-bs-toggle="tooltip"
                                 title="In stock">
                                 <span class="material-icons fs-3">
@@ -73,7 +78,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link d-flex align-items-center" href="#"
+                                <a class="nav-link d-flex align-items-center" href="{% url 'stock_out' %}"
                                 data-bs-toggle="tooltip"
                                 title="Stock Out">
                                 <span class="material-icons fs-3">
@@ -128,6 +133,7 @@
             </div>
         </div>
         <section class="presentaion">
+            {% block content %}
             <div class="top-display d-flex position-relative bg-light">
                 <form action="" method="get" class="d-flex position-relative search-form">
                     <input type="search" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
@@ -244,7 +250,6 @@
                                 <div class="">
                                     <p>Monthly Target</p>
                                     <div class="">
-                                        <p>100</p>
                                         <div class="progress">
                                             <div class="progress-bar progress-bar-striped progress-bar-animated"
                                             role="progressbar" aria-valuenow="{{ progress }}" aria-valuemin="0"
@@ -264,7 +269,7 @@
                                     </span>
                                     <div class="">
                                         <p>Commission</p>
-                                        <p>{{ commission }}</p>
+                                        <p>MK {{ commission|format_price }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -316,6 +321,7 @@
                     </div>
                 </div>
             </section>
+            {% endblock %}
         </section>
         <div class="divider"></div>
         <footer>

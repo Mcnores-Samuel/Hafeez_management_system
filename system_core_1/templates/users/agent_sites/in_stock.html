@@ -1,50 +1,65 @@
-{% extends 'base.html' %}
+{% extends 'users/agent_sites/agents.html' %}
 {% load plus_r %}
-{%load static%}
+{% load static %}
 {% block head %}
-    <link rel="stylesheet" href="{% static 'styles/data_table.css' %}">
     <link rel="stylesheet" href="{% static 'styles/agent_stock_mobile.css' %}">
-    <link rel="stylesheet" href="{% static 'styles/customer_data_layout.css' %}">
     <script src="{% static 'scripts/data_updates.js' %}"></script>
 {% endblock %}
 {% block content %}
-<p>Go to: <span><a href="{% url 'stock_out' %}">Stock Out</a></span></p>
-{% if stock_in %}
-{% for item in stock_in %}
-<div class="data-card">
-    <p>Recieved: 
-            {% if item.recieved %}
-            <span class="verified">
-                <input type="checkbox" id="checkbox" checked disabled>
-                <label for="checkbox" class="checkbox"></label>
-            </span>
-        {% else %}
-            <span class="verify_button">
-                <form action="" method="post" class="recieved_form">
-                    {% csrf_token %}
-                    <input type="hidden" name="device_imei" value="{{ item.device_imei }}">
-                    <button type="submit" class="recieved-btn" onclick="recieved()">verify</button>
-                </form>
-            </span>
-        {% endif %}
-    </p>
-    <p>Category: <span>{{ item.category }}</span></p>
-    <p>Name: <span>{{ item.name }}</span></p>
-    <p>Device Imei: <span>{{ item.device_imei }}</span></p>
-    <p>Model: <span>{{ item.phone_type }}</span></p>
-    <p>Spec: <span>{{ item.spec }}</span></p>
-    <p>Entry date: <span>{{ item.entry_date }}</span></p>
-    {% for element in reference_list %}
-        {% if element.phone == item.phone_type %}
-           <p>Initial Deposit: <span>{{ element.deposit|format_price }}</span></p>
-        {% endif %}
-    {% endfor %}
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="text-center">In Stock</h1>
+        </div>
+    </div>
+    <div class="row">
+        {% for item in stock_in %}
+            <div class="col-md-4 col-sm-6 mb-4">
+                <div class="card">
+                    <div class="card-header  text-center">
+                        <h4 class="card-title">{{ item.name }}</h4>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text"><strong class="text-info">Category:</strong> <span>{{ item.category }}</span></p>
+                        <p class="card-text"><strong class="text-info">Device IMEI:</strong> <span>{{ item.device_imei }}</span></p>
+                        <p class="card-text"><strong class="text-info">Spec:</strong> <span>{{ item.spec }}</span></p>
+                        <p class="card-text"><strong class="text-info">Collected On:</strong> <span>{{ item.collected_on }}</span></p>
+                        <p class="card-text"><strong class="text-info">Received:</strong>
+                        {% if item.recieved %}
+                            <span class="text-success fs-5">
+                                <i class='bx bxs-check-circle'></i>
+                            </span>
+                        {% else %}
+                            <span class="verify_button">
+                                <form action="" method="post" class="recieved_form">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="device_imei" value="{{ item.device_imei }}">
+                                    <button type="submit" class="btn btn-danger w-100" onclick="recieved()">verify recieved</button>
+                                </form>
+                            </span>
+                        {% endif %}</p>
+                        <a href="#" class="btn btn-primary w-100">Sold On Cash</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
 </div>
-{% endfor %}
-{% else %}
-<div class="data-card">
-    <p>No data available</p>
-    <p>please request for stock from the shop if you have not done so.</p>
+<div class="container w-100">
+    <div class="pagination container-fluid w-100 d-flex justify-content-center">
+        <span class="step-links w-100 d-flex justify-content-around">
+            {% if stock_in.has_previous %}
+                <a href="?page=1" class="btn btn-primary">first</a>
+                <a href="?page={{ stock_in.previous_page_number }}" class="btn btn-primary">previous</a>
+            {% endif %}
+            <span class="current fs-5">
+                Page {{ stock_in.number }} of {{ stock_in.paginator.num_pages }}.
+            </span>
+            {% if stock_in.has_next %}
+                <a href="?page={{ stock_in.next_page_number }}" class="btn btn-primary">next</a>
+                <a href="?page={{ stock_in.paginator.num_pages }}" class="btn btn-primary">last</a>
+            {% endif %}
+        </span>
+    </div>
 </div>
-{% endif %}
 {% endblock %}

@@ -12,6 +12,8 @@ from django.http import JsonResponse
 from ..models.user_profile import UserAvatar
 from ..models.customer_details import CustomerData
 from django.utils import timezone
+from ..data_query_engine.agents_queries.agents_data_query import AgentsDataQuery
+
 
 
 @login_required
@@ -84,29 +86,15 @@ def in_stock(request):
         HttpResponse: The response object.
     """
     context = None
-    if request.user.groups.filter(name='agents').exists():
-        user = request.user
-        agent_profile = AgentProfile.objects.get(user=user)
-        if agent_profile:
-            stock_in = MainStorage.objects.filter(agent=user, in_stock=True,
-                                                  assigned=True).all().order_by('-entry_date')
-            reference = Price_reference.objects.all()
-            context = {
-                'profile': user.email[0],
-                'user': user,
-                'stock_in': stock_in,
-                'reference_list': reference
-            }
-    elif request.user.groups.filter(name='airtel_agents').exists():
-        stock_in = Airtel_mifi_storage.objects.filter(agent=request.user,
-                                                     in_stock=True,
-                                                     assigned=True).all().order_by('-entry_date') 
-        context = {
-            'profile': request.user.email[0],
-            'user': request.user,
-            'stock_in': stock_in,
-        }
-        return render(request, 'users/airtel_agents/in_stock.html', context)
+    user = request.user
+    stock_in = AgentsDataQuery().stock(user, True, request)
+    if request.method == 'GET':
+        stock_in = AgentsDataQuery().search(
+            user, request.GET.get('search_term', None),
+            stock_in, request)
+    context = {
+        'stock_in': stock_in,
+    }
     return render(request, 'users/agent_sites/in_stock.html', context)
 
 
@@ -121,34 +109,11 @@ def stock_out(request):
         HttpResponse: The response object.
     """
     context = None
-    if request.user.groups.filter(name='agents').exists():
-        user = request.user
-        agent_profile = AgentProfile.objects.get(user=user)
-        if agent_profile:
-            current_month = timezone.now().date().month
-            current_year = timezone.now().date().year
-            stock_out = MainStorage.objects.filter(agent=user, in_stock=False,
-                                                   assigned=True,
-                                                   stock_out_date__month=current_month,
-                                                   stock_out_date__year=current_year).order_by('-stock_out_date')
-            context = {
-                'profile': user.email[0],
-                'user': user,
-                'stock_out': stock_out,
-            }
-    elif request.user.groups.filter(name='airtel_agents').exists():
-        current_month = timezone.now().date().month
-        current_year = timezone.now().date().year
-        stock_out = Airtel_mifi_storage.objects.filter(agent=request.user,
-                                                      in_stock=False, assigned=True,
-                                                      stock_out_date__month=current_month,
-                                                      stock_out_date__year=current_year).order_by('-stock_out_date')
-        context = {
-            'profile': request.user.email[0],
-            'user': request.user,
-            'stock_out': stock_out,
-        }
-        return render(request, 'users/airtel_agents/stock_out.html', context)
+    user = request.user
+    stock_out = AgentsDataQuery().stock(user, False, request)
+    context = {
+        'sales': stock_out,
+    }
     return render(request, 'users/agent_sites/stock_out.html', context)
 
 
