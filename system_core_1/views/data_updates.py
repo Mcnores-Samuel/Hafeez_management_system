@@ -4,16 +4,12 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from ..forms.user_profile_update_form import UserProfileForm
-from ..models.agent_profile import AgentProfile
 from ..models.main_storage import MainStorage, Airtel_mifi_storage
-from ..models.reference import Price_reference
 from ..models.customer_order import PhoneData
 from django.http import JsonResponse
 from ..models.user_profile import UserAvatar
 from ..models.customer_details import CustomerData
-from django.utils import timezone
 from ..data_query_engine.agents_queries.agents_data_query import AgentsDataQuery
-
 
 
 @login_required
@@ -88,10 +84,10 @@ def in_stock(request):
     context = None
     user = request.user
     stock_in = AgentsDataQuery().stock(user, True, request)
-    if request.method == 'GET':
+    if request.method == 'POST':
         stock_in = AgentsDataQuery().search(
-            user, request.GET.get('search_term', None),
-            stock_in, request)
+            user, request.POST.get('search_term', None),
+            request, status=True, sold=False)
     context = {
         'stock_in': stock_in,
     }
@@ -111,6 +107,10 @@ def stock_out(request):
     context = None
     user = request.user
     stock_out = AgentsDataQuery().stock(user, False, request)
+    if request.method == 'POST':
+        stock_out = AgentsDataQuery().search_stock_out(
+            user, request.POST.get('search_term', None),
+            request)
     context = {
         'sales': stock_out,
     }

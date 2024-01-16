@@ -33,7 +33,7 @@
         <div class="row w-100">
             <div class="col-md-2 col-12">
                 <div class="topbar">
-                    <div class="logo">HE</div>
+                    <div class="logo custom-logo">HE</div>
                     <button class="btn d-md-none menu-btn menu" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarCollapse" aria-expanded="false" aria-controls="sidebarCollapse">
                         <span class="material-icons">
                             menu
@@ -134,6 +134,13 @@
         </div>
         <section class="presentaion">
             {% block content %}
+                {% if messages %}
+                    <ul class="messages">
+                        {% for message in messages %}
+                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
             <div class="top-display d-flex position-relative bg-light">
                 <form action="" method="get" class="d-flex position-relative search-form">
                     <input type="search" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />

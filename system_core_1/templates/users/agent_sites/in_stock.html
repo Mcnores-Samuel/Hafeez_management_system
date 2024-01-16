@@ -6,12 +6,29 @@
     <script src="{% static 'scripts/data_updates.js' %}"></script>
 {% endblock %}
 {% block content %}
-<div class="container">
-    <div class="row">
-        <div class="col-12">
-            <h1 class="text-center">In Stock</h1>
+{% if messages %}
+    {% for message in messages %}
+    <div class="toast align-items-center text-white bg-{{ message.tags }} border-0" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+          <div class="toast-body">
+            {{ message }}
+          </div>
+          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
+      </div>
+    {% endfor %}
+{% endif %}
+<nav class="navbar navbar-light bg-light">
+    <div class="container">
+        <form action="{% url 'in_stock' %}" method="post" class="d-flex w-100">
+            {% csrf_token %}
+            <input type="search" class="form-control me-2" name="search_term" id="search_term" placeholder="Device IMEI, category, model etc">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
     </div>
+</nav>
+<br>
+<div class="container">
     <div class="row">
         {% for item in stock_in %}
             <div class="col-md-4 col-sm-6 mb-4">
@@ -22,12 +39,15 @@
                     <div class="card-body">
                         <p class="card-text"><strong class="text-info">Category:</strong> <span>{{ item.category }}</span></p>
                         <p class="card-text"><strong class="text-info">Device IMEI:</strong> <span>{{ item.device_imei }}</span></p>
+                        <p class="card-text"><strong class="text-info">Model:</strong> <span>{{ item.name }}</span></p>
                         <p class="card-text"><strong class="text-info">Spec:</strong> <span>{{ item.spec }}</span></p>
                         <p class="card-text"><strong class="text-info">Collected On:</strong> <span>{{ item.collected_on }}</span></p>
                         <p class="card-text"><strong class="text-info">Received:</strong>
                         {% if item.recieved %}
                             <span class="text-success fs-5">
-                                <i class='bx bxs-check-circle'></i>
+                                <span class="material-icons">
+                                    verified
+                                    </span>
                             </span>
                         {% else %}
                             <span class="verify_button">
@@ -38,7 +58,18 @@
                                 </form>
                             </span>
                         {% endif %}</p>
-                        <a href="#" class="btn btn-primary w-100">Sold On Cash</a>
+                        {% if item.pending %}
+                            <p class="card-text"><strong class="text-info">Pending:</strong>
+                                <span class="text-danger fs-5">
+                                    <span class="material-icons">
+                                        pending
+                                    </span>
+                                </span>
+                            </p>
+                            <p>{{ item.comment }}</p>
+                        {% else %}
+                        <a href="{% url 'sale_on_cash' data_id=item.id %}" class="btn btn-primary w-100">Sale On Cash</a>
+                        {% endif %}
                     </div>
                 </div>
             </div>
