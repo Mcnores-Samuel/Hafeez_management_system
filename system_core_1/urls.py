@@ -11,6 +11,7 @@ from .views.staff_sites.edit_customer_data import edit_customer_data
 from .views.staff_sites.delete_data import delete_customer_data
 from .views.staff_sites.rejected import total_rejected, get_rejected
 from .views.stock_analysis import get_source_stock
+from .views.feedback import feedback
 
 
 
@@ -31,6 +32,8 @@ urlpatterns = [
     path('sign_out/', registration_view.sign_out, name='sign_out'),
     path('dashboard/', user_dashboard.dashboard, name='dashboard'),
     path('profile/', data_updates.profile, name='profile'),
+    path('feedback/', feedback, name='feedback'),
+    path('upload_image/', data_updates.upload_image, name='upload_image'),
     path('change_password/', data_updates.change_password, name='change_password'),
     path('combinedData_collection/<int:data_id>/', customer_registrar.combinedData_collection, name='combinedData_collection'),
     path('add_contract_number/', data_updates.add_contract_number, name='add_contract_number'),

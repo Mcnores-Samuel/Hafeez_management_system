@@ -1,25 +1,17 @@
 {% extends 'users/agent_sites/agents.html' %}
 {% load plus_r %}
 {% load static %}
+{% load django_bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
 {% block head %}
     <link rel="stylesheet" href="{% static 'styles/agent_stock_mobile.css' %}">
     <script src="{% static 'scripts/data_updates.js' %}"></script>
 {% endblock %}
 {% block content %}
-{% if messages %}
-    {% for message in messages %}
-    <div class="toast align-items-center text-white bg-{{ message.tags }} border-0" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="d-flex">
-          <div class="toast-body">
-            {{ message }}
-          </div>
-          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-        </div>
-      </div>
-    {% endfor %}
-{% endif %}
 <nav class="navbar navbar-light bg-light">
     <div class="container">
+        {% bootstrap_messages %}
         <form action="{% url 'in_stock' %}" method="post" class="d-flex w-100">
             {% csrf_token %}
             <input type="search" class="form-control me-2" name="search_term" id="search_term" placeholder="Device IMEI, category, model etc">

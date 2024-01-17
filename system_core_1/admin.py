@@ -12,6 +12,7 @@ from .adminsites.admin_special_orders import SpecialOrdersAdmin
 from .adminsites.admin_feedback import FeedbackAdmin
 from .adminsites.admin_notification import NotificationsAdmin
 from .adminsites.admin_commission import CommissionAdmin
+from .adminsites.admin_contacts import ContactAdmin
 from .models.special_orders import SpecialOrders
 from .models.customer_details import CustomerData
 from .models.agent_profile import AgentProfile
@@ -24,6 +25,7 @@ from .models.main_storage import Airtel_mifi_storage
 from .models.feedback import Feedback
 from .models.notifications import Notifications
 from .models.commission import Commission
+from .models.contacts import Contact
 
 
 admin.site.site_url = "/system_core_1/dashboard"
@@ -44,3 +46,4 @@ admin.site.register(SpecialOrders, SpecialOrdersAdmin)
 admin.site.register(Feedback, FeedbackAdmin)
 admin.site.register(Notifications, NotificationsAdmin)
 admin.site.register(Commission, CommissionAdmin)
+admin.site.register(Contact, ContactAdmin)

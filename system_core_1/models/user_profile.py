@@ -51,11 +51,11 @@ class UserProfileManager(BaseUserManager):
         return self.create_user(email, password, **extra_fields)
 
 class UserProfile(AbstractUser):
-  """The UserProfile model represents the users of the application. It includes
-  fields to store relevant information about each user, such as their name and
-  email address
+    """The UserProfile model represents the users of the application. It includes
+    fields to store relevant information about each user, such as their name and
+    email address
 
-  Fields:
+    Fields:
     - email: The email address of the user, which serves as the primary key.
     - phone_number: The phone number of the user.
     - is_staff: A boolean field indicating whether the user is a staff member.
@@ -67,35 +67,35 @@ class UserProfile(AbstractUser):
     - groups: A many-to-many field linking the user to the groups to which they belong.
     - user_permissions: A many-to-many field linking the user to the permissions they have.
 
-  Usage:
+    Usage:
     The UserProfile model is used to manage user accounts and permissions within
     the application. It allows for the creation of new users, as well as the
     assignment of permissions and roles.
 
-  Note:
+    Note:
     - The UserProfile model is a subclass of the AbstractUser model, which provides
-      default implementations for the fields listed above.
+        default implementations for the fields listed above.
     - The is_agent field is used to distinguish between agents and other users.
     - The is_superuser field is used to distinguish between superusers and other users.
     - The is_staff field is used to distinguish between staff members and other users.
     - The is_active field is used to distinguish between active and inactive users.
     - The date_joined field is used to track when users joined the application.
     - The last_login field is used to track when users last logged in to the application.
-  """
-  email = models.EmailField(max_length=100, unique=True)
-  phone_number = models.CharField(max_length=15, blank=True, null=True)
-  location = models.CharField(max_length=100, blank=True, null=True)
-  longitude = models.DecimalField(max_digits=9, decimal_places=6, blank=True, null=True)
-  latitude = models.DecimalField(max_digits=9, decimal_places=6, blank=True, null=True)
-  objects = UserProfileManager()
-  USERNAME_FIELD = 'email'
-  REQUIRED_FIELDS = []
+    """
+    email = models.EmailField(max_length=100, unique=True)
+    phone_number = models.CharField(max_length=15, blank=True, null=True)
+    location = models.CharField(max_length=100, blank=True, null=True)
+    longitude = models.DecimalField(max_digits=9, decimal_places=6, blank=True, null=True)
+    latitude = models.DecimalField(max_digits=9, decimal_places=6, blank=True, null=True)
+    objects = UserProfileManager()
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = []
 
-  class Meta:
-      app_label = 'system_core_1'
+    class Meta:
+        app_label = 'system_core_1'
 
-  def __str__(self):
-    return self.username
+    def __str__(self):
+        return self.username
   
 
 class UserAvatar(models.Model):

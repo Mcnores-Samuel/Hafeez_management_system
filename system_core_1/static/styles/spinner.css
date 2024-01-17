@@ -8,7 +8,7 @@
     transition: opacity 0.75s, visibility 0.75s;
     background-color: rgba(0, 0, 31, 0.95);
     backdrop-filter: blur(20px);
-    z-index: 999;
+    z-index: 9999;
 }
 
 .loader::after{

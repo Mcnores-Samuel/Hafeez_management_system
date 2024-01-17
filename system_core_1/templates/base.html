@@ -42,39 +42,13 @@
         <nav class="heading">
             <div class="logo">HE</div>
             <div class="brandname">Hafeez Enterprise</div>
-            <ul class="navigation">
-                {% if user.is_authenticated %}
-                    <li><a href="{% url 'dashboard' %}"><i class='bx bxs-dashboard'></i> Dashboard</a></li>
-                {% endif %}
-            </ul>
-        {% if user.is_authenticated %}
-            {% if avatar.image %}
-                <button type="submit" class="profile"><img src="{{ avatar.image.url }}" alt=""></button>
-            {% else %}
-                <button type="submit" class="profile">{{ profile }}</button>
-            {% endif %}
-            <ul class="mobile-set" style="display: none;">
-                <li class="settings"><a href="{% url 'profile' %}"><i class='bx bx-cog' ></i> Settings</a></li>
-                <li><a href="{% url 'sign_out' %}"><i class='bx bx-log-out'></i> Sign Out</a></li>
-            </ul>
-        {% else %}
             <ul>
                 <li><a href="{% url 'sign_in' %}"><i class='bx bx-log-in'></i> Log In</a></li>
                 <li><a href="{% url 'sign_up' %}"><i class='bx bx-log-in-circle'></i> Sign Up</a></li>
             </ul>
-        {% endif %}
-        <div class="sidebar">
-            {% block sidebar %}
-            {% endblock %}
-        </div>
         {% endblock %}
     </header>
     <div class="content">
-        <div>
-            {% block messages %}
-                {% bootstrap_messages %}
-            {% endblock %}
-        </div>
         {% block content %}
         <section class="sign_up_form">
             <div class="form_container">

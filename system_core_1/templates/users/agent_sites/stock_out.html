@@ -1,19 +1,16 @@
 {% extends 'users/agent_sites/agents.html' %}
 {% load plus_r %}
 {% load static %}
+{% load django_bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
 {% block head %}
     <link rel="stylesheet" href="{% static 'styles/agent_stock_mobile.css' %}">
 {% endblock %}
 {% block content %}
-{% if messages %}
-<ul class="messages">
-    {% for message in messages %}
-    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-    {% endfor %}
-</ul>
-{% endif %}
 <nav class="navbar navbar-light bg-light">
     <div class="container">
+        {% bootstrap_messages %}
         <form action="{% url 'stock_out' %}" method="post" class="d-flex w-100">
             {% csrf_token %}
             <input type="search" class="form-control me-2" name="search_term" id="search_term" placeholder="Device IMEI, category, model etc">

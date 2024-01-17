@@ -6,10 +6,10 @@ from django.contrib import admin
 
 class FeedbackAdmin(admin.ModelAdmin):
     """This model represent the entire stock available and sold in all posts"""
-    list_display = ('user', 'feedback_type', 'feedback', 'date')
+    list_display = ('user', 'read', 'feedback_type', 'feedback', 'date')
 
     search_fields = ('user__username', 'feedback_type', 'date')
 
-    list_filter = ('feedback_type', 'date')
+    list_filter = ('feedback_type', 'date', 'read')
 
     list_per_page = 50

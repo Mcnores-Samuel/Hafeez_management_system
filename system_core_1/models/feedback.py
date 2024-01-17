@@ -11,9 +11,9 @@ class Feedback(models.Model):
     user = models.ForeignKey(
         UserProfile, on_delete=models.CASCADE)
     feedback_type = models.CharField(
-        max_length=20,
-        default='Complaint')
+        max_length=20)
     feedback = models.TextField()
+    read = models.BooleanField(default=False)
     date = models.DateTimeField(default=timezone.now)
 
     def __str__(self):

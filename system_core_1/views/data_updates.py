@@ -4,12 +4,14 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from ..forms.user_profile_update_form import UserProfileForm
+from ..forms.users import UserAvatarForm
 from ..models.main_storage import MainStorage, Airtel_mifi_storage
 from ..models.customer_order import PhoneData
 from django.http import JsonResponse
 from ..models.user_profile import UserAvatar
 from ..models.customer_details import CustomerData
 from ..data_query_engine.agents_queries.agents_data_query import AgentsDataQuery
+from django.db import IntegrityError
 
 
 @login_required
@@ -24,22 +26,54 @@ def profile(request):
     """
     user = request.user
     profile_form = None
-    if request.method == 'POST' and 'first_name' in request.POST:
-        profile_form = UserProfileForm(request.POST, instance=user)
-        if profile_form.is_valid():
-            profile_form.save()
-            messages.success(request, 'Your profile information was successfully updated.')
-            return redirect('profile')
-    else:
-        profile_form = UserProfileForm(instance=user)
-    avatar = UserAvatar.objects.get(user=request.user) if UserAvatar.objects.filter(user=request.user).exists() else None
-    context = {
-            'profile': user.email[0],
-            'user': user,
-            'profile_form': profile_form,
-            'avatar': avatar
-        }
+    avatar_form = None
+    if request.user.groups.filter(name='agents').exists():
+        if request.method == 'POST':
+            profile_form = UserProfileForm(request.POST, user=request.user)
+            if profile_form.is_valid():
+                profile = profile_form.process_profile()
+                if profile:
+                    messages.success(request, 'Your profile information was successfully updated.')
+                    return redirect('profile')
+                else:
+                    messages.error(request, 'An error occurred while updating your profile information.')
+                    return redirect('profile')
+        else:
+            profile_form = UserProfileForm(user=request.user)
+        avatar = UserAvatar.objects.get(user=request.user) if UserAvatar.objects.filter(user=request.user).exists() else None
+        context = {
+                'profile': user.email[0],
+                'user': user,
+                'form': profile_form,
+                'avatar': avatar
+            }
+        return render(request, 'users/agent_sites/profile.html', context)
     return render(request, 'users/general-sites/profile.html', context)
+
+@login_required
+def upload_image(request):
+    """Uploads the user's profile image.
+
+    Args:
+        request (HttpRequest): The request object.
+
+    Returns:
+        HttpResponse: The response object.
+    """
+    if request.method == 'POST':
+        avatar_form = UserAvatarForm(request.POST, request.FILES)
+        if avatar_form.is_valid():
+            # Get or create UserAvatar instance for the current user
+            avatar, created = UserAvatar.objects.get_or_create(user=request.user)
+            
+            if not created and avatar.image:
+                avatar.image.delete()
+            avatar.image = avatar_form.cleaned_data['image']
+            avatar.save()
+            messages.success(request, 'Your profile picture was successfully updated.')
+            return redirect('profile')
+
+    return redirect('profile')
 
 
 @login_required
@@ -89,7 +123,7 @@ def in_stock(request):
             user, request.POST.get('search_term', None),
             request, status=True, sold=False)
     context = {
-        'stock_in': stock_in,
+        'stock_in': stock_in
     }
     return render(request, 'users/agent_sites/in_stock.html', context)
 
@@ -112,7 +146,7 @@ def stock_out(request):
             user, request.POST.get('search_term', None),
             request)
     context = {
-        'sales': stock_out,
+        'sales': stock_out
     }
     return render(request, 'users/agent_sites/stock_out.html', context)
 

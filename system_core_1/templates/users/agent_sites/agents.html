@@ -13,6 +13,7 @@
         <link rel="stylesheet" href="{% static 'styles/common.css' %}">
         <link rel="stylesheet" href="{% static 'styles/base_header.css' %}">
         <link rel="stylesheet" href="{% static 'styles/agents_dashboard.css' %}">
+        <link rel="stylesheet" href="{% static 'styles/spinner.css' %}">
         {% block head %}
         <link rel="stylesheet" href="{% static 'styles/loading-message.css' %}">
         <script src="{% static 'scripts/data_updates.js' %}"></script>
@@ -22,13 +23,14 @@
         {% endblock %}
         <script src="{% static 'scripts/placeholders.js' %}" defer></script>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-        <style>
-            .progress-bar {
-            width: {{ progress }}%;
-            }
-        </style>
+        <script>
+            $(document).ready(function() {
+                $('.progress-bar').css('width', '{{ progress }}%');
+            })
+        </script>
     </head>
     <body>
+        <div class="loader"></i></div>
         <button class="scroll-back"><i class='bx bxs-up-arrow-square'></i></button>
         <div class="row w-100">
             <div class="col-md-2 col-12">
@@ -118,7 +120,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link d-flex align-items-center" href=""
+                                <a class="nav-link d-flex align-items-center" href="{% url 'feedback' %}"
                                 data-bs-toggle="tooltip" 
                                 title="feedback">
                                     <span class="material-icons fs-3">
@@ -156,7 +158,7 @@
                             <span class="material-icons">
                                 notifications
                             </span>
-                            <span class="badge bg-danger">1</span>
+                            <span class="badge bg-danger"></span>
                         </button>
                         <ul class="dropdown-menu">
                             <li>
