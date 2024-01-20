@@ -1,182 +1,97 @@
-{% extends 'base.html' %}
+{% extends 'users/staff_sites/staff.html' %}
 {% load static %}
+{% load django_bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
 {% block head %}
 <link rel="stylesheet" href="{% static 'styles/data_table.css' %}">
 <link rel="stylesheet" href="{% static 'styles/agent_stock_mobile.css' %}">
 {% endblock %}
 {% block content %}
-<form method="post" action="{% url 'data_search' %}" class="search-form" id="queryset">
-    {% csrf_token %}
-    <input type="search" id="search" name="search_query" placeholder="Device imei or contract number">
-    <button type="submit" id="search_query"><i class='bx bx-search'></i></button>
-</form>
-<section class="agents_stock main-table" id="search_results">
-</section>
-{% if data %}
-<section class="agents_stock main-table" id="">
-    <table class="stock-table main-stock-table">
-        <thead>
-            <tr>
-                <th>Category</th>
-                <th>Name</th>
-                <th>Model</th>
-                <th>Device imei</th>
-                <th>Spec</th>
-                <th>In Stock</th>
-                <th>Sales type</th>
-                <th>Contract no</th>
-                <th>Entry date</th>
-                <th>Stock out date</th>
-                <th>Assigned</th>
-                <th>Sold</th>
-                <th>paid</th>
-                <th>Deploy</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for item in data %}
-                <tr>
-                    <td>{{ item.category }}</td>
-                    <td>{{ item.name }}</td>
-                    <td>{{ item.phone_type }}</td>
-                    <td>{{ item.device_imei }}</td>
-                    <td>{{ item.spec }}</td>
-                    {% if item.in_stock %}
-                        <td>
-                            <input type="checkbox" id="checkbox" checked disabled>
-                            <label for="checkbox" class="checkbox"></label>
-                        </td>
-                    {% else %}
-                        <td>
-                            <input type="checkbox" id="checkbox" checked disabled>
-                            <label for="checkbox" class="Notcheckbox"></label>
-                        </td>
-                    {% endif %}
-                    <td>{{ item.sales_type }}</td>
-                    <td>{{ item.contract_no }}</td>
-                    <td>{{ item.entry_date }}</td>
-                    <td>{{ item.stock_out_date }}</td>
-                    {% if item.assigned %}
-                        <td>
-                            <input type="checkbox" id="checkbox" checked disabled>
-                            <label for="checkbox" class="checkbox"></label>
-                        </td>
-                    {% else %}
-                        <td>
-                            <input type="checkbox" id="checkbox" checked disabled>
-                            <label for="checkbox" class="Notcheckbox"></label>
-                        </td>
-                    {% endif %}
-                    {% if item.sold %}
-                        <td>
-                            <input type="checkbox" id="checkbox" checked disabled>
-                            <label for="checkbox" class="checkbox"></label>
-                        </td>
-                    {% else %}
-                        <td>
-                            <input type="checkbox" id="checkbox" checked disabled>
-                            <label for="checkbox" class="Notcheckbox"></label>
-                        </td>
-                    {% endif %}
-                    {% if item.paid %}
-                        <td>
-                            <input type="checkbox" id="checkbox" checked disabled>
-                            <label for="checkbox" class="checkbox"></label>
-                        </td>
-                    {% else %}
-                        <td>
-                            <input type="checkbox" id="checkbox" checked disabled>
-                            <label for="checkbox" class="Notcheckbox"></label>
-                        </td>
-                    {% endif %}
-                    {% if item.assigned and not item.sold %}
-                        <td>
-                            <a href="{% url 'combinedData_collection' data_id=item.id %}"><i class='bx bx-chevrons-right'></i></a>
-                        </td>
-                    {% else %}
-                        <td>
-                            <input type="checkbox" id="checkbox" checked disabled>
-                            <label for="checkbox" class="Notcheckbox"></label>
-                        </td>   
-                    {% endif %}
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</section>
-{% else %}
-<section class="agents_stock main-table" id="">
-    <h2 class="not_found">Not Found</h2>
-</section>
-{% endif %}
-
-{% if data %}
-    {% for item in data %}
-    <div class="data-card">
-        <p>Device Imei: <span>{{ item.device_imei }}</span></p>
-        <p>Model: <span>{{ item.phone_type }}</span></p>
-        <p>Spec: <span>{{ item.spec }}</span></p>
-        <p>Category: <span>{{ item.category }}</span></p>
-        <p>Name: <span>{{ item.name }}</span></p>
-        <p>In stock:
-        {% if item.in_stock %}
-            <span>
-                <input type="checkbox" id="checkbox" checked disabled>
-                <label for="checkbox" class="checkbox"></label>
-            </span>
-        {% else %}
-            <span>
-                <input type="checkbox" id="checkbox" checked disabled>
-                <label for="checkbox" class="Notcheckbox"></label>
-            </span>
-        {% endif %}</p>
-        <p>Sales type: <span>{{ item.sales_type }}</span></p>
-        <p>Contract number: <span>{{ item.contract_no }}</span></p>
-        <p>Entry date: <span>{{ item.entry_date }}</span></p>
-        <p>Stock out date: <span>{{ item.stock_out_date }}</span></p>
-        <p>Assigned:
-        {% if item.assigned %}
-            <span>
-                <input type="checkbox" id="checkbox" checked disabled>
-                <label for="checkbox" class="checkbox"></label>
-            </span>
-        {% else %}
-            <span>
-                <input type="checkbox" id="checkbox" checked disabled>
-                <label for="checkbox" class="Notcheckbox"></label>
-            </span>
-        {% endif %}</p>
-        <p>Deploy:
-            {% if item.assigned and not item.sold %}
-            <span>
-                <a href="{% url 'combinedData_collection' data_id=item.id %}"><i class='bx bx-chevrons-right'></i></a>
-            </span>
-        {% else %}
-            <span>
-                <input type="checkbox" id="checkbox" checked disabled>
-                <label for="checkbox" class="Notcheckbox"></label>
-            </span>   
-        {% endif %}
-        </p>
-        <p>Sold:
-            {% if item.sold %}
-                <span>
-                    <input type="checkbox" id="checkbox" checked disabled>
-                    <label for="checkbox" class="checkbox"></label>
-                </span>
-            {% else %}
-                <span>
-                    <input type="checkbox" id="checkbox" checked disabled>
-                    <label for="checkbox" class="Notcheckbox"></label>
-                </span>
-            {% endif %}
-        </p>
-    </div>
-    {% endfor %}
-{% else %}
-<div class="data-card">
-    <h2 class="not_found">Not Found</h2>
+<div class="container">
+    {% bootstrap_messages %}
 </div>
-{% endif %}
+<nav class="navbar navbar-light bg-light">
+    <div class="container">
+        <form action="{% url 'data_search' %}" method="post" class="d-flex w-100">
+            {% csrf_token %}
+            <input type="search" class="form-control me-2" name="search_query"
+            id="search" placeholder="Device IMEI, category, model etc">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+    </div>
+</nav>
+<br>
+<div class="container">
+    <div class="row d-flex justify-content-center">
+        {% if data %}
+            {% for item in data %}
+            <div class="col-md-6 col-12">
+                <div class="card">
+                    <div class="card-header  text-center">
+                        <h4 class="card-title">{{ item.name }}</h4>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text"><strong class="text-info">Entry Date:</strong> <span>{{ item.entry_date }}</span></p>
+                        <p class="card-text"><strong class="text-info">Category:</strong> <span>{{ item.category }}</span></p>
+                        <p class="card-text"><strong class="text-info">Name:</strong> <span>{{ item.name }}</span></p>
+                        <p class="card-text"><strong class="text-info">Model:</strong> <span>{{ item.phone_type }}</span></p>
+                        <p class="card-text"><strong class="text-info">Device IMEI:</strong> <span>{{ item.device_imei }}</span></p>
+                        <p class="card-text"><strong class="text-info">Spec:</strong> <span>{{ item.spec }}</span></p>
+                        <p class="card-text"><strong class="text-info">In Stock:</strong>
+                            {% if item.in_stock %}
+                                <span class="material-icons text-success">
+                                    done
+                                </span>
+                            {% else %}
+                                <span class="material-icons text-danger">
+                                    close
+                                </span>
+                            {% endif %}
+                        </p>
+                        {% if not item.in_stock and item.sold %}
+                            <p class="card-text"><strong class="text-info">Sold:</strong>
+                                {% if item.sold %}
+                                    <span class="material-icons text-success">
+                                        done
+                                    </span>
+                                {% else %}
+                                    <span class="material-icons text-danger">
+                                        close
+                                    </span>
+                                {% endif %}
+                            <p class="card-text"><strong class="text-info">Sales Type:</strong> <span>{{ item.sales_type }}</span></p>
+                            {% if item.sales_type == 'Loan' %}
+                            <p class="card-text"><strong class="text-info">Contract No:</strong> <span>{{ item.contract_no }}</span></p>
+                            {% endif %}
+                            <p class="card-text"><strong class="text-info">Sold Date:</strong> <span>{{ item.stock_out_date }}</span></p>
+                            <p class="card-text"><strong class="text-info">Deployed:</strong>
+                                <span class="material-icons text-success">
+                                    done
+                                </span>
+                            </p>
+                        {% else %}
+                            <p class="card-text"><strong class="text-info">Deploy:</strong>
+                                <span>
+                                    <a href="{% url 'combinedData_collection' data_id=item.id %}">
+                                        <span class="material-icons">
+                                            send
+                                        </span>
+                                    </a>
+                                </span>
+                            </p>
+                        {% endif %}
+
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+        <div class="text-center">
+            <h2 class="fs-6 text-center text-danger">Not Found</h2>
+        </div>
+        {% endif %}
+    </div>
+</div>
 <div class="divider"></div>
 {% endblock %}

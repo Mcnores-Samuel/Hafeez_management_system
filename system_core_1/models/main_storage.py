@@ -89,6 +89,7 @@ class MainStorage(models.Model):
     on_display = models.BooleanField(default=False)
     pending = models.BooleanField(default=False)
     missing = models.BooleanField(default=False)
+    faulty = models.BooleanField(default=False)
     assigned_from = models.CharField(max_length=50, null=True, blank=True)
     updated_by = models.CharField(max_length=50, null=True, blank=True)
     comment = models.CharField(max_length=256, null=True, blank=True)

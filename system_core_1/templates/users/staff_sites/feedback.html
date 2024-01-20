@@ -1,4 +1,5 @@
 {% extends 'users/staff_sites/staff.html' %}
+{% load plus_r %}
 {% load static %}
 {% load django_bootstrap5 %}
 {% bootstrap_css %}
@@ -6,16 +7,11 @@
 {% block content %}
 <div class="container">
     {% bootstrap_messages %}
-    <h1 class="text-center">Collect Customer Details</h1>
+    <h1 class="text-center">Feedback</h1>
     <form action="" method="post" class="shadow-lg p-3 mb-5 bg-body rounded">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit" class="btn btn-primary">Send</button>
     </form>
 </div>
-<style>
-    .errorlist {
-        color: red;
-    }
-</style>
 {% endblock %}

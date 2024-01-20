@@ -96,12 +96,27 @@ class MainStorageAnalysis:
         months = ['January', 'February', 'March', 'April', 'May',
                   'June', 'July', 'August', 'September', 'October',
                   'November', 'December']
-        year = timezone.now().date().year
-        sales = {}
-        for month in months:
-            sales[month] = len(MainStorage.objects.filter(
-                agent=agent, in_stock=False,
-                assigned=True,
-                stock_out_date__month=months.index(month)+1,
-                stock_out_date__year=year))
-        return sales
+        if agent.groups.filter(name='agents').exists():
+            agent_profile = AgentProfile.objects.get(user=agent)
+            if agent_profile:
+                year = timezone.now().date().year
+                sales = {}
+                for month in months:
+                    sales[month] = len(MainStorage.objects.filter(
+                        agent=agent, in_stock=False,
+                        assigned=True,
+                        sold=True,
+                        stock_out_date__month=months.index(month)+1,
+                        stock_out_date__year=year))
+                return sales
+        elif agent.groups.filter(name='staff_members').exists():
+            sales = {}
+            for month in months:
+                sales[month] = len(MainStorage.objects.filter(
+                    in_stock=False,
+                    assigned=True,
+                    sold=True,
+                    stock_out_date__month=months.index(month)+1,
+                    stock_out_date__year=timezone.now().date().year))
+            return sales
+        return None

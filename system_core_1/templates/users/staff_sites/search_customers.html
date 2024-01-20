@@ -1,18 +1,22 @@
-{% extends 'base.html' %}
+{% extends 'users/staff_sites/staff.html' %}
 {% load plus_r %}
 {%load static%}
 {% block head %}
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="{% static 'styles/customer_data_layout.css' %}">
     <script src="{% static 'scripts/data_updates.js' %}" defer></script>
     <script src="{% static 'scripts/copytext.js' %}" defer></script>
 {% endblock %}
 {% block content %}
-<form method="post" action="{% url 'search_customers' %}" class="search-form" id="queryset">
-    {% csrf_token %}
-    <input type="search" id="search"  name="search_query" placeholder="agent customers, customer name, account name etc">
-    <button type="submit" id="search_query"><i class='bx bx-search'></i></button>
-</form>
+<nav class="navbar navbar-light bg-light">
+    <div class="container">
+        <form action="{% url 'search_customers' %}" method="post" class="d-flex w-100">
+            {% csrf_token %}
+            <input type="search" class="form-control me-2" name="search_query"
+            id="search" placeholder="agent customers, customer name, account name etc">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+    </div>
+</nav>
 <section class="customer_data_container">
     {% if customers %}
         {% for customer, phone_list in customers %}
@@ -133,28 +137,9 @@
         {% endfor %}
     {% else %}
         <section class="customer_data">
-            <p>No data available</p>
+            <p class="text-center">No data available</p>
         </section>
     {% endif %}
 </section>
-<div class="container w-100">
-    <div class="pagination container-fluid w-100 d-flex justify-content-center">
-        <span class="step-links w-100 d-flex justify-content-around">
-            {% if customers.has_previous %}
-                <a href="?page=1">&laquo; first</a>
-                <a href="?page={{ customers.previous_page_number }}">previous</a>
-            {% endif %}
-
-            <span class="current">
-                Page {{ customers.number }} of {{ customers.paginator.num_pages }}.
-            </span>
-
-            {% if customers.has_next %}
-                <a href="?page={{ customers.next_page_number }}">next</a>
-                <a href="?page={{ customers.paginator.num_pages }}">last &raquo;</a>
-            {% endif %}
-        </span>
-    </div>
-</div>
 <div class="divider"></div>
 {% endblock %}

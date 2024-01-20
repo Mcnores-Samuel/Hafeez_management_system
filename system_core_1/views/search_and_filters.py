@@ -17,7 +17,6 @@ from django.db.models import Q
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from ..models.customer_details import CustomerData
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 @login_required
@@ -85,16 +84,6 @@ def search_customers(request):
                     Q(account_name__icontains=search_query)
                 ).order_by('-created_at')
         customers = [(customer, list(customer.phonedata_set.all())) for customer in queryset]
-
-        paginator = Paginator(customers, 6)
-        page_number = request.POST.get('page')
-        
-        try:
-            customers = paginator.page(page_number)
-        except PageNotAnInteger:
-            customers = paginator.page(1)
-        except EmptyPage:
-            customers = paginator.page(paginator.num_pages)
 
         context = {
             'customers': customers

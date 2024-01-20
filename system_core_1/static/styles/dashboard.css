@@ -15,10 +15,11 @@
     position: fixed;
     top: 0;
     left: 0;
+    overflow-y: auto;
 }
 
 .wrapper .sidebar ul li {
-    padding: 5px 15px;
+    padding: 5px 10px;
 }
 
 .wrapper .sidebar ul li:hover {

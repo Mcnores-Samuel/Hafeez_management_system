@@ -1,94 +1,370 @@
-{% extends 'base.html' %}
+{% load static %}
 {% load plus_r %}
-{%load static%}
-{% load django_bootstrap5 %}
-{% bootstrap_css %}
-{% bootstrap_javascript %}
-{% block head %}
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <script src="{% static 'scripts/staff_lib/approve.js' %}" defer></script>
-    <script src="{% static 'scripts/staff_lib/new_entries.js' %}" defer></script>
-    <script src="{% static 'scripts/staff_lib/get_total.js' %}" defer></script>
-    <script src="{% static 'scripts/staff_lib/total_rejected.js' %}" defer></script>
-    <script src="{% static 'scripts/analysis_lib/daily_sales.js' %}" defer></script>
-    <link rel="stylesheet" href="{% static 'styles/loading-message.css' %}">
-    <link rel="stylesheet" href="{% static 'styles/admin_sects_display.css' %}">
-{% endblock %}
-{% block content %}
-{% bootstrap_messages %}
-<a href="{% url 'search_customers' %}" class="search_customers">Search customers</a>
-<form method="post" action="{% url 'data_search' %}" class="search-form" id="queryset">
-    {% csrf_token %}
-    <input type="search" id="search"  name="search_query" placeholder="Device imei or contract number">
-    <button type="submit" id="search_query"><i class='bx bx-search'></i></button>
-</form>
-<br><br><br>
-<div class="container-md shadow-lg p-3 mb-5 bg-body rounded rounded-3">
-    <div class="container-fluid">
-        <div class="row gy-5">
-            <div class="col-sm-6">
-              <div class="card border-primary">
-                <div class="card-body d-flex">
-                    <button type="button" class="btn btn-primary" disabled>
-                        New Entries <span class="badge bg-secondary new-entries-notice">0</span>
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Dashboard</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+        <link rel="stylesheet" href="{% static 'styles/common.css' %}">
+        <link rel="stylesheet" href="{% static 'styles/base_header.css' %}">
+        <link rel="stylesheet" href="{% static 'styles/dashboard.css' %}">
+        <link rel="stylesheet" href="{% static 'styles/spinner.css' %}">
+        {% block head %}
+        <link rel="stylesheet" href="{% static 'styles/loading-message.css' %}">
+        <script src="{% static 'scripts/data_updates.js' %}"></script>
+        <script src="{% static 'scripts/analysis_lib/yearly_analysis.js' %}" defer></script>
+        <script src="{% static 'scripts/staff_lib/approve.js' %}" defer></script>
+        <script src="{% static 'scripts/staff_lib/new_entries.js' %}" defer></script>
+        <script src="{% static 'scripts/staff_lib/get_total.js' %}" defer></script>
+        <script src="{% static 'scripts/staff_lib/total_rejected.js' %}" defer></script>
+        <script src="{% static 'scripts/analysis_lib/daily_sales.js' %}" defer></script>
+        {% endblock %}
+        <script src="{% static 'scripts/placeholders.js' %}" defer></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    </head>
+    <body>
+        <div class="loader"></i></div>
+        <button class="scroll-back"><i class='bx bxs-up-arrow-square'></i></button>
+        <div class="row w-100">
+            <div class="col-md-2 col-12">
+                <div class="topbar">
+                    <div class="logo custom-logo">HE</div>
+                    <button class="btn d-md-none menu-btn menu" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarCollapse" aria-expanded="false" aria-controls="sidebarCollapse">
+                        <span class="material-icons">
+                            menu
+                            </span>
                     </button>
-                    <a href="{% url 'get_new_entries' %}" class="btn btn-primary ms-auto p-2 bd-highlight">Upload</a>
                 </div>
-              </div>
-            </div>
-            <div class="col-sm-6">
-              <div class="card border-info">
-                <div class="card-body d-flex">
-                    <button type="button" class="btn btn-info" disabled>
-                        pending <span class="badge bg-secondary total-to-approve">0</span>
-                    </button>
-                  <a href="{% url 'approve' %}" class="btn btn-info ms-auto p-2 bd-highlight">Approve</a>
+                <br>
+                <div class="collapse d-md-block wrapper" id="sidebarCollapse">
+                    <div class="sidebar">
+                        <div class="topbar-wrapper heading bg-success ">
+                            <div class="logo">HE</div>
+                            <div class="text-center text-fs text-light brandname">Hafeez Enterprise</div>
+                        </div>
+                        <ul class="navbar-nav flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link d-flex align-items-center" href="{% url 'dashboard' %}"
+                                data-bs-toggle="tooltip" 
+                                title="Dashboard">
+                                    <span class="material-icons fs-3">
+                                        dashboard
+                                    </span>
+                                    <span class="text"> Dashboard</span>
+                                </a>
+                            <li class="nav-item">
+                                <a class="nav-link d-flex align-items-center" href="{% url 'home_page' %}"
+                                data-bs-toggle="tooltip" 
+                                title="Home">
+                                <span class="material-icons fs-3">
+                                    home
+                                    </span>
+                                    <span class="text"> Home</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link d-flex align-items-center" href="{% url 'search_customers' %}"
+                                data-bs-toggle="tooltip"
+                                title="Customers data">
+                                    <span class="material-icons">
+                                        manage_search
+                                    </span>
+                                    <span class="text"> Customers</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link d-flex align-items-center" href="{% url 'get_new_entries' %}"
+                                data-bs-toggle="tooltip"
+                                title="New Entries">
+                                <span class="material-icons">
+                                    new_releases
+                                </span>
+                                <span class="text"> New Entries</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link d-flex align-items-center" href="{% url 'approve' %}"
+                                data-bs-toggle="tooltip"
+                                title="Pending Contracts">
+                                <span class="material-icons">
+                                    pending_actions
+                                </span>
+                                <span class="text"> Approve</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link d-flex align-items-center" href="{% url 'get_approved_data' %}"
+                                data-bs-toggle="tooltip" 
+                                title="Approved Contracts">
+                                <span class="material-icons">
+                                    verified
+                                </span>
+                                <span class="text"> Approved</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link d-flex align-items-center" href="{% url 'get_rejected' %}"
+                                data-bs-toggle="tooltip" 
+                                title="Rejected Contracts">
+                                <span class="material-icons">
+                                    report_problem
+                                </span>
+                                <span class="text"> Rejected</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link d-flex align-items-center" href="{% url 'add_to_stock' %}"
+                                data-bs-toggle="tooltip" 
+                                title="Add to Stock">
+                                <span class="material-icons">
+                                    add_circle
+                                </span>
+                                <span class="text"> Add To Stock</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link d-flex align-items-center" href="{% url 'profile' %}"
+                                data-bs-toggle="tooltip" 
+                                title="Profile">
+                                    <span class="material-icons fs-3">
+                                        account_circle
+                                    </span>
+                                    <span class="text"> Profile</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                            <a class="nav-link d-flex align-items-center" href="{% url 'sign_out' %}"
+                                data-bs-toggle="tooltip" 
+                                title="Logout">
+                                    <span class="material-icons fs-3">
+                                        logout
+                                    </span>
+                                    <span class="text"> Logout</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link d-flex align-items-center" href="{% url 'feedback' %}"
+                                data-bs-toggle="tooltip" 
+                                title="feedback">
+                                    <span class="material-icons fs-3">
+                                    feedback
+                                    </span>
+                                    <span class="text"> Feedback</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-              </div>
             </div>
         </div>
-        <br><br>
-        <div class="row gy-5">
-            <div class="col-sm-6">
-              <div class="card border-success">
-                <div class="card-body d-flex">
-                    <button type="button" class="btn btn-success" disabled>
-                        Approved <span class="badge bg-secondary approved-notice">0</span>
+        <section class="presentaion">
+            {% block content %}
+            <div class="top-display d-flex position-relative bg-light">
+                <form action="{% url 'data_search' %}" method="post" class="d-flex position-relative search-form">
+                    {% csrf_token %}
+                    <input type="search" id="search" name="search_query" class="form-control"
+                    placeholder="Search IMEI number or Contract number" aria-label="Search" aria-describedby="search-addon" />
+                    <button type="submit" class="btn btn-outline-light btn-primary search-btn">
+                        <span class="material-icons search-icon">
+                            search
+                        </span>
                     </button>
-                  <a href="{% url 'get_approved_data' %}" class="btn btn-success ms-auto p-2 bd-highlight">View Details</a>
+                </form>
+                <div class="notify">
+                    <div class="dropdown">
+                        <button type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                            <span class="material-icons">
+                                notifications
+                            </span>
+                            <span class="badge bg-danger">1</span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a class="dropdown-item" href="#">
+                                    <div class="d-flex">
+                                            <span class="material-icons">
+                                                notifications
+                                            </span>
+                                        <div class="">
+                                            <p>Hello There, Welcome to Hafeez new updates</p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-              </div>
-            </div>
-            <div class="col-sm-6">
-              <div class="card border-danger">
-                <div class="card-body d-flex">
-                    <button type="button" class="btn btn-danger" disabled>
-                        Rejected <span class="badge bg-secondary total-rejected">0</span>
-                    </button>
-                  <a href="{% url 'get_rejected' %}" class="btn btn-danger ms-auto p-2 bd-highlight">View Details</a>
+                <div class="profile">
+                    {% if avatar.image %}
+                    <img src="{{ avatar.image.url }}" alt="avatar" class="avatar">
+                    {% else %}
+                        <span class="material-icons">
+                            account_circle
+                        </span>
+                    {% endif %}
+                    <div class="dropdown">
+                        <button type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a class="dropdown-item" href="{% url 'profile' %}">
+                                    <div class="d-flex">
+                                        <div class="icon">
+                                            <span class="material-icons">
+                                                account_circle
+                                            </span>
+                                        </div>
+                                        <div class="">
+                                            <p>Profile</p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{% url 'sign_out' %}">
+                                    <div class="d-flex">
+                                        <div class="icon">
+                                            <span class="material-icons">
+                                                logout
+                                            </span>
+                                        </div>
+                                        <div class="">
+                                            <p>Logout</p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-              </div>
             </div>
-        </div>
-    </div>
-</div>
-<div class="main-analysis-container container">
-  <div class="summary-container">
-    <div class="daily_sales pending-sales">
-      <div class="description">
-          <h3 class="fs-6">Daily Sales on Loan</h3>
-      </div>
-      <div class="daily_sales_loader_loan"></div>
-      <canvas class="daily_sales_chart_loan" aria-label="chart" height="350"></canvas>
-    </div>
-    <div class="weekly_sales pending-sales">
-      <div class="description">
-          <h3 class="fs-6">Daily Sales on Cash</h3>
-      </div>
-      <div class="daily_sales_loader_cash"></div>
-      <canvas class="daily_sales_chart_cash" aria-label="chart" height="350"></canvas>
-    </div>
-  </div>
-</div>
-<div class="divider"></div>
-{% endblock %}
+            <br>
+            <section class="charts-and-data">
+                <div class="row gy-3">
+                    <div class="col-md-3 col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="icon">
+                                        <span class="material-icons text-primary">
+                                            new_releases
+                                        </span>
+                                    </div>
+                                    <div class="">
+                                        <p>New Entries <span class="badge bg-secondary new-entries-notice">0</span></p>
+                                    </div>
+                                </div>
+                                <a href="{% url 'get_new_entries' %}" class="btn btn-primary ms-auto p-2 bd-highlight w-100">Upload</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="material-icons text-info">
+                                        pending_actions
+                                    </span>
+                                    <div class="">
+                                        <p>Pending Approval <span class="badge bg-secondary total-to-approve">0</span></p>
+                                    </div>
+                                </div>
+                                <a href="{% url 'approve' %}" class="btn btn-info ms-auto p-2 bd-highlight w-100">Approve</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="material-icons text-success">
+                                        verified
+                                    </span>
+                                    <div class="">
+                                        <p>Approved <span class="badge bg-secondary approved-notice">0</span></p>
+                                    </div>
+                                </div>
+                                <a href="{% url 'get_approved_data' %}" class="btn btn-success ms-auto p-2 bd-highlight w-100">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="material-icons text-danger">
+                                        report_problem
+                                    </span>
+                                    <div class="">
+                                        <p>Rejected <span class="badge bg-secondary total-rejected">0</span></p>
+                                    </div>
+                                </div>
+                                <a href="{% url 'get_rejected' %}" class="btn btn-danger ms-auto p-2 bd-highlight w-100">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <br>
+            <section class="charts_by_chartjs">
+                <div class="row gy-3">
+                    <div class="col-md-6 col-12">
+                        <div class="card">
+                            <div class="card-header text-center">
+                                <h4>Daily Sales On Cash</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="daily_sales_loader_cash"></div>
+                                <canvas class="daily_sales_chart_cash" aria-label="chart" width="400" height="400"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-12">
+                        <div class="card">
+                            <div class="card-header text-center">
+                                <h4>Daily Sales On Loan</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="daily_sales_loader_loan"></div>
+                                <canvas class="daily_sales_chart_loan" aria-label="chart" width="400" height="400"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <br>
+            <section class="yearly_analysis">
+                <div class="row">
+                    <div class="col-md-6 col-12 w-100">
+                        <div class="card">
+                            <div class="card-header text-center">
+                                <h4>Yearly Sales</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="yearly_sales_chart_loader"></div>
+                                <canvas class="yearly_sales_chart" width="400" height="400"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            {% endblock %}
+        </section>
+        <div class="divider"></div>
+        <footer>
+            {% block footer %}
+            <div>
+                <p>&copy; 2023 Hafeez Enterprise. All rights reserved.</p>
+            </div>
+            {% endblock %}
+        </footer>
+    <script src="{% static 'scripts/spinner.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    </body>
+</html>

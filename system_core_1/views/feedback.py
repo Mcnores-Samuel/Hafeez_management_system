@@ -33,4 +33,20 @@ def feedback(request):
         else:
             feedback_form = FeedbackForm()
         return render(request, 'users/agent_sites/feedback.html', {'form': feedback_form})
+    elif request.user.groups.filter(name='staff_members').exists():
+        if request.method == 'POST':
+            feedback_form = FeedbackForm(request.POST)
+            if feedback_form.is_valid():
+                feedback = feedback_form.save(commit=False)
+                feedback.user = request.user
+                feedback.date = timezone.now()
+                feedback.save()
+                messages.success(request, 'Your feedback was successfully submitted.')
+                return redirect('feedback')
+            else:
+                messages.error(request, 'An error occurred while submitting your feedback.')
+                return redirect('feedback')
+        else:
+            feedback_form = FeedbackForm()
+        return render(request, 'users/staff_sites/feedback.html', {'form': feedback_form})
     return render(request, 'users/general-sites/feedback.html', {'form': feedback_form})

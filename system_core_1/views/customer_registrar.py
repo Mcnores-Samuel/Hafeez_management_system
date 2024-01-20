@@ -62,6 +62,8 @@ def combinedData_collection(request, data_id):
                         return redirect('dashboard')
                     messages.success(request, 'data collected successfully, ready for approval')
                     return redirect('dashboard')
+            else:
+                messages.warning(request, 'Please correct the errors below')
         else:
             form = CombinedDataForm(user=request.user)
         return render(request, 'registration/collect_customer_data.html', {'form': form})

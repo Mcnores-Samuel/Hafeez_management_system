@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'users/staff_sites/staff.html' %}
 {% load static %}
 {% load plus_r %}
 {% block head %}
@@ -78,7 +78,7 @@
                                                     {% csrf_token %}
                                                     <input type="text" name="contract_number" placeholder="add contract number" maxlength="9" minlength="9" pattern="[A]{1}[0-9]{8}" required>
                                                     <input type="hidden" name="imei_number" value="{{ phone.imei_number }}">
-                                                    <button type="submit" class="contract_number-btn">save</button>
+                                                    <button type="submit" class="btn btn-primary">save</button>
                                                 </form>
                                         {% endif %}
                                     </span>
@@ -98,7 +98,7 @@
                                         {% csrf_token %}
                                         <input type="text" name="account_name" placeholder="add account name" required>
                                         <input type="hidden" name="customer_id" value="{{ customer.id }}">
-                                        <button type="submit" class="contract_number-btn">save</button>
+                                        <button type="submit" class="btn btn-primary">save</button>
                                     </form>
                                 {% endif %}
                             </span></p>
@@ -143,7 +143,7 @@
         {% endfor %}
     {% else %}
         <section class="customer_data">
-            <p>No data available</p>
+            <p class="text-center">No data available</p>
         </section>
     {% endif %}
 </section>
@@ -151,8 +151,8 @@
     <div class="pagination container-fluid w-100 d-flex justify-content-center">
         <span class="step-links w-100 d-flex justify-content-around">
             {% if customers.has_previous %}
-                <a href="?page=1">&laquo; first</a>
-                <a href="?page={{ customers.previous_page_number }}">previous</a>
+                <a class="btn btn-primary" href="?page=1">&laquo; first</a>
+                <a class="btn btn-primary" href="?page={{ customers.previous_page_number }}">previous</a>
             {% endif %}
 
             <span class="current">
@@ -160,8 +160,8 @@
             </span>
 
             {% if customers.has_next %}
-                <a href="?page={{ customers.next_page_number }}">next</a>
-                <a href="?page={{ customers.paginator.num_pages }}">last &raquo;</a>
+                <a class="btn btn-primary" href="?page={{ customers.next_page_number }}">next</a>
+                <a class="btn btn-primary" href="?page={{ customers.paginator.num_pages }}">last &raquo;</a>
             {% endif %}
         </span>
     </div>

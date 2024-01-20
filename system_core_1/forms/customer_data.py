@@ -69,24 +69,90 @@ class CombinedDataForm(forms.Form):
     main_storage_phone = None
     agent_stock_phone = None
 
-    payment_method = forms.ChoiceField(choices=PAYMENT, widget=forms.RadioSelect, required=True)
-    customer_name = forms.CharField(max_length=50, required=False, widget=forms.TextInput({ "placeholder": "Enter customer's full name."}))
-    national_id = forms.CharField(max_length=9, required=False, widget=forms.TextInput({ "placeholder": "National identification number."}))
-    customer_contact = forms.CharField(max_length=13, required=False, widget=forms.TextInput({ "placeholder": "Primary contact number"}))
-    second_contact = forms.CharField(max_length=13, required=False, widget=forms.TextInput({ "placeholder": "A secondary contact number.(optional)"}))
-    first_witness_name = forms.CharField(max_length=50, required=False, widget=forms.TextInput({ "placeholder": "First witness full name"}))
-    witness_id_no = forms.CharField(max_length=9, required=False, widget=forms.TextInput({ "placeholder": "First witness national ID number"}))
-    first_witness_contact = forms.CharField(max_length=13, required=False, widget=forms.TextInput({ "placeholder": "First witness primary contact"}))
-    second_witness_name = forms.CharField(max_length=50, required=False, widget=forms.TextInput({ "placeholder": "Second witness full name"}))
-    second_witness_contact = forms.CharField(max_length=13, required=False, widget=forms.TextInput({ "placeholder": "Second witness primary contact"}))
-    customer_location = forms.CharField(max_length=50, required=False, widget=forms.TextInput({ "placeholder": "Customer's based location"}))
-    nearest_school = forms.CharField(max_length=50, required=False, widget=forms.TextInput({ "placeholder": "Nearest school if any"}))
-    nearest_market_church_hospital = forms.CharField(max_length=50, required=False, widget=forms.TextInput({ "placeholder": "Nearest market, church or hospital if any"}))
-    customer_email = forms.CharField(max_length=50, required=False, widget=forms.TextInput({ "placeholder": "Customer's email address"}))
-    payment_period = forms.ChoiceField(choices=PAYMENT_PERIOD, required=False, widget=forms.RadioSelect)
-    workplace = forms.CharField(max_length=100, required=False, widget=forms.TextInput({ "placeholder": "Customer's workplace"}))
-    employer_or_coleague = forms.CharField(max_length=100, required=False, widget=forms.TextInput({ "placeholder": "Customer's employer or coleague"}))
-    employer_or_coleague_contact = forms.CharField(max_length=13, required=False, widget=forms.TextInput({ "placeholder": "Customer's employer or coleague contact"}))
+    payment_method = forms.ChoiceField(
+        choices=PAYMENT, widget=forms.RadioSelect, required=True)
+    payment_period = forms.ChoiceField(
+        choices=PAYMENT_PERIOD, required=False,
+        widget=forms.RadioSelect)
+    customer_name = forms.CharField(
+        max_length=50, required=False,
+        widget=forms.TextInput({
+            "placeholder": "Enter customer's full name.",
+            "class": "form-control"}))
+    national_id = forms.CharField(
+        max_length=9, required=False, 
+        widget=forms.TextInput({
+            "placeholder": "National identification number.",
+            "class": "form-control"}))
+    customer_contact = forms.CharField(
+        max_length=13, required=False, 
+        widget=forms.TextInput({
+            "placeholder": "Primary contact number",
+            "class": "form-control"}))
+    second_contact = forms.CharField(
+        max_length=13, required=False, 
+        widget=forms.TextInput({
+            "placeholder": "A secondary contact number.(optional)",
+            "class": "form-control"}))
+    first_witness_name = forms.CharField(
+        max_length=50, required=False, 
+        widget=forms.TextInput({
+            "placeholder": "First witness full name",
+            "class": "form-control"}))
+    witness_id_no = forms.CharField(
+        max_length=9, required=False, 
+        widget=forms.TextInput({
+            "placeholder": "First witness national ID number",
+            "class": "form-control"}))
+    first_witness_contact = forms.CharField(
+        max_length=13, required=False, 
+        widget=forms.TextInput({
+            "placeholder": "First witness primary contact",
+            "class": "form-control"}))
+    second_witness_name = forms.CharField(
+        max_length=50, required=False, 
+        widget=forms.TextInput({
+            "placeholder": "Second witness full name",
+            "class": "form-control"}))
+    second_witness_contact = forms.CharField(
+        max_length=13, required=False, 
+        widget=forms.TextInput({
+            "placeholder": "Second witness primary contact",
+            "class": "form-control"}))
+    customer_location = forms.CharField(
+        max_length=50, required=False, 
+        widget=forms.TextInput({ "placeholder": "Customer's based location",
+        "class": "form-control"}))
+    nearest_school = forms.CharField(
+        max_length=50, required=False, 
+        widget=forms.TextInput({
+            "placeholder": "Nearest school if any",
+            "class": "form-control"}))
+    nearest_market_church_hospital = forms.CharField(
+        max_length=50, required=False, 
+        widget=forms.TextInput({
+            "placeholder": "Nearest market, church or hospital if any",
+            "class": "form-control"}))
+    customer_email = forms.CharField(
+        max_length=50, required=False, 
+        widget=forms.TextInput({
+            "placeholder": "Customer's email address",
+            "class": "form-control"}))
+    workplace = forms.CharField(
+        max_length=100, required=False, 
+        widget=forms.TextInput({
+            "placeholder": "Customer's workplace",
+            "class": "form-control"}))
+    employer_or_coleague = forms.CharField(
+        max_length=100, required=False, 
+        widget=forms.TextInput({
+            "placeholder": "Customer's employer or coleague",
+            "class": "form-control"}))
+    employer_or_coleague_contact = forms.CharField(
+        max_length=13, required=False, 
+        widget=forms.TextInput({
+            "placeholder": "Customer's employer or coleague contact",
+            "class": "form-control"}))
 
 
     def __init__(self, *args, **kwargs):
