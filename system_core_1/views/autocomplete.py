@@ -30,9 +30,22 @@ def autocomplete(request, name):
     It ensures that only agents are able to access this view.
     """
     if request.user.is_authenticated and request.user.groups.filter(name='staff_members').exists():
-        phones = MainStorage.objects.filter(name__icontains=name)
-        data = []
-        for phone in phones:
-            data.append(phone.name)
+        phones = None
+        if name == 'Spark 10C':
+            phones = MainStorage.objects.filter(name=name, phone_type='10C').first()
+        else:
+            phones = MainStorage.objects.filter(name__exact=name).first()
+        data = {}
+        if phones:
+            data["name"] = phones.name
+            data["phone_type"] = phones.phone_type
+            data["category"] = phones.category
+            data["spec"] = phones.spec
+            data["screen_size"] = phones.screen_size
+            data["os"] = phones.os
+            data["battery"] = phones.battery
+            data["camera"] = phones.camera
+            data["supplier"] = phones.supplier
+
         return JsonResponse(data, safe=False)
     return JsonResponse({'error': 'Forbidden'}, status=403)

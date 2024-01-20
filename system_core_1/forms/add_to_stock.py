@@ -14,6 +14,8 @@ class AddToStockForm(forms.Form):
                 'class': 'form-control',
                 'placeholder': 'Enter IMEI number',
                 'required': 'required',
+                'minlength': '15',
+                'maxlength': '15',
             }
         )
     )
@@ -23,6 +25,8 @@ class AddToStockForm(forms.Form):
                 'class': 'form-control',
                 'placeholder': 'Enter IMEI number 2',
                 'required': 'required',
+                'minlength': '15',
+                'maxlength': '15',
             }
         )
     )
@@ -32,6 +36,7 @@ class AddToStockForm(forms.Form):
                 'class': 'form-control',
                 'placeholder': 'Enter phone name',
                 'required': 'required',
+                'list': 'phone_list',
             }
         )
     )
@@ -102,15 +107,25 @@ class AddToStockForm(forms.Form):
         )
     )
 
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
+        super(AddToStockForm, self).__init__(*args, **kwargs)
+
     def clean(self):
         """Override the clean method to ensure that the IMEI numbers are unique."""
         cleaned_data = super().clean()
         device_imei = cleaned_data.get('device_imei')
         device_imei_2 = cleaned_data.get('device_imei_2')
+        check = device_imei.isdigit()
+        check_2 = device_imei_2.isdigit()
+        if not check and len(device_imei) != 15:
+            raise forms.ValidationError("IMEI 1 number must be digits up to 15 characters")
+        if not check_2 and len(device_imei_2) != 15:
+            raise forms.ValidationError("IMEI 2 number must be digits up to 15 characters")
         if MainStorage.objects.filter(device_imei=device_imei).exists():
-            raise forms.ValidationError("IMEI number already exists")
-        if MainStorage.objects.filter(device_imei=device_imei_2).exists():  # noqa: E501
-            raise forms.ValidationError("IMEI number already exists")
+            raise forms.ValidationError("IMEI 1 number already exists")
+        if MainStorage.objects.filter(device_imei_2=device_imei_2).exists():
+            raise forms.ValidationError("IMEI 2 number already exists")
         if device_imei == device_imei_2:
             raise forms.ValidationError("IMEI numbers must be unique")
         return cleaned_data
@@ -142,6 +157,8 @@ class AddToStockForm(forms.Form):
             entry_date=timezone.now(),
             stock_out_date=timezone.now(),
             collected_on=timezone.now(),
+            assigned_from='HAFEEZ ENTERPRISE',
+            updated_by=self.user.username,
         )
         stock.save()
         return stock

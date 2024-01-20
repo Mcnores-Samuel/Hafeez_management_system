@@ -11,7 +11,7 @@ function copyText(elementId) {
     textarea.focus();
     document.execCommand('copy');
     document.body.removeChild(textarea);
-    textcontainer.classList.add('copied');
+    textcontainer.classList.add('text-success');
     textcontainer.innerText = "Copied!";
     setTimeout(function(){
         textcontainer.innerText = textToCopy;
