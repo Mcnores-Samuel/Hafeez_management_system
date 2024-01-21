@@ -35,6 +35,8 @@ class CalcCommissions:
     
     def update_commission(self, agent, stock_out, month=month, year=year):
         """This function is used to update the commission"""
+        if not stock_out:
+            stock_out = 0
         commission = Commission.objects.filter(
             agent=agent, month=month,
             year=year).first()

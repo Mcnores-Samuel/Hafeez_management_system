@@ -25,7 +25,6 @@ window.addEventListener('load', function(event) {
         });
       }
     }
-  
     StartTextAnimation(0);
   });
   
