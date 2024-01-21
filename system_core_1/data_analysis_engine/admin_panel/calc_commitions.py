@@ -45,7 +45,9 @@ class CalcCommissions:
             commission.save()
         else:
             commission = Commission.objects.create(
-                agent=agent, month=month,
+                agent=agent,
+                total_devices_sold=0,
+                month=month,
                 year=year, target=30, paid=False,
                 amount=5000
             )
