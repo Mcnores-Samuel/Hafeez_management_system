@@ -47,7 +47,7 @@
                     <div class="sidebar">
                         <div class="topbar-wrapper heading bg-success ">
                             <div class="logo">HE</div>
-                            <div class="text-center text-fs text-light brandname">Hafeez Enterprise</div>
+                            <div class="text-center text-fs text-light brandname text">Hafeez Enterprise</div>
                         </div>
                         <ul class="navbar-nav flex-column">
                             <li class="nav-item">
@@ -137,21 +137,40 @@
         <section class="presentaion">
             {% block content %}
                 {% if messages %}
-                    <ul class="messages">
+                    <div class="messages">
                         {% for message in messages %}
-                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                            {% if message.tags == 'success' %}
+                                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                    {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            {% elif message.tags == 'error' %}
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            {% elif message.tags == 'warning' %}
+                                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                    {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            {% else %}
+                                <div class="alert alert-info alert-dismissible fade show" role="alert">
+                                    {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            {% endif %}
                         {% endfor %}
-                    </ul>
+                    </div>
                 {% endif %}
             <div class="top-display d-flex position-relative bg-light">
-                <form action="" method="get" class="d-flex position-relative search-form">
-                    <input type="search" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
-                    <button type="submit" class="btn btn-outline-light btn-primary search-btn">
-                        <span class="material-icons search-icon">
-                            search
-                        </span>
-                    </button>
-                </form>
+                <div class="container">
+                    <form action="{% url 'in_stock' %}" method="post" class="d-flex w-50 search-form">
+                        {% csrf_token %}
+                        <input type="search" class="form-control me-2" name="search_term" id="search_term" placeholder="Device IMEI, category, model etc">
+                        <button class="btn btn-outline-success" type="submit">Search</button>
+                    </form>
+                </div>
                 <div class="notify">
                     <div class="dropdown">
                         <button type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -168,7 +187,7 @@
                                                 notifications
                                             </span>
                                         <div class="">
-                                            <p>Hello There, Welcome to Hafeez new updates</p>
+                                            <p class="">Hello There, Welcome to Hafeez new updates</p>
                                         </div>
                                     </div>
                                 </a>
@@ -264,11 +283,32 @@
                                 <div class="">
                                     <p>Monthly Target</p>
                                     <div class="">
+                                        <div>{{ target }} Devices</div>
+                                        {% if progress < 50 %}
                                         <div class="progress">
-                                            <div class="progress-bar progress-bar-striped progress-bar-animated"
+                                            <div class="progress-bar bg-danger progress-bar-striped progress-bar-animated"
                                             role="progressbar" aria-valuenow="{{ progress }}" aria-valuemin="0"
                                             aria-valuemax="30">{{ progress }}%</div>
                                         </div>
+                                        {% elif progress == 50 %}
+                                        <div class="progress">
+                                            <div class="progress-bar bg-warning progress-bar-striped progress-bar-animated"
+                                            role="progressbar" aria-valuenow="{{ progress }}" aria-valuemin="0"
+                                            aria-valuemax="30">{{ progress }}%</div>
+                                        </div>
+                                        {% elif target == 100 %}
+                                        <div class="progress">
+                                            <div class="progress-bar bg-primary progress-bar-striped progress-bar-animated"
+                                            role="progressbar" aria-valuenow="{{ progress }}" aria-valuemin="0"
+                                            aria-valuemax="30">{{ progress }}%</div>
+                                        </div>  
+                                        {% else %}
+                                        <div class="progress">
+                                            <div class="progress-bar bg-success progress-bar-striped progress-bar-animated"
+                                            role="progressbar" aria-valuenow="{{ progress }}" aria-valuemin="0"
+                                            aria-valuemax="30">{{ progress }}%</div>
+                                        </div>
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>

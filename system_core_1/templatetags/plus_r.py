@@ -20,4 +20,4 @@ def format_price(value):
         value = str(value).split('.')[0]
         value = int(value)
         return f"{value:,}"
-    return f"MK{value:,}"
+    return f"{value:,}"

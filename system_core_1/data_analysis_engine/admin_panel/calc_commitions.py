@@ -26,12 +26,13 @@ class CalcCommissions:
         commission = Commission.objects.filter(
             agent=agent, month=month,
             year=year).first()
+        target = int(commission.target)
         if commission.total_devices_sold > 0:
             progress = (commission.total_devices_sold * 100) / commission.target
             progress = round(progress, 2)
         else:
             progress = 0
-        return progress
+        return progress, target
     
     def update_commission(self, agent, stock_out, month=month, year=year):
         """This function is used to update the commission"""

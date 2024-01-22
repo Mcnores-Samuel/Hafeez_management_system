@@ -80,6 +80,7 @@ def dashboard(request):
             CalcCommissions().update_commission(
                 user, stock_out
             )
+            progress, target = CalcCommissions().target_progress(user)
             avatar = UserAvatar.objects.get(user=request.user) if UserAvatar.objects.filter(user=request.user).exists() else None
             context = {
                 'profile': user.email[0],
@@ -87,7 +88,8 @@ def dashboard(request):
                 'total_stock_in': stock_in,
                 'total_stock_out': stock_out,
                 'avatar': avatar,
-                'progress': CalcCommissions().target_progress(user),
+                'progress': progress,
+                'target': target,
                 'commission': CalcCommissions().calc_commission(user)
             }
         return render(request, 'users/agent_sites/agents.html', context)
@@ -110,9 +112,11 @@ def dashboard(request):
         airtel_agents = UserProfile.objects.filter(groups__name='airtel_agents')
         total_sales_by_agents = {}
         for agent in airtel_agents:
-            total_sales_by_agents[agent] = len(Airtel_mifi_storage.objects.filter(agent=agent.id,
-                                                                                 in_stock=True, pending=True))
-        avatar = UserAvatar.objects.get(user=request.user) if UserAvatar.objects.filter(user=request.user).exists() else None
+            total_sales_by_agents[agent] = len(Airtel_mifi_storage.objects.filter(
+                agent=agent.id,
+                in_stock=True, pending=True))
+        avatar = (UserAvatar.objects.get(user=request.user)
+                  if UserAvatar.objects.filter(user=request.user).exists() else None)
         context = {
             'profile': request.user.email[0],
             'user': request.user,
