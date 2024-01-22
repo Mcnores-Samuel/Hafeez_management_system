@@ -12,7 +12,7 @@ function applySidebarPreference() {
         $('.text').hide();
         sidebar.addClass('resize');
         wrapper.addClass('resize');
-        main.addClass('resize');
+        main.toggleClass('resize')
     } else {
         main.removeClass('resize'); // Ensure the main section is not resized initially
     }
