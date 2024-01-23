@@ -164,13 +164,12 @@
                     </div>
                 {% endif %}
             <div class="top-display d-flex position-relative bg-light">
-                <div class="container">
-                    <form action="{% url 'in_stock' %}" method="post" class="d-flex w-50 search-form">
-                        {% csrf_token %}
-                        <input type="search" class="form-control me-2" name="search_term" id="search_term" placeholder="Device IMEI, category, model etc">
-                        <button class="btn btn-outline-success" type="submit">Search</button>
-                    </form>
-                </div>
+                <form action="{% url 'in_stock' %}" method="post" class="d-flex position-relative search-form">
+                    {% csrf_token %}
+                    <input type="search" id="search_term" name="search_term" class="form-control me-2"
+                    placeholder="Search IMEI number or Contract number" aria-label="Search" aria-describedby="search-addon" />
+                    <button type="submit" class="btn btn-outline-light btn-primary search-btn">search</button>
+                </form>
                 <div class="notify">
                     <div class="dropdown">
                         <button type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -283,30 +282,30 @@
                                 <div class="">
                                     <p>Monthly Target</p>
                                     <div class="">
-                                        <div>{{ target }} Devices</div>
+                                        <div class="text-end">{{ target }} Devices</div>
                                         {% if progress < 50 %}
                                         <div class="progress">
                                             <div class="progress-bar bg-danger progress-bar-striped progress-bar-animated"
                                             role="progressbar" aria-valuenow="{{ progress }}" aria-valuemin="0"
                                             aria-valuemax="30">{{ progress }}%</div>
                                         </div>
-                                        {% elif progress == 50 %}
+                                        {% elif progress > 50 and progress < 100 %}
                                         <div class="progress">
                                             <div class="progress-bar bg-warning progress-bar-striped progress-bar-animated"
                                             role="progressbar" aria-valuenow="{{ progress }}" aria-valuemin="0"
                                             aria-valuemax="30">{{ progress }}%</div>
                                         </div>
-                                        {% elif target == 100 %}
-                                        <div class="progress">
-                                            <div class="progress-bar bg-primary progress-bar-striped progress-bar-animated"
-                                            role="progressbar" aria-valuenow="{{ progress }}" aria-valuemin="0"
-                                            aria-valuemax="30">{{ progress }}%</div>
-                                        </div>  
-                                        {% else %}
+                                        {% elif progress == 100 %}
                                         <div class="progress">
                                             <div class="progress-bar bg-success progress-bar-striped progress-bar-animated"
                                             role="progressbar" aria-valuenow="{{ progress }}" aria-valuemin="0"
                                             aria-valuemax="30">{{ progress }}%</div>
+                                        </div>  
+                                        {% elif progress > 100 %}
+                                        <div class="progress">
+                                            <div class="progress-bar progress-bar-striped progress-bar-animated"
+                                            role="progressbar" aria-valuenow="{{ progress }}" aria-valuemin="0"
+                                            aria-valuemax="30" style="background-color: purple;">{{ progress }}%</div>
                                         </div>
                                         {% endif %}
                                     </div>

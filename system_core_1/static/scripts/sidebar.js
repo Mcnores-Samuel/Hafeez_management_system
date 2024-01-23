@@ -12,9 +12,9 @@ function applySidebarPreference() {
         $('.text').hide();
         sidebar.addClass('resize');
         wrapper.addClass('resize');
-        main.toggleClass('resize')
+        main.toggleClass('presentaion-resize')
     } else {
-        main.removeClass('resize'); // Ensure the main section is not resized initially
+        main.removeClass('presentaion-resize')
     }
 }
 
@@ -27,7 +27,7 @@ folder.on('click', function () {
     $('.text').toggle();
     sidebar.toggleClass('resize');
     wrapper.toggleClass('resize');
-    main.toggleClass('resize');
+    main.toggleClass('presentaion-resize')
 
     // Store the user's preference for the sidebar state
     localStorage.setItem(localStorageKey, sidebar.hasClass('resize'));
@@ -42,13 +42,13 @@ $(window).on('resize', function () {
         // Remove 'resize' class on smaller screens
         sidebar.removeClass('resize');
         wrapper.removeClass('resize');
-        main.removeClass('resize');
+        main.toggleClass('presentaion-resize')
     } else {
         // Add 'resize' class on larger screens
         if (localStorage.getItem(localStorageKey) === 'true') {
             sidebar.addClass('resize');
             wrapper.addClass('resize');
-            main.addClass('resize');
+            main.toggleClass('presentaion-resize')
         }
     }
 });

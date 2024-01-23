@@ -48,23 +48,35 @@
 }
 
 .presentaion {
-    margin-left: 11.5rem;
+    margin-left: 185px;
     overflow-x: unset;
-    padding-top: 1rem;
+    padding-top: 10px;
     width: 85%;
+    transition: all 0.5s ease-in-out;
 }
 
-.presentation {
-    transition: margin-left 0.5s ease-in-out;
+.presentaion-resize {
+    margin-left: 80px;
+    overflow-x: unset;
+    padding-top: 10px;
+    width: 93%;
+    transition: all 0.5s ease-in-out;
 }
 
-.presentation.resize {
-    margin-left: 60px;
+.top-display {
+    padding: 8px;
+    height: 100%;
     width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 10px;
 }
 
-
-
+.search-form {
+    width: 50%;
+    margin-left: 10px;
+}
 
 .notify {
     position: absolute;
@@ -95,6 +107,14 @@
 
 .custom-logo{
     margin-top: 12px;
+}
+
+.wrapper .sidebar ul li.active {
+    background-color: #636e72; /* Background color for active section */
+}
+
+.wrapper .sidebar ul li.active a {
+    color: #fff; /* Text color for active section */
 }
 
 

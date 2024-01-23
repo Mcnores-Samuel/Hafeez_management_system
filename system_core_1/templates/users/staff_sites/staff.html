@@ -24,6 +24,7 @@
         <script src="{% static 'scripts/staff_lib/total_rejected.js' %}" defer></script>
         <script src="{% static 'scripts/analysis_lib/daily_sales.js' %}" defer></script>
         {% endblock %}
+        <script src="{% static 'scripts/sidebar.js' %}" defer></script>
         <script src="{% static 'scripts/form_auto_complete.js' %}" defer></script>
         <script src="{% static 'scripts/placeholders.js' %}" defer></script>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -46,7 +47,7 @@
                     <div class="sidebar">
                         <div class="topbar-wrapper heading bg-success ">
                             <div class="logo">HE</div>
-                            <div class="text-center text-fs text-light brandname">Hafeez Enterprise</div>
+                            <div class="text-center text-fs text-light brandname text">Hafeez Enterprise</div>
                         </div>
                         <ul class="navbar-nav flex-column">
                             <li class="nav-item">
@@ -195,13 +196,9 @@
             <div class="top-display d-flex position-relative bg-light">
                 <form action="{% url 'data_search' %}" method="post" class="d-flex position-relative search-form">
                     {% csrf_token %}
-                    <input type="search" id="search" name="search_query" class="form-control"
+                    <input type="search" id="search" name="search_query" class="form-control me-2"
                     placeholder="Search IMEI number or Contract number" aria-label="Search" aria-describedby="search-addon" />
-                    <button type="submit" class="btn btn-outline-light btn-primary search-btn">
-                        <span class="material-icons search-icon">
-                            search
-                        </span>
-                    </button>
+                    <button type="submit" class="btn btn-outline-light btn-primary search-btn">search</button>
                 </form>
                 <div class="notify">
                     <div class="dropdown">
