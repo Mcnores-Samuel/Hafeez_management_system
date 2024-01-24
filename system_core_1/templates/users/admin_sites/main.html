@@ -57,6 +57,7 @@
                                 <span class="material-icons">
                                     analytics
                                 </span>
+                                <span class="text"> Analytics</span>
                                 </a>
                             </li>
                             {% if user.is_authenticated and user.is_superuser %}
@@ -64,7 +65,7 @@
                                 <a class="nav-link d-flex align-items-center" href="{{ admin_url }}"
                                 data-bs-toggle="tooltip" 
                                 title="Management">
-                                <span class="material-icons fs-3">
+                                <span class="material-icons">
                                     home
                                     </span>
                                     <span class="text"> Manage</span>
@@ -74,8 +75,8 @@
                             <li class="nav-item">
                                 <a class="nav-link d-flex align-items-center" href=""
                                 data-bs-toggle="tooltip"
-                                title="In stock">
-                                <span class="material-icons fs-3">
+                                title="Stock">
+                                <span class="material-icons">
                                     inventory
                                 </span>
                                 <span class="text"> My Stock</span>
@@ -85,7 +86,7 @@
                                 <a class="nav-link d-flex align-items-center" href=""
                                 data-bs-toggle="tooltip"
                                 title="Sales">
-                                <span class="material-icons fs-3">
+                                <span class="material-icons">
                                 outbound
                                 </span>
                                 <span class="text"> Sales</span>
@@ -98,24 +99,34 @@
                                 <span class="material-icons">
                                     paid
                                 </span>
-                                <span class="text"> Payments</span>x
+                                <span class="text"> Payments</span>
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link d-flex align-items-center" href="#"
                                 data-bs-toggle="tooltip" 
-                                title="Tips and Updates">
-                                <span class="material-icons fs-3">
-                                    tips_and_updates
+                                title="Defective Devices">
+                                <span class="material-icons">
+                                    report_problem
                                 </span>
-                                <span class="text"> Tips and Updates</span>
+                                <span class="text"> Defects</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link d-flex align-items-center" href="#"
+                                data-bs-toggle="tooltip" 
+                                title="Pending Actions">
+                                <span class="material-icons">
+                                    pending_actions
+                                </span>
+                                <span class="text"> Pending</span>
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link d-flex align-items-center" href="{% url 'profile' %}"
                                 data-bs-toggle="tooltip" 
                                 title="Profile">
-                                    <span class="material-icons fs-3">
+                                    <span class="material-icons">
                                         account_circle
                                     </span>
                                     <span class="text"> Profile</span>
@@ -125,7 +136,7 @@
                             <a class="nav-link d-flex align-items-center" href="{% url 'sign_out' %}"
                                 data-bs-toggle="tooltip" 
                                 title="Logout">
-                                    <span class="material-icons fs-3">
+                                    <span class="material-icons">
                                         logout
                                     </span>
                                     <span class="text"> Logout</span>
@@ -135,7 +146,7 @@
                                 <a class="nav-link d-flex align-items-center" href="{% url 'feedback' %}"
                                 data-bs-toggle="tooltip" 
                                 title="feedback">
-                                    <span class="material-icons fs-3">
+                                    <span class="material-icons">
                                     feedback
                                     </span>
                                     <span class="text"> Feedback</span>
@@ -348,7 +359,7 @@
                     <div class="col-md-6 col-12">
                         <div class="card">
                             <div class="card-header text-center">
-                                <h4>Stock</h4>
+                                <h4>Daily Sales on loan</h4>
                             </div>
                             <div class="card-body">
                                 <div class="loading-message-agent-stock"></div>
@@ -359,7 +370,88 @@
                     <div class="col-md-6 col-12">
                         <div class="card">
                             <div class="card-header text-center">
-                                <h4>Sales</h4>
+                                <h4>Daily Sales on Cash</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="loading-message-main-stock"></div>
+                                <canvas class="salesChart" width="400" height="400"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <br>
+            <section class="charts_by_chartjs">
+                <div class="row gy-3">
+                    <div class="col-md-6 col-12">
+                        <div class="card">
+                            <div class="card-header text-center">
+                                <h4>Weekly Sales on loan</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="loading-message-agent-stock"></div>
+                                <canvas class="StockChart" width="400" height="400"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-12">
+                        <div class="card">
+                            <div class="card-header text-center">
+                                <h4>Weekly Sales on Cash</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="loading-message-main-stock"></div>
+                                <canvas class="salesChart" width="400" height="400"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <br>
+            <section class="charts_by_chartjs">
+                <div class="row gy-3">
+                    <div class="col-md-6 col-12">
+                        <div class="card">
+                            <div class="card-header text-center">
+                                <h4>Monthly Sales on loan</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="loading-message-agent-stock"></div>
+                                <canvas class="StockChart" width="400" height="400"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-12">
+                        <div class="card">
+                            <div class="card-header text-center">
+                                <h4>Monthly Sales on Cash</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="loading-message-main-stock"></div>
+                                <canvas class="salesChart" width="400" height="400"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <br>
+            <section class="charts_by_chartjs">
+                <div class="row gy-3">
+                    <div class="col-md-6 col-12">
+                        <div class="card">
+                            <div class="card-header text-center">
+                                <h4>Agent Overall Stock</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="loading-message-agent-stock"></div>
+                                <canvas class="StockChart" width="400" height="400"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-12">
+                        <div class="card">
+                            <div class="card-header text-center">
+                                <h4>Main Shop Stock</h4>
                             </div>
                             <div class="card-body">
                                 <div class="loading-message-main-stock"></div>
