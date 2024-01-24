@@ -17,8 +17,9 @@
         {% block head %}
         <link rel="stylesheet" href="{% static 'styles/loading-message.css' %}">
         <script src="{% static 'scripts/data_updates.js' %}"></script>
-        <script src="{% static 'scripts/analysis_lib/agent_stock.js' %}" defer></script>
-        <script src="{% static 'scripts/analysis_lib/agent_sales.js' %}" defer></script>
+        <script src="{% static 'scripts/analysis_lib/daily_sales.js' %}" defer></script>
+        <script src="{% static 'scripts/analysis_lib/weekly_sales.js' %}" defer></script>
+        <script src="{% static 'scripts/analysis_lib/monthly_sales.js' %}" defer></script>
         <script src="{% static 'scripts/analysis_lib/yearly_analysis.js' %}" defer></script>
         {% endblock %}
         <script src="{% static 'scripts/sidebar.js' %}" defer></script>
@@ -362,8 +363,8 @@
                                 <h4>Daily Sales on loan</h4>
                             </div>
                             <div class="card-body">
-                                <div class="loading-message-agent-stock"></div>
-                                <canvas class="StockChart" width="400" height="400"></canvas>
+                                <div class="daily_sales_loader_loan"></div>
+                                <canvas class="daily_sales_chart_loan" width="400" height="400"></canvas>
                             </div>
                         </div>
                     </div>
@@ -373,8 +374,8 @@
                                 <h4>Daily Sales on Cash</h4>
                             </div>
                             <div class="card-body">
-                                <div class="loading-message-main-stock"></div>
-                                <canvas class="salesChart" width="400" height="400"></canvas>
+                                <div class="daily_sales_loader_cash"></div>
+                                <canvas class="daily_sales_chart_cash" width="400" height="400"></canvas>
                             </div>
                         </div>
                     </div>
