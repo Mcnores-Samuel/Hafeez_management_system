@@ -73,7 +73,34 @@ function updateSalesByAgentChart(url, dest, chartType, loader) {
                             },
                             indexAxis: 'y',
                             barPercentage: 0.7,
-                            categoryPercentage: 0.7
+                            categoryPercentage: 0.7,
+                            scales: {
+                                x: {
+                                    grid: {
+                                        display: false
+                                    },
+
+                                    ticks: {
+                                        beginAtZero: true,
+                                        stepSize: 1,
+                                        color: "navy",
+                                        font: {
+                                            weight: 'bold'
+                                        },
+                                    }
+                                },
+                                y: {
+                                    grid: {
+                                        display: false
+                                    },
+                                    ticks: {
+                                        color: "navy",
+                                        font: {
+                                            weight: 'bold'
+                                        },
+                                    },
+                                }
+                            }
                         }
                     });
                 } else {

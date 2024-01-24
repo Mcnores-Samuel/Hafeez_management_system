@@ -1,7 +1,10 @@
 """This model represent the entire stock available and sold in all posts."""
 from ...models.main_storage import MainStorage
 from ...models.agent_profile import AgentProfile
+from ...models.user_profile import UserProfile
 from django.utils import timezone
+from django.contrib.auth.models import Group
+
 
 
 class MainStorageAnalysis:
@@ -52,16 +55,15 @@ class MainStorageAnalysis:
             stock_out_date__month=current_month,
             stock_out_date__year=current_year,
             sold=True, in_stock=False, sales_type=sales_type,
-            missing=False)
+            missing=False, pending=False, assigned=True)
         for agent in agents:
-            sales_by_agent[str(agent.user.username).lower().capitalize()] = len(
-                MainStorage.objects.filter(
+            sales_by_agent[str(agent.user.username).lower().capitalize()] = MainStorage.objects.filter(
                     agent=agent.user,
                     stock_out_date__month=current_month,
                     stock_out_date__year=current_year,
                     sold=True, in_stock=False, sales_type=sales_type,
-                    missing=False))
-        sales_by_agent['Total'] = len(total_sales)
+                    missing=False, pending=False, assigned=True).count()
+        sales_by_agent['Total'] = total_sales.count()
         sales_by_agent = sorted(sales_by_agent.items(), key=lambda x: x[1], reverse=True)
         return sales_by_agent
     
@@ -102,20 +104,26 @@ class MainStorageAnalysis:
                 year = timezone.now().date().year
                 sales = {}
                 for month in months:
-                    sales[month] = len(MainStorage.objects.filter(
+                    sales[month] = MainStorage.objects.filter(
                         agent=agent, in_stock=False,
                         assigned=True,
                         sold=True,
                         stock_out_date__month=months.index(month)+1,
-                        stock_out_date__year=year))
+                        stock_out_date__year=year).count()
                 return sales
-        elif agent.groups.filter(name='staff_members').exists():
+        elif (agent.groups.filter(name='staff_members').exists() or
+              agent.is_superuser):
             sales = {}
+            main_shop_staff = Group.objects.get(name='main_shop')
+            representatives = UserProfile.objects.filter(groups=main_shop_staff)
             for month in months:
                 sales[month] = len(MainStorage.objects.filter(
+                    agent__in=representatives,
                     in_stock=False,
                     assigned=True,
                     sold=True,
+                    missing=False,
+                    pending=False,
                     stock_out_date__month=months.index(month)+1,
                     stock_out_date__year=timezone.now().date().year))
             return sales

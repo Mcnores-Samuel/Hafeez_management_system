@@ -72,7 +72,31 @@ function updateWeeklyChart(url, dest, chartType = "line", loader) {
                                     padding: 8,
                                     fullSize: true,
                                 },
-                            }
+                            },
+                            scales: {
+                                x: {
+                                    grid: {
+                                        display: false,
+                                    },
+                                    ticks: {
+                                        color: "black",
+                                        font: {
+                                            weight: 'bold'
+                                        }
+                                    },
+                                },
+                                y: {
+                                    grid: {
+                                        display: false,
+                                    },
+                                    ticks: {
+                                        color: "black",
+                                        font: {
+                                            weight: 'bold'
+                                        }
+                                    },
+                                },
+                            },
                         }
                     });
                 } else {

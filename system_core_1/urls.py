@@ -10,7 +10,7 @@ from .views.staff_sites.new_entries import (get_new_entries, get_new_entries_tot
 from .views.staff_sites.edit_customer_data import edit_customer_data
 from .views.staff_sites.delete_data import delete_customer_data
 from .views.staff_sites.rejected import total_rejected, get_rejected
-from .views.stock_analysis import get_source_stock
+from .views.stock_analysis import get_source_stock, get_yearly_product_sales
 from .views.feedback import feedback
 from .views.add_to_stock import add_to_stock
 from .views.autocomplete import autocomplete
@@ -19,13 +19,6 @@ from .views.autocomplete import autocomplete
 
 urlpatterns = [
     path('', home_page.home_page, name='home_page'),
-    path('products/', home_page.products, name='products'),
-    path('about/', home_page.about, name='about'),
-    path('faq/', home_page.faq, name='faq'),
-    path('terms/', home_page.terms, name='terms'),
-    path('contact/', home_page.contact, name='contact'),
-    path('services/', home_page.services, name='services'),
-    path('privacy/', home_page.privacy, name='privacy'),
     path('sign_up/', registration_view.sign_up, name='sign_up'),
     path('main_shop_details/', home_page.main_shop_details, name='main_shop_details'),
     path('resend_confirmation_email', registration_view.resend_confirmation_email, name='resend_confirmation_email'),
@@ -66,6 +59,7 @@ urlpatterns = [
     path('get_individual_agent_stock_out/', data_for_charts.get_individual_agent_stock_out, name='get_individual_agent_stock_out'),
     path('get_agents_stock_json/', data_for_charts.get_agents_stock_json, name='get_agents_stock_json'),
     path('get_source_stock/', get_source_stock, name='get_source_stock'),
+    path('get_yearly_product_sales/', get_yearly_product_sales, name='get_yearly_product_sales'),
     path('get_main_stock_analysis/', data_for_charts.get_main_stock_analysis, name='get_main_stock_analysis'),
     path('get_approved/', approved, name='approved'),
     path('get_approved_data/', get_approved_data, name='get_approved_data'),

@@ -72,10 +72,10 @@ def get_agents_stock_json(request):
             if agent.user not in representatives:
                 stocks[str(agent.user.username).lower().capitalize()] = len(
                     MainStorage.objects.filter(
-                        agent=agent.user, in_stock=True, 
+                        agent=agent.user, in_stock=True,
                         sold=False, missing=False, assigned=True))
                 total += len(MainStorage.objects.filter(
-                    agent=agent.user, in_stock=True, 
+                    agent=agent.user, in_stock=True,
                     sold=False, missing=False, assigned=True))
         stocks['Total'] = total
         return JsonResponse(stocks)
@@ -92,8 +92,9 @@ def get_main_stock_analysis(request):
                                               in_stock=True, sold=False,
                                               missing=False, assigned=True)
         stock = {}
-        stock[representatives[0].username] = len(data_set)
-        stock['Total'] = len(data_set)
+        stock[representatives[0].username] = data_set.count()
+        stock['Target Capacity'] = 1000
+        stock['Total'] = data_set.count()
         return JsonResponse(stock)
     return JsonResponse({'error': 'Invalid request.'})
 
