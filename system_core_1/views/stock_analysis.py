@@ -12,9 +12,10 @@ def get_source_stock(request):
     if request.method == 'GET':
         main_shop_staff = Group.objects.get(name='main_shop')
         representatives = UserProfile.objects.filter(groups=main_shop_staff)
-        data_set = MainStorage.objects.filter(agent__in=representatives,
-                                              in_stock=True, sold=False,
-                                              missing=False, assigned=True)
+        data_set = MainStorage.objects.filter(
+            agent__in=representatives,
+            in_stock=True, sold=False,
+            missing=False, assigned=True)
         stock = {}
         for data in data_set:
             stock[data.phone_type] = stock.get(data.phone_type, 0) + 1
@@ -37,5 +38,6 @@ def get_yearly_product_sales(request):
         for product in data_set:
             products[product.phone_type] = products.get(product.phone_type, 0) + 1
         products = sorted(products.items(), key=lambda x: x[1], reverse=True)
+        print(products)
         return JsonResponse(products, safe=False)
     return JsonResponse({'error': 'Invalid request.'})

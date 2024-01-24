@@ -133,11 +133,11 @@ function yearly_sales_analysis_product(url, dest, chartType, loader) {
                 const load = $(loader);
                 load.removeClass('loading-message');
 
-                labelsList = data.map(item => item[0]);
+                modelList = data.map(item => item[0]);
                 total = data.map(item => item[1]);
 
                 if (sales_analystChart_pro === null) {
-                    sales_analystChart_pro = new Chart(yearly_analysisctx, {
+                    sales_analystChart_pro = new Chart(yearly_analysisctx_pro, {
                         type: chartType,
                         data: {
                             labels: modelList,
@@ -224,5 +224,9 @@ const product_dest = '.yearly_product_sales_chart';
 const product_loader = '.yearly_product_sales_chart_loader';
 const chartType_product = 'bar';
 
-yearly_sales_analysis(url_yearly, dest_yearly, chartType_yearly, loader_yearly);
-yearly_sales_analysis_product(product_analysis, product_dest, chartType_product, product_loader);
+yearly_sales_analysis(
+    url_yearly, dest_yearly,
+    chartType_yearly, loader_yearly);
+yearly_sales_analysis_product(
+    product_analysis, product_dest,
+    chartType_product, product_loader);

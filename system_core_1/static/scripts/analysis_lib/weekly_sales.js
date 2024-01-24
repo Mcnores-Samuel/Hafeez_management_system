@@ -49,7 +49,7 @@ function updateWeeklyChart(url, dest, chartType = "line", loader) {
                                 data: nums,
                                 backgroundColor: ["brown"],
                                 borderColor: ["rgb(47, 79, 79, 0.7)"],
-                                borderWidth: 2
+                                borderWidth: 3
                             }]
                         },
                         options: {
