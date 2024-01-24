@@ -53,24 +53,26 @@
                             <li class="nav-item">
                                 <a class="nav-link d-flex align-items-center" href="{% url 'dashboard' %}"
                                 data-bs-toggle="tooltip" 
-                                title="Dashboard">
-                                    <span class="material-icons fs-3">
-                                        dashboard
-                                    </span>
-                                    <span class="text"> Dashboard</span>
+                                title="analytics">
+                                <span class="material-icons">
+                                    analytics
+                                </span>
                                 </a>
+                            </li>
+                            {% if user.is_authenticated and user.is_superuser %}
                             <li class="nav-item">
-                                <a class="nav-link d-flex align-items-center" href="{% url 'home_page' %}"
+                                <a class="nav-link d-flex align-items-center" href="{{ admin_url }}"
                                 data-bs-toggle="tooltip" 
-                                title="Home">
+                                title="Management">
                                 <span class="material-icons fs-3">
                                     home
                                     </span>
-                                    <span class="text"> Home</span>
+                                    <span class="text"> Manage</span>
                                 </a>
                             </li>
+                            {% endif %}
                             <li class="nav-item">
-                                <a class="nav-link d-flex align-items-center" href="{% url 'in_stock' %}"
+                                <a class="nav-link d-flex align-items-center" href=""
                                 data-bs-toggle="tooltip"
                                 title="In stock">
                                 <span class="material-icons fs-3">
@@ -80,13 +82,23 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link d-flex align-items-center" href="{% url 'stock_out' %}"
+                                <a class="nav-link d-flex align-items-center" href=""
                                 data-bs-toggle="tooltip"
-                                title="Stock Out">
+                                title="Sales">
                                 <span class="material-icons fs-3">
                                 outbound
                                 </span>
-                                <span class="text"> My Sales</span>
+                                <span class="text"> Sales</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link d-flex align-items-center" href=""
+                                data-bs-toggle="tooltip"
+                                title="Transactions">
+                                <span class="material-icons">
+                                    paid
+                                </span>
+                                <span class="text"> Payments</span>x
                                 </a>
                             </li>
                             <li class="nav-item">
@@ -252,8 +264,8 @@
                                         </span>
                                     </div>
                                     <div class="">
-                                        <p>My Stock</p>
-                                        <p>{{ total_stock_in }}</p>
+                                        <p>Agent Stock</p>
+                                        <p></p>
                                     </div>
                                 </div>
                             </div>
@@ -270,14 +282,14 @@
                                     </div>
                                     <div class="">
                                         <p>Monthly Sales</p>
-                                        <p>{{ total_stock_out }}</p>
+                                        <p></p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-3 col-12">
-                        <div class="card">
+                        <!-- <div class="card">
                             <div class="card-body">
                                 <div class="">
                                     <p>Monthly Target</p>
@@ -311,7 +323,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                     <div class="col-md-3 col-12">
                         <div class="card">
@@ -322,7 +334,7 @@
                                     </span>
                                     <div class="">
                                         <p>Commission</p>
-                                        <p>MK {{ commission|format_price }}</p>
+                                        <p></p>
                                     </div>
                                 </div>
                             </div>
