@@ -13,7 +13,6 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 import os
 import dj_database_url
-from uuid import uuid4
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -46,7 +45,6 @@ SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
 SESSION_COOKIE_AGE = 604800
 # Application definition
 
-ADMIN_URL = str(uuid4())
 
 INSTALLED_APPS = [
     'django.contrib.admin',

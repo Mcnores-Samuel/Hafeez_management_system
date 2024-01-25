@@ -14,8 +14,8 @@ from uuid import uuid4
 from django.shortcuts import redirect
 from ..models.main_storage import MainStorage, Airtel_mifi_storage
 from django.utils import timezone
-from django.conf import settings
 from django.contrib.auth.models import Group
+import os
 
 
 @login_required
@@ -47,7 +47,7 @@ def dashboard(request):
     """
     if request.user.is_staff:
         user = request.user
-        admin_url = '/' + settings.ADMIN_URL + '/'
+        admin_url = '/' + os.environ.get('ADMIN_URL') + '/'
         main_shop_staff = Group.objects.get(name='main_shop')
         representatives = UserProfile.objects.filter(groups=main_shop_staff).first()
         sales = MainStorageAnalysis().get_agent_stock_out(representatives)
