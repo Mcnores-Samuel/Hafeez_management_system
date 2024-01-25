@@ -2,6 +2,7 @@ from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from ..models.user_profile import UserProfile
 from ..models.main_storage import MainStorage
+from ..models.agent_profile import AgentProfile
 from django.contrib.auth.models import Group
 from django.utils import timezone
 
@@ -38,6 +39,5 @@ def get_yearly_product_sales(request):
         for product in data_set:
             products[product.phone_type] = products.get(product.phone_type, 0) + 1
         products = sorted(products.items(), key=lambda x: x[1], reverse=True)
-        print(products)
         return JsonResponse(products, safe=False)
     return JsonResponse({'error': 'Invalid request.'})

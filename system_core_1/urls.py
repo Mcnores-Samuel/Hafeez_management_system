@@ -10,7 +10,7 @@ from .views.staff_sites.new_entries import (get_new_entries, get_new_entries_tot
 from .views.staff_sites.edit_customer_data import edit_customer_data
 from .views.staff_sites.delete_data import delete_customer_data
 from .views.staff_sites.rejected import total_rejected, get_rejected
-from .views.stock_analysis import get_source_stock, get_yearly_product_sales
+from .views.stock_analysis import (get_source_stock, get_yearly_product_sales)
 from .views.feedback import feedback
 from .views.add_to_stock import add_to_stock
 from .views.autocomplete import autocomplete

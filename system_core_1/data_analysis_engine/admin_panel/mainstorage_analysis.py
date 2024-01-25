@@ -84,7 +84,8 @@ class MainStorageAnalysis:
         current_year = timezone.now().date().year
         stock_out = MainStorage.objects.filter(
             agent=agent, in_stock=False,
-            assigned=True,
+            assigned=True, missing=False,
+            sold=True, pending=False, faulty=False,
             stock_out_date__month=current_month,
             stock_out_date__year=current_year)
         stock = {}
@@ -128,3 +129,36 @@ class MainStorageAnalysis:
                     stock_out_date__year=timezone.now().date().year))
             return sales
         return None
+    
+    def overall_stock(self):
+        """This function returns a JSON object containing
+        the overall stock data.
+        """
+        agents = AgentProfile.objects.all().order_by('user__username')
+        stock = 0
+        for agent in agents:
+            stock += MainStorage.objects.filter(
+                agent=agent.user,
+                in_stock=True, assigned=True,
+                sold=False, missing=False,
+                pending=False, faulty=False).count()
+        return stock
+    
+    def overall_sales(self):
+        """This function returns a JSON object containing
+        the overall sales data.
+        """
+        month = timezone.now().date().month
+        year = timezone.now().date().year
+
+        agents = AgentProfile.objects.all().order_by('user__username')
+        sales = 0
+        for agent in agents:
+            sales += MainStorage.objects.filter(
+                agent=agent.user,
+                in_stock=False, assigned=True,
+                sold=True, missing=False,
+                pending=False, faulty=False,
+                stock_out_date__month=month,
+                stock_out_date__year=year).count()
+        return sales

@@ -9,12 +9,13 @@ from ..models.agent_profile import AgentProfile
 from ..models.agent_profile import Agent_sign_up_code
 from ..models.user_profile import UserAvatar, UserProfile
 from ..data_analysis_engine.admin_panel.calc_commitions import CalcCommissions
-from ..models.commission import Commission
+from ..data_analysis_engine.admin_panel.mainstorage_analysis import MainStorageAnalysis
 from uuid import uuid4
 from django.shortcuts import redirect
 from ..models.main_storage import MainStorage, Airtel_mifi_storage
 from django.utils import timezone
-import os
+from django.conf import settings
+from django.contrib.auth.models import Group
 
 
 @login_required
@@ -46,13 +47,28 @@ def dashboard(request):
     """
     if request.user.is_staff:
         user = request.user
-        admin_url = '/' + os.environ.get('ADMIN_URL') + '/'
+        admin_url = '/' + settings.ADMIN_URL + '/'
+        main_shop_staff = Group.objects.get(name='main_shop')
+        representatives = UserProfile.objects.filter(groups=main_shop_staff).first()
+        sales = MainStorageAnalysis().get_agent_stock_out(representatives)
+        overall_sales = MainStorageAnalysis().overall_sales()
+        overall_stock = MainStorageAnalysis().overall_stock()
+        total = 0
+        for value in sales:
+            total += value[1]
+        CalcCommissions().update_commission(representatives, total)
         avatar = UserAvatar.objects.get(user=request.user) if UserAvatar.objects.filter(user=request.user).exists() else None
+        progress, target = CalcCommissions().target_progress(representatives)
         context = {
             'profile': user.email[0],
             'user': user,
             'admin_url': admin_url,
-            'avatar': avatar
+            'avatar': avatar,
+            'progress': progress,
+            'target': target,
+            'sales': total,
+            'overall_sales': overall_sales,
+            'overall_stock': overall_stock,
         }
         return render(request, 'users/admin_sites/main.html', context)
     elif request.user.groups.filter(name='staff_members').exists():

@@ -81,54 +81,6 @@ def confirm(request, token):
     return HttpResponse(f'Account verified, {user.username}' if success else 'Invalid token')
 
 
-def products(request, data_id=None):
-    """The `products` view function is responsible for handling the display of the
-    application's products page.
-    """
-    return render(request, 'users/general-sites/products.html')
-
-
-def about(request):
-    """The `about` view function is responsible for handling the display of the
-    application's about page.
-    """
-    return render(request, 'users/general-sites/about.html')
-
-
-def contact(request):
-    """The `contact` view function is responsible for handling the display of the
-    application's contact page.
-    """
-    return render(request, 'users/general-sites/contact.html')
-
-
-def services(request):
-    """The `services` view function is responsible for handling the display of the
-    application's services page.
-    """
-    return render(request, 'users/general-sites/services.html')
-
-
-def faq(request):
-    """The `faq` view function is responsible for handling the display of the
-    application's faq page.
-    """
-    return render(request, 'users/general-sites/faq.html')
-
-
-def terms(request):
-    """The `terms` view function is responsible for handling the display of the
-    application's terms page.
-    """
-    return render(request, 'users/general-sites/terms.html')
-
-
-def privacy(request):
-    """The `privacy` view function is responsible for handling the display of the
-    application's privacy page.
-    """
-    return render(request, 'users/general-sites/privacy.html')
-
 def main_shop_details(request):
     """The `main_storage` view function is responsible for handling the display of the
     application's main_storage page.

@@ -22,6 +22,7 @@
         <script src="{% static 'scripts/analysis_lib/monthly_sales.js' %}" defer></script>
         <script src="{% static 'scripts/analysis_lib/yearly_analysis.js' %}" defer></script>
         <script src="{% static 'scripts/analysis_lib/agent_overall_stock.js' %}" defer></script>
+        <script src="{% static 'scripts/analysis_lib/overall_stock.js' %}" defer></script>
         {% endblock %}
         <script src="{% static 'scripts/sidebar.js' %}" defer></script>
         <script src="{% static 'scripts/placeholders.js' %}" defer></script>
@@ -189,7 +190,7 @@
                     </div>
                 {% endif %}
             <div class="top-display d-flex position-relative bg-light">
-                <form action="{% url 'in_stock' %}" method="post" class="d-flex position-relative search-form">
+                <form action="" method="post" class="d-flex position-relative search-form">
                     {% csrf_token %}
                     <input type="search" id="search_term" name="search_term" class="form-control me-2"
                     placeholder="Search IMEI number or Contract number" aria-label="Search" aria-describedby="search-addon" />
@@ -277,8 +278,23 @@
                                         </span>
                                     </div>
                                     <div class="">
-                                        <p>Agent Stock</p>
-                                        <p></p>
+                                        <p>Overall Stock</p>
+                                        <p>{{ overall_stock }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="material-icons">
+                                        credit_score
+                                    </span>
+                                    <div class="">
+                                        <p>Overall Sales</p>
+                                        <p>{{ overall_sales }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -294,8 +310,8 @@
                                         </span>
                                     </div>
                                     <div class="">
-                                        <p>Monthly Sales</p>
-                                        <p></p>
+                                        <p>Main Shop Monthly Sales</p>
+                                        <p>{{ sales }} Devices</p>
                                     </div>
                                 </div>
                             </div>
@@ -333,21 +349,6 @@
                                             aria-valuemax="30" style="background-color: purple;">{{ progress }}%</div>
                                         </div>
                                         {% endif %}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <span class="material-icons">
-                                        credit_score
-                                    </span>
-                                    <div class="">
-                                        <p>Commission</p>
-                                        <p></p>
                                     </div>
                                 </div>
                             </div>
