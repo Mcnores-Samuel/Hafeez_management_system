@@ -22,7 +22,7 @@ class MainStorageAdmin(admin.ModelAdmin):
 
     actions = ['update_images', 'verify_stock_recieved',
                'unverify_stock_recieved', 'unassign_select', 'mark_as_sold',
-               'missing', 'sum_special_orders']
+               'missing', 'sum_special_orders', 'approve_pending', 'unapprove_pending']
     
     class Meta:
         ordering = ['-entry_date']
@@ -57,6 +57,22 @@ class MainStorageAdmin(admin.ModelAdmin):
                 obj.sold = True
                 obj.save()
     mark_as_sold.short_description = "Mark as sold"
+
+    def approve_pending(self, request, queryset):
+        """Approve pending phones"""
+        for obj in queryset:
+            if obj:
+                obj.pending = False
+                obj.save()
+    approve_pending.short_description = "Approve pending Sales"
+
+    def unapprove_pending(self, request, queryset):
+        """Unapprove pending phones"""
+        for obj in queryset:
+            if obj:
+                obj.pending = True
+                obj.save()
+    unapprove_pending.short_description = "Unapprove pending Sales"
 
     def verify_stock_recieved(self, request, queryset):
         """Verify stock recieved by the agent"""
