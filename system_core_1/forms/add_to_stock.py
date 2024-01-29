@@ -31,6 +31,7 @@ class AddToStockForm(forms.Form):
                 'required': 'required',
                 'minlength': '15',
                 'maxlength': '15',
+                'autofocus': 'autofocus',
             }
         )
     )
