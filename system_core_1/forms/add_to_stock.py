@@ -97,7 +97,7 @@ class AddToStockForm(forms.Form):
         device = None
         if self.cleaned_data['name'] == 'Spark 10C':
             device = MainStorage.objects.filter(
-                name=self.changed_data['name'],
+                name=self.cleaned_data['name'],
                 phone_type='10C').first()
         else:
             device = MainStorage.objects.filter(
