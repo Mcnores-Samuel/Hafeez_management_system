@@ -7,7 +7,22 @@ from django.utils import timezone
 
 
 class AddToStockForm(forms.Form):
-    """This class contains the form for adding phones to stock."""
+    """This class contains the form for adding phones to stock.
+    
+    Attributes:
+        device_imei (CharField): The IMEI number of the phone.
+        device_imei_2 (CharField): The IMEI number of the phone.
+        name (CharField): The name of the phone.
+        supplier (CharField): The name of the supplier.
+    
+    Functions:
+        __init__: Initializes the form.
+        clean: Validates the form data.
+        process_data: Processes the form data and saves it to the database.
+
+    Note:
+        This form is used in the add_to_stock view.
+    """
     device_imei = forms.CharField(
         widget=forms.TextInput(
             attrs={
@@ -40,64 +55,6 @@ class AddToStockForm(forms.Form):
             }
         )
     )
-    phone_type = forms.CharField(
-        widget=forms.TextInput(
-            attrs={
-                'class': 'form-control',
-                'placeholder': 'Enter phone type',
-                'required': 'required',
-            }
-        )
-    )
-    category = forms.CharField(
-        widget=forms.TextInput(
-            attrs={
-                'class': 'form-control',
-                'placeholder': 'Enter phone category',
-                'required': 'required',
-            }
-        )
-    )
-    spec = forms.CharField(
-        widget=forms.TextInput(
-            attrs={
-                'class': 'form-control',
-                'placeholder': 'Enter phone specs',
-            }
-        )
-    )
-    screen_size = forms.CharField(
-        widget=forms.TextInput(
-            attrs={
-                'class': 'form-control',
-                'placeholder': 'Enter screen size',
-            }
-        )
-    )
-    os = forms.CharField(
-        widget=forms.TextInput(
-            attrs={
-                'class': 'form-control',
-                'placeholder': 'Enter phone OS',
-            }
-        )
-    )
-    battery = forms.CharField(
-        widget=forms.TextInput(
-            attrs={
-                'class': 'form-control',
-                'placeholder': 'Enter battery capacity',
-            }
-        )
-    )
-    camera = forms.CharField(
-        widget=forms.TextInput(
-            attrs={
-                'class': 'form-control',
-                'placeholder': 'Enter camera specs',
-            }
-        )
-    )
     supplier = forms.CharField(
         widget=forms.TextInput(
             attrs={
@@ -108,6 +65,7 @@ class AddToStockForm(forms.Form):
     )
 
     def __init__(self, *args, **kwargs):
+        """Override the init method to get the user."""
         self.user = kwargs.pop('user', None)
         super(AddToStockForm, self).__init__(*args, **kwargs)
 
@@ -135,30 +93,39 @@ class AddToStockForm(forms.Form):
         main_shop_staff = Group.objects.get(name='main_shop')
         representatives = UserProfile.objects.filter(groups=main_shop_staff)
         agent = representatives.first()
-        stock = MainStorage.objects.create(
-            device_imei=self.cleaned_data['device_imei'],
-            device_imei_2=self.cleaned_data['device_imei_2'],
-            name=self.cleaned_data['name'],
-            phone_type=self.cleaned_data['phone_type'],
-            category=self.cleaned_data['category'],
-            spec=self.cleaned_data['spec'],
-            screen_size=self.cleaned_data['screen_size'],
-            os=self.cleaned_data['os'],
-            battery=self.cleaned_data['battery'],
-            camera=self.cleaned_data['camera'],
-            supplier=self.cleaned_data['supplier'],
-            agent=agent,
-            recieved=True,
-            assigned=True,
-            in_stock=True,
-            sold=False,
-            contract_no='##',
-            sales_type='##',
-            entry_date=timezone.now(),
-            stock_out_date=timezone.now(),
-            collected_on=timezone.now(),
-            assigned_from='HAFEEZ ENTERPRISE',
-            updated_by=self.user.username,
-        )
-        stock.save()
-        return stock
+        device = None
+        if self.cleaned_data['name'] == 'Spark 10C':
+            device = MainStorage.objects.filter(
+                name=self.changed_data['name'],
+                phone_type='10C').first()
+        else:
+            device = MainStorage.objects.filter(
+                name__exact=self.cleaned_data['name']).first()
+        if device:
+            stock = MainStorage.objects.create(
+                device_imei=self.cleaned_data['device_imei'],
+                device_imei_2=self.cleaned_data['device_imei_2'],
+                name=self.cleaned_data['name'],
+                phone_type=device.phone_type,
+                category=device.category,
+                spec=device.spec,
+                screen_size=device.screen_size,
+                os=device.os,
+                battery=device.battery,
+                camera=device.camera,
+                supplier=self.cleaned_data['supplier'],
+                agent=agent,
+                recieved=True,
+                assigned=True,
+                in_stock=True,
+                sold=False,
+                contract_no='##',
+                sales_type='##',
+                entry_date=timezone.now(),
+                stock_out_date=timezone.now(),
+                collected_on=timezone.now(),
+                assigned_from='HAFEEZ ENTERPRISE',
+                updated_by=self.user.username,
+            )
+            stock.save()
+            return stock

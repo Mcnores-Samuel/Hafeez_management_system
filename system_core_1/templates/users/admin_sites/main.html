@@ -321,32 +321,32 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="">
-                                    <p> Main shop target</p>
+                                    <p>Main shop target</p>
                                     <div class="">
                                         <div class="text-end">{{ target }} Devices</div>
                                         {% if progress < 50 %}
                                         <div class="progress">
                                             <div class="progress-bar bg-danger progress-bar-striped progress-bar-animated"
                                             role="progressbar" aria-valuenow="{{ progress }}" aria-valuemin="0"
-                                            aria-valuemax="30">{{ progress }}%</div>
+                                            aria-valuemax="{{ terget }}">{{ progress }}%</div>
                                         </div>
                                         {% elif progress > 50 and progress < 100 %}
                                         <div class="progress">
                                             <div class="progress-bar bg-warning progress-bar-striped progress-bar-animated"
                                             role="progressbar" aria-valuenow="{{ progress }}" aria-valuemin="0"
-                                            aria-valuemax="30">{{ progress }}%</div>
+                                            aria-valuemax="{{ target }}">{{ progress }}%</div>
                                         </div>
                                         {% elif progress == 100 %}
                                         <div class="progress">
                                             <div class="progress-bar bg-success progress-bar-striped progress-bar-animated"
                                             role="progressbar" aria-valuenow="{{ progress }}" aria-valuemin="0"
-                                            aria-valuemax="30">{{ progress }}%</div>
-                                        </div>  
+                                            aria-valuemax="{{ terget }}">{{ progress }}%</div>
+                                        </div>
                                         {% elif progress > 100 %}
                                         <div class="progress">
                                             <div class="progress-bar progress-bar-striped progress-bar-animated"
                                             role="progressbar" aria-valuenow="{{ progress }}" aria-valuemin="0"
-                                            aria-valuemax="30" style="background-color: purple;">{{ progress }}%</div>
+                                            aria-valuemax="{{ terget }}" style="background-color: purple;">{{ progress }}%</div>
                                         </div>
                                         {% endif %}
                                     </div>
