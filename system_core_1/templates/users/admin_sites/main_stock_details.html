@@ -15,11 +15,13 @@
         gap: 10px;
     }
 </style>
-<form method="get" id="filter_form">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-primary">Filter</button>
-</form>
+<div class="container">
+    <form method="get" id="filter_form">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Filter</button>
+    </form>
+</div>
 <section class="charts_by_chartjs">
     <div class="row gy-3">
         <div class="col-md-6 col-12">
@@ -61,7 +63,6 @@
     </div>
 </section>
 <script>
-    // Use the data from the context to generate the chart
     let ctx = $('.main_stock_detailed_analysis').get(0).getContext('2d');
     var data = {
         labels: [{% for item in stock %}"{{ item.0 }}", {% endfor %}],
