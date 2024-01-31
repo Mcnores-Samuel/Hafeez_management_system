@@ -12,10 +12,10 @@ from django.http import HttpResponse
 from ..models.user_profile import UserAvatar
 from django.contrib import messages
 from ..models.main_storage import MainStorage
-from ..models.agent_profile import AgentProfile
 from ..forms.filters import FilterAgentAndData
 from django.contrib.auth.models import Group
 from ..models.user_profile import UserProfile
+from django.contrib.auth.decorators import login_required
 
 
 def home_page(request):
@@ -85,7 +85,7 @@ def confirm(request, token):
     success, user = verify_token(token)
     return HttpResponse(f'Account verified, {user.username}' if success else 'Invalid token')
 
-
+@login_required
 def main_shop_details(request):
     """The `main_storage` view function is responsible for handling the display of the
     application's main_storage page.
