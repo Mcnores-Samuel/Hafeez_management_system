@@ -6,6 +6,7 @@ search and filtering of the data.
 import django_filters
 from ..models.main_storage import MainStorage
 from ..models.agent_profile import AgentProfile
+from django import forms
 
 
 class FilterMainStorege(django_filters.FilterSet):
@@ -15,8 +16,16 @@ class FilterMainStorege(django_filters.FilterSet):
         fields = ('in_stock', 'assigned', 'phone_type',)
 
 
-class FilterAgentAndData(django_filters.FilterSet):
+class FilterAgentAndData(forms.Form):
     """Filter for the agent and data."""
-    class Meta:
-        model = AgentProfile
-        fields = ('user', 'is_agent')
+
+    user = forms.ModelChoiceField(
+        queryset=AgentProfile.objects.all().order_by('id'),
+        widget=forms.Select(
+            attrs={
+                'class': 'form-control W-25',
+                'placeholder': 'Choose agent',
+                'required': 'required',
+            }
+        )
+    )

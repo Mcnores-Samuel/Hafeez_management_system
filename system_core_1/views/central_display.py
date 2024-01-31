@@ -94,5 +94,5 @@ def agents_and_data(request):
                    'data_by_agent': data_by_agent,
                    'filter': filter,
                    'profile': user.email[0],
-                     'avatar': avatar}
+                    'avatar': avatar}
     return render(request, 'users/admin_sites/admin_agent_view.html', content)

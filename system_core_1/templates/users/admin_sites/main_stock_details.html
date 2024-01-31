@@ -1,20 +1,138 @@
 {% extends 'users/admin_sites/main.html' %}
 {% load static %}
-{% block scripts %}
-    <script src="{% static 'scripts/main_stock_details.js' %}" defer></script>
+{% block head %}
 {% endblock %}
 {% block content %}
- <div class="main-analysis-container">
-    <div class="summary-container">
-        <div class="agent_sales" style="height: 600px;">
-            <div class="description">
-                <h3>Main Stock Details</h3>
-                <a href="https://www.hafeezmw.com/admin/system_core_1/mainstorage/?agent__username=Hafeez-Enterprise&in_stock__exact=1" blank>Manage</a>
+<style>
+    label {
+        display: none;
+    }
+
+    form {
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-start;
+        gap: 10px;
+    }
+</style>
+<form method="get" id="filter_form">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Filter</button>
+</form>
+<section class="charts_by_chartjs">
+    <div class="row gy-3">
+        <div class="col-md-6 col-12">
+            <div class="card">
+                <div class="card-header text-center">
+                    <h4>{{ user }} Stock</h4>
+                </div>
+                <div class="table-container" style="height: 430px; overflow-y: auto;">
+                    <table class="table table-striped">
+                        <thead style="position: sticky; top: 1px; background-color: azure;">
+                            <tr>
+                                <th scope="col">Model</th>
+                                <th scope="col">Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for key, value in stock %}
+                                <tr>
+                                    <td>{{ key }}</td>
+                                    <td>{{ value }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
-            <div class="loading-message-main-stock"></div>
-            <canvas class="main_stock_detailed_analysis" aria-label="chart" height="350"></canvas>
+        </div>
+        <div class="col-md-6 col-12">
+            <div class="card">
+                <div class="card-header text-center">
+                    <h4>Stock analytics</h4>
+                </div>
+                <div class="card-body">
+                    <div class="loading-message-main-stock"></div>
+                    <canvas class="main_stock_detailed_analysis" width="400" height="400"></canvas>
+                </div>
+            </div>
         </div>
     </div>
-</div>
+</section>
+<script>
+    // Use the data from the context to generate the chart
+    let ctx = $('.main_stock_detailed_analysis').get(0).getContext('2d');
+    var data = {
+        labels: [{% for item in stock %}"{{ item.0 }}", {% endfor %}],
+        datasets: [{
+            label: 'Number of Sales',
+            data: [{% for item in stock %}{{ item.1 }}, {% endfor %}],
+            backgroundColor: ["#23435c"],
+            borderColor: ["#23435c"],
+            borderWidth: 1
+        }]
+    };
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: data,
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            events: ["mousemove"],
+            interaction: {
+                mode: "nearest",
+            },
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Stock Analysis',
+                    color: 'navy',
+                    position: 'bottom',
+                    align: 'center',
+                    font: {
+                        weight: 'bold'
+                    },
+                    padding: 8,
+                    fullSize: true,
+                }
+            },
+            scales: {
+                x: {
+                    grid: {
+                        display: false,
+                        drawBorder: false,
+                    },
+                    ticks: {
+                        color: "navy",
+                        font: {
+                            weight: 'bold'
+                        },
+                    },
+                },
+                y: {
+                    grid: {
+                        display: false,
+                        drawBorder: false,
+                    },
+                    ticks: {
+                        color: "navy",
+                        font: {
+                            weight: 'bold'
+                        },
+                    },
+                },
+            },
+
+        }
+    });
+
+    let user_field = $('.auto-submit')
+    user_field.on('change', function () {
+        let form = $('#filter_form')
+        form.submit()
+    })
+</script>
+
 {% endblock %}
     

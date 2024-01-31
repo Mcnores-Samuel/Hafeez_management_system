@@ -11,6 +11,11 @@ from django_email_verification import verify_view, verify_token
 from django.http import HttpResponse
 from ..models.user_profile import UserAvatar
 from django.contrib import messages
+from ..models.main_storage import MainStorage
+from ..models.agent_profile import AgentProfile
+from ..forms.filters import FilterAgentAndData
+from django.contrib.auth.models import Group
+from ..models.user_profile import UserProfile
 
 
 def home_page(request):
@@ -85,4 +90,30 @@ def main_shop_details(request):
     """The `main_storage` view function is responsible for handling the display of the
     application's main_storage page.
     """
-    return render(request, 'users/admin_sites/main_stock_details.html')
+    if request.method == 'GET':
+        form = FilterAgentAndData(request.GET)
+        if form.is_valid():
+            user = form.cleaned_data['user']
+            stock = {}
+            data_set = MainStorage.objects.filter(
+                agent=user.user, in_stock=True, sold=False, assigned=True).order_by('id')
+            for data in data_set:
+                stock[data.phone_type] = stock.get(data.phone_type, 0) + 1
+
+            stock = sorted(stock.items(), key=lambda x: x[1], reverse=True)
+            context = {'stock': stock, 'user': user.user.username, 'form': form}
+            return render(request, 'users/admin_sites/main_stock_details.html', context)
+        else:
+            form = FilterAgentAndData()
+            main_shop_staff = Group.objects.get(name='main_shop')
+            representatives = UserProfile.objects.filter(groups=main_shop_staff)
+            data_set = MainStorage.objects.filter(
+                agent__in=representatives,
+                in_stock=True, sold=False,
+                missing=False, assigned=True)
+            stock = {}
+            for data in data_set:
+                stock[data.phone_type] = stock.get(data.phone_type, 0) + 1
+            stock = sorted(stock.items(), key=lambda x: x[1], reverse=True)
+    context = {'form': form, 'stock': stock, 'user': representatives[0].username}
+    return render(request, 'users/admin_sites/main_stock_details.html', context)
