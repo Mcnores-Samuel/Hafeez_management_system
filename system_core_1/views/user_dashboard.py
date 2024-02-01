@@ -57,7 +57,9 @@ def dashboard(request):
         for value in sales:
             total += value[1]
         CalcCommissions().update_commission(representatives, total)
-        avatar = UserAvatar.objects.get(user=request.user) if UserAvatar.objects.filter(user=request.user).exists() else None
+        avatar = UserAvatar.objects.get(
+            user=request.user) if UserAvatar.objects.filter(
+                user=request.user).exists() else None
         progress, target = CalcCommissions().target_progress(representatives)
         context = {
             'profile': user.email[0],
@@ -73,7 +75,9 @@ def dashboard(request):
         return render(request, 'users/admin_sites/main.html', context)
     elif request.user.groups.filter(name='staff_members').exists():
         user = request.user
-        avatar = UserAvatar.objects.get(user=request.user) if UserAvatar.objects.filter(user=request.user).exists() else None
+        avatar = UserAvatar.objects.get(
+            user=request.user) if UserAvatar.objects.filter(
+                user=request.user).exists() else None
         context = {
             'profile': user.email[0],
             'user': user,
@@ -97,7 +101,9 @@ def dashboard(request):
                 user, stock_out
             )
             progress, target = CalcCommissions().target_progress(user)
-            avatar = UserAvatar.objects.get(user=request.user) if UserAvatar.objects.filter(user=request.user).exists() else None
+            avatar = UserAvatar.objects.get(
+                user=request.user) if UserAvatar.objects.filter(
+                    user=request.user).exists() else None
             context = {
                 'profile': user.email[0],
                 'user': user,
@@ -112,7 +118,9 @@ def dashboard(request):
     elif request.user.groups.filter(name='airtel_agents').exists():
         stock_in = Airtel_mifi_storage.objects.filter(agent=request.user, in_stock=True)
         stock_out = Airtel_mifi_storage.objects.filter(agent=request.user, in_stock=False)
-        avatar = UserAvatar.objects.get(user=request.user) if UserAvatar.objects.filter(user=request.user).exists() else None
+        avatar = UserAvatar.objects.get(
+            user=request.user) if UserAvatar.objects.filter(
+                user=request.user).exists() else None
         context = {
             'profile': request.user.email[0],
             'user': request.user,

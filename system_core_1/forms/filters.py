@@ -7,6 +7,7 @@ import django_filters
 from ..models.main_storage import MainStorage
 from ..models.agent_profile import AgentProfile
 from django import forms
+from django.utils import timezone
 
 
 class FilterMainStorege(django_filters.FilterSet):
@@ -25,6 +26,49 @@ class FilterAgentAndData(forms.Form):
             attrs={
                 'class': 'form-control W-25',
                 'placeholder': 'Choose agent',
+                'required': 'required',
+            }
+        )
+    )
+
+
+class FilterAgentAndDataSales(forms.Form):
+
+    """Filter for the agent and data."""
+    user = forms.ModelChoiceField(
+        queryset=AgentProfile.objects.all().order_by('id'),
+        widget=forms.Select(
+            attrs={
+                'class': 'form-control W-25',
+                'placeholder': 'Choose agent',
+                'required': 'required',
+            }
+        )
+    )
+
+    month = forms.ChoiceField(
+        choices=[('1', 'January'), ('2', 'February'), ('3', 'March'), ('4', 'April'),
+                 ('5', 'May'), ('6', 'June'), ('7', 'July'), ('8', 'August'), ('9', 'September'),
+                 ('10', 'October'), ('11', 'November'), ('12', 'December')],
+        widget=forms.Select(
+            attrs={
+                'class': 'form-control W-25',
+                'placeholder': 'Choose month',
+                'required': 'required',
+            }
+        )
+    )
+    
+    year = forms.ChoiceField(
+        choices=[(timezone.now().date().year, timezone.now().date().year),
+                 (timezone.now().date().year - 1, timezone.now().date().year - 1),
+                 (timezone.now().date().year - 2, timezone.now().date().year - 2),
+                 (timezone.now().date().year - 3, timezone.now().date().year - 3),
+                 (timezone.now().date().year - 4, timezone.now().date().year - 4)],
+        widget=forms.Select(
+            attrs={
+                'class': 'form-control W-25',
+                'placeholder': 'Choose year',
                 'required': 'required',
             }
         )

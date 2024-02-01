@@ -19,7 +19,8 @@ from .views.add_to_stock import add_to_stock
 urlpatterns = [
     path('', home_page.home_page, name='home_page'),
     path('sign_up/', registration_view.sign_up, name='sign_up'),
-    path('main_shop_details/', home_page.main_shop_details, name='main_shop_details'),
+    path('main_stock_details/', central_display.main_stock_details, name='main_stock_details'),
+    path('main_sales_details/', central_display.main_sales_details, name='main_sales_details'),
     path('resend_confirmation_email', registration_view.resend_confirmation_email, name='resend_confirmation_email'),
     path('generate_agent_code/', user_dashboard.generate_agent_code, name='generate_agent_code'),
     path('sign_in/', registration_view.sign_in, name='sign_in'),
@@ -35,7 +36,6 @@ urlpatterns = [
     path('verify_stock_recieved/', data_updates.verify_stock_recieved, name='verify_stock_recieved'),
     path('in_stock/', data_updates.in_stock, name='in_stock'),
     path('stock_out/', data_updates.stock_out, name='stock_out'),
-    path('users/', central_display.users, name='users'),
     path('main_storage/', central_display.main_storage, name='main_storage'),
     path('agents_and_data/', central_display.agents_and_data, name='agents_and_data'),
     path('deploy_device/<int:data_id>/', action_on_data_select.deploy_device, name='deploy_device'),

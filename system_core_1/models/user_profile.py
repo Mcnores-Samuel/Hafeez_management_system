@@ -50,6 +50,7 @@ class UserProfileManager(BaseUserManager):
 
         return self.create_user(email, password, **extra_fields)
 
+
 class UserProfile(AbstractUser):
     """The UserProfile model represents the users of the application. It includes
     fields to store relevant information about each user, such as their name and
@@ -96,7 +97,7 @@ class UserProfile(AbstractUser):
 
     def __str__(self):
         return self.username
-  
+ 
 
 class UserAvatar(models.Model):
     """The UserAvatar model represents the avatars of the users of the application."""
