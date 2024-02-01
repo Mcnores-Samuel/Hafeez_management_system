@@ -13,7 +13,7 @@ from ..models.user_profile import UserAvatar
 from .search_and_filters import search
 from django.contrib.auth.models import Group
 from django.utils import timezone
-import datetime
+from ..data_analysis_engine.admin_panel.calc_commitions import CalcCommissions
 
 
 @login_required
@@ -79,6 +79,9 @@ def main_sales_details(request):
                 assigned=True, pending=False, missing=False,
                 stock_out_date__month=month, stock_out_date__year=year).order_by('id')
             total = data_set.count()
+            CalcCommissions().update_commission(
+                user.user, total,
+                month=month, year=year)
             for data in data_set:
                 stock[data.phone_type] = stock.get(data.phone_type, 0) + 1
 
@@ -97,6 +100,10 @@ def main_sales_details(request):
                 missing=False, assigned=True, pending=False,
                 stock_out_date__month=month, stock_out_date__year=year)
             total = data_set.count()
+            CalcCommissions().update_commission(
+            representatives[0], total,
+            month=timezone.now().date().month,
+            year=timezone.now().date().year)
             stock = {}
             for data in data_set:
                 stock[data.phone_type] = stock.get(data.phone_type, 0) + 1
