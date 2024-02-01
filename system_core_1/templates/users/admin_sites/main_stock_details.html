@@ -69,7 +69,7 @@
     var data = {
         labels: [{% for item in stock %}"{{ item.0 }}", {% endfor %}],
         datasets: [{
-            label: 'Number of Sales',
+            label: 'Stock',
             data: [{% for item in stock %}{{ item.1 }}, {% endfor %}],
             backgroundColor: ["#23435c"],
             borderColor: ["#23435c"],

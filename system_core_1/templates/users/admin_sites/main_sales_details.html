@@ -27,7 +27,7 @@
         <div class="col-md-6 col-12">
             <div class="card">
                 <div class="card-header text-center">
-                    <h4>{{ user }} Stock</h4>
+                    <h4>{{ user }} Sales</h4>
                 </div>
                 <div class="table-container" style="height: 430px; overflow-y: auto;">
                     <table class="table table-striped">
@@ -52,11 +52,11 @@
         <div class="col-md-6 col-12">
             <div class="card">
                 <div class="card-header text-center">
-                    <h4>Stock analytics</h4>
+                    <h4>Sales analytics</h4>
                 </div>
                 <div class="card-body">
                     <div class="loading-message-main-stock"></div>
-                    <canvas class="main_stock_detailed_analysis" width="400" height="400"></canvas>
+                    <canvas class="main_sales_detailed_analysis" width="400" height="400"></canvas>
                 </div>
             </div>
         </div>
@@ -65,11 +65,11 @@
 <br>
 <p class="text-start">Total:  {{ total }}</p>
 <script>
-    let ctx = $('.main_stock_detailed_analysis').get(0).getContext('2d');
+    let ctx = $('.main_sales_detailed_analysis').get(0).getContext('2d');
     var data = {
         labels: [{% for item in stock %}"{{ item.0 }}", {% endfor %}],
         datasets: [{
-            label: 'Number of Sales',
+            label: 'Sales',
             data: [{% for item in stock %}{{ item.1 }}, {% endfor %}],
             backgroundColor: ["#23435c"],
             borderColor: ["#23435c"],
@@ -89,7 +89,7 @@
             plugins: {
                 title: {
                     display: true,
-                    text: 'Stock Analysis',
+                    text: 'sales Analysis',
                     color: 'navy',
                     position: 'bottom',
                     align: 'center',
