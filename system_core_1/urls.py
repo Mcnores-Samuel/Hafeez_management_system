@@ -13,6 +13,7 @@ from .views.staff_sites.rejected import total_rejected, get_rejected
 from .views.stock_analysis import (get_source_stock, get_yearly_product_sales)
 from .views.feedback import feedback
 from .views.add_to_stock import add_to_stock
+from .views.pending_sales import pending_sales
 
 
 
@@ -29,6 +30,7 @@ urlpatterns = [
     path('profile/', data_updates.profile, name='profile'),
     path('feedback/', feedback, name='feedback'),
     path('add_to_stock/', add_to_stock, name='add_to_stock'),
+    path('pending_sales/', pending_sales, name='pending_sales'),
     path('upload_image/', data_updates.upload_image, name='upload_image'),
     path('change_password/', data_updates.change_password, name='change_password'),
     path('combinedData_collection/<int:data_id>/', customer_registrar.combinedData_collection, name='combinedData_collection'),

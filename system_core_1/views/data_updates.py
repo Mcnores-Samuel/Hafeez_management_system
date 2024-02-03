@@ -68,7 +68,28 @@ def profile(request):
                 'avatar': avatar
             }
         return render(request, 'users/staff_sites/profile.html', context)
-    return render(request, 'users/general-sites/profile.html', context)
+    elif request.user.is_superuser:
+        if request.method == 'POST':
+            profile_form = UserProfileForm(request.POST, user=request.user)
+            if profile_form.is_valid():
+                profile = profile_form.process_profile()
+                if profile:
+                    messages.success(request, 'Your profile information was successfully updated.')
+                    return redirect('profile')
+                else:
+                    messages.error(request, 'An error occurred while updating your profile information.')
+                    return redirect('profile')
+        else:
+            profile_form = UserProfileForm(user=request.user)
+        avatar = UserAvatar.objects.get(user=request.user) if UserAvatar.objects.filter(user=request.user).exists() else None
+        context = {
+                'profile': user.email[0],
+                'user': user,
+                'form': profile_form,
+                'avatar': avatar
+            }
+        return render(request, 'users/admin_sites/profile.html', context)
+    return redirect('dashboard')
 
 @login_required
 def upload_image(request):
@@ -121,7 +142,6 @@ def change_password(request):
         'profile': user.email[0],
         'password_form': password_form,
     }
-    
     return render(request, 'users/general-sites/change_password.html', context)
 
 

@@ -162,3 +162,13 @@ class MainStorageAnalysis:
                 stock_out_date__month=month,
                 stock_out_date__year=year).count()
         return sales
+    
+    def pending_sales(self):
+        """This function returns a list of all pending sales.
+        It also returns the total number of pending sales.
+        """
+        all_pending_sales = MainStorage.objects.filter(
+            pending=True, in_stock=False,
+            assigned=True, sold=True, missing=False,
+            faulty=False).order_by('stock_out_date')
+        return all_pending_sales, all_pending_sales.count()

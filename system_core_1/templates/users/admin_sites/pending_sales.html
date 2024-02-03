@@ -1,0 +1,51 @@
+{% extends 'users/admin_sites/main.html' %}
+{% load static %}
+{% load django_bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% block head %}
+    <link rel="stylesheet" href="{% static 'styles/agent_stock_mobile.css' %}">
+    <script src="{% static 'scripts/data_updates.js' %}"></script>
+{% endblock %}
+{% block content %}
+<div class="container">
+    <p class="text-center bold">Pending Sales: Total {{ total }}</p>
+    <div class="row">
+        {% for item in pending_sales %}
+            <div class="col-md-4 col-sm-6 mb-4">
+                <div class="card">
+                    <div class="card-header  text-center">
+                        <h4 class="card-title">{{ item.name }}</h4>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text"><strong class="text-info">Agent:</strong> <span>{{ item.agent }}</span></p>
+                        <p class="card-text"><strong class="text-info">Category:</strong> <span>{{ item.category }}</span></p>
+                        <p class="card-text"><strong class="text-info">Device IMEI:</strong> <span>{{ item.device_imei }}</span></p>
+                        <p class="card-text"><strong class="text-info">Model:</strong> <span>{{ item.name }}</span></p>
+                        <p class="card-text"><strong class="text-info">Spec:</strong> <span>{{ item.spec }}</span></p>
+                        <p class="card-text"><strong class="text-info">Sold On:</strong> <span>{{ item.stock_out_date }}</span></p>
+                        <p class="card-text"><strong class="text-info">Sales Types:</strong> <span>{{ item.sales_type }}</span></p>
+                        {% if item.pending %}
+                            <p class="card-text"><strong class="text-info">Pending:</strong>
+                                <span class="text-danger fs-5">
+                                    <span class="material-icons">
+                                        pending
+                                    </span>
+                                </span>
+                            </p>
+                        {% endif %}
+                        {% if item.contract_no != "##" %}
+                            <p class="card-text"><strong class="text-info">Contract No:</strong> <span>{{ item.contract_no }}</span></p>
+                        {% endif %}
+                        <form action="" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="device_imei" value="{{ item.device_imei }}">
+                            <button type="submit" class="btn btn-danger w-100" onclick="sold()">verify sold</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

@@ -10,6 +10,8 @@ class UserAdminModel(UserAdmin):
         'last_login'
     )
 
+    list_per_page = 20
+    
     list_filter = ('is_staff', 'is_superuser', 'is_active', 'groups')
 
     search_fields = ('email', 'username', 'first_name', 'last_name')
