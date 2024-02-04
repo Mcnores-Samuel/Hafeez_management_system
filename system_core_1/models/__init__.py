@@ -9,3 +9,6 @@ from .special_orders import SpecialOrders
 from .feedback import Feedback
 from .notifications import Notifications
 from .commission import Commission
+from .accessories import Accessories
+from .final_sales import FinalSales
+from .refarbished_devices import RefarbishedDevices
