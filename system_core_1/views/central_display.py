@@ -82,11 +82,18 @@ def main_sales_details(request):
             CalcCommissions().update_commission(
                 user.user, total,
                 month=month, year=year)
+            progress, target = CalcCommissions().target_progress(
+                user.user, month=month, year=year)
+            commision = CalcCommissions().calc_commission(
+                user.user, month=month, year=year)
             for data in data_set:
                 stock[data.phone_type] = stock.get(data.phone_type, 0) + 1
 
             stock = sorted(stock.items(), key=lambda x: x[1], reverse=True)
-            context = {'stock': stock, 'user': user.user.username, 'form': form, 'total': total}
+            context = {'stock': stock, 'user': user.user.username,
+                       'form': form, 'total': total,
+                       'progress': progress, 'target': target,
+                       'commission': commision,}
             return render(request, 'users/admin_sites/main_sales_details.html', context)
         else:
             form = FilterAgentAndDataSales()
@@ -104,11 +111,15 @@ def main_sales_details(request):
             representatives[0], total,
             month=timezone.now().date().month,
             year=timezone.now().date().year)
+            progress, target = CalcCommissions().target_progress(representatives[0])
             stock = {}
             for data in data_set:
                 stock[data.phone_type] = stock.get(data.phone_type, 0) + 1
             stock = sorted(stock.items(), key=lambda x: x[1], reverse=True)
-    context = {'form': form, 'stock': stock, 'user': representatives[0].username, 'total': total}
+    context = {'form': form, 'stock': stock,
+               'user': representatives[0].username,
+               'total': total, 'progress': progress,
+               'target': target}
     return render(request, 'users/admin_sites/main_sales_details.html', context)
 
 

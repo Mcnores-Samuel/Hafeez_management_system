@@ -1,5 +1,6 @@
 {% extends 'users/admin_sites/main.html' %}
 {% load static %}
+{% load plus_r %}
 {% block head %}
 {% endblock %}
 {% block content %}
@@ -22,6 +23,64 @@
         <button type="submit" class="btn btn-primary">Filter</button>
     </form>
 </div>
+<section class="charts_by_chartjs">
+    <div class="row gy-3">
+        <div class="col-md-6 col-12">
+            <div class="card">
+                <div class="card-header text-center">
+                    <h4 class="card-title">Sales Target Progress</h4>
+                </div>
+                <div class="card-body">
+                    <div class="">
+                        <div class="text-end">{{ target }} Devices</div>
+                        {% if progress < 50 %}
+                        <div class="progress">
+                            <div class="progress-bar bg-danger progress-bar-striped progress-bar-animated"
+                            role="progressbar" aria-valuenow="{{ progress }}" aria-valuemin="0"
+                            aria-valuemax="30">{{ progress }}%</div>
+                        </div>
+                        {% elif progress > 50 and progress < 100 %}
+                        <div class="progress">
+                            <div class="progress-bar bg-warning progress-bar-striped progress-bar-animated"
+                            role="progressbar" aria-valuenow="{{ progress }}" aria-valuemin="0"
+                            aria-valuemax="30">{{ progress }}%</div>
+                        </div>
+                        {% elif progress == 100 %}
+                        <div class="progress">
+                            <div class="progress-bar bg-success progress-bar-striped progress-bar-animated"
+                            role="progressbar" aria-valuenow="{{ progress }}" aria-valuemin="0"
+                            aria-valuemax="30">{{ progress }}%</div>
+                        </div>  
+                        {% elif progress > 100 %}
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated"
+                            role="progressbar" aria-valuenow="{{ progress }}" aria-valuemin="0"
+                            aria-valuemax="30" style="background-color: purple;">{{ progress }}%</div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-12">
+            <div class="card">
+                <div class="card-header text-center">
+                    <h4 class="card-title">Sales Commission</h4>
+                </div>
+                <div class="card-body">
+                    <div class="text-center">
+                        {% if commission %}
+                            <p class="text-center">Commission: MK{{ commission|format_price }}</p>
+                        {% else %}
+                            <p class="text-center">Commission: 0.00</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<br>
 <section class="charts_by_chartjs">
     <div class="row gy-3">
         <div class="col-md-6 col-12">
@@ -129,6 +188,10 @@
 
         }
     });
+
+    $(document).ready(function() {
+        $('.progress-bar').css('width', '{{ progress }}%');
+    })
 </script>
 
 {% endblock %}
