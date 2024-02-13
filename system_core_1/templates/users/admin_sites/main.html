@@ -24,6 +24,7 @@
         <script src="{% static 'scripts/analysis_lib/agent_overall_stock.js' %}" defer></script>
         <script src="{% static 'scripts/analysis_lib/overall_stock.js' %}" defer></script>
         {% endblock %}
+        <script src="{% static 'scripts/pending_sales.js' %}" defer></script>
         <script src="{% static 'scripts/sidebar.js' %}" defer></script>
         <script src="{% static 'scripts/placeholders.js' %}" defer></script>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -31,26 +32,11 @@
             $(document).ready(function() {
                 $('.progress-bar').css('width', '{{ progress }}%');
             })
-
-            $('#sidebarCollapse').on('shown.bs.collapse', function () {
-            // Highlight the active link when the menu is expanded
-                $('.navbar-nav li').removeClass('active');
-                var activeLink = $('.navbar-nav li a[href="' + window.location.pathname + '"]');
-                activeLink.closest('li').addClass('active');
-            });
-
-            // Add an event listener for when the collapse is hidden
-            $('#sidebarCollapse').on('hidden.bs.collapse', function () {
-                // Highlight the active link when the menu is collapsed
-                $('.navbar-nav li').removeClass('active');
-                var activeLink = $('.navbar-nav li a[href="' + window.location.pathname + '"]');
-                activeLink.closest('li').addClass('active');
-            });
         </script>
         <style>
-            .active {
-                background-color: #007bff; /* Change the background color as needed */
-                color: #ffffff; /* Change the text color as needed */
+            .pending-sales-notice {
+                font-size: 7px;
+                position: absolute;
             }
         </style>
     </head>
@@ -147,7 +133,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link d-flex align-items-center" href="#"
+                                <a class="nav-link d-flex align-items-center" href="{% url 'defects' %}"
                                 data-bs-toggle="tooltip" 
                                 title="Defective Devices">
                                 <span class="material-icons">
@@ -163,6 +149,7 @@
                                 <span class="material-icons">
                                     pending_actions
                                 </span>
+                                <span class="badge bg-danger pending-sales-notice"></span>
                                 <span class="text"> Pending Sales</span>
                                 </a>
                             </li>

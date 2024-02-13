@@ -6,10 +6,13 @@
 {% block head %}
     <link rel="stylesheet" href="{% static 'styles/agent_stock_mobile.css' %}">
     <script src="{% static 'scripts/data_updates.js' %}"></script>
+    <script src="{% static 'scripts/copytext.js' %}" defer></script>
 {% endblock %}
 {% block content %}
 <div class="container">
-    <p class="text-center bold">Pending Sales: Total {{ total }}</p>
+    <h1 class="text-center fs-3">Pending Sales: Total {{ total }}</h1>
+    <br>
+    {% bootstrap_messages %}
     <div class="row">
         {% for item in pending_sales %}
             <div class="col-md-4 col-sm-6 mb-4">
@@ -20,7 +23,11 @@
                     <div class="card-body">
                         <p class="card-text"><strong class="text-info">Agent:</strong> <span>{{ item.agent }}</span></p>
                         <p class="card-text"><strong class="text-info">Category:</strong> <span>{{ item.category }}</span></p>
-                        <p class="card-text"><strong class="text-info">Device IMEI:</strong> <span>{{ item.device_imei }}</span></p>
+                        <p class="card-text"><strong class="text-info">Device IMEI:</strong>
+                            <span style="cursor: pointer;" id="id_{{ item.device_imei }}" onclick="copyText('id_{{ item.device_imei }}')">{{ item.device_imei }}</span></p>
+                        {% if item.device_imei_2 %}
+                            <p class="card-text"><strong class="text-info">Device IMEI 2:</strong> <span>{{ item.device_imei_2 }}</span></p>
+                        {% endif %}
                         <p class="card-text"><strong class="text-info">Model:</strong> <span>{{ item.name }}</span></p>
                         <p class="card-text"><strong class="text-info">Spec:</strong> <span>{{ item.spec }}</span></p>
                         <p class="card-text"><strong class="text-info">Sold On:</strong> <span>{{ item.stock_out_date }}</span></p>
@@ -33,6 +40,18 @@
                                     </span>
                                 </span>
                             </p>
+                        {% endif %}
+                        {% if item.sales_type == "Loan" and item.contract_no == "##" %}
+                            <p class="card-text"><strong class="text-info">Contract No:</strong> <span class="text-danger">
+                                <form action="{% url 'add_contract_number' %}" method="post" class="contract_number_form">
+                                    {% csrf_token %}
+                                    <input type="text" class="form-control me-2" name="contract_number" placeholder="add contract number"
+                                    maxlength="9" minlength="9" pattern="[A]{1}[0-9]{8}" required>
+                                    <input type="hidden" name="imei_number" value="{{ item.device_imei }}">
+                                    <br>
+                                    <button type="submit" class="btn btn-primary w-100">save</button>
+                                </form>
+                            </span></p>
                         {% endif %}
                         {% if item.contract_no != "##" %}
                             <p class="card-text"><strong class="text-info">Contract No:</strong> <span>{{ item.contract_no }}</span></p>

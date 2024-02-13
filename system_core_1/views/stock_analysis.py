@@ -24,6 +24,7 @@ def get_source_stock(request):
         return JsonResponse(stock, safe=False)
     return JsonResponse({'error': 'Invalid request.'})
 
+
 @login_required
 def get_yearly_product_sales(request):
     """This function returns a JSON object containing

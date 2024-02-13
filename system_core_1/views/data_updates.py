@@ -214,6 +214,8 @@ def add_contract_number(request):
                 phone_sold.save()
                 main_storage.save()
                 messages.success(request, 'contract number added successfully')
+        if request.user.is_superuser:
+            return redirect('pending_sales')
     return redirect('dashboard')
 
 

@@ -30,8 +30,8 @@ class SpecialOrders(models.Model):
     current_balance = models.IntegerField(default=0)
     final_balance = models.IntegerField(default=0)
     total_paid = models.IntegerField(default=0)
-    month = models.IntegerField(default=0)
-    year = models.IntegerField(default=0)
+    month = models.CharField(max_length=20, default=timezone.now().date().month)
+    year = models.CharField(max_length=20, default=timezone.now().date().year)
 
     class Meta:
         """This class contains the meta data for the special orders model."""

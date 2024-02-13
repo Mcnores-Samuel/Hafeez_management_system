@@ -6,6 +6,7 @@ class SpecialOrdersAdmin(admin.ModelAdmin):
     """This class contains the special orders admin."""
     list_display = ('presentative', 'current_orders', 'last_payments',
                     'initial_balances', 'new_balance', 'final_balances',
+                    'total_paid', 'month', 'year', 'current_payment',
                     'last_payment_date', 'created_on', 'updated_on')
     search_fields = ('presentative', 'created_on', 'updated_on',
                      'current_orders', 'initial_balance', 'current_balance',
@@ -28,6 +29,12 @@ class SpecialOrdersAdmin(admin.ModelAdmin):
     
     def final_balances(self, obj):
         return f"{obj.final_balance:,}".replace(',', ', ')
+    
+    def total_paid(self, obj):
+        return f"{obj.total_paid:,}".replace(',', ', ')
+    
+    def current_payment(self, obj):
+        return f"{obj.current_payment:,}".replace(',', ', ')
     
     def calculate_balances(self, request, queryset):
         """Calculate the balances for the special orders"""
