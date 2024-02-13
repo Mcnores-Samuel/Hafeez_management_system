@@ -23,11 +23,15 @@ class SpecialOrders(models.Model):
     created_on = models.DateTimeField(default=timezone.now)
     updated_on = models.DateTimeField(default=timezone.now)
     last_payment_date = models.DateTimeField(default=timezone.now)
+    current_payment = models.IntegerField(default=0)
     last_payment = models.IntegerField(default=0)
     current_orders = models.IntegerField(default=0)
     initial_balance = models.IntegerField(default=0)
     current_balance = models.IntegerField(default=0)
     final_balance = models.IntegerField(default=0)
+    total_paid = models.IntegerField(default=0)
+    month = models.IntegerField(default=0)
+    year = models.IntegerField(default=0)
 
     class Meta:
         """This class contains the meta data for the special orders model."""

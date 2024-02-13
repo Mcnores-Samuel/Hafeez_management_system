@@ -76,7 +76,7 @@
                                         {% else %}
                                                 <form action="{% url 'add_contract_number' %}" method="post" class="contract_number_form">
                                                     {% csrf_token %}
-                                                    <input type="text" name="contract_number" placeholder="add contract number" maxlength="9" minlength="9" pattern="[A]{1}[0-9]{8}" required>
+                                                    <input type="text" class="form-control me-2" name="contract_number" placeholder="add contract number" maxlength="9" minlength="9" pattern="[A]{1}[0-9]{8}" required>
                                                     <input type="hidden" name="imei_number" value="{{ phone.imei_number }}">
                                                     <button type="submit" class="btn btn-primary">save</button>
                                                 </form>
@@ -96,7 +96,7 @@
                                 {% else %}
                                     <form action="{% url 'update_customer_data' %}" method="post" class="contract_number_form">
                                         {% csrf_token %}
-                                        <input type="text" name="account_name" placeholder="add account name" required>
+                                        <input type="text" class="form-control me-2" name="account_name" placeholder="add account name" required>
                                         <input type="hidden" name="customer_id" value="{{ customer.id }}">
                                         <button type="submit" class="btn btn-primary">save</button>
                                     </form>
