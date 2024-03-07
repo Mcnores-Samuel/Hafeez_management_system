@@ -46,8 +46,8 @@ function updateDailyChart(url, dest, chartType, loader) {
                             datasets: [{
                                 label: date.toDateString() + " Total " + overallTotal,
                                 data: total,
-                                backgroundColor: ["#877B89", "blue", "green", "yellow", "gray"],
-                                borderColor: ["#877B89", "blue", "green", "yellow", "gray"],
+                                backgroundColor: ["navy"],
+                                borderColor: ["navy"],
                                 borderWidth: 2
                             }]
                         },
@@ -95,25 +95,7 @@ function updateDailyChart(url, dest, chartType, loader) {
                                         },
                                     },
                                 }
-                            },
-                            animation: {
-                                tension: {
-                                    duration: 1000,
-                                    easing: 'linear',
-                                    from: 1,
-                                    to: 0,
-                                    loop: true
-                                },
-                                responsive: true,
-                            },
-                            hover: {
-                                mode: 'nearest',
-                                intersect: true
-                            },
-                            tooltips: {
-                                mode: 'nearest',
-                                intersect: true
-                            },
+                            }
                             
                         }
                     });
@@ -139,5 +121,5 @@ const dest_daily_2 = ".daily_sales_chart_cash";
 const url_daily_2 = "/system_core_1/get_daily_sales_json_cash/"
 const loader_daily_2 = ".daily_sales_loader_cash"
 
-updateDailyChart(url_daily, dest_daily, "line", loader_daily);
-updateDailyChart(url_daily_2, dest_daily_2, "line", loader_daily_2);
+updateDailyChart(url_daily, dest_daily, "bar", loader_daily);
+updateDailyChart(url_daily_2, dest_daily_2, "bar", loader_daily_2);

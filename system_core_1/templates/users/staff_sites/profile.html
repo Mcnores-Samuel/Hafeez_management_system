@@ -17,7 +17,7 @@
         {% else %}
             <img src="{% static 'images/employee.png' %}" alt="" class="profile-avatar">
         {% endif %}
-        <form id="uploadForm" action="{% url 'upload_image' %}" method="post" enctype="multipart/form-data" class="upload-form position-relative">
+        <form id="uploadForm" action="" method="post" enctype="multipart/form-data" class="upload-form position-relative">
             {% csrf_token %}
             <label for="image">
                 <span class="material-icons">
