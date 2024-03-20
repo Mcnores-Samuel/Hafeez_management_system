@@ -13,7 +13,7 @@ class MainStorageAdmin(admin.ModelAdmin):
                     'assigned_from', 'updated_by', 'entry_date', 'stock_out_date','collected_on', 'comment', 'supplier'
     )
     search_fields = ('device_imei', 'device_imei_2', 'name', 'phone_type', 'entry_date', 'category', 'agent__username',
-                     'contract_no', 'sales_type', 'stock_out_date', 'assigned', 'sold', 'paid')
+                     'contract_no', 'sales_type', 'stock_out_date', 'assigned', 'sold', 'paid', 'collected_on', 'supplier')
     list_filter = ('in_stock', 'on_display', 'missing', 'faulty', 'pending', 'category', 'supplier', 'sales_type', 'assigned', 'sold', 'paid',
                    'entry_date', 'collected_on', 'stock_out_date', 'agent__username', YesterdayFilter, YearMonthFilter)
     
