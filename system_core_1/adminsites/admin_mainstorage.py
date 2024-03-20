@@ -8,10 +8,9 @@ from django.utils import timezone
 
 
 class MainStorageAdmin(admin.ModelAdmin):
-    list_display = ('assigned_to', 'recieved', 'on_display', 'faulty', 'device_imei', 'device_imei_2', 'category', 'name', 'phone_type',
-                    'spec', 'screen_size', 'os', 'battery', 'camera', 'in_stock', 'pending', 'missing',
-                    'sales_type', 'contract_no', 'assigned_from', 'updated_by', 'entry_date', 'stock_out_date',
-                    'collected_on', 'assigned', 'sold', 'paid', 'image', 'comment', 'supplier'
+    list_display = ('assigned_to', 'device_imei', 'device_imei_2', 'name', 'phone_type', 'spec', 'recieved', 'on_display',
+                    'faulty', 'in_stock', 'pending', 'missing', 'assigned', 'sold', 'paid', 'sales_type', 'price', 'contract_no',
+                    'assigned_from', 'updated_by', 'entry_date', 'stock_out_date','collected_on', 'comment', 'supplier'
     )
     search_fields = ('device_imei', 'device_imei_2', 'name', 'phone_type', 'entry_date', 'category', 'agent__username',
                      'contract_no', 'sales_type', 'stock_out_date', 'assigned', 'sold', 'paid')

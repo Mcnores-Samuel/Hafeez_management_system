@@ -83,7 +83,7 @@ class MainStorage(models.Model):
     assigned = models.BooleanField(default=False)
     sold = models.BooleanField(default=False)
     paid = models.BooleanField(default=False)
-    image = models.ImageField(upload_to='product_images/', null=True, blank=True)
+    price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     agent = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
     recieved = models.BooleanField(default=False)
     on_display = models.BooleanField(default=False)
