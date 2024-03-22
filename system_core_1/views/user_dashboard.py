@@ -48,29 +48,14 @@ def dashboard(request):
     if request.user.is_staff:
         user = request.user
         admin_url = '/' + os.environ.get('ADMIN_URL') + '/'
-        main_shop_staff = Group.objects.get(name='main_shop')
-        representatives = UserProfile.objects.filter(groups=main_shop_staff).first()
-        sales = MainStorageAnalysis().get_agent_stock_out(representatives)
-        overall_sales = MainStorageAnalysis().overall_sales()
-        overall_stock = MainStorageAnalysis().overall_stock()
-        total = 0
-        for value in sales:
-            total += value[1]
-        CalcCommissions().update_commission(representatives, total)
         avatar = UserAvatar.objects.get(
             user=request.user) if UserAvatar.objects.filter(
                 user=request.user).exists() else None
-        progress, target = CalcCommissions().target_progress(representatives)
         context = {
             'profile': user.email[0],
             'user': user,
             'admin_url': admin_url,
             'avatar': avatar,
-            'progress': progress,
-            'target': target,
-            'sales': total,
-            'overall_sales': overall_sales,
-            'overall_stock': overall_stock,
         }
         return render(request, 'users/admin_sites/main.html', context)
     elif request.user.groups.filter(name='staff_members').exists():

@@ -16,6 +16,7 @@
         <link rel="stylesheet" href="{% static 'styles/dashboard.css' %}">
         {% block head %}
         <link rel="stylesheet" href="{% static 'styles/loading-message.css' %}">
+        <script src="{% static 'scripts/analysis_lib/admin_stock_analysis.js' %}" defer></script>
         <script src="{% static 'scripts/data_updates.js' %}"></script>
         <script src="{% static 'scripts/analysis_lib/daily_sales.js' %}" defer></script>
         <script src="{% static 'scripts/analysis_lib/weekly_sales.js' %}" defer></script>
@@ -28,11 +29,6 @@
         <script src="{% static 'scripts/sidebar.js' %}" defer></script>
         <script src="{% static 'scripts/placeholders.js' %}" defer></script>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-        <script>
-            $(document).ready(function() {
-                $('.progress-bar').css('width', '{{ progress }}%');
-            })
-        </script>
         <style>
             .pending-sales-notice {
                 font-size: 7px;
@@ -230,7 +226,7 @@
                             <span class="material-icons">
                                 notifications
                             </span>
-                            <span class="badge bg-danger">1</span>
+                            <span class="badge bg-danger"></span>
                         </button>
                         <ul class="dropdown-menu">
                             <li>
@@ -240,7 +236,6 @@
                                                 notifications
                                             </span>
                                         <div class="">
-                                            <p class="">Hello There, Welcome to Hafeez new updates</p>
                                         </div>
                                     </div>
                                 </a>
@@ -297,7 +292,7 @@
             <section class="charts-and-data">
                 <div class="row gy-3">
                     <div class="col-md-3 col-12">
-                        <div class="card">
+                        <div class="card bg-success text-light">
                             <div class="card-body">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="icon">
@@ -306,30 +301,30 @@
                                         </span>
                                     </div>
                                     <div class="">
-                                        <p>Overall Stock</p>
-                                        <p>{{ overall_stock }}</p>
+                                        <p class="fw-bold">Overall Stock</p>
+                                        <p class="fw-bold" id="overall_stock_analysis">0</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-3 col-12">
-                        <div class="card">
+                        <div class="card bg-success text-light">
                             <div class="card-body">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <span class="material-icons">
                                         credit_score
                                     </span>
                                     <div class="">
-                                        <p>Overall Sales</p>
-                                        <p>{{ overall_sales }}</p>
+                                        <p class="fw-bold">Overall Sales</p>
+                                        <p id="overall_sales_analysis" class="fw-bold">0</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-3 col-12">
-                        <div class="card">
+                        <div class="card bg-success text-light">
                             <div class="card-body">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="icon ">
@@ -338,45 +333,25 @@
                                         </span>
                                     </div>
                                     <div class="">
-                                        <p>Main Shop Monthly Sales</p>
-                                        <p>{{ sales }} Devices</p>
+                                        <p class="fw-bold">Main Shop Monthly Sales</p>
+                                        <p id="main_shop_sales_analysis" class="fw-bold">0</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-3 col-12">
-                        <div class="card">
+                        <div class="card bg-success text-light">
                             <div class="card-body">
                                 <div class="">
-                                    <p>Main shop target</p>
+                                    <p class="fw-bold">Main shop target</p>
                                     <div class="">
-                                        <div class="text-end">{{ target }} Devices</div>
-                                        {% if progress < 50 %}
+                                        <div class="text-end fw-bold"></div>
                                         <div class="progress">
-                                            <div class="progress-bar bg-danger progress-bar-striped progress-bar-animated"
+                                            <div class="progress-bar progress-bar-striped progress-bar-animated fw-bold"
                                             role="progressbar" aria-valuenow="{{ progress }}" aria-valuemin="0"
-                                            aria-valuemax="{{ terget }}">{{ progress }}%</div>
+                                            aria-valuemax="{{ terget }}"></div>
                                         </div>
-                                        {% elif progress > 50 and progress < 100 %}
-                                        <div class="progress">
-                                            <div class="progress-bar bg-warning progress-bar-striped progress-bar-animated"
-                                            role="progressbar" aria-valuenow="{{ progress }}" aria-valuemin="0"
-                                            aria-valuemax="{{ target }}">{{ progress }}%</div>
-                                        </div>
-                                        {% elif progress == 100 %}
-                                        <div class="progress">
-                                            <div class="progress-bar bg-success progress-bar-striped progress-bar-animated"
-                                            role="progressbar" aria-valuenow="{{ progress }}" aria-valuemin="0"
-                                            aria-valuemax="{{ terget }}">{{ progress }}%</div>
-                                        </div>
-                                        {% elif progress > 100 %}
-                                        <div class="progress">
-                                            <div class="progress-bar progress-bar-striped progress-bar-animated"
-                                            role="progressbar" aria-valuenow="{{ progress }}" aria-valuemin="0"
-                                            aria-valuemax="{{ terget }}" style="background-color: purple;">{{ progress }}%</div>
-                                        </div>
-                                        {% endif %}
                                     </div>
                                 </div>
                             </div>
@@ -389,11 +364,11 @@
                 <div class="row gy-3">
                     <div class="col-md-6 col-12">
                         <div class="card">
-                            <div class="card-header text-center">
+                            <div class="card-header text-center fw-bold">
                                 <h4>Daily Sales on loan</h4>
                             </div>
                             <div class="card-body">
-                                <div class="daily_sales_loader_loan"></div>
+                                <div class="daily_sales_loader_loan text-light"></div>
                                 <canvas class="daily_sales_chart_loan" width="400" height="400"></canvas>
                             </div>
                         </div>

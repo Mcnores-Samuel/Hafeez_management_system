@@ -10,7 +10,7 @@ from .views.staff_sites.new_entries import (get_new_entries, get_new_entries_tot
 from .views.staff_sites.edit_customer_data import edit_customer_data
 from .views.staff_sites.delete_data import delete_customer_data
 from .views.staff_sites.rejected import total_rejected, get_rejected
-from .views.stock_analysis import (get_source_stock, get_yearly_product_sales)
+from .views.stock_analysis import (get_source_stock, get_yearly_product_sales, admin_stock_analysis)
 from .views.feedback import feedback
 from .views.add_to_stock import add_to_stock
 from .views.pending_sales import pending_sales, total_pending_sales
@@ -65,6 +65,7 @@ urlpatterns = [
     path('get_source_stock/', get_source_stock, name='get_source_stock'),
     path('get_yearly_product_sales/', get_yearly_product_sales, name='get_yearly_product_sales'),
     path('get_main_stock_analysis/', data_for_charts.get_main_stock_analysis, name='get_main_stock_analysis'),
+    path('admin_stock_analysis/', admin_stock_analysis, name='admin_stock_analysis'),
     path('get_approved/', approved, name='approved'),
     path('get_approved_data/', get_approved_data, name='get_approved_data'),
     path('get_new_entries/', get_new_entries, name='get_new_entries'),

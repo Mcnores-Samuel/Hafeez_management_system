@@ -2,9 +2,10 @@ from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from ..models.user_profile import UserProfile
 from ..models.main_storage import MainStorage
-from ..models.agent_profile import AgentProfile
 from django.contrib.auth.models import Group
 from django.utils import timezone
+from ..data_analysis_engine.admin_panel.calc_commitions import CalcCommissions
+from ..data_analysis_engine.admin_panel.mainstorage_analysis import MainStorageAnalysis
 
 
 @login_required
@@ -41,4 +42,27 @@ def get_yearly_product_sales(request):
             products[product.phone_type] = products.get(product.phone_type, 0) + 1
         products = sorted(products.items(), key=lambda x: x[1], reverse=True)
         return JsonResponse(products, safe=False)
+    return JsonResponse({'error': 'Invalid request.'})
+
+def admin_stock_analysis(request):
+    """This function returns a JSON object containing the daily stock data."""
+    if request.method == 'GET':
+        main_shop_staff = Group.objects.get(name='main_shop')
+        representatives = UserProfile.objects.filter(groups=main_shop_staff).first()
+        sales = MainStorageAnalysis().get_agent_stock_out(representatives)
+        overall_sales = MainStorageAnalysis().overall_sales()
+        overall_stock = MainStorageAnalysis().overall_stock()
+        total = 0
+        for value in sales:
+            total += value[1]
+        CalcCommissions().update_commission(representatives, total)
+        progress, target = CalcCommissions().target_progress(representatives)
+        context = {
+            'progress': progress,
+            'target': target,
+            'sales': total,
+            'overall_sales': overall_sales,
+            'overall_stock': overall_stock,
+        }
+        return JsonResponse(context, safe=False)
     return JsonResponse({'error': 'Invalid request.'})
