@@ -26,6 +26,11 @@ from .models.feedback import Feedback
 from .models.notifications import Notifications
 from .models.commission import Commission
 from .models.contacts import Contact
+from .models.prices import (YellowPrices, MosesPrices, ChrisMZPrices,
+                            Chris25Prices, BuzzMchinjiPrices)
+from .adminsites.admin_prices import (AdminYellowPrices, AdminMosesPrices,
+                                      AdminChrisMZPrices, AdminChris25Prices,
+                                      AdminBuzzMchinjiPrices)
 
 
 admin.site.site_url = "/system_core_1/dashboard"
@@ -47,3 +52,8 @@ admin.site.register(Feedback, FeedbackAdmin)
 admin.site.register(Notifications, NotificationsAdmin)
 admin.site.register(Commission, CommissionAdmin)
 admin.site.register(Contact, ContactAdmin)
+admin.site.register(YellowPrices, AdminYellowPrices)
+admin.site.register(MosesPrices, AdminMosesPrices)
+admin.site.register(ChrisMZPrices, AdminChrisMZPrices)
+admin.site.register(Chris25Prices, AdminChris25Prices)
+admin.site.register(BuzzMchinjiPrices, AdminBuzzMchinjiPrices)

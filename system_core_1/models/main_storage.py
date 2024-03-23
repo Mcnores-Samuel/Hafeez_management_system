@@ -83,6 +83,7 @@ class MainStorage(models.Model):
     assigned = models.BooleanField(default=False)
     sold = models.BooleanField(default=False)
     paid = models.BooleanField(default=False)
+    cost = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     agent = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
     recieved = models.BooleanField(default=False)
@@ -105,11 +106,6 @@ class MainStorage(models.Model):
         return "Device: {}, Imei: {}".format(self.name, self.device_imei)
 
 
-DEVICES = (
-    ("MIFI", "MIFI"), ("ROUTER (IDU)", "ROUTER (IDU)"),
-)
-
-
 class Airtel_mifi_storage(models.Model):
     """This model represent the entire stock available and sold in all posts
     for airtel mifi and routers
@@ -125,14 +121,21 @@ class Airtel_mifi_storage(models.Model):
     - stock_out_date: The date on which the phone was purchased or added to the
       inventory.
     """
+    DEVICES = (
+        ("MIFI", "MIFI"), ("ROUTER (IDU)", "ROUTER (IDU)"),
+      )
+
+    cash_recieved_by = (
+        ('Not Paid', 'Not Paid'), ('Sahil', 'Sahil'), ('Suhail', 'Suhail'),
+        ('Shehzaad', 'Shehzaad'), ("Sahil's Father", "Sahil's Father")
+      )
+    
     agent = models.ForeignKey(settings.AUTH_USER_MODEL,
                               on_delete=models.CASCADE,
                               null=True, blank=True)
     recieved = models.BooleanField(default=False)
     device_imei = models.CharField(max_length=15, unique=True)
-    device_imei_2 = models.CharField(max_length=15, unique=True, null=True, blank=True)
     phone_number = models.CharField(max_length=15, unique=True, null=True, blank=True)
-    secondary_phone_number = models.CharField(max_length=15, unique=True, null=True, blank=True)
     device = models.CharField(max_length=25, choices=DEVICES, default='MIFI')
     pending = models.BooleanField(default=False)
     active = models.BooleanField(default=False)
@@ -143,8 +146,8 @@ class Airtel_mifi_storage(models.Model):
     stock_out_date = models.DateField(default=timezone.now)
     collected_on = models.DateField(default=timezone.now)
     cash_recieved = models.BooleanField(default=False)
+    cash_recieved_by = models.CharField(max_length=25, choices=cash_recieved_by, default='Not Paid')
     paid = models.BooleanField(default=False)
-    image = models.ImageField(upload_to='product_images/', null=True, blank=True)
     comment = models.CharField(max_length=256, null=True, blank=True)
 
     class Meta:

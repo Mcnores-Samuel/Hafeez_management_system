@@ -2,9 +2,7 @@ from django.contrib import admin
 from ..models.main_storage import MainStorage
 from ..customfilters.date_filters import YesterdayFilter
 from ..customfilters.year_months_filter import YearMonthFilter
-from ..models.special_orders import SpecialOrders
-from ..models.reference import Price_reference
-from django.utils import timezone
+from ..customfilters.agent_filter import AgentFilter, SpecialAgentsFilter
 
 
 class MainStorageAdmin(admin.ModelAdmin):
@@ -15,13 +13,13 @@ class MainStorageAdmin(admin.ModelAdmin):
     search_fields = ('device_imei', 'device_imei_2', 'name', 'phone_type', 'entry_date', 'category', 'agent__username',
                      'contract_no', 'sales_type', 'stock_out_date', 'assigned', 'sold', 'paid', 'collected_on', 'supplier')
     list_filter = ('in_stock', 'on_display', 'missing', 'faulty', 'pending', 'category', 'supplier', 'sales_type', 'assigned', 'sold', 'paid',
-                   'entry_date', 'collected_on', 'stock_out_date', 'agent__username', YesterdayFilter, YearMonthFilter)
+                   'entry_date', 'collected_on', 'stock_out_date', SpecialAgentsFilter, AgentFilter, YesterdayFilter, YearMonthFilter)
     
     list_per_page = 50
 
-    actions = ['update_images', 'verify_stock_recieved',
+    actions = ['verify_stock_recieved',
                'unverify_stock_recieved', 'unassign_select', 'mark_as_sold',
-               'missing', 'sum_special_orders', 'approve_pending', 'unapprove_pending']
+               'missing', 'approve_pending', 'unapprove_pending']
     
     class Meta:
         ordering = ['-entry_date']
@@ -36,15 +34,6 @@ class MainStorageAdmin(admin.ModelAdmin):
                 obj.save()
     missing.short_description = "Mark as missing"
 
-
-    def update_images(self, request, queryset):
-        # Get the image from the first selected object
-        image = queryset.first().image
-
-        for phone in queryset:
-            phone.image = image
-            phone.save()
-    update_images.short_description = "Update selected phones with the same image"
     
     def mark_as_sold(self, request, queryset):
         """Mark the phone as sold"""
@@ -107,27 +96,6 @@ class MainStorageAdmin(admin.ModelAdmin):
             except MainStorage.DoesNotExist:
                 pass
     unassign_select.short_description = "Unassign selected phones"
-
-    def sum_special_orders(self, request, queryset):
-        """Sum the special orders"""
-        already_reset = False
-        for obj in queryset:
-            try:
-                retailer = SpecialOrders.objects.get(presentative=obj.agent)
-                price = Price_reference.objects.get(phone=obj.phone_type)
-                if retailer.current_balance > 0 and not already_reset:
-                    already_reset = True
-                    retailer.current_balance = 0
-                    retailer.current_orders = 0
-                    retailer.updated_on = timezone.now()
-                    retailer.save()
-                retailer.current_balance += price.special_retailer_price
-                retailer.current_orders += 1
-                retailer.save()
-            except SpecialOrders.DoesNotExist:
-                pass
-    sum_special_orders.short_description = "Sum special orders"
-
 
     def save_model(self, request, obj, form, change):
         """Override the save_model method to add the current user to the agent field"""

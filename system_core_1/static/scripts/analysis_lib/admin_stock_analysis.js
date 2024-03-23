@@ -14,6 +14,14 @@ function adminStockAnalysis() {
       url: '/system_core_1/admin_stock_analysis',
       type: 'GET',
       dataType: 'json',
+      beforeSend() {
+        overallStock.html('Loading...');
+        overallSales.html('Loading...');
+        mainShopSales.html('Loading...');
+        target.html('Loading...');
+        progress.css('width', '100%');
+        progress.html('0%');
+      },
       success(data) {
         overallStock.html(`${data.overall_stock} Devices`);
         overallSales.html(`${data.overall_sales} Devices`);
