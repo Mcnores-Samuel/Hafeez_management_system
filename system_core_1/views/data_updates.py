@@ -207,13 +207,12 @@ def add_contract_number(request):
         contract_number = request.POST.get('contract_number', None)
         if contract_number and imei_number:
             main_storage = MainStorage.objects.get(device_imei=imei_number)
-            phone_sold = PhoneData.objects.get(imei_number=imei_number)
-            if main_storage and phone_sold:
-                phone_sold.contract_number = contract_number
+            if main_storage:
                 main_storage.contract_no = contract_number
-                phone_sold.save()
                 main_storage.save()
-                messages.success(request, 'contract number added successfully')
+                messages.success(request,
+                                 'Contract No: {} for IMEI: {} added successfully'.format(
+                                     contract_number, imei_number))
         if request.user.is_superuser:
             return redirect('pending_sales')
     return redirect('dashboard')
