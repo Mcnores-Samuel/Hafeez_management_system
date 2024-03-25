@@ -58,73 +58,23 @@ class CombinedDataForm(forms.Form):
         ('Loan', 'Loan'),
     ]
 
-    PAYMENT_PERIOD = [
-        ('6 Months', '6 Months'),
-        ('12 Months', '12 Months'),
-
-    ]
-
-    customer_data = None
-    phone_data = None
-    main_storage_phone = None
-    agent_stock_phone = None
-
     payment_method = forms.ChoiceField(
-        choices=PAYMENT, widget=forms.RadioSelect, required=True)
-    payment_period = forms.ChoiceField(
-        choices=PAYMENT_PERIOD, required=False,
-        widget=forms.RadioSelect)
-    customer_name = forms.CharField(
-        max_length=50, required=False,
-        widget=forms.TextInput({
-            "placeholder": "Enter customer's full name.",
-            "class": "form-control"}))
-    national_id = forms.CharField(
-        max_length=9, required=False, 
-        widget=forms.TextInput({
-            "placeholder": "National identification number.",
-            "class": "form-control"}))
-
-
-
-
-
+        choices=PAYMENT, widget=forms.Select(
+            attrs={
+                'class': 'form-control d-inline-block',
+                'placeholder': 'Payment Method',
+                'required': 'required',
+            }
+        ), label='Sales Type',
+        required=True
+    )
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
-    
+
     def clean(self):
         cleaned_data = super().clean()
-        payment_method = cleaned_data.get('payment_method')
-
-        if payment_method == 'Loan':
-            required_fields = [
-                'customer_name', 'national_id', 'customer_contact',
-                'first_witness_name', 'first_witness_contact', 'payment_period',
-                'customer_location', 'nearest_school', 'nearest_market_church_hospital'
-            ]
-            for field_name in required_fields:
-                field_value = cleaned_data.get(field_name)
-                if not field_value:
-                    if field_name == 'payment_period':
-                        self.add_error(field_name, 'Please select a payment period')
-                    elif field_name == 'customer_name':
-                        self.add_error(field_name, 'Please enter customer name')
-                    elif field_name == 'national_id':
-                        self.add_error(field_name, 'Please enter customer national ID')
-                    elif field_name == 'customer_contact':
-                        self.add_error(field_name, 'Please enter customer contact')
-                    elif field_name == 'first_witness_name':
-                        self.add_error(field_name, 'Please enter first witness name')
-                    elif field_name == 'first_witness_contact':
-                        self.add_error(field_name, 'Please enter first witness contact')
-                    elif field_name == 'customer_location':
-                        self.add_error(field_name, 'Please enter customer location')
-                    elif field_name == 'nearest_school':
-                        self.add_error(field_name, 'Please enter nearest school')
-                    elif field_name == 'nearest_market_church_hospital':
-                        self.add_error(field_name, 'Please enter nearest market, church or hospital')
         return cleaned_data
 
     def process_cash_payment(self, data_id):
@@ -151,6 +101,7 @@ class CombinedDataForm(forms.Form):
         selected_device.stock_out_date = timezone.now()
         selected_device.sales_type = 'Cash'
         selected_device.save()
+        return selected_device
 
     def process_loan_payment(self, data_id):
         """
@@ -159,67 +110,25 @@ class CombinedDataForm(forms.Form):
         customer data and creates both customer and phone data records in the database.
 
         Functionality:
-                Retrieves the relevant information about the selected phone and phone reference.
-                Gathers and validates customer data, including name, national ID, contact details,
-                witness information, location, email, and contract number.
-                Creates a customer data record in the database with the provided customer information.
-                Creates a phone data record associated with the customer, capturing details such as the agent,
-                IMEI number, phone type, selling price, deposit, and payment period.
-                Returns the newly created customer data and phone data objects.
-        Usage:
-                This function is called when a user selects "Loan" as the payment method
-                during the phone purchasing process. It ensures the collection of essential customer
-                data along with transaction details, facilitating customer and phone data management in the database.
+        - Retrieves the relevant information about the selected phone and phone reference.
+        - Marks the selected phone as sold and updates its status in the database.
+
+        Parameters:
+        - data_id: The ID of the selected phone data record.
+
+        Returns:
+        - If the phone has already been sold, it returns a message indicating that
+          the device is no longer available.
         """
         check_if_sold_already = MainStorage.objects.get(id=data_id)
         if not check_if_sold_already.sold:
             selected_device = MainStorage.objects.get(id=data_id)
-            phone_reference_instance = Price_reference.objects.get(
-                phone=selected_device.phone_type
-            )
             selected_device.in_stock = False
             selected_device.sold = True
             selected_device.pending = True
             selected_device.sales_type = 'Loan'
             selected_device.stock_out_date = timezone.now()
             selected_device.save()
-
-            self.user = selected_device.agent
-
-            if selected_device:
-                customer_data = CustomerData(
-                    created_at=timezone.now(),
-                    update_at=timezone.now(),
-                    agent=self.user.agentprofile if self.user else None,
-                    customer_name=self.cleaned_data['customer_name'],
-                    national_id=self.cleaned_data['national_id'],
-                    customer_contact=self.cleaned_data['customer_contact'],
-                    second_contact=self.cleaned_data['second_contact'],
-                    first_witness_name=self.cleaned_data['first_witness_name'],
-                    witness_id_no=self.cleaned_data['witness_id_no'],
-                    first_witness_contact=self.cleaned_data['first_witness_contact'],
-                    second_witness_name=self.cleaned_data['second_witness_name'],
-                    second_witness_contact=self.cleaned_data['second_witness_contact'],
-                    customer_location=self.cleaned_data['customer_location'],
-                    nearest_school=self.cleaned_data['nearest_school'],
-                    nearest_market_church_hospital=self.cleaned_data['nearest_market_church_hospital'],
-                    customer_email=self.cleaned_data['customer_email'],
-                    workplace=self.cleaned_data['workplace'],
-                    employer_or_coleague=self.cleaned_data['employer_or_coleague'],
-                    employer_or_coleague_contact=self.cleaned_data['employer_or_coleague_contact'],
-                )
-                customer_data.save()
-
-                phone_data = PhoneData(
-                    customer=customer_data,
-                    agent=self.user.agentprofile if self.user else None,
-                    imei_number=selected_device.device_imei,
-                    phone_type=selected_device.phone_type,
-                    selling_price=phone_reference_instance.merchant_price,
-                    deposit=phone_reference_instance.deposit,
-                    payment_period=self.cleaned_data['payment_period'],
-                )
-                phone_data.save()
-            return customer_data, phone_data
+            return selected_device
         else:
-            return 'already sold', 'already sold'
+            return 'already sold'

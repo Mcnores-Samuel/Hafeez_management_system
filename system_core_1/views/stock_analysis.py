@@ -44,6 +44,7 @@ def get_yearly_product_sales(request):
         return JsonResponse(products, safe=False)
     return JsonResponse({'error': 'Invalid request.'})
 
+
 def admin_stock_analysis(request):
     """This function returns a JSON object containing the daily stock data."""
     if request.method == 'GET':

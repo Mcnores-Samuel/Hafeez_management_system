@@ -14,6 +14,7 @@ from .search_and_filters import search
 from django.contrib.auth.models import Group
 from django.utils import timezone
 from ..data_analysis_engine.admin_panel.calc_commitions import CalcCommissions
+import os
 
 
 @login_required
@@ -33,7 +34,8 @@ def main_stock_details(request):
                 stock[data.phone_type] = stock.get(data.phone_type, 0) + 1
 
             stock = sorted(stock.items(), key=lambda x: x[1], reverse=True)
-            context = {'stock': stock, 'user': user.user.username, 'form': form, 'total': total}
+            data_url = '/' + os.environ.get('ADMIN_URL') + '/' + f'system_core_1/mainstorage/?agent={user.user.username}&in_stock__exact=1'
+            context = {'stock': stock, 'user': user.user.username, 'form': form, 'total': total, 'data_url': data_url}
             return render(request, 'users/admin_sites/main_stock_details.html', context)
         else:
             form = FilterAgentAndData()
@@ -48,7 +50,8 @@ def main_stock_details(request):
             for data in data_set:
                 stock[data.phone_type] = stock.get(data.phone_type, 0) + 1
             stock = sorted(stock.items(), key=lambda x: x[1], reverse=True)
-    context = {'form': form, 'stock': stock, 'user': representatives[0].username, 'total': total}
+            data_url = '/' + os.environ.get('ADMIN_URL') + '/' + 'system_core_1/mainstorage/?agent=Hafeez-Enterprise&in_stock__exact=1'
+    context = {'form': form, 'stock': stock, 'user': representatives[0].username, 'total': total, 'data_url': data_url}
     return render(request, 'users/admin_sites/main_stock_details.html', context)
 
 

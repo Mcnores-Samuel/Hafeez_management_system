@@ -13,7 +13,7 @@ from .views.staff_sites.rejected import total_rejected, get_rejected
 from .views.stock_analysis import (get_source_stock, get_yearly_product_sales, admin_stock_analysis)
 from .views.feedback import feedback
 from .views.add_to_stock import add_to_stock
-from .views.pending_sales import pending_sales, total_pending_sales
+from .views.pending_sales import pending_sales, total_pending_sales, revert_to_stock
 from .views.special_sales import special_sales
 from .views.defects import defects
 
@@ -32,6 +32,7 @@ urlpatterns = [
     path('feedback/', feedback, name='feedback'),
     path('add_to_stock/', add_to_stock, name='add_to_stock'),
     path('pending_sales/', pending_sales, name='pending_sales'),
+    path('revert_to_stock/', revert_to_stock, name='revert_to_stock'),
     path('total_pending_sales/', total_pending_sales, name='total_pending_sales'),
     path('special_sales/', special_sales, name='special_sales'),
     path('defects/', defects, name='defects'),

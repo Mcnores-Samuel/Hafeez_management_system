@@ -6,16 +6,18 @@
 {% block content %}
 <div class="container">
     {% bootstrap_messages %}
-    <h1 class="text-center">Collect Customer Details</h1>
-    <form action="" method="post" class="shadow-lg p-3 mb-5 bg-body rounded">
+    <h1 class="text-center fw-bold">Sales Register</h1>
+    <p class="text-center fw-bold">Please select the payment method Below</p>
+    <hr>
+    <form action="" method="post" class="shadow-lg p-3 mb-5 bg-body rounded d-flex justify-content-center">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-primary">Send</button>
+        <input type="hidden" name="payment_method" value="Cash">
+        <button type="submit" class="btn common-bg w-25 fw-bold">Cash</button>
+    </form>
+    <form action="" method="post" class="shadow-lg p-3 mb-5 bg-body rounded d-flex justify-content-center">
+        {% csrf_token %}
+        <input type="hidden" name="payment_method" value="Loan">
+        <button type="submit" class="btn common-bg w-25 fw-bold">Credit</button>
     </form>
 </div>
-<style>
-    .errorlist {
-        color: red;
-    }
-</style>
 {% endblock %}

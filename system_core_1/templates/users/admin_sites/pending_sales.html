@@ -10,7 +10,9 @@
 {% endblock %}
 {% block content %}
 <div class="container">
-    <h1 class="text-center fs-3">Pending Sales: Total {{ total }}</h1>
+    <h1 class="text-center fs-3 fw-bold">Pending Sales: Total {{ total }}</h1>
+    <p class="text-center fs-5 fw-bold">Please verify the sales below</p>
+    <hr>
     <br>
     {% bootstrap_messages %}
     <div class="row">
@@ -60,6 +62,12 @@
                             {% csrf_token %}
                             <input type="hidden" name="device_imei" value="{{ item.device_imei }}">
                             <button type="submit" class="btn btn-danger w-100" onclick="sold()">verify sold</button>
+                        </form>
+                        <br>
+                        <form action="/system_core_1/revert_to_stock/" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="device_imei" value="{{ item.device_imei }}">
+                            <button type="submit" class="btn btn-warning w-100">Revert To Stock</button>
                         </form>
                     </div>
                 </div>

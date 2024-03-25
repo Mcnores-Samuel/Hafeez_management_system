@@ -56,3 +56,31 @@ def total_pending_sales(request):
         total = MainStorage.objects.filter(
             pending=True, sold=True, in_stock=False).count()
     return JsonResponse({'total': total})
+
+
+@login_required
+def revert_to_stock(request):
+    """Revert a device to stock. This function is only accessible to superusers.
+
+    Args:
+        request (HttpRequest): The request object.
+
+    Returns:
+        HttpResponse: The response object.
+    """
+    if request.user.is_superuser:
+        if request.method == 'POST':
+            imei_number = request.POST.get('device_imei', None)
+            if imei_number:
+                main_storage = MainStorage.objects.get(device_imei=imei_number)
+                if main_storage:
+                    main_storage.in_stock = True
+                    main_storage.sold = False
+                    main_storage.pending = False
+                    main_storage.stock_out_date = main_storage.entry_date
+                    main_storage.sales_type = '##'
+                    main_storage.contract_no = '##'
+                    main_storage.save()
+                    message.success(request, 'device reverted to stock successfully')
+                return redirect('pending_sales')
+    return redirect('dashboard')

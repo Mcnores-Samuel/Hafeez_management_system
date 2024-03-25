@@ -64,6 +64,7 @@ def search(search_query):
         )
     return queryset
 
+
 def search_customers(request):
     """The `search_customers` view function is responsible for handling the search
     functionality for all data in the application.

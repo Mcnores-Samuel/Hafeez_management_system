@@ -16,6 +16,9 @@
         gap: 10px;
     }
 </style>
+<h1 class="text-center fs-3 fw-bold">Sales Summary | Total: {{ total }}</h1>
+<p class="text-center fs-5 fw-bold">Please select the user below</p>
+<hr>
 <div class="container">
     <form method="get" id="filter_form">
         {% csrf_token %}
@@ -121,8 +124,6 @@
         </div>
     </div>
 </section>
-<br>
-<p class="text-start">Total:  {{ total }}</p>
 <script>
     let ctx = $('.main_sales_detailed_analysis').get(0).getContext('2d');
     var data = {

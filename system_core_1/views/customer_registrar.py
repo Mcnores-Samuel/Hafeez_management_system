@@ -53,14 +53,17 @@ def combinedData_collection(request, data_id):
             if form.is_valid():
                 payment_method = form.cleaned_data['payment_method']
                 if payment_method == 'Cash':
-                    phone_data = form.process_cash_payment(data_id)
+                    sales_item1 = form.process_cash_payment(data_id)
+                    messages.success(request, '{} of IMEI {} Successfully sold'.format(
+                        sales_item1.name, sales_item1.device_imei))
                     return redirect('dashboard')
                 elif payment_method == 'Loan':
-                    customer_data, phone_data = form.process_loan_payment(data_id)
-                    if customer_data == 'already sold' or phone_data == 'already sold':
+                    sales_item = form.process_loan_payment(data_id)
+                    if sales_item == 'already sold':
                         messages.warning(request, 'Already sold, please select another device')
                         return redirect('dashboard')
-                    messages.success(request, 'data collected successfully, ready for approval')
+                    messages.success(request, '{} of IMEI {} Successfully sold'.format(
+                        sales_item.name, sales_item.device_imei))
                     return redirect('dashboard')
             else:
                 messages.warning(request, 'Please correct the errors below')

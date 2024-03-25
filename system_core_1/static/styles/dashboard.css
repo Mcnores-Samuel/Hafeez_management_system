@@ -8,6 +8,7 @@
     transition: all 0.5s ease-in-out;
 }
 
+
 body {
     background: linear-gradient(90deg, #23435c, #e0e0e0);
 }
@@ -23,11 +24,23 @@ body {
     position: fixed;
     top: 0;
     left: 0;
-    overflow-y: auto;
+    overflow-y: scroll;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
     transition: all 0.5s ease-in-out;
 }
+
+.wrapper::-webkit-scrollbar,
+.sidebar::-webkit-scrollbar {
+    display: none;
+}
+
 .common-color {
     color: #fe9a43;
+}
+
+.common-bg {
+    background: #fe9a43;
 }
 
 #search_term {
@@ -100,7 +113,7 @@ body {
     gap: 10px;
     position: sticky;
     top: -1px;
-    z-index: 9999;
+    z-index: 1000;
     background: #00a8a8;
     border-radius: 5px;
 }
@@ -159,16 +172,27 @@ body {
     font-size: 10px;
 }
 
+.topbar {
+    background: transparent;
+}
+
 @media screen and (max-width: 50rem) {
     .wrapper  {
-        position: relative;
-        width: 100%;
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 50%;
+        z-index: 9999;
+        transition: left 0.3s ease-in-out; /* Add transition property */
     }
+
+    .wrapper.active {
+        left: 0; /* Slide in from left when active class is added */
+    }
+
     .wrapper .sidebar {
-        width: 100%;
+        background: linear-gradient(90deg, #23435c, #2d3436);
         height: 100%;
-        position: relative;
-        background-color: white;
     }
 
     .wrapper .sidebar ul li {
@@ -176,7 +200,7 @@ body {
     }
 
     .wrapper .sidebar ul li a {
-        color: black;
+        color: #fff;
         display: block;
         text-decoration: none;
     }
