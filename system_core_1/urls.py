@@ -14,7 +14,6 @@ from .views.stock_analysis import (get_source_stock, get_yearly_product_sales, a
 from .views.feedback import feedback
 from .views.add_to_stock import add_to_stock
 from .views.pending_sales import pending_sales, total_pending_sales, revert_to_stock
-from .views.special_sales import special_sales
 from .views.defects import defects
 
 
@@ -35,7 +34,6 @@ urlpatterns = [
     path('pending_sales/', pending_sales, name='pending_sales'),
     path('revert_to_stock/', revert_to_stock, name='revert_to_stock'),
     path('total_pending_sales/', total_pending_sales, name='total_pending_sales'),
-    path('special_sales/', special_sales, name='special_sales'),
     path('defects/', defects, name='defects'),
     path('upload_image/', data_updates.upload_image, name='upload_image'),
     path('change_password/', data_updates.change_password, name='change_password'),
@@ -44,9 +42,6 @@ urlpatterns = [
     path('verify_stock_recieved/', data_updates.verify_stock_recieved, name='verify_stock_recieved'),
     path('in_stock/', data_updates.in_stock, name='in_stock'),
     path('stock_out/', data_updates.stock_out, name='stock_out'),
-    path('main_storage/', central_display.main_storage, name='main_storage'),
-    path('agents_and_data/', central_display.agents_and_data, name='agents_and_data'),
-    path('deploy_device/<int:data_id>/', action_on_data_select.deploy_device, name='deploy_device'),
     path('sale_on_cash/<int:data_id>/', action_on_data_select.sale_on_cash, name='sale_on_cash'),
     path('data_search/', search_and_filters.data_search, name='data_search'),
     path('search_customers/', search_and_filters.search_customers, name='search_customers'),
