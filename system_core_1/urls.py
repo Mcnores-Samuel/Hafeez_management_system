@@ -25,6 +25,7 @@ urlpatterns = [
     path('main_sales_details/', central_display.main_sales_details, name='main_sales_details'),
     path('resend_confirmation_email', registration_view.resend_confirmation_email, name='resend_confirmation_email'),
     path('generate_agent_code/', user_dashboard.generate_agent_code, name='generate_agent_code'),
+    path('dispatch_stock/', home_page.dispatch_stock, name='dispatch_stock'),
     path('sign_in/', registration_view.sign_in, name='sign_in'),
     path('sign_out/', registration_view.sign_out, name='sign_out'),
     path('dashboard/', user_dashboard.dashboard, name='dashboard'),

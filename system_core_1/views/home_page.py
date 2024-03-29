@@ -12,10 +12,11 @@ from django.http import HttpResponse
 from ..models.user_profile import UserAvatar
 from django.contrib import messages
 from ..models.main_storage import MainStorage
-from ..forms.filters import FilterAgentAndData
-from django.contrib.auth.models import Group
 from ..models.user_profile import UserProfile
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
+import json
 
 
 def home_page(request):
@@ -84,3 +85,61 @@ def confirm(request, token):
     """
     success, user = verify_token(token)
     return HttpResponse(f'Account verified, {user.username}' if success else 'Invalid token')
+
+
+@login_required
+@csrf_exempt
+def dispatch_stock(request):
+    """This view function is responsible for dispatching stock to agents.
+
+    Functionality:
+    - Checks if the user is authenticated.
+    - Renders the dispatch stock page.
+    - Allows dispatching multiple stock items to agents.
+    - Provides options to filter agents and stock items.
+    - Allows the user to select agents and stock items for dispatch.
+    - Validates the dispatch request and updates the stock and agent records.
+
+    Parameters:
+    - request: The HTTP request object containing user information.
+
+    Returns:
+    - Renders the dispatch stock page.
+    - Redirects unauthenticated users to the login page.
+
+    Usage:
+    - Authenticated users access this view to dispatch stock to agents.
+    - The view provides options to filter agents and stock items for dispatch.
+    - The user can select agents and stock items for dispatch.
+    - The view validates the dispatch request and updates the stock and agent records.
+
+    Note:
+    - User authentication and authorization should be managed by the authentication
+      and authorization systems.
+    """
+    if request.method == 'POST' and request.user.is_staff and request.user.is_superuser:
+        data = request.POST.get('data', None)
+        date = request.POST.get('date', None)
+        agent = request.POST.get('agent', None)
+        if data:
+            scanned_items = json.loads(data)
+            date = json.loads(date)
+            agent = json.loads(agent)
+            not_in_stock = []
+            for item in scanned_items:
+                try:
+                    stock_item = MainStorage.objects.get(device_imei=item)
+                    stock_item.collected_on = date
+                    stock_item.agent = UserProfile.objects.get(username=agent)
+                    stock_item.save()
+                    print(item)
+                except MainStorage.DoesNotExist:
+                    not_in_stock.append(item)
+            print(not_in_stock)
+            return JsonResponse({'status': 200, 'not_in_stock': not_in_stock})
+        else:
+            return JsonResponse({'status': 400, 'error': 'No data received'})
+    else:
+        agents = UserProfile.objects.filter(groups__name='agents')
+        special_outlets = UserProfile.objects.filter(groups__name='special_sales')
+    return render(request, 'users/admin_sites/dispatch.html', {'agents': agents, 'special_outlets': special_outlets})

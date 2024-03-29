@@ -30,8 +30,8 @@
         <script src="{% static 'scripts/placeholders.js' %}" defer></script>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <style>
-            .pending-sales-notice {
-                font-size: 7px;
+            .pending-sales-notice, .note-bage {
+                font-size: 10px;
                 position: absolute;
             }
             
@@ -110,23 +110,25 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link d-flex align-items-center" href="{% url 'special_sales' %}"
+                                <a class="nav-link d-flex align-items-center" href="{% url 'dispatch_stock' %}"
                                 data-bs-toggle="tooltip"
-                                title="Special Sales">
+                                title="Deploy Stock">
                                 <span class="material-icons">
-                                    shopping_bag
+                                    send_time_extension
                                 </span>
-                                <span class="text"> Special Sales</span>
+                                <span class="badge bg-success note-bage">new</span>
+                                <span class="text"> Deploy Stock</span>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link d-flex align-items-center" href=""
+                                <a class="nav-link d-flex align-items-center" href="{% url 'add_to_stock' %}"
                                 data-bs-toggle="tooltip"
-                                title="Commisions">
+                                title="Add To Stock">
                                 <span class="material-icons">
-                                    wallet
+                                    add_circle
                                 </span>
-                                <span class="text"> Commisions</span>
+                                <span class="badge bg-success note-bage">new</span>
+                                <span class="text"> Add To Stock</span>
                                 </a>
                             </li>
                             <li class="nav-item">
