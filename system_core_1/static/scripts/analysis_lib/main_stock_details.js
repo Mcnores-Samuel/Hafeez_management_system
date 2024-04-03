@@ -1,9 +1,9 @@
-let main_stockChart = null;
-let main_stockctx = null;
+let mainStockChart = null;
+let mainStockctx = null;
 
-function main_stock_chart_details() {
-  if (main_stockChart === null) {
-    main_stockctx = $('.main_stock_detailed_analysis').get(0).getContext('2d');
+function mainStockChartDetails() {
+  if (mainStockChart === null) {
+    mainStockctx = $('.main_stock_detailed_analysis').get(0).getContext('2d');
   }
 
   const date = new Date();
@@ -28,16 +28,16 @@ function main_stock_chart_details() {
         modelList = data.map((item) => item[0]);
         total = data.map((item) => item[1]);
 
-        if (main_stockChart === null) {
-          main_stockChart = new Chart(main_stockctx, {
+        if (mainStockChart === null) {
+          mainStockChart = new Chart(mainStockctx, {
             type: chartType,
             data: {
               labels: modelList,
               datasets: [{
-                label: date.toDateString(),
+                label: `${date.toLocaleDateString()} Stock Levels`,
                 data: total,
-                backgroundColor: ['navy'],
-                borderColor: ['navy'],
+                backgroundColor: '#2980B9', // Blue color
+                borderColor: '#2980B9', // Blue color
                 borderWidth: 2,
               }],
             },
@@ -51,50 +51,53 @@ function main_stock_chart_details() {
               plugins: {
                 title: {
                   display: true,
-                  text: 'Daily Sales Analysis',
-                  color: 'navy',
+                  text: 'Daily Stock Analysis',
+                  color: '#34495E', // Darker blue color
                   position: 'bottom',
                   align: 'center',
                   font: {
                     weight: 'bold',
+                    size: 16, // Font size
                   },
-                  padding: 8,
+                  padding: 10, // Adjust padding for spacing
                   fullSize: true,
                 },
               },
               scales: {
                 x: {
                   grid: {
-                    display: false,
-                    drawBorder: false,
+                    color: '#ECF0F1', // Light gray grid lines
+                    lineWidth: 0.5, // Adjust grid line thickness
+                    drawBorder: true, // Display chart border
                   },
                   ticks: {
-                    color: 'navy',
+                    color: '#34495E', // Darker blue color
                     font: {
-                      weight: 'bold',
+                      weight: 'normal', // Regular font weight
                     },
                   },
                 },
                 y: {
                   grid: {
-                    display: false,
-                    drawBorder: false,
+                    color: '#ECF0F1', // Light gray grid lines
+                    lineWidth: 0.5, // Adjust grid line thickness
+                    drawBorder: true, // Display chart border
                   },
                   ticks: {
-                    color: 'navy',
+                    color: '#34495E', // Darker blue color
                     font: {
-                      weight: 'bold',
+                      weight: 'normal', // Regular font weight
                     },
                   },
                 },
               },
-
             },
           });
         } else {
-          main_stockChart.data.labels = labelsList;
-          main_stockChart.data.datasets[0].data = total;
-          main_stockChart.update();
+          mainStockChart.data.labels = modelList;
+          mainStockChart.data.datasets[0].data = total;
+          mainStockChart.data.datasets[0].label = `${date.toLocaleDateString()} Stock Levels`;
+          mainStockChart.update();
         }
         setTimeout(fetchAndUpdateDailyData, 5 * 60 * 1000);
       },
@@ -105,4 +108,5 @@ function main_stock_chart_details() {
   }
   fetchAndUpdateDailyData();
 }
-main_stock_chart_details();
+mainStockChartDetails();
+

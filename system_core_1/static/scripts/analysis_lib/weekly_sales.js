@@ -1,9 +1,9 @@
 /**
  * updateWeeklyChart - Fetches data from the server and renders a chart on the canvas element
- * @param {*} dest - The canvas element to render the chart
- * @param {*} url - The url to fetch the data from
- * @param {*} chartType - The type of chart to render
- * @param {*} loader - The loader element to show when fetching data
+ * @param {string} url - The url to fetch the data from
+ * @param {string} dest - The canvas element to render the chart
+ * @param {string} chartType - The type of chart to render
+ * @param {string} loader - The loader element to show when fetching data
  */
 function updateWeeklyChart(url, dest, chartType = 'line', loader) {
   let weeklySalesChart = null;
@@ -44,32 +44,29 @@ function updateWeeklyChart(url, dest, chartType = 'line', loader) {
             data: {
               labels: labelsList,
               datasets: [{
-                label: `This week's total ${overallTotal}`,
                 data: nums,
-                backgroundColor: ['navy'],
-                borderColor: ['navy'],
+                backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                borderColor: 'rgba(54, 162, 235, 1)',
                 borderWidth: 1,
               }],
             },
             options: {
               responsive: true,
               maintainAspectRatio: false,
-              events: ['mousemove'],
-              interaction: {
-                mode: 'nearest',
-              },
               plugins: {
                 title: {
                   display: true,
-                  text: 'Weekly Sales Analysis',
-                  color: 'navy',
+                  text: `Weekly Sales Analysis: total sales: ${overallTotal}`,
                   position: 'bottom',
-                  align: 'center',
+                  color: '#333',
                   font: {
                     weight: 'bold',
+                    size: 16,
                   },
-                  padding: 8,
-                  fullSize: true,
+                  padding: 20,
+                },
+                legend: {
+                  display: false,
                 },
               },
               scales: {
@@ -78,7 +75,7 @@ function updateWeeklyChart(url, dest, chartType = 'line', loader) {
                     display: false,
                   },
                   ticks: {
-                    color: 'black',
+                    color: '#333',
                     font: {
                       weight: 'bold',
                     },
@@ -89,7 +86,7 @@ function updateWeeklyChart(url, dest, chartType = 'line', loader) {
                     display: false,
                   },
                   ticks: {
-                    color: 'black',
+                    color: '#333',
                     font: {
                       weight: 'bold',
                     },
@@ -112,6 +109,7 @@ function updateWeeklyChart(url, dest, chartType = 'line', loader) {
   }
   fetchAndUpdateWeeklyData();
 }
+
 
 const dest_1 = '.Weekly_sales_chart_loan';
 const url_1 = '/system_core_1/get_weekly_sales_json_loan/';

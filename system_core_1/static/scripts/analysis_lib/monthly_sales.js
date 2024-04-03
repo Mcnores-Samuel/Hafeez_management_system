@@ -39,14 +39,13 @@ function updateSalesByAgentChart(url, dest, chartType, loader) {
 
         if (salesByAgentChart === null) {
           salesByAgentChart = new Chart(salesByAgentCtx, {
-            type: chartType,
+            type: chartType, // Assuming chartType is still 'bar'
             data: {
               labels: labelsList,
               datasets: [{
-                label: `${months[date.getMonth()]} Total loan Sales ${total}`,
                 data: nums,
-                backgroundColor: ['navy'],
-                borderColor: ['navy'],
+                backgroundColor: '#2980B9', // Blue color
+                borderColor: '#2980B9', // Blue color
                 borderWidth: 2,
               }],
             },
@@ -60,43 +59,49 @@ function updateSalesByAgentChart(url, dest, chartType, loader) {
               plugins: {
                 title: {
                   display: true,
-                  text: `${months[date.getMonth()]} Sales Analysis`,
-                  color: 'black',
+                  text: `${months[date.getMonth()]} Sales Analysis: total ${total}`,
+                  color: '#34495E', // Darker blue color
                   position: 'bottom',
                   align: 'center',
                   font: {
                     weight: 'bold',
+                    size: 16, // Adjust font size
                   },
-                  padding: 8,
+                  padding: 10, // Adjust padding for spacing
                   fullSize: true,
                 },
+                legend: {
+                  display: false,
+                },
               },
-              indexAxis: 'y',
-              barPercentage: 0.7,
-              categoryPercentage: 0.7,
+              indexAxis: 'y', // Explicitly set y-axis as the index axis
+              barPercentage: 0.7, // Adjust bar width
+              categoryPercentage: 0.7, // Adjust spacing between bars
               scales: {
                 x: {
                   grid: {
-                    display: false,
+                    color: '#ECF0F1', // Light gray grid lines
+                    lineWidth: 0.5, // Adjust grid line thickness
                   },
 
                   ticks: {
-                    beginAtZero: true,
-                    stepSize: 1,
-                    color: 'black',
+                    beginAtZero: true, // Start axis at 0
+                    stepSize: 1, // Show values for each agent
+                    color: '#34495E', // Darker blue color
                     font: {
-                      weight: 'bold',
+                      weight: 'normal', // Regular font weight
                     },
                   },
                 },
                 y: {
                   grid: {
-                    display: false,
+                    color: '#ECF0F1', // Light gray grid lines
+                    lineWidth: 0.5, // Adjust grid line thickness
                   },
                   ticks: {
-                    color: 'black',
+                    color: '#34495E', // Darker blue color
                     font: {
-                      weight: 'bold',
+                      weight: 'normal', // Regular font weight
                     },
                   },
                 },
@@ -106,7 +111,7 @@ function updateSalesByAgentChart(url, dest, chartType, loader) {
         } else {
           salesByAgentChart.data.labels = labelsList;
           salesByAgentChart.data.datasets[0].data = nums;
-          salesByAgentChart.data.datasets[0].label = `${months[date.getMonth()]} Total loan Sales ` + `${total}`;
+          salesByAgentChart.data.datasets[0].label = `${months[date.getMonth()]} Total Loan Sales: ${total}`;
           salesByAgentChart.update();
         }
         setTimeout(fetchAndUpdateAgentMonthly, 5 * 60 * 1000);
@@ -128,5 +133,4 @@ const loader_monthly2 = '.agent_sales_cash_chart_loader';
 
 updateSalesByAgentChart(url_monthly, dest_monthly,
   'bar', loader_monthly);
-updateSalesByAgentChart(url_monthly2, dest_monthly2,
-  'bar', loader_monthly2);
+updateSalesByAgentChart(url_monthly2, dest_monthly2, 'bar', loader_monthly2);

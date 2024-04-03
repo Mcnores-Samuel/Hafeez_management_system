@@ -1,10 +1,3 @@
-/**
- * updateDailyChart - Fetches the data from the url and renders the chart
- * @param {*} url - The url to fetch the data from
- * @param {*} dest - The canvas element to render the chart
- * @param {*} chartType - The type of chart to render
- * @param {*} loader - The loader element to show when fetching data
- */
 function updateDailyChart(url, dest, chartType, loader) {
   let dailySalesChart = null;
   let dailyCtx = null;
@@ -46,14 +39,14 @@ function updateDailyChart(url, dest, chartType, loader) {
               datasets: [{
                 label: `${date.toDateString()} Total ${overallTotal}`,
                 data: total,
-                backgroundColor: ['navy'],
-                borderColor: ['navy'],
+                backgroundColor: '#2980B9', // Blue color
+                borderColor: '#2980B9', // Blue color
                 borderWidth: 2,
               }],
             },
             options: {
               responsive: true,
-              maintainAspectRatio: false,
+              maintainAspectRatio: false, // Allows for better chart scaling
               events: ['mousemove'],
               interaction: {
                 mode: 'nearest',
@@ -62,41 +55,42 @@ function updateDailyChart(url, dest, chartType, loader) {
                 title: {
                   display: true,
                   text: 'Daily Sales Analysis',
-                  color: 'navy',
+                  color: '#34495E', // Darker blue color
                   position: 'bottom',
                   align: 'center',
                   font: {
                     weight: 'bold',
                   },
-                  padding: 8,
+                  padding: 10, // Adjust padding for spacing
                   fullSize: true,
                 },
               },
               scales: {
                 x: {
                   grid: {
-                    display: false,
+                    color: '#ECF0F1', // Light gray grid lines
+                    lineWidth: 0.5, // Adjust grid line thickness
                   },
                   ticks: {
-                    color: 'navy',
+                    color: '#34495E', // Darker blue color
                     font: {
-                      weight: 'bold',
+                      weight: 'normal', // Regular font weight
                     },
                   },
                 },
                 y: {
                   grid: {
-                    display: false,
+                    color: '#ECF0F1', // Light gray grid lines
+                    lineWidth: 0.5, // Adjust grid line thickness
                   },
                   ticks: {
-                    color: 'navy',
+                    color: '#34495E', // Darker blue color
                     font: {
-                      weight: 'bold',
+                      weight: 'normal', // Regular font weight
                     },
                   },
                 },
               },
-
             },
           });
         } else {

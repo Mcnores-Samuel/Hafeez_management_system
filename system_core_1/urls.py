@@ -68,6 +68,7 @@ urlpatterns = [
     path('get_new_entries/', get_new_entries, name='get_new_entries'),
     path('get_new_entries_total/', get_new_entries_total, name='get_new_entries_total'),
     path('get_yearly_sales/', data_for_charts.get_yearly_sales, name='get_yearly_sales'),
+    path('get_yearly_sales_total/', data_for_charts.get_yearly_sales_total, name='get_yearly_sales_total'),
     path('mark_as_read/', mark_as_read, name='mark_as_read'),
     path('approve/', approve, name='approve'),
     path('get_total_to_approve/', get_total_to_approve, name='get_total_to_approve'),

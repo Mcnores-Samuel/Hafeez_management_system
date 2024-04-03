@@ -115,19 +115,22 @@ class MainStorageAnalysis:
         elif (agent.groups.filter(name='staff_members').exists() or
               agent.is_superuser):
             sales = {}
+            overall_sales = {}
             main_shop_staff = Group.objects.get(name='main_shop')
             representatives = UserProfile.objects.filter(groups=main_shop_staff)
             for month in months:
-                sales[month] = len(MainStorage.objects.filter(
-                    agent__in=representatives,
-                    in_stock=False,
-                    assigned=True,
-                    sold=True,
-                    missing=False,
-                    pending=False,
-                    stock_out_date__month=months.index(month)+1,
-                    stock_out_date__year=timezone.now().date().year))
-            return sales
+                total = MainStorage.objects.filter(
+                    agent__in=representatives, in_stock=False,
+                    assigned=True, sold=True, missing=False,
+                    pending=False, stock_out_date__month=months.index(month)+1,
+                    stock_out_date__year=timezone.now().date().year).count()
+                main = MainStorage.objects.filter(in_stock=False,
+                    assigned=True, sold=True, missing=False,
+                    pending=False, stock_out_date__month=months.index(month)+1,
+                    stock_out_date__year=timezone.now().date().year).count()
+                sales[month] = total
+                overall_sales[month] = main
+            return sales, overall_sales
         return None
     
     def overall_stock(self):

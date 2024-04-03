@@ -53,7 +53,7 @@ function agentsStockChartDetails(url, dest, chartType, loader) {
             data: {
               labels: modelList,
               datasets: [{
-                label: 'Total ' + `${overallTotal}`,
+                label: `Total ${overallTotal}`,
                 data: total,
                 backgroundColor: colors,
                 borderColor: colors,
@@ -74,7 +74,7 @@ function agentsStockChartDetails(url, dest, chartType, loader) {
               plugins: {
                 title: {
                   display: true,
-                  text: 'Total overall stock ' + `${overallTotal}`,
+                  text: `Total overall stock ${overallTotal}`,
                   color: 'navy',
                   position: 'bottom',
                   align: 'center',
@@ -87,6 +87,7 @@ function agentsStockChartDetails(url, dest, chartType, loader) {
                 legend: {
                   display: true,
                   position: 'right',
+                  align: 'center',
                   labels: {
                     color: 'black',
                     font: {
