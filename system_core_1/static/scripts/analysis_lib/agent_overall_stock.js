@@ -19,6 +19,8 @@ function agentsStockChartDetails(url, dest, chartType, loader) {
     const total = [];
     const colors = [];
     let overallTotal = 0;
+    let targetCapacity = 0; // Variable to store target capacity
+    let filledPercentage = 0; // Variable to store the percentage of stock filled
 
     $.ajax({
       url,
@@ -37,8 +39,13 @@ function agentsStockChartDetails(url, dest, chartType, loader) {
             modelList.push(model);
             total.push(value);
           }
+          if (model === 'Target Capacity') {
+            targetCapacity = value; // Get the target capacity from the response
+          }
           overallTotal === 0 ? overallTotal = data.Total : overallTotal;
         });
+
+        filledPercentage = (overallTotal / targetCapacity) * 100; // Calculate filled percentage
 
         for (let i = 0; i < modelList.length; i++) {
           const num1 = Math.round(Math.random() * 255 + 1);
@@ -97,6 +104,20 @@ function agentsStockChartDetails(url, dest, chartType, loader) {
                   },
                 },
               },
+              annotation: { // Add annotation to show the target capacity
+                annotations: [{
+                  type: 'line',
+                  mode: 'horizontal',
+                  scaleID: 'y',
+                  value: targetCapacity,
+                  borderColor: 'rgba(255,0,0,0.5)',
+                  borderWidth: 2,
+                  label: {
+                    enabled: true,
+                    content: 'Target Capacity',
+                  },
+                }],
+              },
             },
           });
         } else {
@@ -113,6 +134,7 @@ function agentsStockChartDetails(url, dest, chartType, loader) {
   }
   fetchAndUpdateDailyData();
 }
+
 const url_agents_stock = '/system_core_1/get_agents_stock_json/';
 const dest_all_stock = '.all_agents_stock_chart';
 const chartType = 'doughnut';

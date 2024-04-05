@@ -1,9 +1,16 @@
-function yearly_sales_analysis(url, dest, chartType, loader) {
-  let sales_analystChart = null;
-  let yearly_analysisctx = null;
+/**
+ * Yearly Sales Analysis - Fetches data from the server and renders a chart
+ * @param {*} url - The url to fetch data from
+ * @param {*} dest - The destination to render the chart
+ * @param {*} chartType - The type of chart to render
+ * @param {*} loader - The loader to show when fetching data
+ */
+function yearlySalesAnalysis(url, dest, chartType, loader) {
+  let salesAnalystChart = null;
+  let yearlyAnalysisctx = null;
 
-  if (sales_analystChart === null) {
-    yearly_analysisctx = $(dest).get(0).getContext('2d');
+  if (salesAnalystChart === null) {
+    yearlyAnalysisctx = $(dest).get(0).getContext('2d');
   }
 
   const date = new Date();
@@ -29,8 +36,8 @@ function yearly_sales_analysis(url, dest, chartType, loader) {
           total.push(value);
         });
 
-        if (sales_analystChart === null) {
-          sales_analystChart = new Chart(yearly_analysisctx, {
+        if (salesAnalystChart === null) {
+          salesAnalystChart = new Chart(yearlyAnalysisctx, {
             type: chartType,
             data: {
               labels: modelList,
@@ -39,8 +46,34 @@ function yearly_sales_analysis(url, dest, chartType, loader) {
                 data: total,
                 backgroundColor: '#4285F4',
                 borderColor: '#4285F4',
+                borderWidth: 0.1,
+              },
+              {
+                label: 'Total Sales',
+                data: total,
+                backgroundColor: '#0F9D58',
+                borderColor: '#0F9D58',
                 borderWidth: 2,
-              }],
+                type: 'line',
+                fill: false,
+                yAxisID: 'y',
+                order: 1,
+                tension: 0.4,
+                pointRadius: 5,
+                pointHoverRadius: 7,
+                pointBackgroundColor: '#0F9D58',
+                pointBorderColor: '#0F9D58',
+                pointHoverBackgroundColor: '#0F9D58',
+                pointHoverBorderColor: '#0F9D58',
+                pointBorderWidth: 2,
+                pointHoverBorderWidth: 3,
+                hitRadius: 10,
+                hoverRadius: 10,
+                hoverBorderWidth: 3,
+                hoverBackgroundColor: '#0F9D58',
+                hoverBorderColor: '#0F9D58',
+              },
+              ],
             },
             options: {
               responsive: true,
@@ -91,9 +124,9 @@ function yearly_sales_analysis(url, dest, chartType, loader) {
             },
           });
         } else {
-          sales_analystChart.data.labels = labelsList;
-          sales_analystChart.data.datasets[0].data = total;
-          sales_analystChart.update();
+          salesAnalystChart.data.labels = modelList;
+          salesAnalystChart.data.datasets[0].data = total;
+          salesAnalystChart.update();
         }
         setTimeout(fetchAndUpdateDailyData, 5 * 60 * 1000);
       },
@@ -105,12 +138,19 @@ function yearly_sales_analysis(url, dest, chartType, loader) {
   fetchAndUpdateDailyData();
 }
 
-function yearly_sales_analysis_product(url, dest, chartType, loader) {
-  let sales_analystChart_pro = null;
-  let yearly_analysisctx_pro = null;
+/**
+ *
+ * @param {*} url - The url to fetch data from
+ * @param {*} dest - The destination to render the chart
+ * @param {*} chartType - The type of chart to render
+ * @param {*} loader - The loader to show when fetching data
+ */
+function yearlySalesAnalysisProduct(url, dest, chartType, loader) {
+  let salesAnalystChartPro = null;
+  let yearlyAnalysisctxPro = null;
 
-  if (sales_analystChart_pro === null) {
-    yearly_analysisctx_pro = $(dest).get(0).getContext('2d');
+  if (salesAnalystChartPro === null) {
+    yearlyAnalysisctxPro = $(dest).get(0).getContext('2d');
   }
 
   const date = new Date();
@@ -134,8 +174,8 @@ function yearly_sales_analysis_product(url, dest, chartType, loader) {
         modelList = data.map((item) => item[0]);
         total = data.map((item) => item[1]);
 
-        if (sales_analystChart_pro === null) {
-          sales_analystChart_pro = new Chart(yearly_analysisctx_pro, {
+        if (salesAnalystChartPro === null) {
+          salesAnalystChartPro = new Chart(yearlyAnalysisctxPro, {
             type: chartType,
             data: {
               labels: modelList,
@@ -196,9 +236,9 @@ function yearly_sales_analysis_product(url, dest, chartType, loader) {
             },
           });
         } else {
-          sales_analystChart_pro.data.labels = labelsList;
-          sales_analystChart_pro.data.datasets[0].data = total;
-          sales_analystChart_pro.update();
+          salesAnalystChartPro.data.labels = modelList;
+          salesAnalystChartPro.data.datasets[0].data = total;
+          salesAnalystChartPro.update();
         }
         setTimeout(fetchAndUpdateDailyData, 5 * 60 * 1000);
       },
@@ -210,32 +250,31 @@ function yearly_sales_analysis_product(url, dest, chartType, loader) {
   fetchAndUpdateDailyData();
 }
 
-const url_yearly = '/system_core_1/get_yearly_sales/';
-const dest_yearly = '.yearly_sales_chart';
-const chartType_yearly = 'bar';
-const loader_yearly = '.yearly_sales_chart_loader';
+const urlYearly = '/system_core_1/get_yearly_sales/';
+const destYearly = '.yearly_sales_chart';
+const chartTypeYearly = 'bar';
+const loaderYearly = '.yearly_sales_chart_loader';
 
-const product_analysis = '/system_core_1/get_yearly_product_sales/';
-const product_dest = '.yearly_product_sales_chart';
-const product_loader = '.yearly_product_sales_chart_loader';
-const chartType_product = 'bar';
+const productAnalysis = '/system_core_1/get_yearly_product_sales/';
+const productDest = '.yearly_product_sales_chart';
+const productLoader = '.yearly_product_sales_chart_loader';
+const chartTypeProduct = 'bar';
 
 const urlYearlyOther = '/system_core_1/get_yearly_sales_total/';
 const destYearlyOther = '.yearly_sales_chart_total';
 const chartTypeYearlyOther = 'bar';
 const loaderYearlyOther = '.yearly_sales_chart_loader_total';
 
-
-yearly_sales_analysis(
-  url_yearly, dest_yearly,
-  chartType_yearly, loader_yearly,
+yearlySalesAnalysis(
+  urlYearly, destYearly,
+  chartTypeYearly, loaderYearly,
 );
 
-yearly_sales_analysis(
+yearlySalesAnalysis(
   urlYearlyOther, destYearlyOther,
   chartTypeYearlyOther, loaderYearlyOther,
 );
-yearly_sales_analysis_product(
-  product_analysis, product_dest,
-  chartType_product, product_loader,
+yearlySalesAnalysisProduct(
+  productAnalysis, productDest,
+  chartTypeProduct, productLoader,
 );

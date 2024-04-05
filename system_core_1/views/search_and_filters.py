@@ -63,31 +63,3 @@ def search(search_query):
             Q(category__icontains=search_query)
         )
     return queryset
-
-
-def search_customers(request):
-    """The `search_customers` view function is responsible for handling the search
-    functionality for all data in the application.
-    """
-    if request.method == 'POST':
-        search_query = request.POST.get('search_query', None)
-        queryset = []
-        if search_query:
-            queryset = CustomerData.objects.all()
-            queryset = queryset.filter(
-                    Q(agent__user__username__icontains=search_query) |
-                    Q(customer_name__icontains=search_query) |
-                    Q(national_id__icontains=search_query) |
-                    Q(customer_contact__icontains=search_query) |
-                    Q(second_contact__icontains=search_query) |
-                    Q(first_witness_name__icontains=search_query) |
-                    Q(first_witness_contact__icontains=search_query) |
-                    Q(account_name__icontains=search_query)
-                ).order_by('-created_at')
-        customers = [(customer, list(customer.phonedata_set.all())) for customer in queryset]
-
-        context = {
-            'customers': customers
-        }
-        return render(request, 'users/staff_sites/search_customers.html', context)
-    return render(request, 'users/staff_sites/search_customers.html')

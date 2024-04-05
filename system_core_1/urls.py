@@ -1,55 +1,48 @@
 from django.urls import path, include
 from django.contrib.auth import views as auth_views
-from .views import (registration_view, data_updates, customer_registrar,
-                    central_display, home_page, user_dashboard, action_on_data_select,
-                    search_and_filters, approve_contracts,
-                    data_for_charts)
-from .views.staff_sites.approve import (
-    approved, get_approved_data, approve, get_total_to_approve)
-from .views.staff_sites.new_entries import (get_new_entries, get_new_entries_total, mark_as_read)
-from .views.staff_sites.edit_customer_data import edit_customer_data
-from .views.staff_sites.delete_data import delete_customer_data
-from .views.staff_sites.rejected import total_rejected, get_rejected
+from .views import (registration_view, data_updates, central_display, home_page, sales_register,
+                    user_dashboard, action_on_data_select, search_and_filters, data_for_charts)
 from .views.stock_analysis import (get_source_stock, get_yearly_product_sales, admin_stock_analysis)
 from .views.feedback import feedback
 from .views.add_to_stock import add_to_stock
-from .views.pending_sales import pending_sales, total_pending_sales, revert_to_stock
+from .views.pending_sales import total_pending_sales, revert_to_stock, pending_sales
 from .views.defects import defects
+from  .views import revenues
 
 
 urlpatterns = [
+    # home page
     path('', home_page.home_page, name='home_page'),
+    # registration
     path('sign_up/', registration_view.sign_up, name='sign_up'),
-    path('main_stock_details/', central_display.main_stock_details, name='main_stock_details'),
-    path('main_sales_details/', central_display.main_sales_details, name='main_sales_details'),
-    path('resend_confirmation_email', registration_view.resend_confirmation_email, name='resend_confirmation_email'),
-    path('generate_agent_code/', user_dashboard.generate_agent_code, name='generate_agent_code'),
-    path('dispatch_stock/', home_page.dispatch_stock, name='dispatch_stock'),
     path('sign_in/', registration_view.sign_in, name='sign_in'),
     path('sign_out/', registration_view.sign_out, name='sign_out'),
+    path('resend_confirmation_email', registration_view.resend_confirmation_email, name='resend_confirmation_email'),
+    path('generate_agent_code/', user_dashboard.generate_agent_code, name='generate_agent_code'),
+    # Data on actions on data and admin panel
     path('dashboard/', user_dashboard.dashboard, name='dashboard'),
+    path('main_stock_details/', central_display.main_stock_details, name='main_stock_details'),
+    path('main_sales_details/', central_display.main_sales_details, name='main_sales_details'),
+    path('dispatch_stock/', home_page.dispatch_stock, name='dispatch_stock'),
+    path('revenues/', revenues.revenues, name='revenues'),
+    path('revert_to_stock/', revert_to_stock, name='revert_to_stock'),
+    path('pending_sales/', pending_sales, name='pending_sales'),
+    path('defects/', defects, name='defects'),
+    # General access points
     path('profile/', data_updates.profile, name='profile'),
     path('feedback/', feedback, name='feedback'),
     path('add_to_stock/', add_to_stock, name='add_to_stock'),
-    path('pending_sales/', pending_sales, name='pending_sales'),
-    path('revert_to_stock/', revert_to_stock, name='revert_to_stock'),
-    path('total_pending_sales/', total_pending_sales, name='total_pending_sales'),
-    path('defects/', defects, name='defects'),
+    path('data_search/', search_and_filters.data_search, name='data_search'),
     path('upload_image/', data_updates.upload_image, name='upload_image'),
     path('change_password/', data_updates.change_password, name='change_password'),
-    path('combinedData_collection/<int:data_id>/', customer_registrar.combinedData_collection, name='combinedData_collection'),
+    path('combinedData_collection/<int:data_id>/', sales_register.combinedData_collection, name='combinedData_collection'),
     path('add_contract_number/', data_updates.add_contract_number, name='add_contract_number'),
+    # Agents and staff access points
     path('verify_stock_recieved/', data_updates.verify_stock_recieved, name='verify_stock_recieved'),
     path('in_stock/', data_updates.in_stock, name='in_stock'),
     path('stock_out/', data_updates.stock_out, name='stock_out'),
     path('sale_on_cash/<int:data_id>/', action_on_data_select.sale_on_cash, name='sale_on_cash'),
-    path('data_search/', search_and_filters.data_search, name='data_search'),
-    path('search_customers/', search_and_filters.search_customers, name='search_customers'),
-    path('update_customer_data/', data_updates.update_customer_data, name='update_customer_data'),
-    path('approve_contracts/', approve_contracts.approve_contracts, name='approve_contracts'),
-    path('decline_contracts/', approve_contracts.decline_contracts, name='decline_contracts'),
-    path('sale_aitel_device/', approve_contracts.sale_aitel_device, name='sale_aitel_device'),
-    # produces data for charts in dashboard
+    # Concurent system operations
     path('get_daily_sales_json_loan/', data_for_charts.get_daily_sales_json_loan, name='get_daily_sales_json_loan'),
     path('get_daily_sales_json_cash/', data_for_charts.get_daily_sales_json_cash, name='get_daily_sales_json_cash'),
     path('get_weekly_sales_json_loan/', data_for_charts.get_weekly_sales_json_loan, name='get_weekly_sales_json_loan'),
@@ -63,19 +56,12 @@ urlpatterns = [
     path('get_yearly_product_sales/', get_yearly_product_sales, name='get_yearly_product_sales'),
     path('get_main_stock_analysis/', data_for_charts.get_main_stock_analysis, name='get_main_stock_analysis'),
     path('admin_stock_analysis/', admin_stock_analysis, name='admin_stock_analysis'),
-    path('get_approved/', approved, name='approved'),
-    path('get_approved_data/', get_approved_data, name='get_approved_data'),
-    path('get_new_entries/', get_new_entries, name='get_new_entries'),
-    path('get_new_entries_total/', get_new_entries_total, name='get_new_entries_total'),
+    path('total_pending_sales/', total_pending_sales, name='total_pending_sales'),
     path('get_yearly_sales/', data_for_charts.get_yearly_sales, name='get_yearly_sales'),
     path('get_yearly_sales_total/', data_for_charts.get_yearly_sales_total, name='get_yearly_sales_total'),
-    path('mark_as_read/', mark_as_read, name='mark_as_read'),
-    path('approve/', approve, name='approve'),
-    path('get_total_to_approve/', get_total_to_approve, name='get_total_to_approve'),
-    path('edit_customer_data/<int:customer_id>', edit_customer_data, name='edit_customer_data'),
-    path('delete_customer_data/', delete_customer_data, name='delete_customer_data'),
-    path('total_rejected/', total_rejected, name='total_rejected'),
-    path('get_rejected/', get_rejected, name='get_rejected'),
+    # Revenue analysis and concurent operations
+    path('updateCreditPrices/', revenues.updateCreditPrices, name='updateCreditPrices'),
+    path('calculateCreditRevenue/', revenues.calculateCreditRevenue, name='calculateCreditRevenue'),
     # reseting user password
     path('password_reset/', auth_views.PasswordResetView.as_view(template_name='registration/reset_form.html'), name='password_reset'),
     path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(template_name='registration/reset_done.html'), name='password_reset_done'),

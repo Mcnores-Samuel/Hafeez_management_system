@@ -17,7 +17,6 @@
         {% block head %}
         <link rel="stylesheet" href="{% static 'styles/loading-message.css' %}">
         <script src="{% static 'scripts/analysis_lib/admin_stock_analysis.js' %}" defer></script>
-        <script src="{% static 'scripts/data_updates.js' %}"></script>
         <script src="{% static 'scripts/analysis_lib/daily_sales.js' %}" defer></script>
         <script src="{% static 'scripts/analysis_lib/weekly_sales.js' %}" defer></script>
         <script src="{% static 'scripts/analysis_lib/monthly_sales.js' %}" defer></script>
@@ -27,7 +26,6 @@
         {% endblock %}
         <script src="{% static 'scripts/pending_sales.js' %}" defer></script>
         <script src="{% static 'scripts/sidebar.js' %}" defer></script>
-        <script src="{% static 'scripts/placeholders.js' %}" defer></script>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <style>
             .pending-sales-notice, .note-bage {
@@ -130,13 +128,13 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link d-flex align-items-center" href=""
+                                <a class="nav-link d-flex align-items-center" href="{% url 'revenues' %}"
                                 data-bs-toggle="tooltip"
-                                title="Transactions">
+                                title="Revenue">
                                 <span class="material-icons">
                                     paid
                                 </span>
-                                <span class="text"> Payments</span>
+                                <span class="text"> Revenue</span>
                                 </a>
                             </li>
                             <li class="nav-item">

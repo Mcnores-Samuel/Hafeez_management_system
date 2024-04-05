@@ -16,16 +16,10 @@
         <link rel="stylesheet" href="{% static 'styles/dashboard.css' %}">
         {% block head %}
         <link rel="stylesheet" href="{% static 'styles/loading-message.css' %}">
-        <script src="{% static 'scripts/data_updates.js' %}"></script>
-        <script src="{% static 'scripts/analysis_lib/yearly_analysis.js' %}" defer></script>
-        <script src="{% static 'scripts/staff_lib/approve.js' %}" defer></script>
-        <script src="{% static 'scripts/staff_lib/new_entries.js' %}" defer></script>
-        <script src="{% static 'scripts/staff_lib/get_total.js' %}" defer></script>
-        <script src="{% static 'scripts/staff_lib/total_rejected.js' %}" defer></script>
+        <script src="{% static 'scripts/analysis_lib/yearly_analysis.js' %}" defer></script>ript>
         <script src="{% static 'scripts/analysis_lib/daily_sales.js' %}" defer></script>
         {% endblock %}
         <script src="{% static 'scripts/sidebar.js' %}" defer></script>
-        <script src="{% static 'scripts/placeholders.js' %}" defer></script>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     </head>
     <body>
@@ -56,56 +50,6 @@
                                         dashboard
                                     </span>
                                     <span class="text"> Dashboard</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link d-flex align-items-center" href="{% url 'search_customers' %}"
-                                data-bs-toggle="tooltip"
-                                title="Customers data">
-                                    <span class="material-icons">
-                                        manage_search
-                                    </span>
-                                    <span class="text"> Customers</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link d-flex align-items-center" href="{% url 'get_new_entries' %}"
-                                data-bs-toggle="tooltip"
-                                title="New Entries">
-                                <span class="material-icons">
-                                    new_releases
-                                </span>
-                                <span class="text"> New Entries</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link d-flex align-items-center" href="{% url 'approve' %}"
-                                data-bs-toggle="tooltip"
-                                title="Pending Contracts">
-                                <span class="material-icons">
-                                    pending_actions
-                                </span>
-                                <span class="text"> Approve</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link d-flex align-items-center" href="{% url 'get_approved_data' %}"
-                                data-bs-toggle="tooltip" 
-                                title="Approved Contracts">
-                                <span class="material-icons">
-                                    verified
-                                </span>
-                                <span class="text"> Approved</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link d-flex align-items-center" href="{% url 'get_rejected' %}"
-                                data-bs-toggle="tooltip" 
-                                title="Rejected Contracts">
-                                <span class="material-icons">
-                                    report_problem
-                                </span>
-                                <span class="text"> Rejected</span>
                                 </a>
                             </li>
                             <li class="nav-item">
@@ -205,7 +149,7 @@
                                                 notifications
                                             </span>
                                         <div class="">
-                                            <p>Hello There, Welcome to Hafeez new updates</p>
+                                            <p></p>
                                         </div>
                                     </div>
                                 </a>
@@ -259,94 +203,27 @@
                 </div>
             </div>
             <br>
-            <section class="charts-and-data">
-                <div class="row gy-3">
-                    <div class="col-md-3 col-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="icon">
-                                        <span class="material-icons text-primary">
-                                            new_releases
-                                        </span>
-                                    </div>
-                                    <div class="">
-                                        <p>New Entries <span class="badge bg-secondary new-entries-notice">0</span></p>
-                                    </div>
-                                </div>
-                                <a href="{% url 'get_new_entries' %}" class="btn btn-primary ms-auto p-2 bd-highlight w-100">Upload</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <span class="material-icons text-info">
-                                        pending_actions
-                                    </span>
-                                    <div class="">
-                                        <p>Pending Approval <span class="badge bg-secondary total-to-approve">0</span></p>
-                                    </div>
-                                </div>
-                                <a href="{% url 'approve' %}" class="btn btn-info ms-auto p-2 bd-highlight w-100">Approve</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <span class="material-icons text-success">
-                                        verified
-                                    </span>
-                                    <div class="">
-                                        <p>Approved <span class="badge bg-secondary approved-notice">0</span></p>
-                                    </div>
-                                </div>
-                                <a href="{% url 'get_approved_data' %}" class="btn btn-success ms-auto p-2 bd-highlight w-100">View Details</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <span class="material-icons text-danger">
-                                        report_problem
-                                    </span>
-                                    <div class="">
-                                        <p>Rejected <span class="badge bg-secondary total-rejected">0</span></p>
-                                    </div>
-                                </div>
-                                <a href="{% url 'get_rejected' %}" class="btn btn-danger ms-auto p-2 bd-highlight w-100">View Details</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <br>
             <section class="charts_by_chartjs">
                 <div class="row gy-3">
                     <div class="col-md-6 col-12">
-                        <div class="card">
+                        <div class="card ">
                             <div class="card-header text-center">
-                                <h4>Daily Sales On Cash</h4>
+                                <h4 class="text-muted fw-bold">Daily Sales on loan</h4>
                             </div>
                             <div class="card-body">
-                                <div class="daily_sales_loader_cash"></div>
-                                <canvas class="daily_sales_chart_cash" aria-label="chart" width="400" height="400"></canvas>
+                                <div class="daily_sales_loader_loan text-light"></div>
+                                <canvas class="daily_sales_chart_loan" width="400" height="400"></canvas>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6 col-12">
                         <div class="card">
                             <div class="card-header text-center">
-                                <h4>Daily Sales On Loan</h4>
+                                <h4 class="fw-bold text-muted">Daily Sales on Cash</h4>
                             </div>
                             <div class="card-body">
-                                <div class="daily_sales_loader_loan"></div>
-                                <canvas class="daily_sales_chart_loan" aria-label="chart" width="400" height="400"></canvas>
+                                <div class="daily_sales_loader_cash"></div>
+                                <canvas class="daily_sales_chart_cash" width="400" height="400"></canvas>
                             </div>
                         </div>
                     </div>
@@ -354,11 +231,11 @@
             </section>
             <br>
             <section class="yearly_analysis">
-                <div class="row">
-                    <div class="col-md-6 col-12 w-100">
+                <div class="row gy-3">
+                    <div class="col-md-6 col-12">
                         <div class="card">
                             <div class="card-header text-center">
-                                <h4>Yearly Sales</h4>
+                                <h4 class="fw-bold text-muted">Main Shop Yearly Sales</h4>
                             </div>
                             <div class="card-body">
                                 <div class="yearly_sales_chart_loader"></div>
@@ -366,11 +243,23 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-md-6 col-12">
+                        <div class="card">
+                            <div class="card-header text-center">
+                                <h4 class="fw-bold text-muted">Overall Yearly Sales</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="yearly_sales_chart_loader_total"></div>
+                                <canvas class="yearly_sales_chart_total" width="400" height="400"></canvas>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </section>
             {% endblock %}
         </section>
-        <div class="divider"></div>
+        <br>
+        <hr>
         <footer>
             {% block footer %}
             <div>

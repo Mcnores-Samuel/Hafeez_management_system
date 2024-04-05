@@ -240,37 +240,4 @@ def verify_stock_recieved(request):
                 return JsonResponse({'message': 'verified successfully'})
             else:
                 return JsonResponse({'message': 'imei number not found'})
-            
-        elif request.user.groups.filter(name='airtel_agents').exists():
-            imei_number = request.POST.get('device_imei', None)
-            if imei_number:
-                main_storage = Airtel_mifi_storage.objects.get(device_imei=imei_number)
-                if main_storage:
-                    main_storage.recieved = True
-                    main_storage.save()
-                return JsonResponse({'message': 'verified successfully'})
-            else:
-                return JsonResponse({'message': 'imei number not found'})
-    return redirect('dashboard')
-
-
-@login_required
-def update_customer_data(request):
-    """Updates customer data.
-    user must be an agent to access this view.
-
-    Args:
-        request (HttpRequest): The request object.
-
-    Returns:
-        HttpResponse: The response object.
-    """
-    if request.method == 'POST':
-        account_name = request.POST.get('account_name', None)
-        customer_id = request.POST.get('customer_id', None)
-        customer = CustomerData.objects.get(id=customer_id)
-        if customer:
-            customer.account_name = account_name
-            customer.save()
-            messages.success(request, 'customer data updated successfully')
     return redirect('dashboard')
