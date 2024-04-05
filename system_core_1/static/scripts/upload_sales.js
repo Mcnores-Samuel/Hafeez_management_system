@@ -3,7 +3,7 @@ const scannedItem = $('#data');
 const form = $('form');
 const waitingRoom = $('#waiting-room ul');
 const date = $('#date');
-const agent = $('#agent');
+const sales_type = $('#sales_type');
 const deploy = $('#deploy');
 const total = $('#total');
 const csrf = $('#token');
@@ -33,8 +33,8 @@ function deployData() {
   });
 
   deploy.on('click', () => {
-    if (date.val() === '' || agent.val() === '') {
-      const note = '<div class="alert alert-danger alert-dismissible fade show" role="alert">Please select date and agent\
+    if (date.val() === '' || sales_type.val() === '') {
+      const note = '<div class="alert alert-danger alert-dismissible fade show" role="alert">Please select date and sales_type\
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>\
         </div>';
       $(note).insertBefore(form);
@@ -54,13 +54,13 @@ function deployData() {
       return;
     }
     $.ajax({
-      url: '/system_core_1/dispatch_stock/',
+      url: '/system_core_1/uploadBulkSales/',
       type: 'POST',
       data: {
         csrfmiddlewaretoken: csrf.val(),
         data: JSON.stringify(container),
         date: JSON.stringify(date.val()),
-        agent: JSON.stringify(agent.val()),
+        sales_type: JSON.stringify(sales_type.val()),
       },
       beforeSend() {
         const load = $('.loading');
@@ -71,7 +71,7 @@ function deployData() {
           container = [];
           waitingRoom.html('');
           date.val('');
-          agent.val('');
+          sales_type.val('');
           total.text(container.length);
           if (response.not_in_stock.length > 0) {
             waitingRoom.html(`<li class="list-group-item bg-danger">${response.not_in_stock.join('</li><li class="list-group-item bg-danger">')}</li>`);

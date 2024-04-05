@@ -1,4 +1,4 @@
-from django.urls import path, include
+from django.urls import path
 from django.contrib.auth import views as auth_views
 from .views import (registration_view, data_updates, central_display, home_page, sales_register,
                     user_dashboard, action_on_data_select, search_and_filters, data_for_charts)
@@ -18,12 +18,12 @@ urlpatterns = [
     path('sign_in/', registration_view.sign_in, name='sign_in'),
     path('sign_out/', registration_view.sign_out, name='sign_out'),
     path('resend_confirmation_email', registration_view.resend_confirmation_email, name='resend_confirmation_email'),
-    path('generate_agent_code/', user_dashboard.generate_agent_code, name='generate_agent_code'),
     # Data on actions on data and admin panel
     path('dashboard/', user_dashboard.dashboard, name='dashboard'),
     path('main_stock_details/', central_display.main_stock_details, name='main_stock_details'),
     path('main_sales_details/', central_display.main_sales_details, name='main_sales_details'),
     path('dispatch_stock/', home_page.dispatch_stock, name='dispatch_stock'),
+    path('uploadBulkSales/', sales_register.uploadBulkSales, name='uploadBulkSales'),
     path('revenues/', revenues.revenues, name='revenues'),
     path('revert_to_stock/', revert_to_stock, name='revert_to_stock'),
     path('pending_sales/', pending_sales, name='pending_sales'),

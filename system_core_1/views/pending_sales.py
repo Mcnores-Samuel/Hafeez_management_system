@@ -54,7 +54,8 @@ def total_pending_sales(request):
     """
     if request.method == 'GET':
         total = MainStorage.objects.filter(
-            pending=True, sold=True, in_stock=False).count()
+            pending=True, sold=True, in_stock=False,
+            missing=False).count()
     return JsonResponse({'total': total})
 
 

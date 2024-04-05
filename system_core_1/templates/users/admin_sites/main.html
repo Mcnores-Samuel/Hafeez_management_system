@@ -118,6 +118,16 @@
                                 </a>
                             </li>
                             <li class="nav-item">
+                                <a class="nav-link d-flex align-items-center" href="{% url 'uploadBulkSales' %}"
+                                data-bs-toggle="tooltip"
+                                title="Upload Sales">
+                                <span class="material-icons">
+                                    upload
+                                </span>
+                                <span class="text"> Upload Sales</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link d-flex align-items-center" href="{% url 'add_to_stock' %}"
                                 data-bs-toggle="tooltip"
                                 title="Add To Stock">
@@ -377,7 +387,7 @@
                                 <h4 class="text-muted fw-bold">Daily Sales on loan</h4>
                             </div>
                             <div class="card-body">
-                                <div class="daily_sales_loader_loan text-light"></div>
+                                <div class="daily_sales_loader_loan"></div>
                                 <canvas class="daily_sales_chart_loan" width="400" height="400"></canvas>
                             </div>
                         </div>

@@ -141,5 +141,7 @@ def dispatch_stock(request):
             return JsonResponse({'status': 400, 'error': 'No data received'})
     else:
         agents = UserProfile.objects.filter(groups__name='agents')
+        agents = sorted(agents, key=lambda x: x.username)
         special_outlets = UserProfile.objects.filter(groups__name='special_sales')
-    return render(request, 'users/admin_sites/dispatch.html', {'agents': agents, 'special_outlets': special_outlets})
+        agents = list(set(agents + sorted(special_outlets, key=lambda x: x.username)))
+    return render(request, 'users/admin_sites/dispatch.html', {'agents': sorted(agents, key=lambda x: x.username)})

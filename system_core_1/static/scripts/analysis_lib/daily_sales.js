@@ -111,6 +111,7 @@ function updateDailyChart(url, dest, chartType, loader) {
 const dest_daily = '.daily_sales_chart_loan';
 const url_daily = '/system_core_1/get_daily_sales_json_loan/';
 const loader_daily = '.daily_sales_loader_loan';
+
 const dest_daily_2 = '.daily_sales_chart_cash';
 const url_daily_2 = '/system_core_1/get_daily_sales_json_cash/';
 const loader_daily_2 = '.daily_sales_loader_cash';

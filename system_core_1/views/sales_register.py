@@ -9,6 +9,11 @@ from ..forms.customer_data import CombinedDataForm
 from django.http import HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from ..models.user_profile import UserProfile
+from ..models.main_storage import MainStorage
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
 
 
 @login_required
@@ -72,3 +77,52 @@ def combinedData_collection(request, data_id):
         return render(request, 'registration/collect_customer_data.html', {'form': form})
     else:
         return HttpResponseForbidden("Access Denied")
+
+
+@login_required
+@csrf_exempt
+def uploadBulkSales(request):
+    """
+    The `uploadBulkSales` view function is a Django view responsible for
+    handling the bulk upload of sales data by all outlets
+
+    Functionality:
+    - Checks if the user is authenticated and is an agent. Only agents are allowed
+      to access this view.
+    - Verifies if the agent has available stock of phones.
+    """
+    if request.method == 'POST' and request.user.is_staff and request.user.is_superuser:
+        data = request.POST.get('data', None)
+        date = request.POST.get('date', None)
+        sales_type = request.POST.get('sales_type', None)
+        if data:
+            scanned_items = json.loads(data)
+            date = json.loads(date)
+            sales_type = json.loads(sales_type)
+            not_in_stock = []
+            for item in scanned_items:
+                try:
+                    stock_item = MainStorage.objects.get(device_imei=item)
+                    stock_item.stock_out_date = date
+                    stock_item.sold = True
+                    stock_item.in_stock = False
+                    if sales_type == 'Loan':
+                        stock_item.sales_type = sales_type
+                        stock_item.pending = True
+                    else:
+                        stock_item.sales_type = sales_type
+                        stock_item.pending = False
+                        stock_item.paid = True
+                    stock_item.save()
+                except MainStorage.DoesNotExist:
+                    not_in_stock.append(item)
+            print(not_in_stock)
+            return JsonResponse({'status': 200, 'not_in_stock': not_in_stock})
+        else:
+            return JsonResponse({'status': 400, 'error': 'No data received'})
+    else:
+        agents = UserProfile.objects.filter(groups__name='agents')
+        agents = sorted(agents, key=lambda x: x.username)
+        special_outlets = UserProfile.objects.filter(groups__name='special_sales')
+        agents = list(set(agents + sorted(special_outlets, key=lambda x: x.username)))
+    return render(request, 'users/admin_sites/upload_sales.html', {'agents': sorted(agents, key=lambda x: x.username)})
