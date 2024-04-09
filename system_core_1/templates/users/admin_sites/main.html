@@ -108,6 +108,16 @@
                                 </a>
                             </li>
                             <li class="nav-item">
+                                <a class="nav-link d-flex align-items-center" href="{% url 'data_search' %}"
+                                data-bs-toggle="tooltip"
+                                title="Sales">
+                                <span class="material-icons">
+                                    point_of_sale
+                                </span>
+                                <span class="text"> Point Of Sale</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link d-flex align-items-center" href="{% url 'dispatch_stock' %}"
                                 data-bs-toggle="tooltip"
                                 title="Deploy Stock">
@@ -233,9 +243,9 @@
                     </div>
                 {% endif %}
             <div class="top-display d-flex card-bg">
-                <form action="" method="post" class="d-flex position-relative search-form text-light">
+                <form action="{% url 'data_search' %}" method="post" class="d-flex position-relative search-form text-light">
                     {% csrf_token %}
-                    <input type="search" id="search_term" name="search_term" class="form-control me-2"
+                    <input type="search" id="search_term" name="search_query" class="form-control me-2"
                     placeholder="Search IMEI number or Contract number" aria-label="Search" aria-describedby="search-addon" />
                     <button type="submit" class="btn search-btn material-icons">search</button>
                 </form>

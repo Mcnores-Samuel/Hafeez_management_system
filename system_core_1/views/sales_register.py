@@ -5,8 +5,6 @@ for handling the collection of customer and phone data during the phone purchasi
 process by agents.
 """
 from django.shortcuts import render, redirect
-from ..forms.customer_data import CombinedDataForm
-from django.http import HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from ..models.user_profile import UserProfile
@@ -14,6 +12,7 @@ from ..models.main_storage import MainStorage
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
+from django.utils import timezone
 
 
 @login_required
@@ -52,31 +51,42 @@ def combinedData_collection(request, data_id):
     This view assumes user authentication and validation of agent status have been
     handled in the authentication system and AgentProfile model.
     """
-    if request.user.is_authenticated and request.user.groups.filter(name='staff_members').exists():
+    if (request.user.is_authenticated and request.user.groups.filter(name='staff_members').exists() 
+        or request.user.is_staff and request.user.is_superuser):
         if request.method == 'POST':
-            form = CombinedDataForm(request.POST, user=request.user)
-            if form.is_valid():
-                payment_method = form.cleaned_data['payment_method']
-                if payment_method == 'Cash':
-                    sales_item1 = form.process_cash_payment(data_id)
-                    messages.success(request, '{} of IMEI {} Successfully sold'.format(
-                        sales_item1.name, sales_item1.device_imei))
-                    return redirect('dashboard')
-                elif payment_method == 'Loan':
-                    sales_item = form.process_loan_payment(data_id)
-                    if sales_item == 'already sold':
-                        messages.warning(request, 'Already sold, please select another device')
-                        return redirect('dashboard')
-                    messages.success(request, '{} of IMEI {} Successfully sold'.format(
-                        sales_item.name, sales_item.device_imei))
-                    return redirect('dashboard')
+            payment = request.POST.get('payment_method')
+            item = MainStorage.objects.get(id=data_id)
+            if item.in_stock and not item.sold:
+                if payment == 'Cash':
+                    price = request.POST.get('price')
+                    item.in_stock = False
+                    item.sold = True
+                    item.pending = True
+                    item.sales_type = 'Cash'
+                    item.stock_out_date = timezone.now()
+                    item.price = price
+                    messages.success(request, '{} of imei {} sold successfully'.format(
+                        item.name, item.device_imei
+                    ))
+                    item.save()
+                    return redirect('data_search')
+                elif payment == 'Loan':
+                    item.in_stock = False
+                    item.sold = True
+                    item.pending = True
+                    item.sales_type = 'Loan'
+                    item.stock_out_date = timezone.now()
+                    messages.success(request, '{} of imei {} sold successfully'.format(
+                        item.name, item.device_imei
+                    ))
+                    item.save()
+                    return redirect('data_search')
+                messages.error(request, 'Invalid payment method')
             else:
-                messages.warning(request, 'Please correct the errors below')
-        else:
-            form = CombinedDataForm(user=request.user)
-        return render(request, 'registration/collect_customer_data.html', {'form': form})
-    else:
-        return HttpResponseForbidden("Access Denied")
+                messages.error(request, 'Phone out of stock')
+    if request.user.is_staff and request.user.is_superuser:
+        return render(request, 'users/admin_sites/salespoint.html')
+    return render(request, 'registration/salespoint.html')
 
 
 @login_required

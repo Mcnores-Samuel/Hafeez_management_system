@@ -46,6 +46,15 @@ class AddToStockForm(forms.Form):
             }
         )
     )
+    cost_price = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': 'Enter cost price',
+                'required': 'required',
+            }
+        )
+    )
     name = forms.CharField(
         widget=forms.TextInput(
             attrs={
@@ -75,6 +84,9 @@ class AddToStockForm(forms.Form):
         cleaned_data = super().clean()
         device_imei = cleaned_data.get('device_imei')
         device_imei_2 = cleaned_data.get('device_imei_2')
+        cost_price = cleaned_data.get('cost_price')
+        if not cost_price.isdigit():
+            raise forms.ValidationError("Cost price must be a number e.g 100")
         check = device_imei.isdigit()
         check_2 = device_imei_2.isdigit()
         if not check and len(device_imei) != 15:
@@ -106,6 +118,7 @@ class AddToStockForm(forms.Form):
             stock = MainStorage.objects.create(
                 device_imei=self.cleaned_data['device_imei'],
                 device_imei_2=self.cleaned_data['device_imei_2'],
+                cost=self.cleaned_data['cost_price'],
                 name=self.cleaned_data['name'],
                 phone_type=device.phone_type,
                 category=device.category,

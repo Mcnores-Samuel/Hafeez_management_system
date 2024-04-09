@@ -34,6 +34,7 @@ def data_search(request):
     This view assumes user authentication and validation of staff status have been
     handled in the authentication system and UserProfile model.
     """
+    queryset = []
     if request.method == 'POST':
         search_query = request.POST.get('search_query', None)
         queryset = []
@@ -43,6 +44,8 @@ def data_search(request):
                     Q(device_imei__icontains=search_query) |
                     Q(contract_no__icontains=search_query)
                 )
+    if request.user.is_staff and request.user.is_superuser:
+        return render(request, 'users/admin_sites/search.html', {'data': queryset})
     return render(request, 'users/staff_sites/search.html', {'data': queryset})
 
 
