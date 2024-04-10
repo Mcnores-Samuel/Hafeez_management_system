@@ -5,27 +5,73 @@
 {% bootstrap_css %}
 {% bootstrap_javascript %}
 {% block head %}
+<link rel="stylesheet" href="{% static 'styles/loading-message.css' %}">
+<script src="{% static 'scripts/add_to_stock.js' %}" defer></script>
 {% endblock %}
 {% block content %}
+<style>
+    .card {
+      height: 400px;
+      overflow-y: scroll;
+    }
+</style>
 <div class="container">
     {% bootstrap_messages %}
-    <h1 class="text-center fw-bold">Add To Stock</h1>
+    <h1 class="text-center fw-bold">Add To Stock: Total Scanned: <span  id="total"></span></h1>
     <p class="text-center">Please enter the Imei numbers and the phone name to add to stock</p>
     <hr>
     <form action="" method="post" class="shadow-lg p-3 mb-5 bg-body rounded" id="stock_form">
         {% csrf_token %}
-        {{ form.as_p }}
+        <p>
+            <label for="id_device_imei">Device imei:</label>
+            <input type="text" name="device_imei" class="form-control" placeholder="Enter IMEI number"
+            required="" minlength="15" maxlength="15"
+            autofocus="autofocus" id="id_device_imei">
+        </p>
+        <p>
+            <label for="id_device_imei_2">Device imei 2:</label>
+            <input type="text" name="device_imei_2" class="form-control" placeholder="Enter IMEI number 2"
+            required="" minlength="15" maxlength="15" id="id_device_imei_2">
+        </p>
+        <hr class="text-danger" style="height: 15px;">
+        <p>
+            <label for="id_cost_price">Cost price:</label>
+            <input type="text" name="cost_price" class="form-control" placeholder="Enter cost price"
+            id="id_cost_price">
+        </p>
+        <p>
+            <label for="id_name">Name:</label>
+            <input type="text" name="name" class="form-control" placeholder="Enter phone name"
+            list="phone_list" id="id_name">   
+        </p>
         <datalist id="phone_list">
             {% for phone in phone_names %}
             <option value="{{ phone }}">{{ phone }}</option>
             {% endfor %}
         </datalist>
-        <button type="submit" class="btn btn-primary">Save</button>
+        <p>
+            <label for="id_supplier">Supplier:</label>
+            <input type="text" name="supplier" class="form-control"
+            placeholder="Enter supplier" id="id_supplier">
+          </p>
+        <button type="button" class="btn btn-primary" id="submit">submit</button>
     </form>
+    <hr>
+    <div class="container" id="waiting-room">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title text-center fw-bold">Scanned Items</h4>
+                </div>
+                <div class="card-body">
+                    <div class="loading-target"></div>
+                    <ol class="list-group list-group-numbered">
+                    </ol>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<style>
-    .errorlist {
-        color: red;
-    }
-</style>
 {% endblock %}
