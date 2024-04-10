@@ -1,8 +1,6 @@
 """This module contains a view function for adding phones to stock."""
-from django.shortcuts import render, redirect
-from ..forms.add_to_stock import AddToStockForm
+from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from django.contrib import messages
 from ..models.main_storage import MainStorage
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import Group
