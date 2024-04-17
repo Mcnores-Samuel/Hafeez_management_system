@@ -9,7 +9,7 @@ django-bootstrap5==23.3
 django-email-verification==0.3.3
 django-filter==23.3
 django-storages==1.14.2
-gunicorn==21.2.0
+gunicorn==22.0.0
 jmespath==1.0.1
 packaging==23.2
 pillow==10.2.0
