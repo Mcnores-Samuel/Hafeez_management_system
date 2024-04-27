@@ -4,6 +4,7 @@ from ...models.agent_profile import AgentProfile
 from ...models.user_profile import UserProfile
 from django.utils import timezone
 from django.contrib.auth.models import Group
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 
@@ -166,12 +167,23 @@ class MainStorageAnalysis:
                 stock_out_date__year=year).count()
         return sales
     
-    def pending_sales(self):
+    def pending_sales(self, request):
         """This function returns a list of all pending sales.
         It also returns the total number of pending sales.
         """
         all_pending_sales = MainStorage.objects.filter(
             pending=True, in_stock=False,
             assigned=True, sold=True, missing=False,
-            faulty=False).order_by('stock_out_date')
-        return all_pending_sales, all_pending_sales.count()
+            faulty=False, issue=False).order_by('stock_out_date')
+        total_pending_sales = all_pending_sales.count()
+        
+        all_pending_sales = Paginator(all_pending_sales, 12)
+        page = request.GET.get('page')
+
+        try:
+            all_pending_sales = all_pending_sales.get_page(page)
+        except PageNotAnInteger:
+            all_pending_sales = all_pending_sales.page(1)
+        except EmptyPage:
+            all_pending_sales = all_pending_sales.page(all_pending_sales.num_pages)
+        return all_pending_sales, total_pending_sales

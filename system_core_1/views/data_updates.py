@@ -5,11 +5,9 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 from ..forms.user_profile_update_form import UserProfileForm
 from ..forms.users import UserAvatarForm
-from ..models.main_storage import MainStorage, Airtel_mifi_storage
-from ..models.customer_order import PhoneData
+from ..models.main_storage import MainStorage
 from django.http import JsonResponse
 from ..models.user_profile import UserAvatar
-from ..models.customer_details import CustomerData
 from ..data_query_engine.agents_queries.agents_data_query import AgentsDataQuery
 from django.db import IntegrityError
 

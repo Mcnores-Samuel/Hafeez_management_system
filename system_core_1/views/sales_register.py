@@ -126,13 +126,7 @@ def uploadBulkSales(request):
                     stock_item.save()
                 except MainStorage.DoesNotExist:
                     not_in_stock.append(item)
-            print(not_in_stock)
             return JsonResponse({'status': 200, 'not_in_stock': not_in_stock})
         else:
             return JsonResponse({'status': 400, 'error': 'No data received'})
-    else:
-        agents = UserProfile.objects.filter(groups__name='agents')
-        agents = sorted(agents, key=lambda x: x.username)
-        special_outlets = UserProfile.objects.filter(groups__name='special_sales')
-        agents = list(set(agents + sorted(special_outlets, key=lambda x: x.username)))
-    return render(request, 'users/admin_sites/upload_sales.html', {'agents': sorted(agents, key=lambda x: x.username)})
+    return render(request, 'users/admin_sites/upload_sales.html')

@@ -41,7 +41,7 @@ def pending_sales(request):
                 return redirect('pending_sales')
     if request.user.is_staff and  request.user.is_superuser:
         analysis = MainStorageAnalysis()
-        pending_sales, total = analysis.pending_sales()
+        pending_sales, total = analysis.pending_sales(request=request)
         return render(request, 'users/admin_sites/pending_sales.html',
                       {'pending_sales': pending_sales, 'total': total})
     

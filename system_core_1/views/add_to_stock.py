@@ -62,7 +62,7 @@ def add_to_stock(request):
                         in_stock=True, sales_type='##', contract_no='##',
                         entry_date=timezone.now(), stock_out_date=timezone.now(),
                         collected_on=timezone.now(), assigned=True, sold=False,
-                        paid=False, cost=cost_price, price=0.00, agent=agent,
+                        issue=False, paid=False, cost=cost_price, price=0.00, agent=agent,
                         recieved=True, on_display=False, pending=False, missing=False,
                         supplier=supplier, faulty=False, assigned_from='Hafeez Enterprises',
                         updated_by=user.username, comment='##'

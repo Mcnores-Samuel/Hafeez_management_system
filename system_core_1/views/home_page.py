@@ -135,7 +135,6 @@ def dispatch_stock(request):
                     print(item)
                 except MainStorage.DoesNotExist:
                     not_in_stock.append(item)
-            print(not_in_stock)
             return JsonResponse({'status': 200, 'not_in_stock': not_in_stock})
         else:
             return JsonResponse({'status': 400, 'error': 'No data received'})
