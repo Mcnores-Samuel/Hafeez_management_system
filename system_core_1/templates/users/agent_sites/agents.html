@@ -45,7 +45,7 @@
                 <br>
                 <div class="collapse d-md-block wrapper" id="sidebarCollapse">
                     <div class="sidebar">
-                        <div class="topbar-wrapper heading bg-success ">
+                        <div class="topbar-wrapper heading">
                             <div class="logo">HE</div>
                             <div class="text-center text-fs text-light brandname text">Hafeez Enterprise</div>
                         </div>
@@ -58,16 +58,6 @@
                                         dashboard
                                     </span>
                                     <span class="text"> Dashboard</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link d-flex align-items-center" href="{% url 'home_page' %}"
-                                data-bs-toggle="tooltip" 
-                                title="Home">
-                                <span class="material-icons fs-3">
-                                    home
-                                    </span>
-                                    <span class="text"> Home</span>
                                 </a>
                             </li>
                             <li class="nav-item">
@@ -90,7 +80,7 @@
                                 <span class="text"> My Sales</span>
                                 </a>
                             </li>
-                            <li class="nav-item">
+                            <!-- <li class="nav-item">
                                 <a class="nav-link d-flex align-items-center" href="{% url 'stock_out' %}"
                                 data-bs-toggle="tooltip"
                                 title=" My Earnings">
@@ -109,7 +99,7 @@
                                 </span>
                                 <span class="text"> Tips and Updates</span>
                                 </a>
-                            </li>
+                            </li> -->
                             <li class="nav-item">
                                 <a class="nav-link d-flex align-items-center" href="{% url 'profile' %}"
                                 data-bs-toggle="tooltip" 
@@ -174,20 +164,20 @@
                         {% endfor %}
                     </div>
                 {% endif %}
-            <div class="top-display d-flex position-relative bg-light">
-                <form action="{% url 'in_stock' %}" method="post" class="d-flex position-relative search-form">
+            <div class="top-display d-flex card-bg">
+                <form action="{% url 'in_stock' %}" method="post" class="d-flex position-relative search-form text-light">
                     {% csrf_token %}
                     <input type="search" id="search_term" name="search_term" class="form-control me-2"
                     placeholder="Search IMEI number or Contract number" aria-label="Search" aria-describedby="search-addon" />
-                    <button type="submit" class="btn btn-outline-light btn-primary search-btn">search</button>
+                    <button type="submit" class="btn search-btn material-icons">search</button>
                 </form>
                 <div class="notify">
                     <div class="dropdown">
                         <button type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                            <span class="material-icons">
+                            <span class="material-icons common-color">
                                 notifications
                             </span>
-                            <span class="badge bg-danger">1</span>
+                            <span class="badge bg-danger"></span>
                         </button>
                         <ul class="dropdown-menu">
                             <li>
@@ -197,7 +187,6 @@
                                                 notifications
                                             </span>
                                         <div class="">
-                                            <p class="">Hello There, Welcome to Hafeez new updates</p>
                                         </div>
                                     </div>
                                 </a>
@@ -254,7 +243,7 @@
             <section class="charts-and-data">
                 <div class="row gy-3">
                     <div class="col-md-3 col-12">
-                        <div class="card">
+                        <div class="card card-bg text-light">
                             <div class="card-body">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="icon">
@@ -263,15 +252,15 @@
                                         </span>
                                     </div>
                                     <div class="">
-                                        <p>My Stock</p>
-                                        <p>{{ total_stock_in }}</p>
+                                        <p class="fw-bold">My Stock</p>
+                                        <p class="fw-bold">{{ total_stock_in }}</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-3 col-12">
-                        <div class="card">
+                        <div class="card card-bg text-light">
                             <div class="card-body">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="icon ">
@@ -280,41 +269,41 @@
                                         </span>
                                     </div>
                                     <div class="">
-                                        <p>Monthly Sales</p>
-                                        <p>{{ total_stock_out }}</p>
+                                        <p class="fw-bold">Monthly Sales</p>
+                                        <p class="fw-bold">{{ total_stock_out }}</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-3 col-12">
-                        <div class="card">
+                        <div class="card card-bg text-light">
                             <div class="card-body">
                                 <div class="">
-                                    <p>Monthly Target</p>
+                                    <p class="fw-bold">Monthly Target</p>
                                     <div class="">
-                                        <div class="text-end">{{ target }} Devices</div>
+                                        <div class="text-end fw-bold">{{ target }} Devices</div>
                                         {% if progress < 50 %}
                                         <div class="progress">
-                                            <div class="progress-bar bg-danger progress-bar-striped progress-bar-animated"
+                                            <div class="progress-bar bg-danger progress-bar-striped progress-bar-animated fw-bold"
                                             role="progressbar" aria-valuenow="{{ progress }}" aria-valuemin="0"
                                             aria-valuemax="30">{{ progress }}%</div>
                                         </div>
                                         {% elif progress > 50 and progress < 100 %}
                                         <div class="progress">
-                                            <div class="progress-bar bg-warning progress-bar-striped progress-bar-animated"
+                                            <div class="progress-bar bg-warning progress-bar-striped progress-bar-animated fw-bold"
                                             role="progressbar" aria-valuenow="{{ progress }}" aria-valuemin="0"
                                             aria-valuemax="30">{{ progress }}%</div>
                                         </div>
                                         {% elif progress == 100 %}
                                         <div class="progress">
-                                            <div class="progress-bar bg-success progress-bar-striped progress-bar-animated"
+                                            <div class="progress-bar bg-success progress-bar-striped progress-bar-animated fw-bold"
                                             role="progressbar" aria-valuenow="{{ progress }}" aria-valuemin="0"
                                             aria-valuemax="30">{{ progress }}%</div>
                                         </div>  
                                         {% elif progress > 100 %}
                                         <div class="progress">
-                                            <div class="progress-bar progress-bar-striped progress-bar-animated"
+                                            <div class="progress-bar progress-bar-striped progress-bar-animated fw-bold"
                                             role="progressbar" aria-valuenow="{{ progress }}" aria-valuemin="0"
                                             aria-valuemax="30" style="background-color: purple;">{{ progress }}%</div>
                                         </div>
@@ -325,15 +314,15 @@
                         </div>
                     </div>
                     <div class="col-md-3 col-12">
-                        <div class="card">
+                        <div class="card card-bg text-light">
                             <div class="card-body">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <span class="material-icons">
                                         credit_score
                                     </span>
                                     <div class="">
-                                        <p>Commission</p>
-                                        <p>MK {{ commission|format_price }}</p>
+                                        <p class="fw-bold">Commission</p>
+                                        <p class="fw-bold">MK {{ commission|format_price }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -347,7 +336,7 @@
                     <div class="col-md-6 col-12">
                         <div class="card">
                             <div class="card-header text-center">
-                                <h4>Stock</h4>
+                                <h4 class="fw-bold text-muted">Stock</h4>
                             </div>
                             <div class="card-body">
                                 <div class="loading-message-agent-stock"></div>
@@ -358,7 +347,7 @@
                     <div class="col-md-6 col-12">
                         <div class="card">
                             <div class="card-header text-center">
-                                <h4>Sales</h4>
+                                <h4 class="fw-bold text-muted">Sales</h4>
                             </div>
                             <div class="card-body">
                                 <div class="loading-message-main-stock"></div>
@@ -374,7 +363,7 @@
                     <div class="col-md-6 col-12 w-100">
                         <div class="card">
                             <div class="card-header text-center">
-                                <h4>Yearly Sales</h4>
+                                <h4 class="fw-bold text-muted">Yearly Sales</h4>
                             </div>
                             <div class="card-body">
                                 <div class="yearly_sales_chart_loader"></div>
@@ -386,7 +375,8 @@
             </section>
             {% endblock %}
         </section>
-        <div class="divider"></div>
+        <br>
+        <hr>
         <footer>
             {% block footer %}
             <div>

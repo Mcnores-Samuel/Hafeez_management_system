@@ -112,7 +112,8 @@ class MainStorageAnalysis:
                         sold=True,
                         stock_out_date__month=months.index(month)+1,
                         stock_out_date__year=year).count()
-                return sales
+                overall = 0 #placeholder
+                return sales, overall
         elif (agent.groups.filter(name='staff_members').exists() or
               agent.is_superuser):
             sales = {}

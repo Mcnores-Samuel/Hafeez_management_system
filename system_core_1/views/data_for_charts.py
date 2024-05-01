@@ -123,8 +123,8 @@ def get_individual_agent_stock_out(request):
 def get_yearly_sales(request):
     """Returns a JSON object containing the yearly sales data."""
     if request.method == 'GET':
-        sales = MainStorageAnalysis().get_sales_for_all_months(request.user)
-        return JsonResponse(sales[0], safe=False)
+        sales, overall = MainStorageAnalysis().get_sales_for_all_months(request.user)
+        return JsonResponse(sales, safe=False)
     return JsonResponse({'error': 'Invalid request.'})
 
 
