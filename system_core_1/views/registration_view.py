@@ -11,6 +11,7 @@ from ..models.agent_profile import AgentProfile
 from ..models.agent_profile import Agent_sign_up_code
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
+from django.contrib import messages
 
 
 
@@ -42,29 +43,23 @@ def sign_up(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
-            role = form.cleaned_data["role"]
-            if role == 'regular':
+            agent_code = form.cleaned_data['agent_code']
+            sign_up_code = Agent_sign_up_code.objects.filter(code=agent_code, used=False)
+            if sign_up_code:
+                sign_up_code.update(used=True)
                 user = form.save(commit=False)
                 user.is_active = False
                 user.save()
                 send_email(user)
+                user.groups.add(Group.objects.get(name="agents"))
+                agent_profile = AgentProfile.objects.create(user=user)
+                agent_profile.is_agent = True
                 return render(request, 'authentication/confirm_email.html', {'user': user})
-            elif role == 'agent':
-                agent_code = form.cleaned_data['agent_code']
-                sign_up_code = Agent_sign_up_code.objects.filter(code=agent_code, used=False)
-                if sign_up_code:
-                    sign_up_code.update(used=True)
-                    user = form.save(commit=False)
-                    user.is_active = False
-                    user.save()
-                    send_email(user)
-                    agen_group = Group.objects.get(name="agents")
-                    user.groups.add(agen_group)
-                    agent_profile = AgentProfile.objects.create(user=user)
-                    agent_profile.is_agent = True
-                    return render(request, 'authentication/confirm_email.html', {'user': user})
-                else:
-                    form.add_error(None, "Invalid Agent code!!, please Enter a valid code")
+            else:
+                messages.error(request, "Invalid agent code, please contact your admin for a valid agent code.")
+        for field in form:
+            for error in field.errors:
+                messages.error(request, f"{error}")
     else:
         form = SignUpForm()
     return render(request, 'authentication/sign_up.html', {'form': form})

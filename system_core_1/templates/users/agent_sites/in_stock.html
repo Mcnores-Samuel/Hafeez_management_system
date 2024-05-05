@@ -11,7 +11,6 @@
 {% block content %}
 <nav class="navbar navbar-light bg-light">
     <div class="container">
-        {% bootstrap_messages %}
         <form action="{% url 'in_stock' %}" method="post" class="d-flex w-100">
             {% csrf_token %}
             <input type="search" class="form-control me-2" name="search_term" id="search_term" placeholder="Device IMEI, category, model etc">
@@ -19,6 +18,8 @@
         </form>
     </div>
 </nav>
+<br>
+{% bootstrap_messages %}
 <br>
 <div class="container">
     <div class="row">
@@ -60,7 +61,29 @@
                             </p>
                             <p>{{ item.comment }}</p>
                         {% else %}
-                        <a href="{% url 'sale_on_cash' data_id=item.id %}" class="btn btn-primary w-100">Sale On Cash</a>
+                        <a href="{% url 'sale_on_cash' data_id=item.id %}" class="btn common-bg w-100 fw-bold">Sale On Cash</a>
+                        <br>
+                        <br>
+                        <button type="button" class="btn common-bg w-100 fw-bold" data-bs-toggle="modal"
+                        data-bs-target="#viewSalesModal{{ item.id }}">Sale On Credit</button>
+
+                        <div class="modal fade" id="viewSalesModal{{ item.id }}" tabindex="-1" aria-labelledby="viewJobModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="viewSalesModal{{ item.id }}">Credit Sales Confirmation</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>You are selling <strong>{{ item.name }}</strong> of IMEI number
+                                            <strong>{{ item.device_imei }}</strong> on credit.
+                                        </p>
+                                        <a href="{% url 'sale_on_loan' data_id=item.id %}"
+                                        class="btn common-bg w-100 fw-bold">Confirm</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         {% endif %}
                     </div>
                 </div>

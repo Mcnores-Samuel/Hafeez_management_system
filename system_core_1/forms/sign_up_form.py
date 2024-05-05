@@ -14,31 +14,19 @@ class SignUpForm(UserCreationForm):
     """Dynamically create the user sign in form to allow users to sign in
     to access user privillegies
     """
-    ROLES = [
-        ('regular', 'Customer'),
-        ('agent', 'Agent'),
-    ]
-
-    role = forms.ChoiceField(
-        choices=ROLES,
-        widget=forms.RadioSelect,
-        required=True)
     agent_code = forms.CharField(max_length=100, required=False)
 
     class Meta:
         model = UserProfile
-        fields = ('role', 'email', 'username', 'password1',
+        fields = ('email', 'username', 'password1',
                   'password2', 'agent_code')
 
     def clean(self):
         cleaned_data = super().clean()
-        role = cleaned_data.get('role')
-
-        if role == 'agent':
-            required_fields = ['agent_code']
-            for field_name in required_fields:
-                field_value = cleaned_data.get(field_name)
-                if not field_value:
-                    self.add_error(field_name, 'Agent code is required for agent registration')
+        required_fields = ['agent_code']
+        for field_name in required_fields:
+            field_value = cleaned_data.get(field_name)
+            if not field_value:
+                self.add_error(field_name, 'Agent code is required for agent registration')
 
         return cleaned_data

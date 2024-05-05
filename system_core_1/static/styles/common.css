@@ -76,22 +76,12 @@ input {
     display: none;
 }
 
-.notification {
-  position: fixed;
-  top: 12%;
-  right: 50%;
-  transform: translateX(50%);
-  width: 100%;
-  max-width: 500px;
-  z-index: 1000;
-  text-align: center;
-  padding: 10px;
-  background-color: green;
-  color: #fff;
-  border-radius: 5px;
-  font-size: normal;
-  font-weight: bold;
-  display: none;
+.common-color {
+    color: #fe9a43;
+}
+
+.common-bg {
+    background: #fe9a43;
 }
 
 

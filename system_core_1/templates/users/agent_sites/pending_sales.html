@@ -1,0 +1,74 @@
+{% extends 'users/agent_sites/agents.html' %}
+{% load static %}
+{% load django_bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% block head %}
+    <link rel="stylesheet" href="{% static 'styles/agent_stock_mobile.css' %}">
+    <script src="{% static 'scripts/copytext.js' %}" defer></script>
+{% endblock %}
+{% block content %}
+<div class="container">
+    <h1 class="text-center fs-3 fw-bold">Pending Approval: Total {{ page_total }} of {{ total }}</h1>
+    <p class="text-center fs-5 fw-bold">
+      Management will verify the sales below, please wait for the verification
+    </p>
+    <p class="text-center fw-bold">
+      It is important to verify the sales below to ensure that the sales are genuine.
+      If the sales are not genuine, the sales will be reverted to stock.
+    </p>
+    <hr>
+    <br>
+    {% bootstrap_messages %}
+    <div class="row">
+        {% for item in pending_sales %}
+            <div class="col-md-4 col-sm-6 mb-4">
+                <div class="card">
+                    <div class="card-header  text-center">
+                        <h4 class="card-title">{{ item.name }}</h4>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text"><strong class="text-info">Agent:</strong> <span>{{ item.agent }}</span></p>
+                        <p class="card-text"><strong class="text-info">Category:</strong> <span>{{ item.category }}</span></p>
+                        <p class="card-text"><strong class="text-info">Device IMEI:</strong>
+                            <span style="cursor: pointer;" id="id_{{ item.device_imei }}" onclick="copyText('id_{{ item.device_imei }}')">{{ item.device_imei }}</span></p>
+                        {% if item.device_imei_2 %}
+                            <p class="card-text"><strong class="text-info">Device IMEI 2:</strong> <span>{{ item.device_imei_2 }}</span></p>
+                        {% endif %}
+                        <p class="card-text"><strong class="text-info">Model:</strong> <span>{{ item.name }}</span></p>
+                        <p class="card-text"><strong class="text-info">Spec:</strong> <span>{{ item.spec }}</span></p>
+                        <p class="card-text"><strong class="text-info">Sold On:</strong> <span>{{ item.stock_out_date }}</span></p>
+                        <p class="card-text"><strong class="text-info">Sales Types:</strong> <span>{{ item.sales_type }}</span></p>
+                        {% if item.pending %}
+                            <p class="card-text"><strong class="text-info">Pending:</strong>
+                                <span class="text-danger fs-5">
+                                    <span class="material-icons">
+                                        pending
+                                    </span>
+                                </span>
+                            </p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+<div class="container w-100">
+    <div class="pagination container-fluid w-100 d-flex justify-content-center">
+        <span class="step-links w-100 d-flex justify-content-around">
+            {% if pending_sales.has_previous %}
+                <a href="?page=1" class="btn btn-primary">first</a>
+                <a href="?page={{ pending_sales.previous_page_number }}" class="btn btn-primary">previous</a>
+            {% endif %}
+            <span class="current fs-5">
+                Page {{ pending_sales.number }} of {{ pending_sales.paginator.num_pages }}.
+            </span>
+            {% if pending_sales.has_next %}
+                <a href="?page={{ pending_sales.next_page_number }}" class="btn btn-primary">next</a>
+                <a href="?page={{ pending_sales.paginator.num_pages }}" class="btn btn-primary">last</a>
+            {% endif %}
+        </span>
+    </div>
+</div>
+{% endblock %}

@@ -56,14 +56,16 @@ class MainStorageAnalysis:
             stock_out_date__month=current_month,
             stock_out_date__year=current_year,
             sold=True, in_stock=False, sales_type=sales_type,
-            missing=False, pending=False, assigned=True)
+            missing=False, pending=False, assigned=True,
+            recieved=True, issue=False, faulty=False)
         for agent in agents:
             sales_by_agent[str(agent.user.username).lower().capitalize()] = MainStorage.objects.filter(
                     agent=agent.user,
                     stock_out_date__month=current_month,
                     stock_out_date__year=current_year,
                     sold=True, in_stock=False, sales_type=sales_type,
-                    missing=False, pending=False, assigned=True).count()
+                    missing=False, pending=False, assigned=True,
+                    recieved=True, issue=False, faulty=False).count()
         sales_by_agent['Total'] = total_sales.count()
         sales_by_agent = sorted(sales_by_agent.items(), key=lambda x: x[1], reverse=True)
         return sales_by_agent
@@ -73,7 +75,8 @@ class MainStorageAnalysis:
         stock_in = MainStorage.objects.filter(
             agent=agent,
             in_stock=True, assigned=True,
-            missing=False, sold=False)
+            missing=False, sold=False, pending=False,
+            faulty=False, issue=False, recieved=True, paid=False)
         stock = {}
         for data in stock_in:
             stock[data.phone_type] = stock.get(data.phone_type, 0) + 1
@@ -88,7 +91,8 @@ class MainStorageAnalysis:
             assigned=True, missing=False,
             sold=True, pending=False, faulty=False,
             stock_out_date__month=current_month,
-            stock_out_date__year=current_year)
+            stock_out_date__year=current_year,
+            recieved=True, issue=False)
         stock = {}
         for data in stock_out:
             stock[data.phone_type] = stock.get(data.phone_type, 0) + 1
@@ -111,7 +115,9 @@ class MainStorageAnalysis:
                         assigned=True,
                         sold=True,
                         stock_out_date__month=months.index(month)+1,
-                        stock_out_date__year=year).count()
+                        stock_out_date__year=year,
+                        pending=False, issue=False,
+                        recieved=True, faulty=False).count()
                 overall = 0 #placeholder
                 return sales, overall
         elif (agent.groups.filter(name='staff_members').exists() or
@@ -125,11 +131,13 @@ class MainStorageAnalysis:
                     agent__in=representatives, in_stock=False,
                     assigned=True, sold=True, missing=False,
                     pending=False, stock_out_date__month=months.index(month)+1,
-                    stock_out_date__year=timezone.now().date().year).count()
+                    stock_out_date__year=timezone.now().date().year,
+                    issue=False, recieved=True, faulty=False).count()
                 main = MainStorage.objects.filter(in_stock=False,
                     assigned=True, sold=True, missing=False,
                     pending=False, stock_out_date__month=months.index(month)+1,
-                    stock_out_date__year=timezone.now().date().year).count()
+                    stock_out_date__year=timezone.now().date().year,
+                    issue=False, recieved=True, faulty=False).count()
                 sales[month] = total
                 overall_sales[month] = main
             return sales, overall_sales
@@ -146,7 +154,8 @@ class MainStorageAnalysis:
                 agent=agent.user,
                 in_stock=True, assigned=True,
                 sold=False, missing=False,
-                pending=False, faulty=False).count()
+                pending=False, faulty=False, recieved=False,
+                issue=False).count()
         return stock
     
     def overall_sales(self):

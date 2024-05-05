@@ -21,6 +21,7 @@
         <script src="{% static 'scripts/analysis_lib/agent_sales.js' %}" defer></script>
         <script src="{% static 'scripts/analysis_lib/yearly_analysis.js' %}" defer></script>
         {% endblock %}
+        <script src="{% static 'scripts/pending_sales.js' %}" defer></script>
         <script src="{% static 'scripts/sidebar.js' %}" defer></script>
         <script src="{% static 'scripts/placeholders.js' %}" defer></script>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -29,6 +30,12 @@
                 $('.progress-bar').css('width', '{{ progress }}%');
             })
         </script>
+        <style>
+            .pending-sales-notice, .note-bage {
+                font-size: 10px;
+                position: absolute;
+            }
+        </style>
     </head>
     <body>
         <button class="scroll-back"><i class='bx bxs-up-arrow-square'></i></button>
@@ -89,17 +96,18 @@
                                 </span>
                                 <span class="text"> My Earnings</span>
                                 </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link d-flex align-items-center" href="#"
-                                data-bs-toggle="tooltip" 
-                                title="Tips and Updates">
-                                <span class="material-icons fs-3">
-                                    tips_and_updates
-                                </span>
-                                <span class="text"> Tips and Updates</span>
-                                </a>
                             </li> -->
+                            <li class="nav-item">
+                                <a class="nav-link d-flex align-items-center" href="{% url 'my_pending_sales' %}"
+                                data-bs-toggle="tooltip" 
+                                title="Pending Approval Sales">
+                                <span class="material-icons">
+                                    pending_actions
+                                </span>
+                                <span class="badge bg-danger pending-sales-notice"></span>
+                                <span class="text"> Pending Sales</span>
+                                </a>
+                            </li>
                             <li class="nav-item">
                                 <a class="nav-link d-flex align-items-center" href="{% url 'profile' %}"
                                 data-bs-toggle="tooltip" 

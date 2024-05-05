@@ -22,8 +22,10 @@ class AgentsDataQuery:
             if agent_profile and status:
                 stock_in = MainStorage.objects.filter(
                     agent=user, in_stock=True,
-                    assigned=True,
-                    missing=False).all().order_by('-entry_date')
+                    assigned=True, missing=False,
+                    pending=False, issue=False, sold=False,
+                    recieved=True, faulty=False,
+                    paid=False).all().order_by('-entry_date')
                 paginator = Paginator(stock_in, 12)
                 page_number = request.GET.get('page')
 
@@ -41,7 +43,9 @@ class AgentsDataQuery:
                     agent=user, in_stock=False,
                     assigned=True, missing=False,
                     stock_out_date__month=current_month,
-                    stock_out_date__year=current_year).all().order_by('-stock_out_date')
+                    stock_out_date__year=current_year,
+                    pending=False, sold=True, issue=False,
+                    faulty=False).all().order_by('-stock_out_date')
                 paginator = Paginator(stock_out, 12)
                 page_number = request.GET.get('page')
 
@@ -122,3 +126,100 @@ class AgentsDataQuery:
                     item.comment = "Please proceed by providing transaction details including imei number through proper channels."
                     item.save()
                     return item
+                
+    def sale_on_credit(self, user, item_id):
+        """Returns a list of devices sold on credit."""
+        if user.groups.filter(name='agents').exists():
+            agent_profile = AgentProfile.objects.get(user=user)
+            if agent_profile:
+                item = MainStorage.objects.get(id=item_id)
+                if item:
+                    item.pending = True
+                    item.sales_type = 'Credit'
+                    item.stock_out_date = timezone.now().date()
+                    item.save()
+                    return item
+                
+    def pending_sales(self, user, request):
+        """Returns a list of pending sales."""
+        if user.groups.filter(name='agents').exists():
+            agent_profile = AgentProfile.objects.get(user=user)
+            if agent_profile:
+                all_pending_sales = MainStorage.objects.filter(
+                    agent=user,
+                    pending=True, in_stock=False,
+                    assigned=True, sold=True, missing=False,
+                    faulty=False, issue=False).order_by('stock_out_date')
+                total_pending_sales = all_pending_sales.count()
+                paginator = Paginator(all_pending_sales, 12)
+                page = request.GET.get('page')
+
+                try:
+                    all_pending_sales = paginator.get_page(page)
+                except PageNotAnInteger:
+                    all_pending_sales = paginator.page(1)
+                except EmptyPage:
+                    all_pending_sales = paginator.page(paginator.num_pages)
+                return all_pending_sales, total_pending_sales
+        return None
+    
+    def agent_new_stock(self, user, request):
+        """Returns a list of new stock."""
+        if user.groups.filter(name='agents').exists():
+            agent_profile = AgentProfile.objects.get(user=user)
+            if agent_profile:
+                new_stock = MainStorage.objects.filter(
+                    agent=user, in_stock=True,
+                    assigned=True, missing=False,
+                    pending=False, issue=False, sold=False,
+                    recieved=False, faulty=False,
+                    paid=False).all().order_by('-entry_date')
+                paginator = Paginator(new_stock, 12)
+                page_number = request.GET.get('page')
+
+                try:
+                    new_stock = paginator.page(page_number)
+                except PageNotAnInteger:
+                    new_stock = paginator.page(1)
+                except EmptyPage:
+                    new_stock = paginator.page(paginator.num_pages)
+                return new_stock
+        return None
+    
+    def agent_issues(self, user, request):
+        """Returns a list of issues reported by the agent."""
+        if user.groups.filter(name='agents').exists():
+            agent_profile = AgentProfile.objects.get(user=user)
+            if agent_profile:
+                all_issues = MainStorage.objects.filter(
+                    agent=user, issue=True).order_by('stock_out_date')
+                paginator = Paginator(all_issues, 12)
+                page = request.GET.get('page')
+
+                try:
+                    all_issues = paginator.get_page(page)
+                except PageNotAnInteger:
+                    all_issues = paginator.page(1)
+                except EmptyPage:
+                    all_issues = paginator.page(paginator.num_pages)
+                return all_issues
+        return None
+    
+    def agent_faults(self, user, request):
+        """Returns a list of faulty devices."""
+        if user.groups.filter(name='agents').exists():
+            agent_profile = AgentProfile.objects.get(user=user)
+            if agent_profile:
+                all_faults = MainStorage.objects.filter(
+                    agent=user, faulty=True).order_by('stock_out_date')
+                paginator = Paginator(all_faults, 12)
+                page = request.GET.get('page')
+
+                try:
+                    all_faults = paginator.get_page(page)
+                except PageNotAnInteger:
+                    all_faults = paginator.page(1)
+                except EmptyPage:
+                    all_faults = paginator.page(paginator.num_pages)
+                return all_faults
+        return None

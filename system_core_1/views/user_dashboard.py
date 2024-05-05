@@ -79,9 +79,13 @@ def dashboard(request):
                 agent=user, in_stock=False,
                 assigned=True,
                 stock_out_date__month=current_month,
-                stock_out_date__year=current_year).count()
+                stock_out_date__year=current_year,
+                pending=False, sold=True, issue=False,
+                faulty=False, recieved=True).count()
             stock_in = MainStorage.objects.filter(
-                agent=user, in_stock=True, assigned=True).count()
+                agent=user, in_stock=True, assigned=True,
+                pending=False, issue=False, sold=False,
+                recieved=True, faulty=False, paid=False).count()
             CalcCommissions().update_commission(
                 user, stock_out
             )

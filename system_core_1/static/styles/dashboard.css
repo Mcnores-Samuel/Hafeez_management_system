@@ -35,14 +35,6 @@ body {
     display: none;
 }
 
-.common-color {
-    color: #fe9a43;
-}
-
-.common-bg {
-    background: #fe9a43;
-}
-
 #search_term {
     background: transparent;
     border-top-left-radius: 20px;

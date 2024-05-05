@@ -8,6 +8,7 @@ from .views.add_to_stock import add_to_stock
 from .views.pending_sales import total_pending_sales, revert_to_stock, pending_sales
 from .views.defects import defects
 from  .views import revenues
+from .views import agents_data_access
 
 
 urlpatterns = [
@@ -41,7 +42,9 @@ urlpatterns = [
     path('verify_stock_recieved/', data_updates.verify_stock_recieved, name='verify_stock_recieved'),
     path('in_stock/', data_updates.in_stock, name='in_stock'),
     path('stock_out/', data_updates.stock_out, name='stock_out'),
+    path('my_pending_sales/', agents_data_access.my_pending_sales, name='my_pending_sales'),
     path('sale_on_cash/<int:data_id>/', action_on_data_select.sale_on_cash, name='sale_on_cash'),
+    path('sale_on_loan/<int:data_id>/', action_on_data_select.sale_on_loan, name='sale_on_loan'),
     # Concurent system operations
     path('get_daily_sales_json_loan/', data_for_charts.get_daily_sales_json_loan, name='get_daily_sales_json_loan'),
     path('get_daily_sales_json_cash/', data_for_charts.get_daily_sales_json_cash, name='get_daily_sales_json_cash'),

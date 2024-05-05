@@ -16,3 +16,19 @@ def sale_on_cash(request, data_id):
         if device:
             return redirect('in_stock')
     return redirect('in_stock')
+
+
+def sale_on_loan(request, data_id):
+    """The `sale_on_loan` view function is responsible for handling the sale of a
+    phone on loan.
+    """
+    if request.method == 'GET':
+        user = request.user
+        device = AgentsDataQuery().sale_on_credit(user, data_id)
+        if device:
+            messages.success(request, 'Your sale has been successfully processed and is pending approval.')
+            return redirect('in_stock')
+        else:
+            messages.error(request,
+                           'An error occurred while processing your sale. Please try again or contact the administrator.')
+    return redirect('in_stock')

@@ -1,5 +1,12 @@
 {% extends 'base.html' %}
+{% load static %}
+{% load django_bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
 {% block content %}
+<div class="container">
+    {% bootstrap_messages %}
+</div>
 <section class="sign_up_form">
     <div class="form_container">
         <div class="d-flex justify-content-center">
