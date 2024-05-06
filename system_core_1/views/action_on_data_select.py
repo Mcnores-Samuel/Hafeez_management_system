@@ -34,11 +34,12 @@ def sale_on_cash(request):
                 device.trans_image = cassproof_image
                 device.save()
                 send_mail(
-                    'New Sale On Cash To Approve',
-                    f'Hello Admin, {user.username} has made a sale on cash and is pending approval.\
-                        Please login to the system to approve the sale.\
-                            Device: {device.name}, Imei: {device.device_imei}, Amount: {amount}',
-                            'noreply.hafeezmw@gmail.com', admin_list)
+                    'ATTENTION: New Sale On Cash To Approve',
+                    f"Hello Admin, {user.username} has made a sale on cash and is pending approval. \
+                    Please login to the system to approve the sale. Device: {device.name}, \
+                    Imei: {device.device_imei}, Amount: {amount} click here to approve: \
+                    www.hafeezmw.com",
+                    'noreply.hafeezmw@gmail.com', admin_list)
                 messages.success(request, 'Your sale has been successfully processed and is pending approval.')
                 return redirect('in_stock')
             messages.error(request, 'An error occurred while processing your sale. Please try again or contact the administrator.')
