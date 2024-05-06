@@ -6,15 +6,10 @@ for authenticated users into the application.
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from ..models.agent_profile import AgentProfile
-from ..models.agent_profile import Agent_sign_up_code
 from ..models.user_profile import UserAvatar, UserProfile
 from ..data_analysis_engine.admin_panel.calc_commitions import CalcCommissions
-from ..data_analysis_engine.admin_panel.mainstorage_analysis import MainStorageAnalysis
-from uuid import uuid4
-from django.shortcuts import redirect
 from ..models.main_storage import MainStorage, Airtel_mifi_storage
 from django.utils import timezone
-from django.contrib.auth.models import Group
 from webpush import send_user_notification
 import os
 
@@ -52,8 +47,8 @@ def dashboard(request):
         avatar = UserAvatar.objects.get(
             user=request.user) if UserAvatar.objects.filter(
                 user=request.user).exists() else None
-        payload = {'head': 'Welcome to the Admin Panel', 'body': 'You have been granted access to the Admin Panel'}
-        send_user_notification(user=user, payload=payload, ttl=1000)
+        # payload = {'head': 'Welcome to the Admin Panel', 'body': 'You have been granted access to the Admin Panel'}
+        # send_user_notification(user=user, payload=payload, ttl=1000)
         context = {
             'profile': user.email[0],
             'user': user,
