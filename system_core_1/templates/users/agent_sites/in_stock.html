@@ -9,12 +9,12 @@
     <script src="{% static 'scripts/data_updates.js' %}"></script>
 {% endblock %}
 {% block content %}
-<nav class="navbar navbar-light bg-light">
+<nav class="navbar navbar-light">
     <div class="container">
         <form action="{% url 'in_stock' %}" method="post" class="d-flex w-100">
             {% csrf_token %}
-            <input type="search" class="form-control me-2" name="search_term" id="search_term" placeholder="Device IMEI, category, model etc">
-            <button class="btn btn-outline-success" type="submit">Search</button>
+            <input type="search" class="form-control me-2 bg-secondary" name="search_term" id="search_term" placeholder="Device IMEI, category, model etc">
+            <button class="btn search-btn material-icons" type="submit">search</button>
         </form>
     </div>
 </nav>
@@ -61,11 +61,50 @@
                             </p>
                             <p>{{ item.comment }}</p>
                         {% else %}
-                        <a href="{% url 'sale_on_cash' data_id=item.id %}" class="btn common-bg w-100 fw-bold">Sale On Cash</a>
+                        <button type="button" class="btn common-bg w-100 fw-bold" data-bs-toggle="modal"
+                        data-bs-target="#viewSalesCash{{ item.device_imei }}">Sale On Cash</button>
                         <br>
                         <br>
                         <button type="button" class="btn common-bg w-100 fw-bold" data-bs-toggle="modal"
                         data-bs-target="#viewSalesModal{{ item.id }}">Sale On Credit</button>
+
+                        <div class="modal fade" id="viewSalesCash{{ item.device_imei }}" tabindex="-1" aria-labelledby="viewJobModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="viewSalesCash{{ item.device_imei }}">
+                                        <strong>Credit Sales Confirmation</strong>
+                                        </h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form action="{% url 'sale_on_cash' %}" method="post" enctype="multipart/form-data">
+                                            {% csrf_token %}
+                                            <p>You are selling <strong>{{ item.name }}</strong> of IMEI number
+                                                <strong>{{ item.device_imei }}</strong> on cash.
+                                            </p>
+                                            <p>Please!! Proceed by providing transaction image and the image must bear the following clearly:</p>
+                                            <ul>
+                                                <li>Amount</li>
+                                                <li>Bank Name or mobile transaction method</li>
+                                                <li>Transaction ID</li>
+                                                <li>Date and time</li>
+                                            </ul>
+                                            <label for="cash_proof" class="fw-bold">
+                                                <strong>Upload Your Transaction Image Here</strong>
+                                            </label>
+                                            <input type="file" name="cash_proof" id="cash_proof" class="form-control" accept="image/*" required>
+                                            <br>
+                                            <label for="amount">Confirm Cash Amount</label>
+                                            <input type="number" name="amount" id="amount" class="form-control" required>
+                                            <input type="hidden" name="device_imei" value="{{ item.device_imei }}">
+                                            <br>
+                                            <button type="submit" class="btn common-bg w-100 fw-bold">Confirm</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
                         <div class="modal fade" id="viewSalesModal{{ item.id }}" tabindex="-1" aria-labelledby="viewJobModalLabel" aria-hidden="true">
                             <div class="modal-dialog">

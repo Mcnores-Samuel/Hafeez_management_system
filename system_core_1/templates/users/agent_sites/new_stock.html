@@ -1,0 +1,77 @@
+{% extends 'users/agent_sites/agents.html' %}
+{% load plus_r %}
+{% load static %}
+{% load django_bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% block head %}
+    <link rel="stylesheet" href="{% static 'styles/agent_stock_mobile.css' %}">
+    <script src="{% static 'scripts/data_updates.js' %}"></script>
+{% endblock %}
+{% block content %}
+<nav class="navbar navbar-light">
+    <div class="container">
+        <form action="{% url 'in_stock' %}" method="post" class="d-flex w-100">
+            {% csrf_token %}
+            <input type="search" class="form-control me-2 bg-secondary" name="search_term" id="search_term" placeholder="Device IMEI, category, model etc">
+            <button class="btn search-btn material-icons" type="submit">search</button>
+        </form>
+    </div>
+</nav>
+<br>
+{% bootstrap_messages %}
+<br>
+<div class="container">
+    <div class="row">
+        {% for item in new_stock %}
+            <div class="col-md-4 col-sm-6 mb-4">
+                <div class="card">
+                    <div class="card-header  text-center">
+                        <h4 class="card-title">{{ item.name }}</h4>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text"><strong class="text-info">Category:</strong> <span>{{ item.category }}</span></p>
+                        <p class="card-text"><strong class="text-info">Device IMEI:</strong> <span>{{ item.device_imei }}</span></p>
+                        <p class="card-text"><strong class="text-info">Model:</strong> <span>{{ item.name }}</span></p>
+                        <p class="card-text"><strong class="text-info">Spec:</strong> <span>{{ item.spec }}</span></p>
+                        <p class="card-text"><strong class="text-info">Collected On:</strong> <span>{{ item.collected_on }}</span></p>
+                        <p class="card-text"><strong class="text-info">Received:</strong>
+                        {% if item.recieved %}
+                            <span class="text-success fs-5">
+                                <span class="material-icons">
+                                    verified
+                                    </span>
+                            </span>
+                        {% else %}
+                            <span class="verify_button">
+                                <form action="{% url 'verify_stock_recieved' %}" method="post" class="recieved_form">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="device_imei" value="{{ item.device_imei }}">
+                                    <button type="submit" class="btn btn-danger w-100">verify recieved</button>
+                                </form>
+                            </span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+<div class="container w-100">
+    <div class="pagination container-fluid w-100 d-flex justify-content-center">
+        <span class="step-links w-100 d-flex justify-content-around">
+            {% if new_stock.has_previous %}
+                <a href="?page=1" class="btn btn-primary">first</a>
+                <a href="?page={{ new_stock.previous_page_number }}" class="btn btn-primary">previous</a>
+            {% endif %}
+            <span class="current fs-5">
+                Page {{ new_stock.number }} of {{ new_stock.paginator.num_pages }}.
+            </span>
+            {% if new_stock.has_next %}
+                <a href="?page={{ new_stock.next_page_number }}" class="btn btn-primary">next</a>
+                <a href="?page={{ new_stock.paginator.num_pages }}" class="btn btn-primary">last</a>
+            {% endif %}
+        </span>
+    </div>
+</div>
+{% endblock %}

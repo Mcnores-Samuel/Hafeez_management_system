@@ -93,7 +93,7 @@ def get_main_stock_analysis(request):
         data_set = MainStorage.objects.filter(
             agent__in=representatives, in_stock=True, sold=False,
             missing=False, assigned=True, recieved=True, faulty=False,
-            pending=False, issued=False)
+            pending=False, issue=False)
         stock = {}
         stock[representatives[0].username] = data_set.count()
         stock['Target Capacity'] = 1000

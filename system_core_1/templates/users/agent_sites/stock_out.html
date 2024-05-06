@@ -8,13 +8,13 @@
     <link rel="stylesheet" href="{% static 'styles/agent_stock_mobile.css' %}">
 {% endblock %}
 {% block content %}
-<nav class="navbar navbar-light bg-light">
+<nav class="navbar navbar-light">
     <div class="container">
         {% bootstrap_messages %}
         <form action="{% url 'stock_out' %}" method="post" class="d-flex w-100">
             {% csrf_token %}
-            <input type="search" class="form-control me-2" name="search_term" id="search_term" placeholder="Device IMEI, category, model etc">
-            <button class="btn btn-outline-success" type="submit">Search</button>
+            <input type="search" class="form-control me-2 bg-secondary" name="search_term" id="search_term" placeholder="Device IMEI, category, model etc">
+            <button class="btn search-btn material-icons" type="submit">search</button>
         </form>
     </div>
 </nav>

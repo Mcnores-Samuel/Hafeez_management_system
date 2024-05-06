@@ -235,7 +235,10 @@ def verify_stock_recieved(request):
                 if main_storage:
                     main_storage.recieved = True
                     main_storage.save()
-                return JsonResponse({'message': 'verified successfully'})
-            else:
-                return JsonResponse({'message': 'imei number not found'})
-    return redirect('dashboard')
+                    return redirect('new_stock')
+    if request.method == 'GET':
+        total = MainStorage.objects.filter(
+            agent=request.user, recieved=False).count()
+        return JsonResponse({'total': total})
+    return redirect('new_stock')
+    

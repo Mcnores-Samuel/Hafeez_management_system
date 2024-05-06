@@ -58,7 +58,14 @@ INSTALLED_APPS = [
     'django_email_verification',
     'storages',
     'django_bootstrap5',
+    'webpush',
 ]
+
+WEBPUSH_SETTINGS = {
+   "VAPID_PUBLIC_KEY": "BCbSiJmN3xQ07a5mZPb_nQGtRPX-GCPWkEOGbhslH96GjeFFbw6PxFPb87laYYjYWmTnGJvc_YSUnze3b7haR3I",
+   "VAPID_PRIVATE_KEY": "tC_NbpUtELaPc_mcP_h2w1CKIwUHzkSTdnUeGKgu2pI",
+   "VAPID_ADMIN_EMAIL": "samuelmcnores1@gmail.com"
+}
 
 FILTERS_EMPTY_CHOICE_LABEL = 'All'
 MESSAGE_STORAGE = "django.contrib.messages.storage.cookie.CookieStorage"

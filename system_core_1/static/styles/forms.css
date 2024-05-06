@@ -87,6 +87,7 @@ form {
     padding: 30px;
     border-radius: 12px;
     box-shadow: 3px 3px 15px 3px #80808066;
+    background: #00a8a8;
 }
 
 .custom {
@@ -130,19 +131,6 @@ form .form-group {
     border-bottom: 1px solid #80808066;
 }
 
-.role div {
-    font-size: 16px;
-    margin-bottom: 4px;
-    margin-left: 10px;
-}
-
-select {
-    outline: none;
-    width: 150px;
-    height: 25px;
-    border-radius: 8px;
-}
-
 .form-group input {
     font-size: 14px;
     outline: none;
@@ -150,6 +138,7 @@ select {
     width: 100%;
     height: 100%;
     padding: 5px;
+    background: transparent;
 }
 
 .form-group input:focus~label,

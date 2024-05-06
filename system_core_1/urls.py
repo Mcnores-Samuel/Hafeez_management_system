@@ -34,6 +34,7 @@ urlpatterns = [
     path('feedback/', feedback, name='feedback'),
     path('add_to_stock/', add_to_stock, name='add_to_stock'),
     path('data_search/', search_and_filters.data_search, name='data_search'),
+    path('verify_stock_recieved/', data_updates.verify_stock_recieved, name='verify_stock_recieved'),
     path('upload_image/', data_updates.upload_image, name='upload_image'),
     path('change_password/', data_updates.change_password, name='change_password'),
     path('combinedData_collection/<int:data_id>/', sales_register.combinedData_collection, name='combinedData_collection'),
@@ -43,7 +44,8 @@ urlpatterns = [
     path('in_stock/', data_updates.in_stock, name='in_stock'),
     path('stock_out/', data_updates.stock_out, name='stock_out'),
     path('my_pending_sales/', agents_data_access.my_pending_sales, name='my_pending_sales'),
-    path('sale_on_cash/<int:data_id>/', action_on_data_select.sale_on_cash, name='sale_on_cash'),
+    path('new_stock/', agents_data_access.new_stock, name='new_stock'),
+    path('sale_on_cash', action_on_data_select.sale_on_cash, name='sale_on_cash'),
     path('sale_on_loan/<int:data_id>/', action_on_data_select.sale_on_loan, name='sale_on_loan'),
     # Concurent system operations
     path('get_daily_sales_json_loan/', data_for_charts.get_daily_sales_json_loan, name='get_daily_sales_json_loan'),

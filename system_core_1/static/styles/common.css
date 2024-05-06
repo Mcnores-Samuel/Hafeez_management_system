@@ -20,6 +20,7 @@ html {
 body {
     position: relative;
     font-size: 16px;
+    background: linear-gradient(90deg, #23435c, #e0e0e0);
 }
 
 .content {
@@ -76,7 +77,7 @@ input {
     display: none;
 }
 
-.common-color {
+.common-color, .material-icons {
     color: #fe9a43;
 }
 

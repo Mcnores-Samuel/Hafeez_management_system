@@ -112,20 +112,7 @@ class AgentsDataQuery:
                     paginated_queryset = paginator.page(paginator.num_pages)
                 return paginated_queryset
         return None
-    
-    def sale_on_cash(self, user, item_id):
-        """Returns a list of devices sold on cash."""
-        if user.groups.filter(name='agents').exists():
-            agent_profile = AgentProfile.objects.get(user=user)
-            if agent_profile:
-                item = MainStorage.objects.get(id=item_id)
-                if item:
-                    item.pending = True
-                    item.sales_type = 'Cash'
-                    item.stock_out_date = timezone.now().date()
-                    item.comment = "Please proceed by providing transaction details including imei number through proper channels."
-                    item.save()
-                    return item
+
                 
     def sale_on_credit(self, user, item_id):
         """Returns a list of devices sold on credit."""
@@ -135,7 +122,9 @@ class AgentsDataQuery:
                 item = MainStorage.objects.get(id=item_id)
                 if item:
                     item.pending = True
-                    item.sales_type = 'Credit'
+                    item.in_stock = False
+                    item.sold = True
+                    item.sales_type = 'Loan'
                     item.stock_out_date = timezone.now().date()
                     item.save()
                     return item
@@ -169,11 +158,7 @@ class AgentsDataQuery:
             agent_profile = AgentProfile.objects.get(user=user)
             if agent_profile:
                 new_stock = MainStorage.objects.filter(
-                    agent=user, in_stock=True,
-                    assigned=True, missing=False,
-                    pending=False, issue=False, sold=False,
-                    recieved=False, faulty=False,
-                    paid=False).all().order_by('-entry_date')
+                    agent=user, recieved=False).all().order_by('-entry_date')
                 paginator = Paginator(new_stock, 12)
                 page_number = request.GET.get('page')
 

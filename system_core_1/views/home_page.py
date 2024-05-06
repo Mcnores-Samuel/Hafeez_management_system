@@ -16,6 +16,7 @@ from ..models.user_profile import UserProfile
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
+from webpush import send_user_notification
 import json
 
 
@@ -144,3 +145,4 @@ def dispatch_stock(request):
         special_outlets = UserProfile.objects.filter(groups__name='special_sales')
         agents = list(set(agents + sorted(special_outlets, key=lambda x: x.username)))
     return render(request, 'users/admin_sites/dispatch.html', {'agents': sorted(agents, key=lambda x: x.username)})
+

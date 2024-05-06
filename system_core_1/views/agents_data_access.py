@@ -91,7 +91,7 @@ def new_stock(request):
         Returns a list of new stock.
     """
     user = request.user
-    newStock = AgentsDataQuery().new_stock(user, request)
+    newStock = AgentsDataQuery().agent_new_stock(user, request)
     if newStock:
         context = {
             'new_stock': newStock

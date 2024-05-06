@@ -96,6 +96,7 @@ class MainStorage(models.Model):
     updated_by = models.CharField(max_length=50, null=True, blank=True)
     comment = models.CharField(max_length=256, null=True, blank=True)
     supplier = models.CharField(max_length=50, null=True, blank=True)
+    trans_image = models.ImageField(upload_to='Cash_Transactions', null=True, blank=True)
 
     class Meta:
         indexes = [

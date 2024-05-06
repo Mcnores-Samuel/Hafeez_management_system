@@ -1,4 +1,5 @@
 {% load static %}
+{% load webpush_notifications %}
 {% load plus_r %}
 {% load django_bootstrap5 %}
 {% bootstrap_css %}
@@ -75,10 +76,10 @@
                         {{ form.remember_me }}
                         <label class="form-check-label" for="{{ form.remember_me.id_for_label }}">Remember Me</label>
                     </div>
-                    <button type="submit" class="btn btn-primary w-100">Login</button>
-                    <div class="text-center fs-6">OR</div>
-                    <a href="{% url 'sign_up' %}" class="btn btn-primary w-100">Sign Up</a>
-                    <div class="forget"><a href="{% url 'password_reset' %}">Forgot Password?</a>
+                    <button type="submit" class="btn common-bg w-100 fw-bold">Login</button>
+                    <div class="text-center fs-6 fw-bold">OR</div>
+                    <a href="{% url 'sign_up' %}" class="btn common-bg w-100 fw-bold">Sign Up</a>
+                    <div class="forget"><a href="{% url 'password_reset' %}" class="fw-bold">Forgot Password?</a>
                     </div>
                 </form>
             </div>

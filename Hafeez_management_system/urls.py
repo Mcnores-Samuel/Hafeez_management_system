@@ -31,6 +31,7 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     path('', RedirectView.as_view(url='/system_core_1/')),
     path('email/', include(email_urls)),
+    path('webpush/', include('webpush.urls')),
 ]
 
 urlpatterns += static(settings.STATIC_URL,
