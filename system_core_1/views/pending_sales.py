@@ -56,7 +56,7 @@ def total_pending_sales(request):
         total = 0
         if request.user.is_staff and request.user.is_superuser:
             total = MainStorage.objects.filter(
-                pending=True, sold=False, in_stock=False,
+                pending=True, sold=True, in_stock=False,
                 missing=False, issue=False, faulty=False).count()
         elif request.user.groups.filter(name='agents').exists():
             total = MainStorage.objects.filter(
