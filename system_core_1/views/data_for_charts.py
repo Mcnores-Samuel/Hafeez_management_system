@@ -74,11 +74,11 @@ def get_agents_stock_json(request):
                     MainStorage.objects.filter(
                         agent=agent.user, in_stock=True,
                         sold=False, missing=False, assigned=True,
-                        recieved=True, faulty=False, pending=False, issued=False))
+                        recieved=True, faulty=False, pending=False, issue=False))
                 total += len(MainStorage.objects.filter(
                     agent=agent.user, in_stock=True,
                     sold=False, missing=False, assigned=True,
-                    recieved=True, faulty=False, pending=False, issued=False))
+                    recieved=True, faulty=False, pending=False, issue=False))
         stocks['Total'] = total
         return JsonResponse(stocks)
     return JsonResponse({'error': 'Invalid request.'})
