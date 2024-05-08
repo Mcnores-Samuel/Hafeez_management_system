@@ -154,7 +154,7 @@ class MainStorageAnalysis:
                 agent=agent.user,
                 in_stock=True, assigned=True,
                 sold=False, missing=False,
-                pending=False, faulty=False, recieved=False,
+                pending=False, faulty=False, recieved=True,
                 issue=False).count()
         return stock
     

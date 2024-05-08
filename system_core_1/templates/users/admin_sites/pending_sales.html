@@ -55,6 +55,13 @@
                                 </form>
                             </span></p>
                         {% endif %}
+                        {% if item.trans_image %}
+                            <p class="card-text"><strong class="text-info">Transaction Image:</strong>
+                                <span>
+                                    <a href="{{ item.trans_image.url }}" target="_blank" rel="noopener noreferrer">Click Here</a>
+                                </span>
+                            </p>
+                        {% endif %}
                         {% if item.contract_no != "##" %}
                             <p class="card-text"><strong class="text-info">Contract No:</strong> <span>{{ item.contract_no }}</span></p>
                         {% endif %}

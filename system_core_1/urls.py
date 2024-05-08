@@ -47,7 +47,7 @@ urlpatterns = [
     path('new_stock/', agents_data_access.new_stock, name='new_stock'),
     path('sale_on_cash', action_on_data_select.sale_on_cash, name='sale_on_cash'),
     path('sale_on_loan/<int:data_id>/', action_on_data_select.sale_on_loan, name='sale_on_loan'),
-    # Concurent system operations
+    # Concurent system operations with data analysis
     path('get_daily_sales_json_loan/', data_for_charts.get_daily_sales_json_loan, name='get_daily_sales_json_loan'),
     path('get_daily_sales_json_cash/', data_for_charts.get_daily_sales_json_cash, name='get_daily_sales_json_cash'),
     path('get_weekly_sales_json_loan/', data_for_charts.get_weekly_sales_json_loan, name='get_weekly_sales_json_loan'),
