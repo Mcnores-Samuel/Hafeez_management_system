@@ -13,11 +13,10 @@ class MainStorageAnalysis:
     def __init__(self, *args, **kwargs):
         pass
 
-    def get_daily_sales(self, sales_type):
+    def get_daily_sales(self, sales_type, day=timezone.now().date()):
         """Returns a dictionary containing the daily sales data."""
-        today = timezone.now().date()
         data_set = MainStorage.objects.filter(
-            stock_out_date=today,
+            stock_out_date=day,
             sold=True, in_stock=False,
             sales_type=sales_type)
         sales = {}

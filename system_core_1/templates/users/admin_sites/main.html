@@ -28,6 +28,7 @@
         {% endblock %}
         <script src="{% static 'scripts/pending_sales.js' %}" defer></script>
         <script src="{% static 'scripts/web_push.js' %}" defer></script>
+        <script src="{% static 'scripts/send_daily_update.js' %}" defer></script>
         <script src="{% static 'scripts/sidebar.js' %}" defer></script>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <style>
@@ -541,11 +542,16 @@
                         </div>
                     </div>
                 </div>
+                <br>
+                <a href="{% url 'morning_update' %}">Morning update</a>
+                <a href="{% url 'afternoon_update' %}">Afternoon update</a>
+                <a href="{% url 'evening_update' %}">Evening update</a>
             </section>
             {% webpush_button %}
             {% endblock %}
         </section>
-        <div class="divider"></div>
+        <br>
+        <br>
         <footer>
             {% block footer %}
             <div>

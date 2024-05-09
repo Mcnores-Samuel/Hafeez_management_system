@@ -44,11 +44,13 @@ def dashboard(request):
     if request.user.is_staff:
         user = request.user
         admin_url = '/' + os.environ.get('ADMIN_URL') + '/'
+        icon = os.environ.get('ICON_LINK')
         avatar = UserAvatar.objects.get(
             user=request.user) if UserAvatar.objects.filter(
                 user=request.user).exists() else None
-        # payload = {'head': 'Welcome to the Admin Panel', 'body': 'You have been granted access to the Admin Panel'}
-        # send_user_notification(user=user, payload=payload, ttl=1000)
+        payload = {'head': 'Hafeez Enterprise', 'body': '{} logged in to the admin Panel'.format(user.username),
+                   'icon': icon, 'url': 'hafeezmw.com'}
+        send_user_notification(user=user, payload=payload, ttl=1000)
         context = {
             'profile': user.email[0],
             'user': user,
