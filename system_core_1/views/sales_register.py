@@ -7,12 +7,13 @@ process by agents.
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from ..models.user_profile import UserProfile
 from ..models.main_storage import MainStorage
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
 from django.utils import timezone
+from webpush import send_user_notification
+from os import environ
 
 
 @login_required
@@ -69,6 +70,10 @@ def combinedData_collection(request, data_id):
                         item.name, item.device_imei
                     ))
                     item.save()
+                    payload = {'head': 'Sales Notification', 'body': '{} of imei {} sold successfully'.format(
+                        item.name, item.device_imei
+                    ), 'icon': environ.get('ICON_LINK')}
+                    send_user_notification(user=request.user, payload=payload, ttl=1000)
                     return redirect('data_search')
                 elif payment == 'Loan':
                     item.in_stock = False
@@ -80,6 +85,10 @@ def combinedData_collection(request, data_id):
                         item.name, item.device_imei
                     ))
                     item.save()
+                    payload = {'head': 'Sales Notification', 'body': '{} of imei {} sold successfully'.format(
+                        item.name, item.device_imei
+                    ), 'icon': environ.get('ICON_LINK')}
+                    send_user_notification(user=request.user, payload=payload, ttl=1000)
                     return redirect('data_search')
                 messages.error(request, 'Invalid payment method')
             else:

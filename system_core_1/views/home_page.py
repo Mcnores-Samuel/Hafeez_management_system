@@ -76,7 +76,7 @@ def home_page(request):
         context['avatar'] = avatar
         context['profile'] = request.user.email[0]
         return redirect(reverse('dashboard'))
-    return render(request, 'base.html', context)
+    return redirect(reverse('sign_in'))
 
 
 @verify_view

@@ -28,8 +28,8 @@ admin_url = os.environ.get('ADMIN_URL') + '/'
 urlpatterns = [
     path(admin_url, admin.site.urls),
     path('system_core_1/', include('system_core_1.urls')),
-    path('accounts/', include('django.contrib.auth.urls')),
     path('', RedirectView.as_view(url='/system_core_1/')),
+    path('accounts/login/', RedirectView.as_view(url='/system_core_1/sign_in/')),
     path('email/', include(email_urls)),
     path('webpush/', include('webpush.urls')),
 ]

@@ -156,8 +156,8 @@ function yearlySalesAnalysisProduct(url, dest, chartType, loader) {
   const date = new Date();
 
   function fetchAndUpdateDailyData() {
-    let modelList = [];
-    let total = [];
+    const modelList = [];
+    const total = [];
 
     $.ajax({
       url,
@@ -171,8 +171,12 @@ function yearlySalesAnalysisProduct(url, dest, chartType, loader) {
         const load = $(loader);
         load.removeClass('loading-message');
 
-        modelList = data.map((item) => item[0]);
-        total = data.map((item) => item[1]);
+        for (let i = 0; i < data.length; i++) {
+          if (data[i][1] > 10 || data[i][1] === 10) {
+            modelList.push(data[i][0]);
+            total.push(data[i][1]);
+          }
+        }
 
         if (salesAnalystChartPro === null) {
           salesAnalystChartPro = new Chart(yearlyAnalysisctxPro, {
@@ -185,7 +189,33 @@ function yearlySalesAnalysisProduct(url, dest, chartType, loader) {
                 backgroundColor: '#4285F4',
                 borderColor: '#4285F4',
                 borderWidth: 2,
-              }],
+              },
+              {
+                label: 'Total Sales',
+                data: total,
+                backgroundColor: '#0F9D58',
+                borderColor: '#0F9D58',
+                borderWidth: 2,
+                type: 'line',
+                fill: false,
+                yAxisID: 'y',
+                order: 1,
+                tension: 0.4,
+                pointRadius: 5,
+                pointHoverRadius: 7,
+                pointBackgroundColor: '#0F9D58',
+                pointBorderColor: '#0F9D58',
+                pointHoverBackgroundColor: '#0F9D58',
+                pointHoverBorderColor: '#0F9D58',
+                pointBorderWidth: 2,
+                pointHoverBorderWidth: 3,
+                hitRadius: 10,
+                hoverRadius: 10,
+                hoverBorderWidth: 3,
+                hoverBackgroundColor: '#0F9D58',
+                hoverBorderColor: '#0F9D58',
+              },
+              ],
             },
             options: {
               responsive: true,

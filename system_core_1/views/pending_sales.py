@@ -88,6 +88,8 @@ def revert_to_stock(request):
                     main_storage.stock_out_date = main_storage.entry_date
                     main_storage.sales_type = '##'
                     main_storage.contract_no = '##'
+                    if main_storage.trans_image:
+                        main_storage.trans_image.delete()
                     main_storage.save()
                     message.success(request, 'device reverted to stock successfully')
                 return redirect('pending_sales')

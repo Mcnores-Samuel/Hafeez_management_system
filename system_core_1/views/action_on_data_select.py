@@ -36,8 +36,7 @@ def sale_on_cash(request):
                 send_mail(
                     'New Sale On Cash: Action Required',
                     f"Hello Admin,\n\n{user.username} has made a sale on cash and it's pending your approval.\n\nDetails:\nDevice: {device.name}\nIMEI: {device.device_imei}\nAmount: {amount}\n\nPlease login to the system to approve the sale:\nwww.hafeezmw.com\n\nThank you,\nSystem Update",
-                    'noreply.hafeezmw@gmail.com',
-                    admin_list
+                    'noreply.hafeezmw@gmail.com', admin_list
                 )
                 messages.success(request, 'Your sale has been successfully processed and is pending approval.')
                 return redirect('in_stock')

@@ -49,7 +49,7 @@ def dashboard(request):
             user=request.user) if UserAvatar.objects.filter(
                 user=request.user).exists() else None
         payload = {'head': 'Hafeez Enterprise', 'body': '{} logged in to the admin Panel'.format(user.username),
-                   'icon': icon, 'url': 'hafeezmw.com'}
+                   'icon': icon, 'url': 'www.hafeezmw.com'}
         send_user_notification(user=user, payload=payload, ttl=1000)
         context = {
             'profile': user.email[0],

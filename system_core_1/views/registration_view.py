@@ -92,34 +92,40 @@ def sign_in(request):
     """
     user = None
     if request.method == "POST":
-        form = SignInForm(request.POST)
-        if form.is_valid():
-            email = form.cleaned_data['email']
-            password = form.cleaned_data['password']
-            remember_me = form.cleaned_data['remember_me']
-            user = authenticate(request, email=email, password=password)
-            if user is not None:
-                if user.is_active:
-                    login(request, user)
-                    if remember_me:
-                        request.session.set_expiry(604800)
+        try:
+            form = SignInForm(request.POST)
+            if form.is_valid():
+                email = form.cleaned_data['email']
+                password = form.cleaned_data['password']
+                remember_me = form.cleaned_data['remember_me']
+                user = authenticate(request, email=email, password=password)
+                if user is not None:
+                    if user.is_active:
+                        login(request, user)
+                        if remember_me:
+                            request.session.set_expiry(604800)
+                        else:
+                            request.session.set_expiry(0)
+                        if user.is_staff:
+                            return redirect(reverse('dashboard'))
+                        elif user.groups.filter(name='staff_members').exists():
+                            return redirect(reverse('dashboard'))
+                        elif user.groups.filter(name='agents').exists():
+                            return redirect(reverse('dashboard'))
+                        else:
+                            return redirect(reverse('dashboard'))
                     else:
-                        request.session.set_expiry(0)
-                    if user.is_staff:
-                        return redirect(reverse('dashboard'))
-                    elif user.groups.filter(name='staff_members').exists():
-                        return redirect(reverse('dashboard'))
-                    elif user.groups.filter(name='agents').exists():
-                        return redirect(reverse('dashboard'))
-                    else:
-                        return redirect(reverse('dashboard'))
+                        form.add_error(None, "Please!! activate your account")
                 else:
-                    form.add_error(None, "Please!! activate your account")
-            else:
-                form.add_error(None, "Invalid username or password")
+                    form.add_error(None, "Invalid username or password")
+        except Exception:
+            form = SignInForm()
+            messages.error(request, 'Something went wrong, please try again')
+            return render(request, 'authentication/sign_in.html', {'form': form, 'user': user})
     else:
         form = SignInForm()
     return render(request, 'authentication/sign_in.html', {'form': form, 'user': user})
+
 
 @login_required
 def resend_confirmation_email(request):
