@@ -3,8 +3,11 @@ from ..data_analysis_engine.admin_panel.mainstorage_analysis import MainStorageA
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from ..models.main_storage import MainStorage
+from ..models.user_profile import UserProfile
 from django.contrib import messages as message
 from django.http import JsonResponse
+from webpush import send_user_notification
+from os import environ
 
 
 @login_required
@@ -22,6 +25,15 @@ def pending_sales(request):
         if device:
             approved = MainStorage.objects.filter(
                 device_imei=device, pending=True, missing=False)
+            agent = UserProfile.objects.get(username=approved[0].agent)
+            name = approved[0].name
+            payload = {
+                'head': '{} your sale has been approved.'.format(agent.username),
+                'body': 'The sale of {} imei number {} has been approved.'.format(
+                    name, device),
+                'icon': environ.get('ICON_LINK'),
+                'url': 'www.hafeezmw.com'
+            }
             if approved:
                 if (approved[0].sales_type == 'Loan'
                     and approved[0].contract_no != '##'):
@@ -29,12 +41,14 @@ def pending_sales(request):
                     approved.update(pending=False)
                     message.success(request, '{} of {} The sale has been approved.'.format(
                         name, device))
+                    send_user_notification(user=agent, payload=payload, ttl=1000)
                     return redirect('pending_sales')
                 elif (approved[0].sales_type == 'Cash'):
                     name = approved[0].name
                     approved.update(pending=False)
                     message.success(request, '{} of {} The sale has been approved.'.format(
                         name, device))
+                    send_user_notification(user=agent, payload=payload, ttl=1000)
                     return redirect('pending_sales')
                 else:
                     message.warning(request, 'Please update the Contract Number to approve the sale.')

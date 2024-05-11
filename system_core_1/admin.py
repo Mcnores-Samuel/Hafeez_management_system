@@ -13,6 +13,8 @@ from .adminsites.admin_feedback import FeedbackAdmin
 from .adminsites.admin_notification import NotificationsAdmin
 from .adminsites.admin_commission import CommissionAdmin
 from .adminsites.admin_contacts import ContactAdmin
+from .adminsites.admin_refarbished_phone import RefarbishedDevicesAdmin
+from .adminsites.admin_account_manager import AccountManagerAdmin
 from .models.special_orders import SpecialOrders
 from .models.customer_details import CustomerData
 from .models.agent_profile import AgentProfile
@@ -26,6 +28,8 @@ from .models.feedback import Feedback
 from .models.notifications import Notifications
 from .models.commission import Commission
 from .models.contacts import Contact
+from .models.refarbished_devices import RefarbishedDevices
+from .models.account_manager import AccountManager
 from .models.prices import (YellowPrices, MosesPrices, ChrisMZPrices,
                             Chris25Prices, BuzzMchinjiPrices)
 from .adminsites.admin_prices import (AdminYellowPrices, AdminMosesPrices,
@@ -57,3 +61,5 @@ admin.site.register(MosesPrices, AdminMosesPrices)
 admin.site.register(ChrisMZPrices, AdminChrisMZPrices)
 admin.site.register(Chris25Prices, AdminChris25Prices)
 admin.site.register(BuzzMchinjiPrices, AdminBuzzMchinjiPrices)
+admin.site.register(RefarbishedDevices, RefarbishedDevicesAdmin)
+admin.site.register(AccountManager, AccountManagerAdmin)
