@@ -14,6 +14,8 @@ import json
 from django.utils import timezone
 from webpush import send_user_notification
 from os import environ
+from ..models.user_profile import UserProfile
+from ..models.account_manager import AccountManager
 
 
 @login_required
@@ -76,6 +78,19 @@ def combinedData_collection(request, data_id):
                     send_user_notification(user=request.user, payload=payload, ttl=1000)
                     return redirect('data_search')
                 elif payment == 'Loan':
+                    mbo = request.POST.get('mbo')
+                    contract_number = request.POST.get('contract_number')
+                    mbo_obj = UserProfile.objects.get(id=mbo)
+                    AccountManager.objects.create(
+                        mbo=mbo_obj, device_imei=item.device_imei,
+                        device_name=item.name, contract=contract_number, issue=False,
+                        date_created=timezone.now(), date_updated=timezone.now(), pending=True,
+                        active=True, approved=False, rejected=False, resolved=False)
+                    mbo_payload = {'head': 'Sales Notification', 'body': 'You have a new sale request for {} of imei {}'.format(
+                        item.name, item.device_imei
+                    )}
+                    send_user_notification(user=mbo_obj, payload=mbo_payload, ttl=1000)
+                    item.contract_no = contract_number
                     item.in_stock = False
                     item.sold = True
                     item.pending = True
@@ -94,8 +109,10 @@ def combinedData_collection(request, data_id):
             else:
                 messages.error(request, 'Phone out of stock')
     if request.user.is_staff and request.user.is_superuser:
-        return render(request, 'users/admin_sites/salespoint.html')
-    return render(request, 'registration/salespoint.html')
+        mbos = UserProfile.objects.filter(groups__name='MBOs')
+        return render(request, 'users/admin_sites/salespoint.html', {'mbos': mbos})
+    mbos = UserProfile.objects.filter(groups__name='MBOs')
+    return render(request, 'registration/salespoint.html', {'mbos': mbos})
 
 
 @login_required

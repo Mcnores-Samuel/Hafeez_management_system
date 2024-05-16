@@ -11,6 +11,7 @@ from ..data_analysis_engine.admin_panel.calc_commitions import CalcCommissions
 from ..models.main_storage import MainStorage, Airtel_mifi_storage
 from django.utils import timezone
 from webpush import send_user_notification
+from django.shortcuts import redirect
 import os
 
 
@@ -44,13 +45,9 @@ def dashboard(request):
     if request.user.is_staff:
         user = request.user
         admin_url = '/' + os.environ.get('ADMIN_URL') + '/'
-        icon = os.environ.get('ICON_LINK')
         avatar = UserAvatar.objects.get(
             user=request.user) if UserAvatar.objects.filter(
                 user=request.user).exists() else None
-        payload = {'head': 'Hafeez Enterprise', 'body': '{} logged in to the admin Panel'.format(user.username),
-                   'icon': icon, 'url': 'www.hafeezmw.com'}
-        send_user_notification(user=user, payload=payload, ttl=1000)
         context = {
             'profile': user.email[0],
             'user': user,
@@ -120,23 +117,15 @@ def dashboard(request):
             'avatar': avatar
         }
         return render(request, 'users/airtel_agents/airtel_agents.html', context)
-    
-    elif request.user.groups.filter(name='Airtel_Supervisor').exists():
-        airtel_agents = UserProfile.objects.filter(groups__name='airtel_agents')
-        total_sales_by_agents = {}
-        for agent in airtel_agents:
-            total_sales_by_agents[agent] = len(Airtel_mifi_storage.objects.filter(
-                agent=agent.id,
-                in_stock=True, pending=True))
-        avatar = (UserAvatar.objects.get(user=request.user)
-                  if UserAvatar.objects.filter(user=request.user).exists() else None)
+    elif request.user.groups.filter(name='MBOs').exists():
+        user = request.user
+        avatar = UserAvatar.objects.get(
+            user=request.user) if UserAvatar.objects.filter(
+                user=request.user).exists() else None
         context = {
-            'profile': request.user.email[0],
-            'user': request.user,
-            'airtel_agents': airtel_agents,
-            'total_sales_by_agents': total_sales_by_agents,
+            'profile': user.email[0],
+            'user': user,
             'avatar': avatar
         }
-        return render(request, 'users/airtel_supervisor/dashboard.html', context) 
-    else:
-        return render(request, 'users/regular_user.html', {'user': request.user})
+        return render(request, 'users/mbos/mbos.html', context)
+    return redirect('sign_in')

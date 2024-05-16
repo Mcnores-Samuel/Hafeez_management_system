@@ -25,12 +25,17 @@ class AccountManager(models.Model):
         rejected_proof (ImageField): The proof of rejection for the account manager.
     """
     mbo = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
-    contract = models.CharField(max_length=9, unique=True)
+    contract = models.CharField(max_length=9, blank=True, null=True)
+    device_imei = models.CharField(max_length=15, blank=True, null=True)
+    device_name = models.CharField(max_length=50, blank=True, null=True)
     date_created = models.DateTimeField(timezone.now())
     date_updated = models.DateTimeField(timezone.now())
     active = models.BooleanField(default=True)
     approved = models.BooleanField(default=False)
+    pending = models.BooleanField(default=True)
     rejected = models.BooleanField(default=False)
     issue = models.BooleanField(default=False)
+    resolved = models.BooleanField(default=True)
     rejected_reason = models.TextField(blank=True, null=True)
+    issue_description = models.TextField(blank=True, null=True)
     rejected_proof = models.ImageField(upload_to='rejected_proof/', blank=True, null=True)
