@@ -15,7 +15,7 @@ class AccountManagerDataQuery:
     def pending_contracts(self, user, request):
         """Returns a list of pending contracts."""
         if user.groups.filter(name='MBOs').exists():
-            account_manager = UserProfile.objects.get(user=user)
+            account_manager = UserProfile.objects.get(id=user.id)
             if account_manager:
                 pending_contracts = AccountManager.objects.filter(
                     mbo=user, pending=True, active=True,
@@ -36,12 +36,16 @@ class AccountManagerDataQuery:
     def approved_contracts(self, user, request):
         """Returns a list of approved contracts."""
         if user.groups.filter(name='MBOs').exists():
-            account_manager = UserProfile.objects.get(user=user)
+            current_week = timezone.now().date()
+            monday = current_week - timezone.timedelta(
+                days=current_week.weekday())
+            sunday = monday + timezone.timedelta(days=6)
+            account_manager = UserProfile.objects.get(id=user.id)
             if account_manager:
                 approved_contracts = AccountManager.objects.filter(
                     mbo=user, pending=False, active=True,
                     approved=True, rejected=False,
-                    issue=False).all().order_by('-date_created')
+                    issue=False, date_updated__range=[monday, sunday]).all().order_by('-date_created')
                 paginator = Paginator(approved_contracts, 12)
                 page_number = request.GET.get('page')
 

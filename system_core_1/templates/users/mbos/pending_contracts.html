@@ -1,0 +1,54 @@
+{% extends 'users/mbos/mbos.html' %}
+{% load plus_r %}
+{% load static %}
+{% load django_bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% block head %}
+    <link rel="stylesheet" href="{% static 'styles/agent_stock_mobile.css' %}">
+    <script src="{% static 'scripts/data_updates.js' %}"></script>
+{% endblock %}
+{% block content %}
+<div class="container">
+    {% bootstrap_messages %}
+    <div class="row">
+    {% for contract in pending_contracts %}
+        <div class="col-md-4 col-sm-6 mb-4">
+            <div class="card">
+                <div class="card-header  text-center">
+                    <h4 class="card-title">{{ contract.contract }}</h4>
+                </div>
+                <div class="card-body">
+                    <p class="card-text"><strong class="text-info">Created Timestamp:</strong> <span>{{ contract.date_created }}</span></p>
+                    <p class="card-text"><strong class="text-info">Serial No:</strong> <span>{{ contract.device_imei }}</span></p>
+                    <p class="card-text"><strong class="text-info">Model:</strong> <span>{{ contract.device_name }}</span></p>
+                    <button type="button" class="btn common-bg w-100 fw-bold" data-bs-toggle="modal"
+                    data-bs-target="#viewSalesModal{{ item.id }}">Approved</button>
+                    <br>
+                    <br>
+                    <button type="button" class="btn bg-danger w-100 fw-bold" data-bs-toggle="modal"
+                    data-bs-target="#viewSalesModal{{ item.id }}">Rejected</button>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+</div>
+<div class="container w-100">
+    <div class="pagination container-fluid w-100 d-flex justify-content-center">
+        <span class="step-links w-100 d-flex justify-content-around">
+            {% if pending_contracts.has_previous %}
+                <a href="?page=1" class="btn btn-primary">first</a>
+                <a href="?page={{ pending_contracts.previous_page_number }}" class="btn btn-primary">previous</a>
+            {% endif %}
+            <span class="current fs-5">
+                Page {{ pending_contracts.number }} of {{ pending_contracts.paginator.num_pages }}.
+            </span>
+            {% if pending_contracts.has_next %}
+                <a href="?page={{ pending_contracts.next_page_number }}" class="btn btn-primary">next</a>
+                <a href="?page={{ pending_contracts.paginator.num_pages }}" class="btn btn-primary">last</a>
+            {% endif %}
+        </span>
+    </div>
+</div>
+{% endblock %}

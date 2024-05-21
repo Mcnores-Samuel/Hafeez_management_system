@@ -16,8 +16,10 @@
         <link rel="stylesheet" href="{% static 'styles/common.css' %}">
         <link rel="stylesheet" href="{% static 'styles/base_header.css' %}">
         <link rel="stylesheet" href="{% static 'styles/dashboard.css' %}">
-        {% block head %}
         <link rel="stylesheet" href="{% static 'styles/loading-message.css' %}">
+        <link rel="stylesheet" href="{% static 'styles/spinner.css' %}">
+        <script src="{% static 'scripts/spinner.js' %}" defer></script>
+        {% block head %}
         <script src="{% static 'scripts/analysis_lib/yearly_analysis.js' %}" defer></script>
         <script src="{% static 'scripts/analysis_lib/daily_sales.js' %}" defer></script>
         {% endblock %}
@@ -27,6 +29,9 @@
     </head>
     <body>
         <button class="scroll-back"><i class='bx bxs-up-arrow-square'></i></button>
+        <div class="loader">
+            <div class="loading-message"></div>
+        </div>
         <div class="row w-100">
             <div class="col-md-2 col-12">
                 <div class="topbar">
@@ -55,6 +60,18 @@
                                     <span class="text"> Dashboard</span>
                                 </a>
                             </li>
+                            {% for mbo in mbos %}
+                                <li class="nav-item">
+                                    <a class="nav-link d-flex align-items-center" href="{% url 'mbo_data' username=mbo.username %}"
+                                    data-bs-toggle="tooltip" 
+                                    title="{{ mbo.username }}">
+                                    <span class="material-icons">
+                                        account_circle
+                                    </span>
+                                    <span class="text"> {{ mbo.username }}</span>
+                                    </a>
+                                </li>
+                            {% endfor %}
                             <li class="nav-item">
                                 <a class="nav-link d-flex align-items-center" href="{% url 'add_to_stock' %}"
                                 data-bs-toggle="tooltip" 

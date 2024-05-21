@@ -54,7 +54,7 @@
                         <p>Please! Select the responsible MBO below</p>
                         {% for mbo in mbos %}
                             <div class="form-check">
-                                <input type="radio" name="mbo" value="{{ mbo.id }}" id="{{ mbo.id }}" class="form-check-input">
+                                <input type="radio" name="mbo" value="{{ mbo.id }}" id="{{ mbo.id }}" class="form-check-input" required>
                                 <label for="{{ mbo.id }}" class="form-check-label fw-bold">{{ mbo.username }}</label>
                             </div>
                         {% endfor %}

@@ -60,12 +60,15 @@ def dashboard(request):
         avatar = UserAvatar.objects.get(
             user=request.user) if UserAvatar.objects.filter(
                 user=request.user).exists() else None
+        mbos = UserProfile.objects.filter(groups__name='MBOs').all()
+        print(mbos)
         context = {
             'profile': user.email[0],
             'user': user,
-            'avatar': avatar
+            'avatar': avatar,
+            'mbos': mbos
         }
-        return render(request, 'users/staff_sites/staff.html')
+        return render(request, 'users/staff_sites/staff.html', context)
     elif request.user.groups.filter(name='agents').exists():
         user = request.user
         agent_profile = AgentProfile.objects.get(user=user)
@@ -101,22 +104,6 @@ def dashboard(request):
                 'commission': CalcCommissions().calc_commission(user)
             }
         return render(request, 'users/agent_sites/agents.html', context)
-    elif request.user.groups.filter(name='airtel_agents').exists():
-        stock_in = Airtel_mifi_storage.objects.filter(agent=request.user, in_stock=True)
-        stock_out = Airtel_mifi_storage.objects.filter(agent=request.user, in_stock=False)
-        avatar = UserAvatar.objects.get(
-            user=request.user) if UserAvatar.objects.filter(
-                user=request.user).exists() else None
-        context = {
-            'profile': request.user.email[0],
-            'user': request.user,
-            'stock_in': stock_in,
-            'stock_out': stock_out,
-            'total_stock_in': len(stock_in),
-            'total_stock_out': len(stock_out),
-            'avatar': avatar
-        }
-        return render(request, 'users/airtel_agents/airtel_agents.html', context)
     elif request.user.groups.filter(name='MBOs').exists():
         user = request.user
         avatar = UserAvatar.objects.get(

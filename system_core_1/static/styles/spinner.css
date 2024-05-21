@@ -7,31 +7,12 @@
     height: 100%;
     transition: opacity 0.75s, visibility 0.75s;
     background-color: rgba(0, 0, 31, 0.95);
+    background: linear-gradient(90deg, rgb(35, 67, 92, 0.7), rgba(0, 0, 31, 0.7));;
     backdrop-filter: blur(20px);
     z-index: 9999;
 }
 
-.loader::after{
-    content: "";
-    width: 20px;
-    height: 20px;
-    border: 15px solid rgb(255, 255, 255);
-    border-top-color: transparent;
-    border-bottom-color: transparent;
-    border-radius: 50%;
-    animation: spinner 0.75s ease infinite;
-}
-
-@keyframes spinner {
-    from {
-        transform: rotate(0turn);
-    }
-    to{
-        transform: rotate(1turn);
-    }
-}
-
-.hide-loader {
+.loader.hidden {
     opacity: 0;
     visibility: hidden;
 }

@@ -1,0 +1,106 @@
+{% extends 'users/staff_sites/staff.html' %}
+{% load plus_r %}
+{% load static %}
+{% load django_bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% block head %}
+{% endblock %}
+{% block content %}
+<style>
+  .content-container {
+    overflow-y: scroll;
+  }
+
+  .data-container > button {
+    width: 25%;
+  }
+
+  @media screen and (max-width: 768px){
+    .data-container {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    button {
+      width: 100%;
+    }
+  }
+</style>
+  <div class="container">
+    {% bootstrap_messages %}
+    <h1 class="text-center fw-bold">{{ mbo.username }}'s Operations</h1>
+    <hr>
+  </div>
+  <section class="charts_by_chartjs">
+    <div class="row gy-3">
+        <div class="col-md-6 col-12">
+            <div class="card">
+                <div class="card-header text-center">
+                    <h4 class="fw-bold text-muted">Pending Approval</h4>
+                </div>
+                <div class="card-body content-container" style="height: 400px;">
+                  {% for contract in  pending_contracts %}
+                    <div class="card">
+                      <div class="card-header">
+                        <h5 class="fw-bold text-center">Contract NO: {{ contract.contract }} - IMEI: {{ contract.device_imei }}</h5>
+                      </div>
+                      <div class="card-body data-container">
+                        {% if contract.pending %}
+                        <button type="button" class="btn fw-bold" disabled>Stauts: <span class="text-danger">Pending</span></button>
+                        {% endif %}
+                        <button type="button" class="btn common-bg fw-bold"
+                        data-bs-toggle="modal" data-bs-target="#viewCreditModal">Edit</button>
+                        <button type="button" class="btn bg-danger fw-bold"
+                        data-bs-toggle="modal" data-bs-target="#viewCreditModal">Delete</button>
+                      </div>
+                    </div>
+                    <br>
+                  {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-12">
+            <div class="card">
+                <div class="card-header text-center">
+                    <h4 class="fw-bold text-muted">Daily Approved Contracts</h4>
+                </div>
+                <div class="card-body" style="height: 400px;">
+                  {% for approved in approved_contracts %}
+                    <div class="card">
+                      <div class="card-header">
+                        <h5 class="fw-bold text-center">Contract NO: {{ approved.contract }} - IMEI: {{ approved.device_imei }}</h5>
+                      </div>
+                      <div class="card-body data-container">
+                        <button type="button" class="btn fw-bold" disabled>Stauts: <span class="text-success">Approved</span></button>
+                        <button type="button" class="btn common-bg fw-bold"
+                        data-bs-toggle="modal" data-bs-target="#viewCreditModal">Edit</button>
+                        <button type="button" class="btn bg-danger fw-bold"
+                        data-bs-toggle="modal" data-bs-target="#viewCreditModal">Delete</button>
+                      </div>
+                    </div>
+                    <br>
+                  {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<br>
+<section class="yearly_analysis">
+    <div class="row">
+        <div class="col-md-6 col-12 w-100">
+            <div class="card">
+                <div class="card-header text-center">
+                    <h4 class="fw-bold text-muted">Active Issues / Unresolved Issues</h4>
+                </div>
+                <div class="card-body">
+                    <div class="yearly_sales_chart_loader"></div>
+                    <canvas class="yearly_sales_chart" width="400" height="400"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
