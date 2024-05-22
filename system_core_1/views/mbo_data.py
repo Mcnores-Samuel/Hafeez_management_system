@@ -124,6 +124,39 @@ def approved_contracts(request):
 
 
 @login_required
+def search_contracts(request):
+    """
+    The `search_contracts` view function displays the search results for the MBOs.
+
+    Functionality:
+    - Checks if the user is authenticated and has the appropriate permissions.
+    - Retrieves the search results for the MBOs in the system.
+    - Renders the search results page, displaying the search results.
+
+    Parameters:
+    - request: The HTTP request object containing user information.
+
+    Returns:
+    - Renders the search results page, displaying the search results.
+    - Redirects unauthenticated users to the sign-in page.
+
+    Usage:
+    - Authenticated users access this view to view the search results for the MBOs.
+    - Displays the search results for the MBOs, including contract details, etc.
+
+    Note:
+    - User authentication and authorization should be managed by the authentication
+      and authorization systems.
+    """
+    if request.user.is_authenticated and request.user.groups.filter(name='MBOs').exists():
+        search_results = AccountManagerDataQuery().search_contracts(request.user, request)
+        context = {
+            'search_results': search_results
+        }
+    return render(request, 'users/mbos/search_contracts.html', context)
+
+
+@login_required
 def active_issues(request):
     """
     The `active_issues` view function displays the active issues for the MBOs.

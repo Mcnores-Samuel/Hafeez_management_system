@@ -61,7 +61,7 @@ class AccountManagerDataQuery:
     def rejected_contracts(self, user, request):
         """Returns a list of rejected contracts."""
         if user.groups.filter(name='MBOs').exists():
-            account_manager = UserProfile.objects.get(user=user)
+            account_manager = UserProfile.objects.get(id=user.id)
             if account_manager:
                 rejected_contracts = AccountManager.objects.filter(
                     mbo=user, pending=False, active=True,
@@ -82,7 +82,7 @@ class AccountManagerDataQuery:
     def active_issues(self, user, request):
         """Returns a list of active issues."""
         if user.groups.filter(name='MBOs').exists():
-            account_manager = UserProfile.objects.get(user=user)
+            account_manager = UserProfile.objects.get(id=user.id)
             if account_manager:
                 active_issues = AccountManager.objects.filter(
                     mbo=user, pending=False, active=True,
@@ -103,7 +103,7 @@ class AccountManagerDataQuery:
     def resolved_issues(self, user, request):
         """Returns a list of resolved issues."""
         if user.groups.filter(name='MBOs').exists():
-            account_manager = UserProfile.objects.get(user=user)
+            account_manager = UserProfile.objects.get(id=user.id)
             if account_manager:
                 resolved_issues = AccountManager.objects.filter(
                     mbo=user, pending=False, active=True,
@@ -124,9 +124,9 @@ class AccountManagerDataQuery:
     def search_contracts(self, user, request):
         """Returns a list of contracts based on a search query."""
         if user.groups.filter(name='MBOs').exists():
-            account_manager = UserProfile.objects.get(user=user)
+            account_manager = UserProfile.objects.get(id=user.id)
             if account_manager:
-                search_query = request.GET.get('search')
+                search_query = request.POST.get('search_term')
                 if search_query:
                     contracts = AccountManager.objects.filter(
                         Q(contract__icontains=search_query) |

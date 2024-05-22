@@ -8,7 +8,7 @@ def read_pdf_to_text(filename):
     """Extracts Text format data from pdf file.
 
     args:
-        filename: The name of the file or file pthname.
+        filename: The name of the file or file pathname.
     Returns: Newline separated string from the pdf file.
     """
     try:
@@ -45,16 +45,16 @@ def extract_contract_number(text):
 
 
 if __name__ == "__main__":
-    text_data = read_pdf_to_text("generated (1).pdf")
+    text_data = read_pdf_to_text("generated.pdf")
     bank_paymets = extract_contract_number(text_data)
     print("Contracts numbers from bank statement: ",len(bank_paymets))
-    data = read_pdf_to_text("Merchant Contract Payments (1).pdf")
+    data = read_pdf_to_text("Merchant Contract Payments (5).pdf")
     contracts_data = extract_contract_number(data)
     print("Contracts numbers from Merchant Customers: ",len(contracts_data))
     not_found = []
     for contract in contracts_data:
         if contract in bank_paymets:
-            print("Bank Payment Conctract: {}  matches with Merchant Customers Contract: {}".format(bank_paymets[bank_paymets.index(contract)], contract))
+            print("Bank Payment Contract: {}  matches with Merchant Customers Contract: {}".format(bank_paymets[bank_paymets.index(contract)], contract))
         else:
             not_found.append(contract)
     print()

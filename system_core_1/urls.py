@@ -10,7 +10,7 @@ from .views.defects import defects
 from  .views import revenues
 from .views import agents_data_access
 from .views.system_routine_updates import (morning_update, afternoon_update, evening_update)
-from .views.mbo_data import mbo_data, pending_contracts
+from .views.mbo_data import mbo_data, pending_contracts, search_contracts
 
 
 urlpatterns = [
@@ -52,6 +52,7 @@ urlpatterns = [
     path('mbo_data/<str:username>/', mbo_data, name='mbo_data'),
     # MBO data access points
     path('pending_contracts/', pending_contracts, name='pending_contracts'),
+    path('search_contracts/', search_contracts, name='search_contracts'),
     # Concurent system operations with data analysis
     path('get_daily_sales_json_loan/', data_for_charts.get_daily_sales_json_loan, name='get_daily_sales_json_loan'),
     path('get_daily_sales_json_cash/', data_for_charts.get_daily_sales_json_cash, name='get_daily_sales_json_cash'),

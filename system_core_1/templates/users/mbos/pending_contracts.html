@@ -6,10 +6,19 @@
 {% bootstrap_javascript %}
 {% block head %}
     <link rel="stylesheet" href="{% static 'styles/agent_stock_mobile.css' %}">
-    <script src="{% static 'scripts/data_updates.js' %}"></script>
 {% endblock %}
 {% block content %}
 <div class="container">
+    <nav class="navbar navbar-light">
+        <div class="container">
+            <form action="{% url 'search_contracts' %}" method="post" class="d-flex w-100">
+                {% csrf_token %}
+                <input type="search" class="form-control me-2 bg-secondary" name="search_term" id="search_term" placeholder="Device IMEI, category, model etc">
+                <button class="btn search-btn material-icons" type="submit">search</button>
+            </form>
+        </div>
+    </nav>
+    <br>
     {% bootstrap_messages %}
     <div class="row">
     {% for contract in pending_contracts %}
@@ -23,11 +32,69 @@
                     <p class="card-text"><strong class="text-info">Serial No:</strong> <span>{{ contract.device_imei }}</span></p>
                     <p class="card-text"><strong class="text-info">Model:</strong> <span>{{ contract.device_name }}</span></p>
                     <button type="button" class="btn common-bg w-100 fw-bold" data-bs-toggle="modal"
-                    data-bs-target="#viewSalesModal{{ item.id }}">Approved</button>
+                    data-bs-target="#approved{{ contract.id }}">Approved</button>
                     <br>
                     <br>
                     <button type="button" class="btn bg-danger w-100 fw-bold" data-bs-toggle="modal"
-                    data-bs-target="#viewSalesModal{{ item.id }}">Rejected</button>
+                    data-bs-target="#rejected{{ contract.id }}">Rejected</button>
+
+                    <div class="modal fade" id="approved{{ contract.id }}" tabindex="-1" aria-labelledby="viewJobModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title fw-bold text-muted" id="approved{{ contract.id }}">Approving {{ contract.contract }}</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                  <p class="text-center">
+                                    To approve this contract, click the confirm button below.
+                                  </p>
+                                  <form action="" method="post">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="contract" value="{{ contract.cntract }}">
+                                    <button type="submit" class="btn common-bg w-100">Confirm</button>
+                                  </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal fade" id="rejected{{ contract.id }}" tabindex="-1" aria-labelledby="viewJobModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title fw-bold text-muted" id="rejected{{ contract.id }}">Rejecting {{ contract.contract }}</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="" method="post" enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                        <p class="text-center fw-bold">
+                                            You can choose to fill the form below to provide the reason for rejection and the description of the issue and resolution.
+                                            or you can click the confirm button below to reject the contract without providing any reason.
+                                        </p>
+                                        <label for="">
+                                            Provide The Rejection Reason
+                                        </label>
+                                        <textarea name="rejection_reason" id="rejection_reason" cols="30" rows="5" class="form-control"></textarea>
+                                        <br>
+                                        <label for="">
+                                            provide the description of the issue and resolution
+                                        </label>
+                                        <textarea name="rejection_description" id="rejection_description" cols="30" rows="5" class="form-control"></textarea>
+                                        <br>
+                                        <label for="">
+                                            You can also attach a photo/screenshot of the reason for rejection
+                                        </label>
+                                        <input type="file" name="rejection_image" id="rejection_image" class="form-control">
+                                        <input type="hidden" name="contract" value="{{ contract.contract }}">
+                                        <br>
+                                        <button type="submit" class="btn bg-danger w-100">confirm</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

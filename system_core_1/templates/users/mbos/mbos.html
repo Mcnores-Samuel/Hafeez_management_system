@@ -159,10 +159,10 @@
                     </div>
                 {% endif %}
             <div class="top-display d-flex card-bg">
-                <form action="{% url 'in_stock' %}" method="post" class="d-flex position-relative search-form text-light">
+                <form action="{% url 'search_contracts' %}" method="post" class="d-flex position-relative search-form text-light">
                     {% csrf_token %}
                     <input type="search" id="search_term" name="search_term" class="form-control me-2"
-                    placeholder="Search IMEI number or Contract number" aria-label="Search" aria-describedby="search-addon" />
+                    placeholder="Search IMEI number, Contract number and model" aria-label="Search" aria-describedby="search-addon" />
                     <button type="submit" class="btn search-btn material-icons">search</button>
                 </form>
                 <div class="notify">
