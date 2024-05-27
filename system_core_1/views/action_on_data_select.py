@@ -8,6 +8,7 @@ from ..models.main_storage import MainStorage
 from ..models.agent_profile import AgentProfile
 from django.core.mail import send_mail
 from ..models.user_profile import UserProfile
+from django.utils import timezone
 
 
 @login_required
@@ -31,6 +32,7 @@ def sale_on_cash(request):
                 device.sold = True
                 device.sales_type = 'Cash'
                 device.price = amount
+                device.stock_out_date = timezone.now()
                 device.trans_image = cassproof_image
                 device.save()
                 send_mail(

@@ -45,10 +45,10 @@ def extract_contract_number(text):
 
 
 if __name__ == "__main__":
-    text_data = read_pdf_to_text("generated.pdf")
+    text_data = read_pdf_to_text("generated (2).pdf")
     bank_paymets = extract_contract_number(text_data)
     print("Contracts numbers from bank statement: ",len(bank_paymets))
-    data = read_pdf_to_text("Merchant Contract Payments (5).pdf")
+    data = read_pdf_to_text("Merchant Contract Payments (4).pdf")
     contracts_data = extract_contract_number(data)
     print("Contracts numbers from Merchant Customers: ",len(contracts_data))
     not_found = []

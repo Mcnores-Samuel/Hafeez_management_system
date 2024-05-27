@@ -10,7 +10,9 @@ from .views.defects import defects
 from  .views import revenues
 from .views import agents_data_access
 from .views.system_routine_updates import (morning_update, afternoon_update, evening_update)
-from .views.mbo_data import mbo_data, pending_contracts, search_contracts
+from .views.mbo_data import mbo_data, pending_contracts, search_contracts, approved_contracts
+from .views.mbo_operations import approve_contract, reject_contract
+from .views.mbo_data_analysis import daily_approved_contracts, weekly_approved_contracts, yearly_approved_contracts
 
 
 urlpatterns = [
@@ -52,7 +54,10 @@ urlpatterns = [
     path('mbo_data/<str:username>/', mbo_data, name='mbo_data'),
     # MBO data access points
     path('pending_contracts/', pending_contracts, name='pending_contracts'),
+    path('approved_contracts/', approved_contracts, name='approved_contracts'),
     path('search_contracts/', search_contracts, name='search_contracts'),
+    path('approve_contract/', approve_contract, name='approve_contract'),
+    path('reject_contract/', reject_contract, name='reject_contract'),
     # Concurent system operations with data analysis
     path('get_daily_sales_json_loan/', data_for_charts.get_daily_sales_json_loan, name='get_daily_sales_json_loan'),
     path('get_daily_sales_json_cash/', data_for_charts.get_daily_sales_json_cash, name='get_daily_sales_json_cash'),
@@ -74,6 +79,10 @@ urlpatterns = [
     path('morning_update/', morning_update, name='morning_update'),
     path('afternoon_update/', afternoon_update, name='afternoon_update'),
     path('evening_update/', evening_update, name='evening_update'),
+    # MBO data analysis and concurent operations
+    path('daily_approved_contracts/', daily_approved_contracts, name='daily_approved_contracts'),
+    path('weekly_approved_contracts/', weekly_approved_contracts, name='weekly_approved_contracts'),
+    path('yearly_approved_contracts/', yearly_approved_contracts, name='yearly_approved_contracts'),
     # Revenue analysis and concurent operations
     path('updateCreditPrices/', revenues.updateCreditPrices, name='updateCreditPrices'),
     path('calculateCreditRevenue/', revenues.calculateCreditRevenue, name='calculateCreditRevenue'),

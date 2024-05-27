@@ -49,9 +49,10 @@
                                   <p class="text-center">
                                     To approve this contract, click the confirm button below.
                                   </p>
-                                  <form action="" method="post">
+                                  <form action="{% url 'approve_contract' %}" method="post">
                                     {% csrf_token %}
-                                    <input type="hidden" name="contract" value="{{ contract.cntract }}">
+                                    <input type="hidden" name="contract" value="{{ contract.contract }}">
+                                    <input type="hidden" name="contract_id" value="{{ contract.id }}">
                                     <button type="submit" class="btn common-bg w-100">Confirm</button>
                                   </form>
                                 </div>
@@ -67,7 +68,7 @@
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <form action="" method="post" enctype="multipart/form-data">
+                                    <form action="{% url 'reject_contract' %}" method="post" enctype="multipart/form-data">
                                         {% csrf_token %}
                                         <p class="text-center fw-bold">
                                             You can choose to fill the form below to provide the reason for rejection and the description of the issue and resolution.
@@ -81,13 +82,14 @@
                                         <label for="">
                                             provide the description of the issue and resolution
                                         </label>
-                                        <textarea name="rejection_description" id="rejection_description" cols="30" rows="5" class="form-control"></textarea>
+                                        <textarea name="issue_description" id="rejection_description" cols="30" rows="5" class="form-control"></textarea>
                                         <br>
                                         <label for="">
                                             You can also attach a photo/screenshot of the reason for rejection
                                         </label>
                                         <input type="file" name="rejection_image" id="rejection_image" class="form-control">
                                         <input type="hidden" name="contract" value="{{ contract.contract }}">
+                                        <input type="hidden" name="contract_id" value="{{ contract.id }}">
                                         <br>
                                         <button type="submit" class="btn bg-danger w-100">confirm</button>
                                     </form>

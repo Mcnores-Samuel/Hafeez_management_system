@@ -42,6 +42,7 @@ def data_search(request):
             queryset = MainStorage.objects.all()
             queryset = queryset.filter(
                     Q(device_imei__icontains=search_query) |
+                    Q(device_imei_2__icontains=search_query) |
                     Q(contract_no__icontains=search_query)
                 )
     if request.user.is_staff and request.user.is_superuser:

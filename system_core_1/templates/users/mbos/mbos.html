@@ -16,7 +16,11 @@
         <link rel="stylesheet" href="{% static 'styles/common.css' %}">
         <link rel="stylesheet" href="{% static 'styles/base_header.css' %}">
         <link rel="stylesheet" href="{% static 'styles/dashboard.css' %}">
+        <link rel="stylesheet" href="{% static 'styles/loading-message.css' %}">
         {% block head %}
+            <script src="{% static 'scripts/mbo_daily_approval.js' %}" defer></script>
+            <script src="{% static 'scripts/mbo_weekly_approval.js' %}" defer></script>
+            <script src="{% static 'scripts/mbo_yearly_approval.js' %}" defer></script>
         {% endblock %}
         <script src="{% static 'scripts/web_push.js' %}" defer></script>
         <script src="{% static 'scripts/sidebar.js' %}" defer></script>
@@ -75,7 +79,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link d-flex align-items-center" href="{% url 'dashboard' %}"
+                                <a class="nav-link d-flex align-items-center" href="{% url 'approved_contracts' %}"
                                 data-bs-toggle="tooltip" 
                                 title="Weekly Approved Contracts">
                                     <span class="material-icons">
@@ -85,7 +89,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link d-flex align-items-center" href="{% url 'dashboard' %}"
+                                <a class="nav-link d-flex align-items-center" href="{% url 'daily_approved_contracts' %}"
                                 data-bs-toggle="tooltip" 
                                 title="Rejected Contracts">
                                     <span class="material-icons">
@@ -242,8 +246,8 @@
                                 <h4 class="fw-bold text-muted">Daily Approved Sales</h4>
                             </div>
                             <div class="card-body">
-                                <div class="loading-message-agent-stock"></div>
-                                <canvas class="StockChart" width="400" height="400"></canvas>
+                                <div class="daily_sales_loader"></div>
+                                <canvas class="daily_approved_contracts_chart" width="400" height="400"></canvas>
                             </div>
                         </div>
                     </div>
@@ -253,8 +257,8 @@
                                 <h4 class="fw-bold text-muted">Weekly Approved Sales</h4>
                             </div>
                             <div class="card-body">
-                                <div class="loading-message-main-stock"></div>
-                                <canvas class="salesChart" width="400" height="400"></canvas>
+                                <div class="weekly_approved_contracts_loader"></div>
+                                <canvas class="Weekly_approved_contracts_chart" width="400" height="400"></canvas>
                             </div>
                         </div>
                     </div>
@@ -269,8 +273,8 @@
                                 <h4 class="fw-bold text-muted">Yearly Approved Sales</h4>
                             </div>
                             <div class="card-body">
-                                <div class="yearly_sales_chart_loader"></div>
-                                <canvas class="yearly_sales_chart" width="400" height="400"></canvas>
+                                <div class="yearly_approved_contracts_loader"></div>
+                                <canvas class="yearly_approved_contracts_chart" width="400" height="400"></canvas>
                             </div>
                         </div>
                     </div>
