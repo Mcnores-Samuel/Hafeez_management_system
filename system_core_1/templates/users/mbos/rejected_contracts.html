@@ -1,0 +1,83 @@
+{% extends 'users/mbos/mbos.html' %}
+{% load plus_r %}
+{% load static %}
+{% load django_bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% block head %}
+    <link rel="stylesheet" href="{% static 'styles/agent_stock_mobile.css' %}">
+{% endblock %}
+{% block content %}
+<div class="container">
+    <nav class="navbar navbar-light">
+        <div class="container">
+            <form action="{% url 'search_contracts' %}" method="post" class="d-flex w-100">
+                {% csrf_token %}
+                <input type="search" class="form-control me-2 bg-secondary" name="search_term" id="search_term" placeholder="Device IMEI, category, model etc">
+                <button class="btn search-btn material-icons" type="submit">search</button>
+            </form>
+        </div>
+    </nav>
+    <br>
+    {% bootstrap_messages %}
+    <div class="row">
+    {% for contract in rejected_contracts %}
+        <div class="col-md-4 col-sm-6 mb-4">
+            <div class="card">
+                <div class="card-header  text-center">
+                    <h4 class="card-title">{{ contract.contract }}</h4>
+                </div>
+                <div class="card-body">
+                    <p class="card-text"><strong class="text-info">Created Timestamp:</strong> <span>{{ contract.date_created }}</span></p>
+                    <p class="card-text"><strong class="text-info">Approved Timestamp:</strong> <span>{{ contract.date_updated }}</span></p>
+                    <p class="card-text"><strong class="text-info">Serial No:</strong> <span>{{ contract.device_imei }}</span></p>
+                    <p class="card-text"><strong class="text-info">Model:</strong> <span>{{ contract.device_name }}</span></p>
+                    <button type="button" class="btn common-bg w-100 fw-bold" data-bs-toggle="modal"
+                    data-bs-target="#approved{{ contract.id }}">Revert To Pending</button>
+                    <br>
+
+                    <div class="modal fade" id="approved{{ contract.id }}" tabindex="-1" aria-labelledby="viewJobModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title fw-bold text-muted" id="approved{{ contract.id }}">Approving {{ contract.contract }}</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                  <p class="text-center">
+                                    If you want to reverse your decision, confirm below to reverse the contract to pending.
+                                  </p>
+                                  <form action="{% url 'approve_contract' %}" method="post">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="contract" value="{{ contract.contract }}">
+                                    <input type="hidden" name="contract_id" value="{{ contract.id }}">
+                                    <button type="submit" class="btn common-bg w-100">Confirm</button>
+                                  </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+</div>
+<div class="container w-100">
+    <div class="pagination container-fluid w-100 d-flex justify-content-center">
+        <span class="step-links w-100 d-flex justify-content-around">
+            {% if rejected_contracts.has_previous %}
+                <a href="?page=1" class="btn btn-primary">first</a>
+                <a href="?page={{ rejected_contracts.previous_page_number }}" class="btn btn-primary">previous</a>
+            {% endif %}
+            <span class="current fs-5">
+                Page {{ rejected_contracts.number }} of {{ rejected_contracts.paginator.num_pages }}.
+            </span>
+            {% if rejected_contracts.has_next %}
+                <a href="?page={{ rejected_contracts.next_page_number }}" class="btn btn-primary">next</a>
+                <a href="?page={{ rejected_contracts.paginator.num_pages }}" class="btn btn-primary">last</a>
+            {% endif %}
+        </span>
+    </div>
+</div>
+{% endblock %}

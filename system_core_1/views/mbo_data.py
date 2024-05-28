@@ -156,6 +156,40 @@ def search_contracts(request):
     return render(request, 'users/mbos/search_contracts.html', context)
 
 
+
+@login_required
+def rejected_contracts(request):
+    """
+    The `rejected_contracts` view function displays the rejected contracts for the MBOs.
+
+    Functionality:
+    - Checks if the user is authenticated and has the appropriate permissions.
+    - Retrieves the rejected contracts for the MBOs in the system.
+    - Renders the rejected contracts page, displaying the rejected contracts.
+
+    Parameters:
+    - request: The HTTP request object containing user information.
+
+    Returns:
+    - Renders the rejected contracts page, displaying the rejected contracts.
+    - Redirects unauthenticated users to the sign-in page.
+
+    Usage:
+    - Authenticated users access this view to view the rejected contracts for the MBOs.
+    - Displays the rejected contracts for the MBOs, including contract details, etc.
+
+    Note:
+    - User authentication and authorization should be managed by the authentication
+      and authorization systems.
+    """
+    if request.user.is_authenticated and request.user.groups.filter(name='MBOs').exists():
+        rejected_contracts = AccountManagerDataQuery().rejected_contracts(request.user, request)
+        context = {
+            'rejected_contracts': rejected_contracts
+        }
+    return render(request, 'users/mbos/rejected_contracts.html', context)
+
+
 @login_required
 def active_issues(request):
     """
