@@ -41,7 +41,6 @@ def daily_approved_contracts(request):
         sales = {}
         for contract in approved_contracts:
             sales[contract.device_name] = sales.get(contract.device_name, 0) + 1
-        print(sales, "model", approved_contracts)
         return JsonResponse(sales, safe=False)
     
 
