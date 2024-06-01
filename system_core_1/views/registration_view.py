@@ -107,12 +107,28 @@ def sign_in(request):
                         else:
                             request.session.set_expiry(0)
                         if user.is_staff:
+                            if user.last_login:
+                                messages.success(request, 'Welcome back, {}'.format(user.username))
+                            else:
+                                messages.success(request, 'Welcome, {}'.format(user.username))
                             return redirect(reverse('dashboard'))
                         elif user.groups.filter(name='staff_members').exists():
+                            if user.last_login:
+                                messages.success(request, 'Welcome back, {}'.format(user.username))
+                            else:
+                                messages.success(request, 'Welcome, {}'.format(user.username))
                             return redirect(reverse('dashboard'))
                         elif user.groups.filter(name='agents').exists():
+                            if user.last_login:
+                                messages.success(request, 'Welcome back, {}'.format(user.username))
+                            else:
+                                messages.success(request, 'Welcome, {}'.format(user.username))
                             return redirect(reverse('dashboard'))
                         else:
+                            if user.last_login:
+                                messages.success(request, 'Welcome back, {}'.format(user.username))
+                            else:
+                                messages.success(request, 'Welcome, {}'.format(user.username))
                             return redirect(reverse('dashboard'))
                     else:
                         form.add_error(None, "Please!! activate your account")

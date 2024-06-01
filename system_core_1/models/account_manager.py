@@ -30,6 +30,7 @@ class AccountManager(models.Model):
     device_name = models.CharField(max_length=50, blank=True, null=True)
     date_created = models.DateTimeField(timezone.now())
     date_updated = models.DateTimeField(timezone.now())
+    date_approved = models.DateTimeField(timezone.now())
     active = models.BooleanField(default=True)
     approved = models.BooleanField(default=False)
     pending = models.BooleanField(default=True)
