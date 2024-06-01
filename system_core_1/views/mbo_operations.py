@@ -19,6 +19,7 @@ def approve_contract(request):
     contract_data.approved = True
     contract_data.pending = False
     contract_data.date_updated = timezone.now()
+    contract_data.date_approved = timezone.now()
     contract_data.save()
     messages.success(request, 'Contract {} approved successfully.'.format(contract))
   return redirect('pending_contracts')

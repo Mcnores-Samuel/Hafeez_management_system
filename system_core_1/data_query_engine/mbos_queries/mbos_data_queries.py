@@ -43,8 +43,8 @@ class AccountManagerDataQuery:
                 approved_contracts = AccountManager.objects.filter(
                     mbo=user, pending=False, active=True,
                     approved=True, rejected=False,
-                    issue=False, date_updated__month=current_month,
-                    date_updated__year=current_year).all().order_by('-date_created')
+                    issue=False, date_approved__month=current_month,
+                    date_approved__year=current_year).all().order_by('-date_created')
                 paginator = Paginator(approved_contracts, 12)
                 page_number = request.GET.get('page')
 

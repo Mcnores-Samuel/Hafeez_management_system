@@ -20,17 +20,18 @@
     </nav>
     <br>
     {% bootstrap_messages %}
-    <div class="container">
+    <div class="container bg-info">
         <h1 class="text-center fw-bold">Pending Contracts</h1>
         <hr>
+        <p class="text-center fw-bold">Please! note that the pending contracts data will only contain the contracts that have been pending approval within the last 30 days</p>
         {% if pending_contracts.paginator.count == 0 %}
-            <p class="text-center">There are no pending contracts at the moment.</p>
-            <p class="text-center">You can check back later Simply refresh the page</p>
+            <p class="text-center fw-bold">There are no pending contracts at the moment.</p>
+            <p class="text-center fw-bold">You can check back later Simply refresh the page</p>
         {% else %}
-            <p class="text-center">The contracts below are pending approval. You can approve or reject them by clicking the buttons below each contract.</p>
+            <p class="text-center fw-bold">The contracts below are pending approval. You can approve or reject them by clicking the buttons below each contract.</p>
         {% endif %}
-        <br>
     </div>
+    <br>
     <div class="row">
     {% for contract in pending_contracts %}
         <div class="col-md-4 col-sm-6 mb-4">
