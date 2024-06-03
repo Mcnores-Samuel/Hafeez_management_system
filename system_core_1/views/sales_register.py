@@ -84,7 +84,8 @@ def combinedData_collection(request, data_id):
                     AccountManager.objects.create(
                         mbo=mbo_obj, device_imei=item.device_imei,
                         device_name=item.name, contract=contract_number, issue=False,
-                        date_created=timezone.now(), date_updated=timezone.now(), pending=True,
+                        date_created=timezone.now(), date_updated=timezone.now(),
+                        date_approved=timezone.now(), pending=True, paid=False,
                         active=True, approved=False, rejected=False, resolved=False)
                     mbo_payload = {'head': 'Sales Notification', 'body': '{}, You have a new sale request for {} of imei {}'.format(
                         mbo_obj.username, item.name, item.device_imei
