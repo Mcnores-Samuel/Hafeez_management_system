@@ -86,8 +86,8 @@ def combinedData_collection(request, data_id):
                         device_name=item.name, contract=contract_number, issue=False,
                         date_created=timezone.now(), date_updated=timezone.now(), pending=True,
                         active=True, approved=False, rejected=False, resolved=False)
-                    mbo_payload = {'head': 'Sales Notification', 'body': 'You have a new sale request for {} of imei {}'.format(
-                        item.name, item.device_imei
+                    mbo_payload = {'head': 'Sales Notification', 'body': '{}, You have a new sale request for {} of imei {}'.format(
+                        mbo_obj.username, item.name, item.device_imei
                     )}
                     send_user_notification(user=mbo_obj, payload=mbo_payload, ttl=1000)
                     item.contract_no = contract_number

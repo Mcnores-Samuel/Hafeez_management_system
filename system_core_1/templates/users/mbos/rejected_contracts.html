@@ -20,6 +20,19 @@
     </nav>
     <br>
     {% bootstrap_messages %}
+    <br>
+    <div class="container bg-info">
+        <h2 class="text-center fw-bold text-muted">Rejected Contracts</h2>
+        <hr>
+        <p class="text-center fw-bold">Please! note that the rejected contracts data will only contain the contracts that have been rejected within the last 30 days</p>
+        {% if rejected_contracts.paginator.count == 0 %}
+            <p class="text-center fw-bold">There are no rejected contracts at the moment.</p>
+            <p class="text-center fw-bold">You can check back later Simply refresh the page</p>
+        {% else %}
+            <p class="text-center fw-bold">The contracts below are rejected. You can revert them to pending by clicking the buttons below each contract.</p>
+        {% endif %}
+    </div>
+    <br>
     <div class="row">
     {% for contract in rejected_contracts %}
         <div class="col-md-4 col-sm-6 mb-4">
@@ -29,7 +42,7 @@
                 </div>
                 <div class="card-body">
                     <p class="card-text"><strong class="text-info">Created Timestamp:</strong> <span>{{ contract.date_created }}</span></p>
-                    <p class="card-text"><strong class="text-info">Approved Timestamp:</strong> <span>{{ contract.date_updated }}</span></p>
+                    <p class="card-text"><strong class="text-info">Rejected Timestamp:</strong> <span>{{ contract.date_updated }}</span></p>
                     <p class="card-text"><strong class="text-info">Serial No:</strong> <span>{{ contract.device_imei }}</span></p>
                     <p class="card-text"><strong class="text-info">Model:</strong> <span>{{ contract.device_name }}</span></p>
                     <button type="button" class="btn common-bg w-100 fw-bold" data-bs-toggle="modal"
@@ -47,7 +60,7 @@
                                   <p class="text-center">
                                     If you want to reverse your decision, confirm below to reverse the contract to pending.
                                   </p>
-                                  <form action="{% url 'approve_contract' %}" method="post">
+                                  <form action="{% url 'revert_contract' %}" method="post">
                                     {% csrf_token %}
                                     <input type="hidden" name="contract" value="{{ contract.contract }}">
                                     <input type="hidden" name="contract_id" value="{{ contract.id }}">

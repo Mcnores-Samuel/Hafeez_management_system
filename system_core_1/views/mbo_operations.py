@@ -4,6 +4,7 @@ from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from django.contrib import messages
+from django.http import JsonResponse
 
 
 
@@ -50,3 +51,63 @@ def reject_contract(request):
     contract_data.save()
     messages.success(request, 'Contract {} rejected successfully.'.format(contract))
   return redirect('pending_contracts')
+
+
+@login_required
+def revert_contract(request):
+  """This view is used to revert a contract."""
+  if (request.method == 'POST' and request.user.is_authenticated and
+      request.user.groups.filter(name='MBOs').exists()):
+    contract = request.POST.get('contract')
+    contract_id = request.POST.get('contract_id')
+    contract_data = AccountManager.objects.get(
+      mbo=request.user, contract=contract, id=contract_id)
+    contract_data.rejected = False
+    contract_data.approved = False
+    contract_data.pending = True
+    contract_data.date_updated = timezone.now()
+    contract_data.save()
+    messages.success(request, 'Contract {} reverted successfully.'.format(contract))
+  return redirect('pending_contracts')
+
+
+@login_required
+def get_total_pending_contracts(request):
+  """This view is used to get the total number of pending contracts."""
+  if (request.method == 'GET' and request.user.is_authenticated and
+      request.user.groups.filter(name='MBOs').exists()):
+    total_pending_contracts = AccountManager.objects.filter(
+      mbo=request.user, pending=True, approved=False, rejected=False,
+      issue=False).count()
+    return JsonResponse({'total_pending_contracts': total_pending_contracts}, safe=False)
+  return JsonResponse({'total_pending_contracts': 0})
+
+
+@login_required
+def get_total_approved_contracts(request):
+  """This view is used to get the total number of approved contracts."""
+  if (request.method == 'GET' and request.user.is_authenticated and
+      request.user.groups.filter(name='MBOs').exists()):
+    current_month = timezone.now().date().month
+    current_year = timezone.now().date().year
+    total_approved_contracts = AccountManager.objects.filter(
+      mbo=request.user, pending=False, approved=True, rejected=False,
+      issue=False, date_approved__month=current_month,
+      date_approved__year=current_year).count()
+    return JsonResponse({'total_approved_contracts': total_approved_contracts}, safe=False)
+  return JsonResponse({'total_approved_contracts': 0}, safe=False)
+
+
+@login_required
+def get_total_rejected_contracts(request):
+  """This view is used to get the total number of rejected contracts."""
+  if (request.method == 'GET' and request.user.is_authenticated and
+      request.user.groups.filter(name='MBOs').exists()):
+    current_month = timezone.now().date().month
+    current_year = timezone.now().date().year
+    total_rejected_contracts = AccountManager.objects.filter(
+      mbo=request.user, pending=False, approved=False, rejected=True,
+      issue=False, date_approved__month=current_month,
+      date_approved__year=current_year).count()
+    return JsonResponse({'total_rejected_contracts': total_rejected_contracts}, safe=False)
+  return JsonResponse({'total_rejected_contracts': 0}, safe=False)

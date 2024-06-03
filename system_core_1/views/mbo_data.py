@@ -83,7 +83,7 @@ def pending_contracts(request):
       and authorization systems.
     """
     if request.user.is_authenticated and request.user.groups.filter(name='MBOs').exists():
-        pending_contracts = AccountManagerDataQuery().pending_contracts(request.user, request)
+        pending_contracts, total = AccountManagerDataQuery().pending_contracts(request.user, request)
         context = {
             'pending_contracts': pending_contracts
         }
@@ -116,7 +116,7 @@ def approved_contracts(request):
       and authorization systems.
     """
     if request.user.is_authenticated and request.user.groups.filter(name='MBOs').exists():
-        approved_contracts = AccountManagerDataQuery().approved_contracts(request.user, request)
+        approved_contracts, total = AccountManagerDataQuery().approved_contracts(request.user, request)
         context = {
             'approved_contracts': approved_contracts
         }
@@ -183,7 +183,7 @@ def rejected_contracts(request):
       and authorization systems.
     """
     if request.user.is_authenticated and request.user.groups.filter(name='MBOs').exists():
-        rejected_contracts = AccountManagerDataQuery().rejected_contracts(request.user, request)
+        rejected_contracts, total = AccountManagerDataQuery().rejected_contracts(request.user, request)
         context = {
             'rejected_contracts': rejected_contracts
         }

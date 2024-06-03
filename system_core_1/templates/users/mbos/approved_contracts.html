@@ -30,8 +30,8 @@
         {% else %}
             <p class="text-center fw-bold">The contracts below are approved. You can revert them to pending by clicking the buttons below each contract.</p>
         {% endif %}
-        <br>
     </div>
+    <br>
     <div class="row">
     {% for contract in approved_contracts %}
         <div class="col-md-4 col-sm-6 mb-4">
@@ -41,11 +41,11 @@
                 </div>
                 <div class="card-body">
                     <p class="card-text"><strong class="text-info">Created Timestamp:</strong> <span>{{ contract.date_created }}</span></p>
-                    <p class="card-text"><strong class="text-info">Approved Timestamp:</strong> <span>{{ contract.date_updated }}</span></p>
+                    <p class="card-text"><strong class="text-info">Approved Timestamp:</strong> <span>{{ contract.date_approved }}</span></p>
                     <p class="card-text"><strong class="text-info">Serial No:</strong> <span>{{ contract.device_imei }}</span></p>
                     <p class="card-text"><strong class="text-info">Model:</strong> <span>{{ contract.device_name }}</span></p>
                     <button type="button" class="btn common-bg w-100 fw-bold" data-bs-toggle="modal"
-                    data-bs-target="#approved{{ contract.id }}">Revert To Pending</button>
+                    data-bs-target="#approved{{ contract.id }}">Cancel Approval</button>
                     <br>
 
                     <div class="modal fade" id="approved{{ contract.id }}" tabindex="-1" aria-labelledby="viewJobModalLabel" aria-hidden="true">
@@ -59,7 +59,7 @@
                                   <p class="text-center">
                                     If you want to reverse your decision, confirm below to reverse the contract to pending.
                                   </p>
-                                  <form action="{% url 'approve_contract' %}" method="post">
+                                  <form action="{% url 'revert_contract' %}" method="post">
                                     {% csrf_token %}
                                     <input type="hidden" name="contract" value="{{ contract.contract }}">
                                     <input type="hidden" name="contract_id" value="{{ contract.id }}">

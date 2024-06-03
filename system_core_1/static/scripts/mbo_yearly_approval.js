@@ -82,7 +82,7 @@ function yearlySalesAnalysis(url, dest, chartType, loader) {
                 title: {
                   display: true,
                   text: `Yearly Sales Analysis: Total Sales: ${total.reduce((a, b) => a + b, 0)}`,
-                  color: '#333',
+                  color: '#fe9a43',
                   position: 'bottom',
                   align: 'center',
                   font: {
@@ -102,7 +102,7 @@ function yearlySalesAnalysis(url, dest, chartType, loader) {
                     drawBorder: false,
                   },
                   ticks: {
-                    color: '#333',
+                    color: '#fe9a43',
                     font: {
                       weight: 'bold',
                     },
@@ -114,7 +114,7 @@ function yearlySalesAnalysis(url, dest, chartType, loader) {
                     drawBorder: false,
                   },
                   ticks: {
-                    color: '#333',
+                    color: '#fe9a43',
                     font: {
                       weight: 'bold',
                     },

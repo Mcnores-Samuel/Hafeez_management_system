@@ -21,6 +21,7 @@ class AccountManagerDataQuery:
                     mbo=user, pending=True, active=True,
                     approved=False, rejected=False,
                     issue=False).all().order_by('-date_created')
+                total_pending_contracts = pending_contracts.count()
                 paginator = Paginator(pending_contracts, 12)
                 page_number = request.GET.get('page')
 
@@ -30,7 +31,7 @@ class AccountManagerDataQuery:
                     pending_contracts = paginator.page(1)
                 except EmptyPage:
                     pending_contracts = paginator.page(paginator.num_pages)
-                return pending_contracts
+                return pending_contracts, total_pending_contracts
         return None
     
     def approved_contracts(self, user, request):
@@ -45,6 +46,7 @@ class AccountManagerDataQuery:
                     approved=True, rejected=False,
                     issue=False, date_approved__month=current_month,
                     date_approved__year=current_year).all().order_by('-date_created')
+                total_approved_contracts = approved_contracts.count()
                 paginator = Paginator(approved_contracts, 12)
                 page_number = request.GET.get('page')
 
@@ -54,7 +56,7 @@ class AccountManagerDataQuery:
                     approved_contracts = paginator.page(1)
                 except EmptyPage:
                     approved_contracts = paginator.page(paginator.num_pages)
-                return approved_contracts
+                return approved_contracts, total_approved_contracts
         return None
     
     def rejected_contracts(self, user, request):
@@ -66,6 +68,7 @@ class AccountManagerDataQuery:
                     mbo=user, pending=False, active=True,
                     approved=False, rejected=True,
                     issue=False).all().order_by('-date_created')
+                total_rejected_contracts = rejected_contracts.count()
                 paginator = Paginator(rejected_contracts, 12)
                 page_number = request.GET.get('page')
 
@@ -75,7 +78,7 @@ class AccountManagerDataQuery:
                     rejected_contracts = paginator.page(1)
                 except EmptyPage:
                     rejected_contracts = paginator.page(paginator.num_pages)
-                return rejected_contracts
+                return rejected_contracts, total_rejected_contracts
         return None
     
     def active_issues(self, user, request):

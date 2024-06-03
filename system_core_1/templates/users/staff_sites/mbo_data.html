@@ -12,6 +12,10 @@
     overflow-y: scroll;
   }
 
+  .data-container > span.not_paid {
+    margin-left: 60px;
+  }
+
   .data-container > button {
     width: 25%;
   }
@@ -36,24 +40,32 @@
   <section class="charts_by_chartjs">
     <div class="row gy-3">
         <div class="col-md-6 col-12">
-            <div class="card">
+            <div class="card bg-dark">
                 <div class="card-header text-center">
-                    <h4 class="fw-bold text-muted">Pending Approval</h4>
+                    <h4 class="fw-bold text-muted">Pending Approval:  {{ pending_contracts.count }}</h4>
                 </div>
                 <div class="card-body content-container" style="height: 400px;">
                   {% for contract in  pending_contracts %}
-                    <div class="card">
+                    <div class="card bg-secondary">
                       <div class="card-header">
                         <h5 class="fw-bold text-center">Contract NO: {{ contract.contract }} - IMEI: {{ contract.device_imei }}</h5>
                       </div>
                       <div class="card-body data-container">
+                        <p class="card-text"><strong class="text-info">Created Timestamp:</strong> <span>{{ contract.date_created }}</span></p>
                         {% if contract.pending %}
-                        <button type="button" class="btn fw-bold" disabled>Stauts: <span class="text-danger">Pending</span></button>
+                        <button type="button" class="btn fw-bold" disabled>Status: <span class="text-danger">Pending</span></button>
+                        {% endif %}
+                        {% if not contract.paid %}
+                          <span type="button" class="btn bg-info fw-bold not_paid"
+                          data-bs-toggle="modal" data-bs-target="#viewCreditModal">Not Paid</span>
+                        {% else %}
+                          <span type="button" class="btn bg-success fw-bold"
+                          data-bs-toggle="modal" data-bs-target="#viewCreditModal">Paid</span>
                         {% endif %}
                         <button type="button" class="btn common-bg fw-bold"
-                        data-bs-toggle="modal" data-bs-target="#viewCreditModal">Edit</button>
+                        data-bs-toggle="modal" data-bs-target="#edit{{ contract.id }}">Edit</button>
                         <button type="button" class="btn bg-danger fw-bold"
-                        data-bs-toggle="modal" data-bs-target="#viewCreditModal">Delete</button>
+                        data-bs-toggle="modal" data-bs-target="#delete{{ contract.id }}">Cancel</button>
                       </div>
                     </div>
                     <br>
@@ -62,20 +74,28 @@
             </div>
         </div>
         <div class="col-md-6 col-12">
-            <div class="card">
+            <div class="card bg-dark">
                 <div class="card-header text-center">
-                    <h4 class="fw-bold text-muted">Daily Approved Contracts</h4>
+                    <h4 class="fw-bold text-muted">Daily Approved Contracts: {{ approved_contracts.count }}</h4>
                 </div>
-                <div class="card-body" style="height: 400px;">
+                <div class="card-body content-container" style="height: 400px;">
                   {% for approved in approved_contracts %}
-                    <div class="card">
+                    <div class="card bg-secondary">
                       <div class="card-header">
                         <h5 class="fw-bold text-center">Contract NO: {{ approved.contract }} - IMEI: {{ approved.device_imei }}</h5>
                       </div>
                       <div class="card-body data-container">
-                        <button type="button" class="btn fw-bold" disabled>Stauts: <span class="text-success">Approved</span></button>
+                        <p class="card-text"><strong class="text-info">Approved Timestamp:</strong> <span>{{ approved.date_approved }}</span></p>
+                        <button type="button" class="btn fw-bold">Stauts: <span class="text-success">Approved</span></button>
+                        {% if not approved.paid %}
+                        <span type="button" class="btn bg-info fw-bold"
+                        data-bs-toggle="modal" data-bs-target="#viewCreditModal">mark as paid</span>
+                        {% else %}
+                          <span type="button" class="btn bg-success fw-bold"
+                          data-bs-toggle="modal" data-bs-target="#viewCreditModal">Paid</span>
+                        {% endif %}
                         <button type="button" class="btn common-bg fw-bold"
-                        data-bs-toggle="modal" data-bs-target="#viewCreditModal">Edit</button>
+                        data-bs-toggle="modal" data-bs-target="#viewCreditModal" disabled>Edit</button>
                         <button type="button" class="btn bg-danger fw-bold"
                         data-bs-toggle="modal" data-bs-target="#viewCreditModal">Delete</button>
                       </div>
@@ -91,7 +111,7 @@
 <section class="yearly_analysis">
     <div class="row">
         <div class="col-md-6 col-12 w-100">
-            <div class="card">
+            <div class="card bg-dark">
                 <div class="card-header text-center">
                     <h4 class="fw-bold text-muted">Active Issues / Unresolved Issues</h4>
                 </div>

@@ -54,8 +54,8 @@ function updateDailyChart(url, dest, chartType, loader) {
               plugins: {
                 title: {
                   display: true,
-                  text: 'Daily Sales Analysis',
-                  color: '#34495E', // Darker blue color
+                  text: `Daily approved contracts: ${overallTotal}`,
+                  color: '#fe9a43', // Darker blue color
                   position: 'bottom',
                   align: 'center',
                   font: {
@@ -69,25 +69,23 @@ function updateDailyChart(url, dest, chartType, loader) {
               scales: {
                 x: {
                   grid: {
-                    color: '#ECF0F1', // Light gray grid lines
-                    lineWidth: 0.5, // Adjust grid line thickness
+                    display: false, // No grid lines
                   },
                   ticks: {
-                    color: '#34495E', // Darker blue color
+                    color: '#fe9a43', // Darker blue color
                     font: {
-                      weight: 'normal', // Regular font weight
+                      weight: 'bold', // Regular font weight
                     },
                   },
                 },
                 y: {
                   grid: {
-                    color: '#ECF0F1', // Light gray grid lines
-                    lineWidth: 0.5, // Adjust grid line thickness
+                    display: false, // No grid lines
                   },
                   ticks: {
-                    color: '#34495E', // Darker blue color
+                    color: '#fe9a43', // Darker blue color
                     font: {
-                      weight: 'normal', // Regular font weight
+                      weight: 'bold', // Regular font weight
                     },
                   },
                 },

@@ -61,7 +61,6 @@ def dashboard(request):
             user=request.user) if UserAvatar.objects.filter(
                 user=request.user).exists() else None
         mbos = UserProfile.objects.filter(groups__name='MBOs').all()
-        print(mbos)
         context = {
             'profile': user.email[0],
             'user': user,

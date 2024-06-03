@@ -11,7 +11,8 @@ from  .views import revenues
 from .views import agents_data_access
 from .views.system_routine_updates import (morning_update, afternoon_update, evening_update)
 from .views.mbo_data import mbo_data, pending_contracts, search_contracts, approved_contracts, rejected_contracts
-from .views.mbo_operations import approve_contract, reject_contract
+from .views.mbo_operations import (approve_contract, reject_contract, revert_contract,
+                                   get_total_approved_contracts, get_total_rejected_contracts, get_total_pending_contracts)
 from .views.mbo_data_analysis import daily_approved_contracts, weekly_approved_contracts, yearly_approved_contracts
 
 
@@ -58,6 +59,7 @@ urlpatterns = [
     path('search_contracts/', search_contracts, name='search_contracts'),
     path('approve_contract/', approve_contract, name='approve_contract'),
     path('reject_contract/', reject_contract, name='reject_contract'),
+    path('revert_contract/', revert_contract, name='revert_contract'),
     path('rejected_contracts/', rejected_contracts, name='rejected_contracts'),
     # Concurent system operations with data analysis
     path('get_daily_sales_json_loan/', data_for_charts.get_daily_sales_json_loan, name='get_daily_sales_json_loan'),
@@ -84,6 +86,9 @@ urlpatterns = [
     path('daily_approved_contracts/', daily_approved_contracts, name='daily_approved_contracts'),
     path('weekly_approved_contracts/', weekly_approved_contracts, name='weekly_approved_contracts'),
     path('yearly_approved_contracts/', yearly_approved_contracts, name='yearly_approved_contracts'),
+    path('get_total_approved_contracts/', get_total_approved_contracts, name='get_total_approved_contracts'),
+    path('get_total_rejected_contracts/', get_total_rejected_contracts, name='get_total_rejected_contracts'),
+    path('get_total_pending_contracts/', get_total_pending_contracts, name='get_total_pending_contracts'),
     # Revenue analysis and concurent operations
     path('updateCreditPrices/', revenues.updateCreditPrices, name='updateCreditPrices'),
     path('calculateCreditRevenue/', revenues.calculateCreditRevenue, name='calculateCreditRevenue'),
