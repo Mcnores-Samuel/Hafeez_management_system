@@ -8,27 +8,39 @@
 {% endblock %}
 {% block content %}
 <style>
-  .content-container {
+  .content_container_data {
     overflow-y: scroll;
   }
 
-  .data-container > span.not_paid {
-    margin-left: 60px;
+  .content_container_data > span.not_paid {
+    margin-left: 50px;
   }
 
-  .data-container > button {
+  .content_container_data > button {
     width: 25%;
   }
 
   @media screen and (max-width: 768px){
-    .data-container {
+    .content_container_data {
       display: flex;
       flex-direction: column;
       gap: 10px;
     }
 
-    button {
+    .content_container_data > button,
+    .content_container_data > span {
       width: 100%;
+    }
+
+    .content_container_data > span.not_paid {
+      margin-left: 0;
+    }
+
+    .text_time {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
     }
   }
 </style>
@@ -47,14 +59,14 @@
                 <div class="card-header text-center">
                     <h4 class="fw-bold text-muted">Pending Approval:  {{ pending_contracts.count }}</h4>
                 </div>
-                <div class="card-body content-container" style="height: 400px;">
+                <div class="card-body content_container_data" style="height: 400px;">
                   {% for contract in  pending_contracts %}
                     <div class="card bg-secondary">
                       <div class="card-header">
                         <h5 class="fw-bold text-center">Contract NO: {{ contract.contract }} - IMEI: {{ contract.device_imei }}</h5>
                       </div>
-                      <div class="card-body data-container">
-                        <p class="card-text"><strong class="text-info">Created Timestamp:</strong> <span>{{ contract.date_created }}</span></p>
+                      <div class="card-body content_container_data">
+                        <p class="card-text text_time"><strong class="text-info">Created Timestamp:</strong> <span>{{ contract.date_created }}</span></p>
                         {% if contract.pending %}
                         <button type="button" class="btn fw-bold" disabled>Status: <span class="text-danger">Pending</span></button>
                         {% endif %}
@@ -81,14 +93,14 @@
                 <div class="card-header text-center">
                     <h4 class="fw-bold text-muted">Daily Approved Contracts: {{ approved_contracts.count }}</h4>
                 </div>
-                <div class="card-body content-container" style="height: 400px;">
+                <div class="card-body content_container_data" style="height: 400px;">
                   {% for approved in approved_contracts %}
                     <div class="card bg-secondary">
                       <div class="card-header">
                         <h5 class="fw-bold text-center">Contract NO: {{ approved.contract }} - IMEI: {{ approved.device_imei }}</h5>
                       </div>
-                      <div class="card-body data-container">
-                        <p class="card-text"><strong class="text-info">Approved Timestamp:</strong> <span>{{ approved.date_approved }}</span></p>
+                      <div class="card-body content_container_data">
+                        <p class="card-text text_time"><strong class="text-info">Approved Timestamp:</strong> <span>{{ approved.date_approved }}</span></p>
                         <button type="button" class="btn fw-bold">Stauts: <span class="text-success">Approved</span></button>
                         {% if not approved.paid %}
                         <span type="button" class="btn bg-info fw-bold"

@@ -89,7 +89,7 @@ def combinedData_collection(request, data_id):
                         active=True, approved=False, rejected=False, resolved=False)
                     mbo_payload = {'head': 'Sales Notification', 'body': '{}, You have a new sale request for {} of imei {}'.format(
                         mbo_obj.username, item.name, item.device_imei
-                    )}
+                    ), 'icon': environ.get('ICON_LINK')}
                     send_user_notification(user=mbo_obj, payload=mbo_payload, ttl=1000)
                     item.contract_no = contract_number
                     item.in_stock = False

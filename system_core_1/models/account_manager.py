@@ -38,6 +38,7 @@ class AccountManager(models.Model):
     rejected = models.BooleanField(default=False)
     issue = models.BooleanField(default=False)
     resolved = models.BooleanField(default=True)
+    important_note = models.TextField(blank=True, null=True)
     rejected_reason = models.TextField(blank=True, null=True)
     issue_description = models.TextField(blank=True, null=True)
     rejected_proof = models.ImageField(upload_to='rejected_proof/', blank=True, null=True)
