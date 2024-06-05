@@ -5,7 +5,9 @@ from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from django.contrib import messages
 from django.http import JsonResponse
-
+from webpush import send_user_notification
+from os import environ
+from ..models.user_profile import UserProfile
 
 
 @login_required
@@ -23,6 +25,11 @@ def approve_contract(request):
     contract_data.date_approved = timezone.now()
     contract_data.save()
     messages.success(request, 'Contract {} approved successfully.'.format(contract))
+    payload = {'head': 'Contract Approval', 'body': 'Contract {} has been approved'.format(contract),
+               'icon': environ.get('ICON_LINK')}
+    staff_members = UserProfile.objects.filter(groups__name='staff_members')
+    for staff in staff_members:
+      send_user_notification(user=staff, payload=payload, ttl=1000)
   return redirect('pending_contracts')
 
 

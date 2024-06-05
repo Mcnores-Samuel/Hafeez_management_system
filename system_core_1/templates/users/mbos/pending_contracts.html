@@ -43,12 +43,15 @@
                     <p class="card-text"><strong class="text-info">Created Timestamp:</strong> <span>{{ contract.date_created }}</span></p>
                     <p class="card-text"><strong class="text-info">Serial No:</strong> <span>{{ contract.device_imei }}</span></p>
                     <p class="card-text"><strong class="text-info">Model:</strong> <span>{{ contract.device_name }}</span></p>
+                    <!-- <div class="note">
+                        <p class="text-center fw-bold">important Note</p>
+                    </div> -->
                     <button type="button" class="btn common-bg w-100 fw-bold" data-bs-toggle="modal"
-                    data-bs-target="#approved{{ contract.id }}">Approved</button>
+                    data-bs-target="#approved{{ contract.id }}">Approve</button>
                     <br>
                     <br>
                     <button type="button" class="btn bg-danger w-100 fw-bold" data-bs-toggle="modal"
-                    data-bs-target="#rejected{{ contract.id }}">Rejected</button>
+                    data-bs-target="#rejected{{ contract.id }}">Reject</button>
 
                     <div class="modal fade" id="approved{{ contract.id }}" tabindex="-1" aria-labelledby="viewJobModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
