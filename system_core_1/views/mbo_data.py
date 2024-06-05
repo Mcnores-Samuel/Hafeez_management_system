@@ -40,13 +40,13 @@ def mbo_data(request, username):
         mbos = UserProfile.objects.filter(groups__name='MBOs').all()
         pending_contracts = AccountManager.objects.filter(
             mbo=mbo, approved=False, rejected=False, issue=False
-        )
+        ).all().order_by('-date_created')
         approved_contracts = AccountManager.objects.filter(
             mbo=mbo, approved=True, rejected=False, issue=False
-        )
+        ).all().order_by('-date_approved')
         issues = AccountManager.objects.filter(
             mbo=mbo, issue=True, resolved=False
-        )
+        ).all().order_by('-date_updated')
         context = {
             'mbo': mbo,
             'pending_contracts': pending_contracts,
