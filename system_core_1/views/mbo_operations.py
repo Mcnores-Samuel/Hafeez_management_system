@@ -58,6 +58,12 @@ def reject_contract(request):
     contract_data.date_updated = timezone.now()
     contract_data.save()
     messages.success(request, 'Contract {} rejected successfully.'.format(contract))
+    payload = {'head': 'Contract Rejection', 'body': 'Contract {}, IMEI: {} has been rejected'.format(
+      contract, contract_data.device_imei),
+               'icon': environ.get('ICON_LINK')}
+    staff_members = UserProfile.objects.filter(groups__name='staff_members')
+    for staff in staff_members:
+      send_user_notification(user=staff, payload=payload, ttl=1000)
   return redirect('pending_contracts')
 
 
@@ -76,6 +82,12 @@ def revert_contract(request):
     contract_data.date_updated = timezone.now()
     contract_data.save()
     messages.success(request, 'Contract {} reverted successfully.'.format(contract))
+    payload = {'head': 'Contract Reversion', 'body': 'Contract {}, IMEI: {} has been reverted'.format(
+      contract, contract_data.device_imei),
+               'icon': environ.get('ICON_LINK')}
+    staff_members = UserProfile.objects.filter(groups__name='staff_members')
+    for staff in staff_members:
+      send_user_notification(user=staff, payload=payload, ttl=1000)
   return redirect('pending_contracts')
 
 
@@ -87,6 +99,9 @@ def get_total_pending_contracts(request):
     total_pending_contracts = AccountManager.objects.filter(
       mbo=request.user, pending=True, approved=False, rejected=False,
       issue=False).count()
+    payload = {'head': 'Pending Contracts', 'body': 'You have {} pending contracts'.format(
+      total_pending_contracts), 'icon': environ.get('ICON_LINK')}
+    send_user_notification(user=request.user, payload=payload, ttl=1000)
     return JsonResponse({'total_pending_contracts': total_pending_contracts}, safe=False)
   return JsonResponse({'total_pending_contracts': 0})
 
