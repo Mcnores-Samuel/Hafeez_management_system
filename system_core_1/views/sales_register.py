@@ -89,7 +89,7 @@ def combinedData_collection(request, data_id):
                         active=True, approved=False, rejected=False, resolved=False)
                     mbo_payload = {'head': 'Sales Notification', 'body': '{}, You have a new sale request for {} of imei {}'.format(
                         mbo_obj.username, item.name, item.device_imei
-                    ), 'icon': environ.get('ICON_LINK')}
+                    ), 'icon': environ.get('ICON_LINK'), 'url': 'https://www.hafeezmw.com/system_core_1/pending_contracts/'}
                     send_user_notification(user=mbo_obj, payload=mbo_payload, ttl=1000)
                     item.contract_no = contract_number
                     item.in_stock = False
@@ -103,7 +103,7 @@ def combinedData_collection(request, data_id):
                     item.save()
                     payload = {'head': 'Sales Notification', 'body': '{} of imei {} sold successfully'.format(
                         item.name, item.device_imei
-                    ), 'icon': environ.get('ICON_LINK')}
+                    ), 'icon': environ.get('ICON_LINK'), 'url': 'www.hafeezmw.com/system_core_1/'}
                     send_user_notification(user=request.user, payload=payload, ttl=1000)
                     return redirect('data_search')
                 messages.error(request, 'Invalid payment method')
