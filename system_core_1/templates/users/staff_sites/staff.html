@@ -57,6 +57,16 @@
                                     <span class="text"> Dashboard</span>
                                 </a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link d-flex align-items-center" href="{% url 'data_search' %}"
+                                data-bs-toggle="tooltip"
+                                title="Sales">
+                                <span class="material-icons">
+                                    point_of_sale
+                                </span>
+                                <span class="text"> Point Of Sale</span>
+                                </a>
+                            </li>
                             {% for mbo in mbos %}
                                 <li class="nav-item">
                                     <a class="nav-link d-flex align-items-center" href="{% url 'mbo_data' username=mbo.username %}"

@@ -43,9 +43,33 @@
                     <p class="card-text"><strong class="text-info">Created Timestamp:</strong> <span>{{ contract.date_created }}</span></p>
                     <p class="card-text"><strong class="text-info">Serial No:</strong> <span>{{ contract.device_imei }}</span></p>
                     <p class="card-text"><strong class="text-info">Model:</strong> <span>{{ contract.device_name }}</span></p>
-                    <!-- <div class="note">
-                        <p class="text-center fw-bold">important Note</p>
-                    </div> -->
+                    <div class="note">
+                        {% if contract.important_note %}
+                            <p class="text-center fw-bold">
+                                You have added a note to this contract. You can update the note below.
+                            </p>
+                            <form action="{% url 'add_note_to_contract' %}" method="post">
+                                {% csrf_token %}
+                                <textarea name="important_note" id="important_note" cols="30" rows="3" class="form-control" >{{ contract.important_note }}</textarea>
+                                <input type="hidden" name="contract_id" value="{{ contract.id }}">
+                                <br>
+                                <button type="submit" class="btn common-bg">update Notes</button>
+                            </form>
+                        {% else %}
+                            <p class="text-center fw-bold">
+                                You can add a note to this contract. The note will be communicated to the responsible staff members.
+                            </p>
+                            <form action="{% url 'add_note_to_contract' %}" method="post">
+                                {% csrf_token %}
+                                <textarea name="important_note" id="important_note" cols="30" rows="3" class="form-control"
+                                placeholder="You can add a note here and will be communicated to the responible staff members"></textarea>
+                                <input type="hidden" name="contract_id" value="{{ contract.id }}">
+                                <br>
+                                <button type="submit" class="btn common-bg">add Notes</button>
+                            </form>
+                        {% endif %}
+                    </div>
+                    <br>
                     <button type="button" class="btn common-bg w-100 fw-bold" data-bs-toggle="modal"
                     data-bs-target="#approved{{ contract.id }}">Approve</button>
                     <br>
@@ -74,7 +98,6 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="modal fade" id="rejected{{ contract.id }}" tabindex="-1" aria-labelledby="viewJobModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                             <div class="modal-content">

@@ -10,5 +10,5 @@ const callModal = () => {
 };
 
 $(document).ready(() => {
-  setTimeout(callModal, 30000);
+  setTimeout(callModal, 20000);
 });

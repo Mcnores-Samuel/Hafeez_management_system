@@ -25,7 +25,7 @@ def approve_contract(request):
     contract_data.date_approved = timezone.now()
     contract_data.save()
     messages.success(request, 'Contract {} approved successfully.'.format(contract))
-    payload = {'head': 'Contract Approval', 'body': 'Contract {}, IMEI: {} has been approved'.format(
+    payload = {'head': 'Contract Approval', 'body': 'Hello Team!, Contract {}, IMEI: {} has been approved'.format(
       contract, contract_data.device_imei),
                'icon': environ.get('ICON_LINK')}
     staff_members = UserProfile.objects.filter(groups__name='staff_members')
@@ -82,9 +82,30 @@ def revert_contract(request):
     contract_data.date_updated = timezone.now()
     contract_data.save()
     messages.success(request, 'Contract {} reverted successfully.'.format(contract))
-    payload = {'head': 'Contract Reversion', 'body': 'Contract {}, IMEI: {} has been reverted'.format(
+    payload = {'head': 'Contract Reversion', 'body': 'Hello Team!, Contract {}, IMEI: {} has been reverted'.format(
       contract, contract_data.device_imei),
                'icon': environ.get('ICON_LINK')}
+    staff_members = UserProfile.objects.filter(groups__name='staff_members')
+    for staff in staff_members:
+      send_user_notification(user=staff, payload=payload, ttl=1000)
+  return redirect('pending_contracts')
+
+
+@login_required
+def add_note_to_contract(request):
+  """This view is used to add a note to a contract."""
+  if (request.method == 'POST' and request.user.is_authenticated and
+      request.user.groups.filter(name='MBOs').exists()):
+    contract_id = request.POST.get('contract_id')
+    note = request.POST.get('important_note')
+    contract_data = AccountManager.objects.get(
+      mbo=request.user, id=contract_id)
+    contract_data.important_note = note
+    contract_data.date_updated = timezone.now()
+    contract_data.save()
+    messages.success(request, 'Note added to contract {} successfully.'.format(contract_data.contract))
+    payload = {'head': 'Contract Note', 'body': 'Hello Team!, Note added to contract {}, IMEI: {}.\n{}'.format(
+      contract_data.contract, contract_data.device_imei, note), 'icon': environ.get('ICON_LINK')}
     staff_members = UserProfile.objects.filter(groups__name='staff_members')
     for staff in staff_members:
       send_user_notification(user=staff, payload=payload, ttl=1000)

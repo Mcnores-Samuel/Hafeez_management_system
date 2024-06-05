@@ -16,7 +16,8 @@ from ..models.main_storage import MainStorage
 from django.db.models import Q
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from ..models.customer_details import CustomerData
+from django.http import JsonResponse
+from ..models.user_profile import UserProfile
 
 
 @login_required
@@ -47,7 +48,8 @@ def data_search(request):
                 )
     if request.user.is_staff and request.user.is_superuser:
         return render(request, 'users/admin_sites/search.html', {'data': queryset})
-    return render(request, 'users/staff_sites/search.html', {'data': queryset})
+    mbos = UserProfile.objects.filter(groups__name='MBOs').all()
+    return render(request, 'users/staff_sites/search.html', {'data': queryset, 'mbos': mbos})
 
 
 def search(search_query):
