@@ -25,7 +25,8 @@ def approve_contract(request):
     contract_data.date_approved = timezone.now()
     contract_data.save()
     messages.success(request, 'Contract {} approved successfully.'.format(contract))
-    payload = {'head': 'Contract Approval', 'body': 'Contract {} has been approved'.format(contract),
+    payload = {'head': 'Contract Approval', 'body': 'Contract {}, IMEI: {} has been approved'.format(
+      contract, contract_data.device_imei),
                'icon': environ.get('ICON_LINK')}
     staff_members = UserProfile.objects.filter(groups__name='staff_members')
     for staff in staff_members:
