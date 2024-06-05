@@ -99,8 +99,9 @@ def get_total_pending_contracts(request):
     total_pending_contracts = AccountManager.objects.filter(
       mbo=request.user, pending=True, approved=False, rejected=False,
       issue=False).count()
-    payload = {'head': 'Pending Contracts', 'body': 'You have {} pending contracts'.format(
-      total_pending_contracts), 'icon': environ.get('ICON_LINK')}
+    payload = {'head': 'Pending Contracts', 'body': 'Hello {}!, You have {} pending contracts'.format(
+      request.user.username, total_pending_contracts
+    ), 'icon': environ.get('ICON_LINK')}
     send_user_notification(user=request.user, payload=payload, ttl=1000)
     return JsonResponse({'total_pending_contracts': total_pending_contracts}, safe=False)
   return JsonResponse({'total_pending_contracts': 0})
