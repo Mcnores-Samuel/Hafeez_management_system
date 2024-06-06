@@ -87,7 +87,7 @@ def combinedData_collection(request, data_id):
                         date_created=timezone.now(), date_updated=timezone.now(),
                         date_approved=timezone.now(), pending=True, paid=False,
                         active=True, approved=False, rejected=False, resolved=False)
-                    mbo_payload = {'head': 'Sales Notification', 'body': '{}, You have a new sale request for {} of imei {} and Contract number {}'.format(
+                    mbo_payload = {'head': 'Sales Notification', 'body': 'Hello {}!, You have a new sale request for {} of imei {} and Contract number {}'.format(
                         mbo_obj.username, item.name, item.device_imei, contract_number
                     ), 'icon': environ.get('ICON_LINK'), 'url': 'https://www.hafeezmw.com/system_core_1/pending_contracts/'}
                     send_user_notification(user=mbo_obj, payload=mbo_payload, ttl=1000)

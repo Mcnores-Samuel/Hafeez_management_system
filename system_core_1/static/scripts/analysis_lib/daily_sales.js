@@ -40,8 +40,6 @@ function updateDailyChart(url, dest, chartType, loader) {
                 label: `${date.toDateString()} Total ${overallTotal}`,
                 data: total,
                 backgroundColor: '#2980B9', // Blue color
-                borderColor: '#2980B9', // Blue color
-                borderWidth: 2,
               }],
             },
             options: {
@@ -54,12 +52,13 @@ function updateDailyChart(url, dest, chartType, loader) {
               plugins: {
                 title: {
                   display: true,
-                  text: 'Daily Sales Analysis',
-                  color: '#34495E', // Darker blue color
+                  text: `Daily Sales: ${overallTotal}`,
+                  color: '#fe9a43', // Darker blue color
                   position: 'bottom',
                   align: 'center',
                   font: {
                     weight: 'bold',
+                    size: 16, // Adjust font size
                   },
                   padding: 10, // Adjust padding for spacing
                   fullSize: true,
@@ -68,25 +67,23 @@ function updateDailyChart(url, dest, chartType, loader) {
               scales: {
                 x: {
                   grid: {
-                    color: '#ECF0F1', // Light gray grid lines
-                    lineWidth: 0.5, // Adjust grid line thickness
+                    display: false, // Hide grid lines
                   },
                   ticks: {
-                    color: '#34495E', // Darker blue color
+                    color: '#fe9a43', // Darker blue color
                     font: {
-                      weight: 'normal', // Regular font weight
+                      weight: 'bold', // Regular font weight
                     },
                   },
                 },
                 y: {
                   grid: {
-                    color: '#ECF0F1', // Light gray grid lines
-                    lineWidth: 0.5, // Adjust grid line thickness
+                    display: false, // Hide grid lines
                   },
                   ticks: {
-                    color: '#34495E', // Darker blue color
+                    color: '#fe9a43', // Darker blue color
                     font: {
-                      weight: 'normal', // Regular font weight
+                      weight: 'bold', // Regular font weight
                     },
                   },
                 },

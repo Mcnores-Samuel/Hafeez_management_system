@@ -37,8 +37,6 @@ function mainStockChartDetails() {
                 label: `${date.toLocaleDateString()} Stock Levels`,
                 data: total,
                 backgroundColor: '#2980B9', // Blue color
-                borderColor: '#2980B9', // Blue color
-                borderWidth: 2,
               }],
             },
             options: {
@@ -52,7 +50,7 @@ function mainStockChartDetails() {
                 title: {
                   display: true,
                   text: 'Daily Stock Analysis',
-                  color: '#34495E', // Darker blue color
+                  color: '#fe9a43', // Darker blue color
                   position: 'bottom',
                   align: 'center',
                   font: {
@@ -71,7 +69,7 @@ function mainStockChartDetails() {
                     drawBorder: true, // Display chart border
                   },
                   ticks: {
-                    color: '#34495E', // Darker blue color
+                    color: '#fe9a43', // Darker blue color
                     font: {
                       weight: 'normal', // Regular font weight
                     },
@@ -84,7 +82,7 @@ function mainStockChartDetails() {
                     drawBorder: true, // Display chart border
                   },
                   ticks: {
-                    color: '#34495E', // Darker blue color
+                    color: '#fe9a43', // Darker blue color
                     font: {
                       weight: 'normal', // Regular font weight
                     },

@@ -46,8 +46,6 @@ function updateWeeklyChart(url, dest, chartType = 'line', loader) {
               datasets: [{
                 data: nums,
                 backgroundColor: 'rgba(54, 162, 235, 0.6)',
-                borderColor: 'rgba(54, 162, 235, 1)',
-                borderWidth: 1,
               }],
             },
             options: {
@@ -58,7 +56,7 @@ function updateWeeklyChart(url, dest, chartType = 'line', loader) {
                   display: true,
                   text: `Weekly Sales Analysis: total sales: ${overallTotal}`,
                   position: 'bottom',
-                  color: '#333',
+                  color: '#fe9a43',
                   font: {
                     weight: 'bold',
                     size: 16,
@@ -75,7 +73,7 @@ function updateWeeklyChart(url, dest, chartType = 'line', loader) {
                     display: false,
                   },
                   ticks: {
-                    color: '#333',
+                    color: '#fe9a43',
                     font: {
                       weight: 'bold',
                     },
@@ -86,7 +84,7 @@ function updateWeeklyChart(url, dest, chartType = 'line', loader) {
                     display: false,
                   },
                   ticks: {
-                    color: '#333',
+                    color: '#fe9a43',
                     font: {
                       weight: 'bold',
                     },

@@ -45,8 +45,6 @@ function updateSalesByAgentChart(url, dest, chartType, loader) {
               datasets: [{
                 data: nums,
                 backgroundColor: '#2980B9', // Blue color
-                borderColor: '#2980B9', // Blue color
-                borderWidth: 2,
               }],
             },
             options: {
@@ -60,7 +58,7 @@ function updateSalesByAgentChart(url, dest, chartType, loader) {
                 title: {
                   display: true,
                   text: `${months[date.getMonth()]} Sales Analysis: total ${total}`,
-                  color: '#34495E', // Darker blue color
+                  color: '#fe9a43', // Darker blue color
                   position: 'bottom',
                   align: 'center',
                   font: {
@@ -80,28 +78,26 @@ function updateSalesByAgentChart(url, dest, chartType, loader) {
               scales: {
                 x: {
                   grid: {
-                    color: '#ECF0F1', // Light gray grid lines
-                    lineWidth: 0.5, // Adjust grid line thickness
+                    display: false, // Hide grid lines
                   },
 
                   ticks: {
                     beginAtZero: true, // Start axis at 0
                     stepSize: 1, // Show values for each agent
-                    color: '#34495E', // Darker blue color
+                    color: '#fe9a43', // Darker blue color
                     font: {
-                      weight: 'normal', // Regular font weight
+                      weight: 'bold', // Regular font weight
                     },
                   },
                 },
                 y: {
                   grid: {
-                    color: '#ECF0F1', // Light gray grid lines
-                    lineWidth: 0.5, // Adjust grid line thickness
+                    display: false, // Hide grid lines
                   },
                   ticks: {
-                    color: '#34495E', // Darker blue color
+                    color: '#fe9a43', // Darker blue color
                     font: {
-                      weight: 'normal', // Regular font weight
+                      weight: 'bold', // Regular font weight
                     },
                   },
                 },

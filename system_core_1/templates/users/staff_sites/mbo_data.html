@@ -104,7 +104,7 @@
                         <button type="button" class="btn fw-bold">Stauts: <span class="text-success">Approved</span></button>
                         {% if not approved.paid %}
                         <span type="button" class="btn bg-info fw-bold"
-                        data-bs-toggle="modal" data-bs-target="#viewCreditModal">mark as paid</span>
+                        data-bs-toggle="modal" data-bs-target="#pay{{ approved.id }}">mark as paid</span>
                         {% else %}
                           <span type="button" class="btn bg-success fw-bold"
                           data-bs-toggle="modal" data-bs-target="#viewCreditModal">Paid</span>
@@ -113,6 +113,27 @@
                         data-bs-toggle="modal" data-bs-target="#viewCreditModal" disabled>Edit</button>
                         <button type="button" class="btn bg-danger fw-bold"
                         data-bs-toggle="modal" data-bs-target="#viewCreditModal">Delete</button>
+
+                        <div class="modal fade" id="pay{{ approved.id }}" tabindex="-1" aria-labelledby="pay{{ approved.id }}Label" aria-hidden="true">
+                          <div class="modal-dialog">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="pay{{ approved.id }}Label">Mark as Paid</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                              </div>
+                              <div class="modal-body">
+                                <p class="text-center">Go ahead and mark this contract as paid</p>
+                                <form action="{% url 'contract_payment' %}" method="post">
+                                  {% csrf_token %}
+                                  <input type="hidden" name="contract_id" value="{{ approved.id }}">
+                                  <input type="hidden" name="contract" value="{{ approved.contract }}">
+                                  <input type="hidden" name="mbo" value="{{ mbo.username }}">
+                                  <button type="submit" class="btn bg-success fw-bold w-100">Mark as Paid</button>
+                                </form>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
                     <br>
@@ -130,10 +151,31 @@
                 <div class="card-header text-center">
                     <h4 class="fw-bold text-muted">Active Issues / Unresolved Issues</h4>
                 </div>
-                <div class="card-body">
-                    <div class="yearly_sales_chart_loader"></div>
-                    <canvas class="yearly_sales_chart" width="400" height="400"></canvas>
-                </div>
+                <div class="card-body content_container_data" style="height: 400px;">
+                  {% for issue in issues %}
+                    <div class="card bg-secondary">
+                      <div class="card-header">
+                        <h5 class="fw-bold text-center">Issue NO: {{ issue.contract }} - IMEI: {{ issue.device_imei }}</h5>
+                      </div>
+                      <div class="card-body content_container_data">
+                        <p class="card-text text_time"><strong class="text-info">Created Timestamp:</strong> <span>{{ issue.date_created }}</span></p>
+                        {% if issue.rejected_reason %}
+                        <p class="card-text text_time"><strong class="text-info">Reason:</strong> <span>{{ issue.rejected_reason }}</span></p>
+                        {% else %}
+                        <p class="card-text text_time"><strong class="text-info">Reason:</strong> <span>No Reason provided</span></p>
+                        {% endif %}
+                        <button type="button" class="btn fw-bold">Stauts: <span class="text-danger">Pending</span></button>
+
+                        <button type="button" class="btn bg-info fw-bold"
+                        data-bs-toggle="modal" data-bs-target="#viewCreditModal">View</button>
+                        <button type="button" class="btn bg-success fw-bold"
+                        data-bs-toggle="modal" data-bs-target="#viewCreditModal">Resolve</button>
+                        <button type="button" class="btn bg-danger fw-bold"
+                        data-bs-toggle="modal" data-bs-target="#viewCreditModal">Delete</button>
+                      </div>
+                    </div>
+                    <br>
+                  {% endfor %}
             </div>
         </div>
     </div>

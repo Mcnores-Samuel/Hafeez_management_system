@@ -82,13 +82,14 @@ function agentsStockChartDetails(url, dest, chartType, loader) {
                 title: {
                   display: true,
                   text: `Total overall stock ${overallTotal}`,
-                  color: 'navy',
+                  color: '#fe9a43',
                   position: 'bottom',
-                  align: 'center',
+                  align: 'left',
                   font: {
                     weight: 'bold',
+                    size: 16,
                   },
-                  padding: 8,
+                  padding: 10,
                   fullSize: true,
                 },
                 legend: {
@@ -96,7 +97,7 @@ function agentsStockChartDetails(url, dest, chartType, loader) {
                   position: 'right',
                   align: 'center',
                   labels: {
-                    color: 'black',
+                    color: '#fe9a43',
                     font: {
                       size: 10,
                       weight: 'bold',

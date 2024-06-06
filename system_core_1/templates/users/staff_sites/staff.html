@@ -42,7 +42,7 @@
                 <br>
                 <div class="collapse d-md-block wrapper" id="sidebarCollapse">
                     <div class="sidebar">
-                        <div class="topbar-wrapper heading bg-success ">
+                        <div class="topbar-wrapper heading">
                             <div class="logo">HE</div>
                             <div class="text-center text-fs text-light brandname text">Hafeez Enterprise</div>
                         </div>
@@ -153,12 +153,12 @@
                 {% endfor %}
             </div>
             {% endif %}
-            <div class="top-display d-flex position-relative bg-light">
-                <form action="{% url 'data_search' %}" method="post" class="d-flex position-relative search-form">
+            <div class="top-display d-flex card-bg">
+                <form action="{% url 'data_search' %}" method="post" class="d-flex position-relative search-form text-light">
                     {% csrf_token %}
                     <input type="search" id="search" name="search_query" class="form-control me-2"
                     placeholder="Search IMEI number or Contract number" aria-label="Search" aria-describedby="search-addon" />
-                    <button type="submit" class="btn btn-outline-light btn-primary search-btn">search</button>
+                    <button type="submit" class="btn search-btn material-icons">search</button>
                 </form>
                 <div class="notify">
                     <div class="dropdown">
@@ -233,7 +233,7 @@
             <section class="charts_by_chartjs">
                 <div class="row gy-3">
                     <div class="col-md-6 col-12">
-                        <div class="card ">
+                        <div class="card bg-dark">
                             <div class="card-header text-center">
                                 <h4 class="text-muted fw-bold">Daily Sales on loan</h4>
                             </div>
@@ -244,7 +244,7 @@
                         </div>
                     </div>
                     <div class="col-md-6 col-12">
-                        <div class="card">
+                        <div class="card bg-dark">
                             <div class="card-header text-center">
                                 <h4 class="fw-bold text-muted">Daily Sales on Cash</h4>
                             </div>
@@ -260,7 +260,7 @@
             <section class="yearly_analysis">
                 <div class="row gy-3">
                     <div class="col-md-6 col-12">
-                        <div class="card">
+                        <div class="card bg-dark">
                             <div class="card-header text-center">
                                 <h4 class="fw-bold text-muted">Main Shop Yearly Sales</h4>
                             </div>
@@ -271,7 +271,7 @@
                         </div>
                     </div>
                     <div class="col-md-6 col-12">
-                        <div class="card">
+                        <div class="card bg-dark">
                             <div class="card-header text-center">
                                 <h4 class="fw-bold text-muted">Overall Yearly Sales</h4>
                             </div>
