@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from ..models.account_manager import AccountManager
 from ..models.user_profile import UserProfile
 from ..data_query_engine.mbos_queries.mbos_data_queries import AccountManagerDataQuery
+from django.utils import timezone
 
 
 
@@ -38,11 +39,13 @@ def mbo_data(request, username):
     if request.user.is_authenticated and request.user.groups.filter(name='staff_members').exists():
         mbo = UserProfile.objects.get(username=username)
         mbos = UserProfile.objects.filter(groups__name='MBOs').all()
+        today = timezone.now().date()
         pending_contracts = AccountManager.objects.filter(
             mbo=mbo, approved=False, rejected=False, issue=False
         ).all().order_by('-date_created')
         approved_contracts = AccountManager.objects.filter(
-            mbo=mbo, approved=True, rejected=False, issue=False
+            mbo=mbo, approved=True, rejected=False, issue=False,
+            date_approved__date=today
         ).all().order_by('-date_approved')
         issues = AccountManager.objects.filter(
             mbo=mbo, issue=True, resolved=False
