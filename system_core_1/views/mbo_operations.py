@@ -31,7 +31,7 @@ def approve_contract(request):
     messages.success(request, 'Contract {} approved successfully.'.format(contract))
     payload = {'head': 'Contract Approval', 'body': 'Hello Team!, Contract {}, IMEI: {} has been approved'.format(
       contract, contract_data.device_imei),
-               'icon': '/static/images/icon.png', 'url': 'www.hafeezmw.com'}
+               'icon': 'https://raw.githubusercontent.com/Mcnores-Samuel/Hafeez_management_system/main/system_core_1/static/images/logo.png', 'url': 'www.hafeezmw.com'}
     staff_members = UserProfile.objects.filter(groups__name='staff_members')
     for staff in staff_members:
       send_user_notification(user=staff, payload=payload, ttl=1000)
@@ -136,7 +136,8 @@ def get_total_pending_contracts(request):
       issue=False).count()
     payload = {'head': 'Pending Contracts', 'body': 'Hello {}!, You have {} pending contracts'.format(
       request.user.username, total_pending_contracts
-    ), 'icon': 'https://raw.githubusercontent.com/Mcnores-Samuel/Hafeez_management_system/main/system_core_1/static/images/logo.png', 'url': 'www.hafeezmw.com'}
+    ), 'icon': 'https://raw.githubusercontent.com/Mcnores-Samuel/Hafeez_management_system/main/system_core_1/static/images/logo.png',
+    'url': 'www.hafeezmw.com'}
     if total_pending_contracts > 0:
       send_user_notification(user=request.user, payload=payload, ttl=1000)
     return JsonResponse({'total_pending_contracts': total_pending_contracts}, safe=False)

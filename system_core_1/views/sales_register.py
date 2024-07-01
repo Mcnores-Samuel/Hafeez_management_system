@@ -13,10 +13,8 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 from django.utils import timezone
 from webpush import send_user_notification
-from os import environ
 from ..models.user_profile import UserProfile
 from ..models.account_manager import AccountManager
-from django.conf import settings
 
 
 @login_required
