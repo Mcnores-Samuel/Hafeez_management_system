@@ -82,7 +82,7 @@ def total_pending_sales(request):
             for user in admin:
                 payload = {
                     'head': 'Approval Reminder',
-                    'body': 'Hello {}!, There are {} pendng your approval'.format(
+                    'body': 'Hello {}!, There are {} pending your approval'.format(
                         user.username, total),
                     'icon': settings.STATIC_URL + 'images/logo.png',
                     'url': 'www.hafeezmw.com'
