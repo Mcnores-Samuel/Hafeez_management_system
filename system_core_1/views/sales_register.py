@@ -74,15 +74,17 @@ def combinedData_collection(request, data_id):
                     item.save()
                     payload = {'head': 'Sales Notification', 'body': '{} of imei {} sold successfully'.format(
                         item.name, item.device_imei
-                    ), 'icon': environ.get('ICON_LINK')}
+                    ), 'icon': '../saturn/static/images/logo.png', 'url': 'www.hafeezmw.com/system_core_1/'}
                     send_user_notification(user=request.user, payload=payload, ttl=1000)
                     return redirect('data_search')
                 elif payment == 'Loan':
                     mbo = request.POST.get('mbo')
                     contract_number = request.POST.get('contract_number')
+                    customer_name = request.POST.get('customer_name')
                     mbo_obj = UserProfile.objects.get(id=mbo)
                     AccountManager.objects.create(
                         mbo=mbo_obj, device_imei=item.device_imei,
+                        customer_name=customer_name,
                         device_name=item.name, contract=contract_number, issue=False,
                         date_created=timezone.now(), date_updated=timezone.now(),
                         date_approved=timezone.now(), pending=True, paid=False,

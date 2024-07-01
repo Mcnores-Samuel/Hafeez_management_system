@@ -31,7 +31,7 @@ def pending_sales(request):
                 'head': '{} your sale has been approved.'.format(agent.username),
                 'body': 'The sale of {} imei number {} has been approved.'.format(
                     name, device),
-                'icon': environ.get('ICON_LINK'),
+                'icon': 'https://imgur.com/a/7Mn5dgx',
                 'url': 'www.hafeezmw.com'
             }
             if approved:

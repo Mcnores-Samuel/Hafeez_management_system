@@ -8,6 +8,7 @@ from django.http import JsonResponse
 from webpush import send_user_notification
 from os import environ
 from ..models.user_profile import UserProfile
+from django.conf import settings
 
 
 @login_required
@@ -27,7 +28,7 @@ def approve_contract(request):
     messages.success(request, 'Contract {} approved successfully.'.format(contract))
     payload = {'head': 'Contract Approval', 'body': 'Hello Team!, Contract {}, IMEI: {} has been approved'.format(
       contract, contract_data.device_imei),
-               'icon': environ.get('ICON_LINK')}
+               'icon': settings.STATIC_URL + 'images/logo.png', 'url': 'www.hafeezmw.com'}
     staff_members = UserProfile.objects.filter(groups__name='staff_members')
     for staff in staff_members:
       send_user_notification(user=staff, payload=payload, ttl=1000)
@@ -60,7 +61,7 @@ def reject_contract(request):
     messages.success(request, 'Contract {} rejected successfully.'.format(contract))
     payload = {'head': 'Contract Rejection', 'body': 'Contract {}, IMEI: {} has been rejected'.format(
       contract, contract_data.device_imei),
-               'icon': environ.get('ICON_LINK')}
+               'icon': settings.STATIC_URL + 'images/logo.png', 'url': 'www.hafeezmw.com'}
     staff_members = UserProfile.objects.filter(groups__name='staff_members')
     for staff in staff_members:
       send_user_notification(user=staff, payload=payload, ttl=1000)
@@ -84,7 +85,7 @@ def revert_contract(request):
     messages.success(request, 'Contract {} reverted successfully.'.format(contract))
     payload = {'head': 'Contract Reversion', 'body': 'Hello Team!, Contract {}, IMEI: {} has been reverted'.format(
       contract, contract_data.device_imei),
-               'icon': environ.get('ICON_LINK')}
+               'icon': settings.STATIC_URL + 'images/logo.png', 'url': 'www.hafeezmw.com'}
     staff_members = UserProfile.objects.filter(groups__name='staff_members')
     for staff in staff_members:
       send_user_notification(user=staff, payload=payload, ttl=1000)
@@ -105,7 +106,8 @@ def add_note_to_contract(request):
     contract_data.save()
     messages.success(request, 'Note added to contract {} successfully.'.format(contract_data.contract))
     payload = {'head': 'Contract Note', 'body': 'Hello Team!, Note added to contract {}, IMEI: {}.\n{}'.format(
-      contract_data.contract, contract_data.device_imei, note), 'icon': environ.get('ICON_LINK')}
+      contract_data.contract, contract_data.device_imei, note), 'icon': settings.STATIC_URL + 'images/logo.png',
+      'url': 'www.hafeezmw.com'}
     staff_members = UserProfile.objects.filter(groups__name='staff_members')
     for staff in staff_members:
       send_user_notification(user=staff, payload=payload, ttl=1000)
@@ -122,8 +124,9 @@ def get_total_pending_contracts(request):
       issue=False).count()
     payload = {'head': 'Pending Contracts', 'body': 'Hello {}!, You have {} pending contracts'.format(
       request.user.username, total_pending_contracts
-    ), 'icon': environ.get('ICON_LINK')}
-    send_user_notification(user=request.user, payload=payload, ttl=1000)
+    ), 'icon': settings.STATIC_URL + 'images/logo.png', 'url': 'www.hafeezmw.com'}
+    if total_pending_contracts > 0:
+      send_user_notification(user=request.user, payload=payload, ttl=1000)
     return JsonResponse({'total_pending_contracts': total_pending_contracts}, safe=False)
   return JsonResponse({'total_pending_contracts': 0})
 
