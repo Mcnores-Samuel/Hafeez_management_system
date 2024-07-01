@@ -182,6 +182,7 @@ PASSWORD_RESET_EMAIL_SUBJECT = 'registration/reset_email_subject.txt'
 
 STATIC_SOURCE = os.environ.get('STATIC_SOURCE')
 
+
 if STATIC_SOURCE == 'local':
     STATIC_ROOT = BASE_DIR / 'staticfiles'
     STATIC_URL = '/static/'
@@ -203,5 +204,6 @@ else:
     DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
     STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
     AWS_LOCATION = 'static'
+    MEDIA_LOCATION = 'media'
     STATIC_URL = 'https://%s/%s/' % (AWS_STORAGE_BUCKET_NAME, AWS_LOCATION)
-    MEDIA_URL = 'https://%s/%s/' % (AWS_STORAGE_BUCKET_NAME, AWS_LOCATION)
+    MEDIA_URL = 'https://%s/%s/' % (AWS_STORAGE_BUCKET_NAME, MEDIA_LOCATION)

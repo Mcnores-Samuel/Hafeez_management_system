@@ -27,7 +27,7 @@ def contract_payment(request):
     messages.success(request, 'Payment for contract {} processed successfully.'.format(contract))
     payload = {'head': 'Contract Payment', 'body': 'Hello Team!, Payment for contract {} has been processed'.format(
       contract),
-               'icon': environ.get('ICON_LINK')}
+               'icon': '/static/images/logo.png', 'url': 'www.hafeezmw.com'}
     staff_members = UserProfile.objects.filter(groups__name='staff_members')
     for staff in staff_members:
       send_user_notification(user=staff, payload=payload, ttl=1000)
