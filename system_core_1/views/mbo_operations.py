@@ -70,8 +70,11 @@ def reject_contract(request):
       contract, contract_data.device_imei),
                'icon': settings.STATIC_URL + 'images/logo.png', 'url': 'www.hafeezmw.com'}
     staff_members = UserProfile.objects.filter(groups__name='staff_members')
+    admin = UserProfile.objects.filter(is_superuser=True)
     for staff in staff_members:
       send_user_notification(user=staff, payload=payload, ttl=1000)
+    for admin in admin:
+      send_user_notification(user=admin, payload=payload, ttl=1000)
   return redirect('pending_contracts')
 
 
@@ -116,8 +119,11 @@ def add_note_to_contract(request):
       contract_data.contract, contract_data.device_imei, note), 'icon': settings.STATIC_URL + 'images/logo.png',
       'url': 'www.hafeezmw.com'}
     staff_members = UserProfile.objects.filter(groups__name='staff_members')
+    admin = UserProfile.objects.filter(groups__name='admin')
     for staff in staff_members:
       send_user_notification(user=staff, payload=payload, ttl=1000)
+    for admin in admin:
+      send_user_notification(user=admin, payload=payload, ttl=1000)
   return redirect('pending_contracts')
 
 
