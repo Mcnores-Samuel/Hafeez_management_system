@@ -7,7 +7,7 @@ from ..models.user_profile import UserProfile
 from django.contrib import messages as message
 from django.http import JsonResponse
 from webpush import send_user_notification
-from os import environ
+from django.conf import settings
 
 
 @login_required
@@ -31,7 +31,7 @@ def pending_sales(request):
                 'head': '{} your sale has been approved.'.format(agent.username),
                 'body': 'The sale of {} imei number {} has been approved.'.format(
                     name, device),
-                'icon': 'https://imgur.com/a/7Mn5dgx',
+                'icon': settings.STATIC_URL + 'images/logo.png',
                 'url': 'www.hafeezmw.com'
             }
             if approved:
@@ -77,6 +77,17 @@ def total_pending_sales(request):
                 pending=True, sold=True, in_stock=False,
                 missing=False, issue=False, faulty=False,
                 agent=request.user).count()
+        if total > 0:
+            admin = UserProfile.objects.filter(is_superuser=True)
+            for user in admin:
+                payload = {
+                    'head': 'Approval Reminder',
+                    'body': 'Hello {}!, There are {} pendng your approval'.format(
+                        user.username, total),
+                    'icon': settings.STATIC_URL + 'images/logo.png',
+                    'url': 'www.hafeezmw.com'
+                }
+                send_user_notification(user=user, payload=payload, ttl=1000)
     return JsonResponse({'total': total})
 
 

@@ -6,7 +6,6 @@ from django.utils import timezone
 from django.contrib import messages
 from django.http import JsonResponse
 from webpush import send_user_notification
-from os import environ
 from ..models.user_profile import UserProfile
 from ..models.main_storage import MainStorage
 from django.conf import settings
