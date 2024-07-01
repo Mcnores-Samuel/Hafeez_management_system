@@ -31,7 +31,7 @@ def pending_sales(request):
                 'head': '{} your sale has been approved.'.format(agent.username),
                 'body': 'The sale of {} imei number {} has been approved.'.format(
                     name, device),
-                'icon': '/static/images/logo.png',
+                'icon': 'https://raw.githubusercontent.com/Mcnores-Samuel/Hafeez_management_system/main/system_core_1/static/images/logo.png',
                 'url': 'www.hafeezmw.com'
             }
             if approved:
@@ -84,7 +84,7 @@ def total_pending_sales(request):
                     'head': 'Approval Reminder',
                     'body': 'Hello {}!, There are {} pending your approval'.format(
                         user.username, total),
-                    'icon': '/static/images/logo.png',
+                    'icon': 'https://raw.githubusercontent.com/Mcnores-Samuel/Hafeez_management_system/main/system_core_1/static/images/logo.png',
                     'url': 'www.hafeezmw.com'
                 }
                 send_user_notification(user=user, payload=payload, ttl=1000)
