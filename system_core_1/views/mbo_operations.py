@@ -8,6 +8,7 @@ from django.http import JsonResponse
 from webpush import send_user_notification
 from os import environ
 from ..models.user_profile import UserProfile
+from ..models.main_storage import MainStorage
 from django.conf import settings
 
 
@@ -24,6 +25,9 @@ def approve_contract(request):
     contract_data.pending = False
     contract_data.date_updated = timezone.now()
     contract_data.date_approved = timezone.now()
+    data = MainStorage.objects.get(device_imei=contract_data.device_imei)
+    data.mbo_approved = True
+    data.save()
     contract_data.save()
     messages.success(request, 'Contract {} approved successfully.'.format(contract))
     payload = {'head': 'Contract Approval', 'body': 'Hello Team!, Contract {}, IMEI: {} has been approved'.format(
@@ -57,6 +61,9 @@ def reject_contract(request):
     if rejection_image:
       contract_data.rejected_proof = rejection_image
     contract_data.date_updated = timezone.now()
+    data = MainStorage.objects.get(device_imei=contract_data.device_imei)
+    data.mbo_rejected = True
+    data.save()
     contract_data.save()
     messages.success(request, 'Contract {} rejected successfully.'.format(contract))
     payload = {'head': 'Contract Rejection', 'body': 'Contract {}, IMEI: {} has been rejected'.format(

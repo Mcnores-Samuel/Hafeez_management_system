@@ -6,11 +6,12 @@
 {% bootstrap_javascript %}
 {% block head %}
     <link rel="stylesheet" href="{% static 'styles/agent_stock_mobile.css' %}">
+    <script src="{% static 'scripts/copytext.js' %}" defer></script>
 {% endblock %}
 {% block content %}
 <style>
     .card-body > p {
-        font-size: 14px;
+        font-size: 12px;
     }
 </style>
 <div class="container">
@@ -28,7 +29,7 @@
     <div class="container bg-info">
         <h1 class="text-center fw-bold">Pending Contracts</h1>
         <hr>
-        <p class="text-center fw-bold">Please! note that the pending contracts data will only contain the contracts that have been pending approval within the last 30 days</p>
+        <p class="text-center fw-bold">To copy the contract number or serial No, just click on the number itself</p>
         {% if pending_contracts.paginator.count == 0 %}
             <p class="text-center fw-bold">There are no pending contracts at the moment.</p>
             <p class="text-center fw-bold">You can check back later Simply refresh the page</p>
@@ -42,12 +43,15 @@
         <div class="col-md-4 col-sm-6 mb-4">
             <div class="card">
                 <div class="card-header  text-center">
-                    <h4 class="card-title">{{ contract.contract }}</h4>
+                    <h4 class="card-title fw-bold" id="id_{{ contract.id }}" onclick="copyText('id_{{ contract.id }}')">{{ contract.contract }}</h4>
                 </div>
                 <div class="card-body">
                     <p class="card-text"><strong class="text-info">Created Timestamp:</strong> <span>{{ contract.date_created }}</span></p>
-                    <p class="card-text"><strong class="text-info">Serial No:</strong> <span>{{ contract.device_imei }}</span></p>
+                    <p class="card-text"><strong class="text-info">Serial No:</strong> <span class="fw-bold" id="id_{{ contract.device_imei }}" onclick="copyText('id_{{ contract.device_imei }}')">{{ contract.device_imei }}</span></p>
                     <p class="card-text"><strong class="text-info">Model:</strong> <span>{{ contract.device_name }}</span></p>
+                    {% if contract.customer_name %}
+                        <p class="card-text"><strong class="text-info">Customer:</strong> <span>{{ contract.customer_name }}</span></p>
+                    {% endif %}
                     <div class="note">
                         {% if contract.important_note %}
                             <p class="text-center fw-bold">
@@ -55,7 +59,7 @@
                             </p>
                             <form action="{% url 'add_note_to_contract' %}" method="post">
                                 {% csrf_token %}
-                                <textarea name="important_note" id="important_note" cols="30" rows="3" class="form-control" >{{ contract.important_note }}</textarea>
+                                <textarea name="important_note" id="important_note" cols="30" rows="2" class="form-control" >{{ contract.important_note }}</textarea>
                                 <input type="hidden" name="contract_id" value="{{ contract.id }}">
                                 <br>
                                 <button type="submit" class="btn common-bg">update Notes</button>
@@ -66,7 +70,7 @@
                             </p>
                             <form action="{% url 'add_note_to_contract' %}" method="post">
                                 {% csrf_token %}
-                                <textarea name="important_note" id="important_note" cols="30" rows="3" class="form-control"
+                                <textarea name="important_note" id="important_note" cols="30" rows="2" class="form-control"
                                 placeholder="You can add a note here and will be communicated to the responible staff members"></textarea>
                                 <input type="hidden" name="contract_id" value="{{ contract.id }}">
                                 <br>
