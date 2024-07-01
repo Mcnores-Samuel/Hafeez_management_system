@@ -1,11 +1,9 @@
 # Text backup files
 *.bak
 __pycache__/
-
 venv/
-
 media/
-
+migrations/
 # Database
 *.sqlite3
 .vercel
