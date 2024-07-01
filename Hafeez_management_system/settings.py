@@ -24,7 +24,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('SECRET_KEY')
-ICON = '/static/images/icon.png'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = (bool(int(os.environ.get('DEBUG', 1))))
@@ -63,9 +62,9 @@ INSTALLED_APPS = [
 ]
 
 WEBPUSH_SETTINGS = {
-   "VAPID_PUBLIC_KEY": "BCbSiJmN3xQ07a5mZPb_nQGtRPX-GCPWkEOGbhslH96GjeFFbw6PxFPb87laYYjYWmTnGJvc_YSUnze3b7haR3I",
-   "VAPID_PRIVATE_KEY": "tC_NbpUtELaPc_mcP_h2w1CKIwUHzkSTdnUeGKgu2pI",
-   "VAPID_ADMIN_EMAIL": "samuelmcnores1@gmail.com"
+   "VAPID_PUBLIC_KEY": os.environ.get('VAPID_PUBLIC_KEY'),
+   "VAPID_PRIVATE_KEY": os.environ.get('VAPID_PRIVATE_KEY'),
+   "VAPID_ADMIN_EMAIL": os.environ.get('VAPID_ADMIN_EMAIL'),
 }
 
 FILTERS_EMPTY_CHOICE_LABEL = 'All'
