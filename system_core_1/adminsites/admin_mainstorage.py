@@ -3,6 +3,7 @@ from ..models.main_storage import MainStorage
 from ..customfilters.date_filters import YesterdayFilter
 from ..customfilters.year_months_filter import YearMonthFilter
 from ..customfilters.agent_filter import AgentFilter, SpecialAgentsFilter
+from django.utils import timezone
 
 
 class MainStorageAdmin(admin.ModelAdmin):
@@ -17,7 +18,7 @@ class MainStorageAdmin(admin.ModelAdmin):
     
     list_per_page = 50
 
-    actions = ['verify_stock_recieved',
+    actions = ['verify_stock_recieved', 'mark_as_locked',
                'unverify_stock_recieved', 'unassign_select', 'mark_as_sold',
                'missing', 'approve_pending', 'unapprove_pending']
     
@@ -43,8 +44,17 @@ class MainStorageAdmin(admin.ModelAdmin):
                 obj.assigned = True
                 obj.recieved = True
                 obj.sold = True
+                obj.stock_out_date = timezone.now().date()
                 obj.save()
     mark_as_sold.short_description = "Mark as sold"
+
+    def mark_as_locked(self, request, queryset):
+        """Mark the phone as locked"""
+        for obj in queryset:
+            if obj:
+                obj.is_locked = True
+                obj.save()
+    mark_as_locked.short_description = "Mark as locked"
 
     def approve_pending(self, request, queryset):
         """Approve pending phones"""

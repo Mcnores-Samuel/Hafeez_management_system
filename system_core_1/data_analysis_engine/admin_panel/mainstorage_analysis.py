@@ -183,7 +183,7 @@ class MainStorageAnalysis:
         all_pending_sales = MainStorage.objects.filter(
             pending=True, in_stock=False,
             assigned=True, sold=True, missing=False,
-            faulty=False, issue=False).order_by('stock_out_date')
+            faulty=False, issue=False).order_by('-stock_out_date')
         total_pending_sales = all_pending_sales.count()
         
         all_pending_sales = Paginator(all_pending_sales, 12)

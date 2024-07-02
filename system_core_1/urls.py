@@ -16,6 +16,7 @@ from .views.mbo_operations import (approve_contract, reject_contract, revert_con
                                    get_total_pending_contracts, add_note_to_contract)
 from .views.mbo_data_analysis import daily_approved_contracts, weekly_approved_contracts, yearly_approved_contracts
 from .views.staff_operations import contract_payment
+from .views.deposit_payments import pending_deposit_payments
 
 
 urlpatterns = [
@@ -36,6 +37,7 @@ urlpatterns = [
     path('revert_to_stock/', revert_to_stock, name='revert_to_stock'),
     path('pending_sales/', pending_sales, name='pending_sales'),
     path('defects/', defects, name='defects'),
+    path('pending_deposit_payments/', pending_deposit_payments, name='pending_deposit_payments'),
     # General access points
     path('profile/', data_updates.profile, name='profile'),
     path('feedback/', feedback, name='feedback'),

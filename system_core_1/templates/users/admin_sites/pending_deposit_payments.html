@@ -10,8 +10,13 @@
 {% endblock %}
 {% block content %}
 <div class="container">
-    <h1 class="text-center fs-3 fw-bold">Pending Sales: Total {{ total }}</h1>
-    <p class="text-center fs-5 fw-bold">Please verify the sales below</p>
+    <h1 class="text-center fs-3 fw-bold">Total waiting for deposit payment: Total {{ total }}</h1>
+    <p class="text-center fs-5 fw-bold">
+        Please Pay the deposit for the sales below and update the payment status
+    </p>
+    <p class="text-center fs-5 fw-bold">
+        This is a list of sales that are waiting for deposit payment and verification
+    </p>
     <hr>
     <br>
     {% bootstrap_messages %}
@@ -25,13 +30,9 @@
                     <div class="card-body">
                         <p class="card-text"><strong class="text-info">Agent:</strong> <span>{{ item.agent }}</span></p>
                         <p class="card-text"><strong class="text-info">Category:</strong> <span>{{ item.category }}</span></p>
-                        <p class="card-text"><strong class="text-info">Device IMEI:</strong>
-                            <span style="cursor: pointer;" id="id_{{ item.device_imei }}" onclick="copyText('id_{{ item.device_imei }}')">{{ item.device_imei }}</span></p>
-                        {% if item.device_imei_2 %}
-                            <p class="card-text"><strong class="text-info">Device IMEI 2:</strong> <span>{{ item.device_imei_2 }}</span></p>
-                        {% endif %}
+                        <p class="card-text"><strong class="text-info">Payg No:</strong>
+                            <span style="cursor: pointer;" id="id_{{ item.device_imei }}" onclick="copyText('id_{{ item.device_imei }}')">{{ item.device_imei }}at{{ item.contract_no }}</span></p>
                         <p class="card-text"><strong class="text-info">Model:</strong> <span>{{ item.name }}</span></p>
-                        <p class="card-text"><strong class="text-info">Spec:</strong> <span>{{ item.spec }}</span></p>
                         <p class="card-text"><strong class="text-info">Sold On:</strong> <span>{{ item.stock_out_date }}</span></p>
                         <p class="card-text"><strong class="text-info">Sales Types:</strong> <span>{{ item.sales_type }}</span></p>
                         {% if item.pending %}
@@ -103,7 +104,7 @@
                         <form action="" method="post">
                             {% csrf_token %}
                             <input type="hidden" name="device_imei" value="{{ item.device_imei }}">
-                            <button type="submit" class="btn btn-danger w-100" onclick="sold()">verify sold</button>
+                            <button type="submit" class="btn btn-success w-100" onclick="sold()">mark as paid</button>
                         </form>
                         <br>
                         <form action="/system_core_1/revert_to_stock/" method="post">

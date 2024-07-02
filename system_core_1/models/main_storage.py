@@ -90,6 +90,7 @@ class MainStorage(models.Model):
     mbo_approved = models.BooleanField(default=False)
     mbo_rejected = models.BooleanField(default=False)
     deposit_paid = models.BooleanField(default=False)
+    is_locked = models.BooleanField(default=False)
     recieved = models.BooleanField(default=False)
     on_display = models.BooleanField(default=False)
     pending = models.BooleanField(default=False)
