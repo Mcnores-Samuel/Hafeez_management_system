@@ -15,8 +15,8 @@ from .views.mbo_operations import (approve_contract, reject_contract, revert_con
                                    get_total_approved_contracts, get_total_rejected_contracts,
                                    get_total_pending_contracts, add_note_to_contract)
 from .views.mbo_data_analysis import daily_approved_contracts, weekly_approved_contracts, yearly_approved_contracts
-from .views.staff_operations import contract_payment
-from .views.deposit_payments import pending_deposit_payments
+from .views.staff_operations import contract_payment, device_locking
+from .views.deposit_payments import pending_deposit_payments, process_deposit_payment
 
 
 urlpatterns = [
@@ -38,6 +38,7 @@ urlpatterns = [
     path('pending_sales/', pending_sales, name='pending_sales'),
     path('defects/', defects, name='defects'),
     path('pending_deposit_payments/', pending_deposit_payments, name='pending_deposit_payments'),
+    path('process_deposit_payment/', process_deposit_payment, name='process_deposit_payment'),
     # General access points
     path('profile/', data_updates.profile, name='profile'),
     path('feedback/', feedback, name='feedback'),
@@ -58,6 +59,7 @@ urlpatterns = [
     path('sale_on_loan/<int:data_id>/', action_on_data_select.sale_on_loan, name='sale_on_loan'),
     path('mbo_data/<str:username>/', mbo_data, name='mbo_data'),
     path('contract_payment/', contract_payment, name='contract_payment'),
+    path('device_locking/', device_locking, name='device_locking'),
     # MBO data access points
     path('pending_contracts/', pending_contracts, name='pending_contracts'),
     path('approved_contracts/', approved_contracts, name='approved_contracts'),
