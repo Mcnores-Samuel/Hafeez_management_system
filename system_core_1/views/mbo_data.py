@@ -9,7 +9,6 @@ from ..data_query_engine.mbos_queries.mbos_data_queries import AccountManagerDat
 from django.utils import timezone
 
 
-
 @login_required
 def mbo_data(request, username):
     """
@@ -157,7 +156,6 @@ def search_contracts(request):
             'search_results': search_results
         }
     return render(request, 'users/mbos/search_contracts.html', context)
-
 
 
 @login_required

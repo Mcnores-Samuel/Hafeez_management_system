@@ -130,7 +130,7 @@
                         {% endif %}
                         {% if not approved.locked %}
                         <button type="button" class="btn bg-info fw-bold"
-                        data-bs-toggle="modal" data-bs-target="#viewLockedModal">Device Locked</button>
+                        data-bs-toggle="modal" data-bs-target="#viewLockedModal{{ approved.id }}">Device Locked</button>
                         <br>
                         <br>
                         {% else %}
@@ -164,7 +164,7 @@
                           </div>
                         </div>
 
-                        <div class="modal fade" id="viewLockedModal" tabindex="-1" aria-labelledby="viewLockedModalLabel" aria-hidden="true">
+                        <div class="modal fade" id="viewLockedModal{{ approved.id }}" tabindex="-1" aria-labelledby="viewLockedModalLabel{{ approved.id }}" aria-hidden="true">
                           <div class="modal-dialog">
                             <div class="modal-content">
                               <div class="modal-header">

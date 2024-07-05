@@ -8,7 +8,6 @@ from django.http import JsonResponse
 from django.utils import timezone
 
 
-
 @login_required
 def daily_approved_contracts(request):
     """
@@ -42,7 +41,6 @@ def daily_approved_contracts(request):
         for contract in approved_contracts:
             sales[contract.device_name] = sales.get(contract.device_name, 0) + 1
         return JsonResponse(sales, safe=False)
-    
 
 
 @login_required
@@ -87,7 +85,6 @@ def weekly_approved_contracts(request):
             item = {}
         return JsonResponse(days, safe=False)
     
-
 
 @login_required
 def yearly_approved_contracts(request):
