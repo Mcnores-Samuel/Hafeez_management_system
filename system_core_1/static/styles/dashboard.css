@@ -10,7 +10,7 @@
 
 
 body {
-    background: linear-gradient(90deg, #23435c, #e0e0e0);
+    background: linear-gradient(90deg, black, gray);
 }
 
 .wrapper.resize {

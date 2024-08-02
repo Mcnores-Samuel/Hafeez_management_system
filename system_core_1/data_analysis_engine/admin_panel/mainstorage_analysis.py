@@ -4,7 +4,6 @@ from ...models.agent_profile import AgentProfile
 from ...models.user_profile import UserProfile
 from django.utils import timezone
 from django.contrib.auth.models import Group
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 
@@ -180,19 +179,19 @@ class MainStorageAnalysis:
         """This function returns a list of all pending sales.
         It also returns the total number of pending sales.
         """
-        all_pending_sales = MainStorage.objects.filter(
-            pending=True, in_stock=False,
-            assigned=True, sold=True, missing=False,
-            faulty=False, issue=False).order_by('-stock_out_date')
-        total_pending_sales = all_pending_sales.count()
+        total_by_agents = {}
+        all_agents = AgentProfile.objects.all().order_by('user__username')
+        total = 0
         
-        all_pending_sales = Paginator(all_pending_sales, 12)
-        page = request.GET.get('page')
+        for agent in all_agents:
+            data = MainStorage.objects.filter(
+                agent=agent.user,
+                pending=True, in_stock=False,
+                assigned=True, sold=True, missing=False,
+                faulty=False, issue=False).count()
+            if data > 0:
+                total_by_agents[agent.user.username] = data
+            total += data
 
-        try:
-            all_pending_sales = all_pending_sales.get_page(page)
-        except PageNotAnInteger:
-            all_pending_sales = all_pending_sales.page(1)
-        except EmptyPage:
-            all_pending_sales = all_pending_sales.page(all_pending_sales.num_pages)
-        return all_pending_sales, total_pending_sales
+            sorted_data = sorted(total_by_agents.items(), key=lambda x: x[1], reverse=True)
+        return sorted_data, total

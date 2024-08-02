@@ -137,34 +137,38 @@ class Airtel_mifi_storage(models.Model):
         ('Shehzaad', 'Shehzaad'), ("Sahil's Father", "Sahil's Father")
       )
     
-    agent = models.ForeignKey(settings.AUTH_USER_MODEL,
+    promoter = models.ForeignKey(settings.AUTH_USER_MODEL,
                               on_delete=models.CASCADE,
                               null=True, blank=True)
-    recieved = models.BooleanField(default=False)
     device_imei = models.CharField(max_length=15, unique=True)
-    phone_number = models.CharField(max_length=15, unique=True, null=True, blank=True)
-    device = models.CharField(max_length=25, choices=DEVICES, default='MIFI')
-    pending = models.BooleanField(default=False)
-    active = models.BooleanField(default=False)
-    inactive = models.BooleanField(default=True)
+    device_phone_no = models.CharField(max_length=15, unique=True, null=True, blank=True)
+    device_type = models.CharField(max_length=25, choices=DEVICES, default='MIFI')
+    team_leader = models.CharField(max_length=25, null=True, blank=True)
+    days_left = models.IntegerField(default=14)
+    days_after_due = models.IntegerField(default=0)
+    entry_date = models.DateTimeField(timezone.now, default=timezone.now)
+    collected_on = models.DateTimeField(timezone.now, default=timezone.now)
+    last_updated = models.DateTimeField(timezone.now, default=timezone.now)
+    next_due_date = models.DateTimeField(timezone.now, default=timezone.now)
+    date_sold = models.DateTimeField(timezone.now, default=timezone.now)
     in_stock = models.BooleanField(default=True)
-    assigned = models.BooleanField(default=False)
-    entry_date = models.DateField(default=timezone.now)
-    stock_out_date = models.DateField(default=timezone.now)
-    collected_on = models.DateField(default=timezone.now)
-    cash_recieved = models.BooleanField(default=False)
+    actived = models.BooleanField(default=False)
+    payment_confirmed = models.BooleanField(default=False)
+    returned = models.BooleanField(default=False)
+    returned_by = models.CharField(max_length=25, null=True, blank=True)
+    returned_on = models.DateTimeField(timezone.now, default=timezone.now)
     cash_recieved_by = models.CharField(max_length=25, choices=cash_recieved_by, default='Not Paid')
     paid = models.BooleanField(default=False)
-    comment = models.CharField(max_length=256, null=True, blank=True)
+    updated_by = models.CharField(max_length=50, null=True, blank=True)
 
     class Meta:
         indexes = [
             models.Index(fields=['device_imei',
-                                 'device', 'in_stock', 'assigned'])
+                                 'device_type', 'in_stock'])
         ]
         verbose_name_plural = 'Airtel Devices'
 
     def __str__(self):
         """String representation of the phone data model"""
         return "Device: {}, Imei: {}, heldby: {}".format(
-            self.device, self.device_imei, self.agent)
+            self.device, self.device_imei, self.promoter)

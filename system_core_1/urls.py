@@ -5,7 +5,7 @@ from .views import (registration_view, data_updates, central_display, home_page,
 from .views.stock_analysis import (get_source_stock, get_yearly_product_sales, admin_stock_analysis)
 from .views.feedback import feedback
 from .views.add_to_stock import add_to_stock
-from .views.pending_sales import total_pending_sales, revert_to_stock, pending_sales
+from .views.pending_sales import total_pending_sales, revert_to_stock, pending_sales, pending_sales_details
 from .views.defects import defects
 from  .views import revenues
 from .views import agents_data_access
@@ -36,6 +36,7 @@ urlpatterns = [
     path('revenues/', revenues.revenues, name='revenues'),
     path('revert_to_stock/', revert_to_stock, name='revert_to_stock'),
     path('pending_sales/', pending_sales, name='pending_sales'),
+    path('pending_sales_details/<str:username>/', pending_sales_details, name='pending_sales_details'),
     path('defects/', defects, name='defects'),
     path('pending_deposit_payments/', pending_deposit_payments, name='pending_deposit_payments'),
     path('process_deposit_payment/', process_deposit_payment, name='process_deposit_payment'),

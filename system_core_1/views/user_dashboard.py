@@ -114,4 +114,15 @@ def dashboard(request):
             'avatar': avatar
         }
         return render(request, 'users/mbos/mbos.html', context)
+    elif request.user.groups.filter(name='airtel').exists():
+        user = request.user
+        avatar = UserAvatar.objects.get(
+            user=request.user) if UserAvatar.objects.filter(
+                user=request.user).exists() else None
+        context = {
+            'profile': user.email[0],
+            'user': user,
+            'avatar': avatar
+        }
+        return render(request, 'users/airtel_sites/dashboard.html', context)
     return redirect('sign_in')

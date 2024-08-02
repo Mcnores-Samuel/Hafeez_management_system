@@ -70,6 +70,10 @@ def add_to_stock(request):
                 except Exception as e:
                     already_exists.append(item)
             return JsonResponse({'status': 200, 'data': already_exists})
+    elif request.user.groups.filter(name='airtel').exists():
+        if request.method == 'POST':
+            pass
+        return render(request, 'users/airtel_sites/add_to_stock.html')
     if request.user.is_staff and request.user.is_superuser:
         return render(request, 'users/admin_sites/add_to_stock.html', {'phone_names': sorted_phone_list})
     return render(request, 'users/staff_sites/add_to_stock.html', {'phone_names': sorted_phone_list})

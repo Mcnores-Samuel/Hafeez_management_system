@@ -7,7 +7,8 @@ from ..models.user_profile import UserProfile
 from django.contrib import messages as message
 from django.http import JsonResponse
 from webpush import send_user_notification
-from django.conf import settings
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.urls import reverse
 
 
 @login_required
@@ -42,22 +43,24 @@ def pending_sales(request):
                     message.success(request, '{} of {} The sale has been approved.'.format(
                         name, device))
                     send_user_notification(user=agent, payload=payload, ttl=1000)
-                    return redirect('pending_sales')
+                    url = reverse('pending_sales_details', args=[agent.username])
+                    return redirect(url)
                 elif (approved[0].sales_type == 'Cash'):
                     name = approved[0].name
                     approved.update(pending=False)
                     message.success(request, '{} of {} The sale has been approved.'.format(
                         name, device))
                     send_user_notification(user=agent, payload=payload, ttl=1000)
-                    return redirect('pending_sales')
+                    url = reverse('pending_sales_details', args=[agent.username])
+                    return redirect(url)
                 else:
                     message.warning(request, 'Please update the Contract Number to approve the sale.')
                 return redirect('pending_sales')
     if request.user.is_staff and  request.user.is_superuser:
         analysis = MainStorageAnalysis()
-        pending_sales, total = analysis.pending_sales(request=request)
+        all_agents, total = analysis.pending_sales(request=request)
         return render(request, 'users/admin_sites/pending_sales.html',
-                      {'pending_sales': pending_sales, 'total': total})
+                      {'all_agents': all_agents, 'total': total})
     
 
 def total_pending_sales(request):
@@ -118,4 +121,38 @@ def revert_to_stock(request):
                     main_storage.save()
                     message.success(request, 'device reverted to stock successfully')
                 return redirect('pending_sales')
+    return redirect('dashboard')
+
+
+@login_required
+def pending_sales_details(request, username):
+    """Display the details of pending sales for a specific agent.
+
+    Args:
+        request (HttpRequest): The request object.
+        username (str): The username of the agent.
+
+    Returns:
+        HttpResponse: The response object.
+    """
+    if request.user.is_staff and request.user.is_superuser:
+        total = 0
+        agent = UserProfile.objects.get(username=str(username))
+        sales = MainStorage.objects.filter(
+            agent=agent, pending=True, sold=True, in_stock=False,
+            missing=False, issue=False, faulty=False,
+            recieved=True).order_by('-stock_out_date')
+        total = sales.count()
+        paginator = Paginator(sales, 12)
+
+        page = request.GET.get('page')
+        try:
+            sales = paginator.page(page)
+        except PageNotAnInteger:
+            sales = paginator.page(1)
+        except EmptyPage:
+            sales = paginator.page(paginator.num_pages)
+
+        return render(request, 'users/admin_sites/pending_sales_details.html',
+                      {'total': total, 'sales': sales})
     return redirect('dashboard')

@@ -17,18 +17,8 @@
         <link rel="stylesheet" href="{% static 'styles/base_header.css' %}">
         <link rel="stylesheet" href="{% static 'styles/dashboard.css' %}">
         {% block head %}
-        <link rel="stylesheet" href="{% static 'styles/loading-message.css' %}">
-        <script src="{% static 'scripts/analysis_lib/admin_stock_analysis.js' %}" defer></script>
-        <script src="{% static 'scripts/analysis_lib/daily_sales.js' %}" defer></script>
-        <script src="{% static 'scripts/analysis_lib/weekly_sales.js' %}" defer></script>
-        <script src="{% static 'scripts/analysis_lib/monthly_sales.js' %}" defer></script>
-        <script src="{% static 'scripts/analysis_lib/yearly_analysis.js' %}" defer></script>
-        <script src="{% static 'scripts/analysis_lib/agent_overall_stock.js' %}" defer></script>
-        <script src="{% static 'scripts/analysis_lib/overall_stock.js' %}" defer></script>
         {% endblock %}
-        <script src="{% static 'scripts/pending_sales.js' %}" defer></script>
         <script src="{% static 'scripts/web_push.js' %}" defer></script>
-        <script src="{% static 'scripts/send_daily_update.js' %}" defer></script>
         <script src="{% static 'scripts/sidebar.js' %}" defer></script>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <style>
@@ -76,120 +66,7 @@
                                 <span class="material-icons">
                                     analytics
                                 </span>
-                                <span class="text"> Analytics</span>
-                                </a>
-                            </li>
-                            {% if user.is_authenticated and user.is_superuser %}
-                            <li class="nav-item">
-                                <a class="nav-link d-flex align-items-center" href="{{ admin_url }}"
-                                data-bs-toggle="tooltip" 
-                                title="Management">
-                                <span class="material-icons">
-                                    home
-                                    </span>
-                                    <span class="text"> Manage</span>
-                                </a>
-                            </li>
-                            {% endif %}
-                            <li class="nav-item">
-                                <a class="nav-link d-flex align-items-center" href="{% url 'pending_deposit_payments' %}"
-                                data-bs-toggle="tooltip"
-                                title="Pending Deposit Payments">
-                                <span class="material-icons">
-                                    payment
-                                </span>
-                                <span class="text"> PAYGs</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link d-flex align-items-center" href="{% url 'main_stock_details' %}"
-                                data-bs-toggle="tooltip"
-                                title="Stock">
-                                <span class="material-icons">
-                                    inventory
-                                </span>
-                                <span class="text"> Stock</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link d-flex align-items-center" href="{% url 'main_sales_details' %}"
-                                data-bs-toggle="tooltip"
-                                title="Sales">
-                                <span class="material-icons">
-                                outbound
-                                </span>
-                                <span class="text"> Sales</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link d-flex align-items-center" href="{% url 'data_search' %}"
-                                data-bs-toggle="tooltip"
-                                title="Sales">
-                                <span class="material-icons">
-                                    point_of_sale
-                                </span>
-                                <span class="text"> Point Of Sale</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link d-flex align-items-center" href="{% url 'dispatch_stock' %}"
-                                data-bs-toggle="tooltip"
-                                title="Deploy Stock">
-                                <span class="material-icons">
-                                    send_time_extension
-                                </span>
-                                <span class="text"> Deploy Stock</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link d-flex align-items-center" href="{% url 'uploadBulkSales' %}"
-                                data-bs-toggle="tooltip"
-                                title="Upload Sales">
-                                <span class="material-icons">
-                                    upload
-                                </span>
-                                <span class="text"> Upload Sales</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link d-flex align-items-center" href="{% url 'add_to_stock' %}"
-                                data-bs-toggle="tooltip"
-                                title="Add To Stock">
-                                <span class="material-icons">
-                                    add_circle
-                                </span>
-                                <span class="text"> Add To Stock</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link d-flex align-items-center" href="{% url 'revenues' %}"
-                                data-bs-toggle="tooltip"
-                                title="Revenue">
-                                <span class="material-icons">
-                                    paid
-                                </span>
-                                <span class="text"> Revenue</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link d-flex align-items-center" href="{% url 'defects' %}"
-                                data-bs-toggle="tooltip" 
-                                title="Defective Devices">
-                                <span class="material-icons">
-                                    report_problem
-                                </span>
-                                <span class="text"> Defects</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link d-flex align-items-center" href="{% url 'pending_sales' %}"
-                                data-bs-toggle="tooltip" 
-                                title="Pending Actions">
-                                <span class="material-icons">
-                                    pending_actions
-                                </span>
-                                <span class="badge bg-danger pending-sales-notice"></span>
-                                <span class="text"> Pending Sales</span>
+                                <span class="text"> Dashboard</span>
                                 </a>
                             </li>
                             <li class="nav-item">
@@ -237,7 +114,7 @@
                                     {{ message }}
                                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                 </div>
-                            {% elif message.ta352631920189863s == 'error' %}
+                            {% elif message.tags == 'error' %}
                                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
                                     {{ message }}
                                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -309,7 +186,12 @@
                                         </div>
                                         <div class="">
                                             <p>Profile</p>
-                                        </div>352631920189863wn-item" href="{% url 'sign_out' %}">
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{% url 'sign_out' %}">
                                     <div class="d-flex">
                                         <div class="icon">
                                             <span class="material-icons">
@@ -324,7 +206,7 @@
                             </li>
                         </ul>
                     </div>
-                </div>352631920189863
+                </div>
             </div>
             <br>
             <section class="charts-and-data">
@@ -339,7 +221,7 @@
                                         </span>
                                     </div>
                                     <div class="">
-                                        <p class="fw-bold">Overall Stock</p>
+                                        <p class="fw-bold">Stock Available</p>
                                         <p class="fw-bold" id="overall_stock_analysis">0</p>
                                     </div>
                                 </div>
@@ -354,7 +236,7 @@
                                         credit_score
                                     </span>
                                     <div class="">
-                                        <p class="fw-bold">Overall Sales</p>
+                                        <p class="fw-bold">Stock Distributed</p>
                                         <p id="overall_sales_analysis" class="fw-bold">0</p>
                                     </div>
                                 </div>
@@ -371,7 +253,7 @@
                                         </span>
                                     </div>
                                     <div class="">
-                                        <p class="fw-bold">Main Shop Monthly Sales</p>
+                                        <p class="fw-bold">Sales Deployed</p>
                                         <p id="main_shop_sales_analysis" class="fw-bold">0</p>
                                     </div>
                                 </div>
@@ -382,7 +264,7 @@
                         <div class="card card-bg text-light">
                             <div class="card-body">
                                 <div class="">
-                                    <p class="fw-bold">Main shop target</p>
+                                    <p class="fw-bold">Sales Target</p>
                                     <div class="">
                                         <div class="text-end fw-bold"></div>
                                         <div class="progress">
@@ -398,157 +280,6 @@
                 </div>
             </section>
             <br>
-            <section class="charts_by_chartjs">
-                <div class="row gy-3">
-                    <div class="col-md-6 col-12">
-                        <div class="card bg-dark">
-                            <div class="card-header text-center">
-                                <h4 class="text-muted fw-bold">Daily Sales on loan</h4>
-                            </div>
-                            <div class="card-body">
-                                <div class="daily_sales_loader_loan"></div>
-                                <canvas class="daily_sales_chart_loan" width="400" height="400"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-12">
-                        <div class="card bg-dark">
-                            <div class="card-header text-center">
-                                <h4 class="fw-bold text-muted">Daily Sales on Cash</h4>
-                            </div>
-                            <div class="card-body">
-                                <div class="daily_sales_loader_cash"></div>
-                                <canvas class="daily_sales_chart_cash" width="400" height="400"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <br>
-            <section class="charts_by_chartjs">
-                <div class="row gy-3">
-                    <div class="col-md-6 col-12">
-                        <div class="card bg-dark">
-                            <div class="card-header text-center">
-                                <h4 class="fw-bold text-muted">Weekly Sales on loan</h4>
-                            </div>
-                            <div class="card-body">
-                                <div class="weekly_sales_loader_loan"></div>
-                                <canvas class="Weekly_sales_chart_loan" width="400" height="400"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-12">
-                        <div class="card bg-dark">
-                            <div class="card-header text-center">
-                                <h4 class="fw-bold text-muted">Weekly Sales on Cash</h4>
-                            </div>
-                            <div class="card-body">
-                                <div class="weekly_sales_loader_cash"></div>
-                                <canvas class="Weekly_sales_chart_cash" width="400" height="400"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <br>
-            <section class="charts_by_chartjs">
-                <div class="row gy-3">
-                    <div class="col-md-6 col-12">
-                        <div class="card bg-dark">
-                            <div class="card-header text-center">
-                                <h4 class="fw-bold text-muted">Monthly Sales on loan</h4>
-                            </div>
-                            <div class="card-body">
-                                <div class="agent_sales_loan_chart_loader"></div>
-                                <canvas class="agent_sales_loan_chart" width="400" height="400"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-12">
-                        <div class="card bg-dark">
-                            <div class="card-header text-center">
-                                <h4 class="fw-bold text-muted">Monthly Sales on Cash</h4>
-                            </div>
-                            <div class="card-body">
-                                <div class="agent_sales_cash_chart_loader"></div>
-                                <canvas class="agent_sales_cash_chart" width="400" height="400"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <br>
-            <section class="charts_by_chartjs">
-                <div class="row gy-3">
-                    <div class="col-md-6 col-12">
-                        <div class="card bg-dark">
-                            <div class="card-header text-center">
-                                <h4 class="fw-bold text-muted">Agent Overall Stock</h4>
-                            </div>
-                            <div class="card-body">
-                                <div class="loading-message-stock"></div>
-                                <canvas class="all_agents_stock_chart" width="400" height="400"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-12">
-                        <div class="card bg-dark">
-                            <div class="card-header text-center">
-                                <h4 class="fw-bold text-muted">Main Shop Stock</h4>
-                            </div>
-                            <div class="card-body">
-                                <div class="loading-message-shop"></div>
-                                <canvas class="main_stock_chart" width="400" height="400"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <br>
-            <section class="yearly_analysis">
-                <div class="row gy-3">
-                    <div class="col-md-6 col-12">
-                        <div class="card bg-dark">
-                            <div class="card-header text-center">
-                                <h4 class="fw-bold text-muted">Main Shop Yearly Sales</h4>
-                            </div>
-                            <div class="card-body">
-                                <div class="yearly_sales_chart_loader"></div>
-                                <canvas class="yearly_sales_chart" width="400" height="400"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-12">
-                        <div class="card bg-dark">
-                            <div class="card-header text-center">
-                                <h4 class="fw-bold text-muted">Overall Yearly Sales</h4>
-                            </div>
-                            <div class="card-body">
-                                <div class="yearly_sales_chart_loader_total"></div>
-                                <canvas class="yearly_sales_chart_total" width="400" height="400"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <br>
-            <section class="yearly_analysis">
-                <div class="row">
-                    <div class="col-md-6 col-12 w-100">
-                        <div class="card bg-dark">
-                            <div class="card-header text-center">
-                                <h4 class="fw-bold text-muted">Product analytics</h4>
-                            </div>
-                            <div class="card-body">
-                                <div class="yearly_product_sales_chart_loader"></div>
-                                <canvas class="yearly_product_sales_chart" width="400" height="400"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            
             <div class="modal fade" id="web_push_request" tabindex="-1" aria-labelledby="web_push_request" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                     <div class="modal-content">

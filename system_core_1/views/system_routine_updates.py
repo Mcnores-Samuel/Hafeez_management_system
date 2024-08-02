@@ -212,4 +212,3 @@ def evening_update(request):
                     'icon': environ.get('ICON_LINK')})
         return JsonResponse({'status': 'Evening update sent successfully.'})
     return JsonResponse({'status': 'Invalid request method.'})
-    
