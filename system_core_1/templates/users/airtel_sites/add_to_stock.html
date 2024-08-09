@@ -1,0 +1,116 @@
+{% extends 'users/airtel_sites/dashboard.html' %}
+{% load plus_r %}
+{% load static %}
+{% load django_bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'styles/loading-message.css' %}">
+<script src="{% static 'scripts/add_airtel_stock.js' %}" defer></script>
+{% endblock %}
+{% block content %}
+<style>
+    .card {
+      height: 350px;
+      overflow-y: scroll;
+      font-size: 14px;
+      scrollbar-width: none;
+    }
+
+    .form_container {
+        height: 350px;
+    }
+
+    form {
+        height: 100%;
+    }
+
+    .data_container {
+        width: 100%;
+        display: flex;
+    }
+
+    .data_container .form_container {
+        width: 50%;
+        margin-right: 10px;
+    }
+
+    .data_container #waiting-room {
+        width: 50%;
+    }
+
+    .rep_head {
+        padding: 10px;
+        margin-bottom: 10px;
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+    }
+
+    .card-header {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+    }
+
+    @media screen and (max-width: 768px) {
+        .data_container {
+            flex-direction: column;
+        }
+
+        .data_container .form_container {
+            width: 100%;
+        }
+
+        .data_container #waiting-room {
+            width: 100%;
+        }
+    }
+</style>
+<div class="container">
+    {% bootstrap_messages %}
+    <div class="loading-target"></div>
+    <div class="common-bg rep_head">
+        <h1 class="text-center fw-bold">Add To Stock: Total Scanned: <span  id="total"></span></h1>
+        <p class="text-center fw-bold">Please enter the Imei numbers and fill in the fields that follows with complete and accurate details</p>
+    </div>
+    <hr>
+    <div class="data_container">
+        <div class="form_container">
+            <form action="" method="post" class="shadow-lg p-3 mb-5 rounded bg-dark" id="stock_form">
+                {% csrf_token %}
+                <p>
+                    <label for="id_device_imei" class="text-light">Device imei:</label>
+                    <input type="text" name="device_imei" class="form-control bg-dark text-light" placeholder="Enter IMEI number"
+                    required="" minlength="15" maxlength="15"
+                    autofocus="autofocus" id="id_device_imei">
+                </p>
+                <p>
+                    <label for="id_device_type" class="text-light">Device type:</label>
+                    <select name="device_type" class="form-control bg-dark text-light" id="id_device_type">
+                        <option value="">Select device type</option>
+                        <option value="MIFI">MIFI</option>
+                        <option value="IDU">IDU</option>
+                    </select>
+                </p>
+                <button type="button" class="btn btn-primary" id="submit">submit</button>
+            </form>
+        </div>
+        <hr>
+        <div class="container" id="waiting-room">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card bg-dark">
+                    <div class="card-header common-bg">
+                        <h4 class="card-title text-center fw-bold">Scanned Items</h4>
+                    </div>
+                    <div class="card-body">
+                        <ol class="list-group list-group-numbered">
+                        </ol>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

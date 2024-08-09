@@ -11,7 +11,7 @@ class Airtel_mifi_storageAdmin(admin.ModelAdmin):
                     'returned_on', 'cash_recieved_by', 'paid', 'updated_by')
 
     search_fields = ('device_imei', 'device_type', 'entry_date',
-                     'date_sold', 'agent__username', 'cash_recieved_by')
+                     'date_sold', 'promoter__username', 'cash_recieved_by')
 
     list_filter = ('in_stock', 'device_type', AirtelAgentFilter, 'paid',
                    'entry_date', 'collected_on', 'date_sold', 'actived',

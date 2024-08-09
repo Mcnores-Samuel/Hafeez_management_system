@@ -70,8 +70,38 @@
                                 </a>
                             </li>
                             <li class="nav-item">
+                                <a class="nav-link d-flex align-items-center" href="{% url 'search_airtel_devices' %}"
+                                data-bs-toggle="tooltip"
+                                title="Distribute">
+                                <span class="material-icons">
+                                    search
+                                </span>
+                                <span class="text"> Distribute</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link d-flex align-items-center" href="{% url 'add_airtel_devices_stock' %}"
+                                data-bs-toggle="tooltip"
+                                title="Add To Stock">
+                                <span class="material-icons">
+                                    add_circle
+                                </span>
+                                <span class="text"> Add To Stock</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link d-flex align-items-center" href="{% url 'create_new_promoter' %}"
+                                data-bs-toggle="tooltip"
+                                title="Add New Promoter">
+                                <span class="material-icons">
+                                    account_circle
+                                </span>
+                                <span class="text"> New Promoter</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link d-flex align-items-center" href="{% url 'profile' %}"
-                                data-bs-toggle="tooltip" 
+                                data-bs-toggle="tooltip"
                                 title="Profile">
                                     <span class="material-icons">
                                         account_circle
@@ -134,10 +164,10 @@
                     </div>
                 {% endif %}
             <div class="top-display d-flex card-bg">
-                <form action="{% url 'data_search' %}" method="post" class="d-flex position-relative search-form text-light">
+                <form action="{% url 'search_airtel_devices' %}" method="post" class="d-flex position-relative search-form text-light">
                     {% csrf_token %}
                     <input type="search" id="search_term" name="search_query" class="form-control me-2"
-                    placeholder="Search IMEI number or Contract number" aria-label="Search" aria-describedby="search-addon" />
+                    placeholder="Search IMEI number" aria-label="Search" aria-describedby="search-addon" />
                     <button type="submit" class="btn search-btn material-icons">search</button>
                 </form>
                 <div class="notify">
@@ -302,14 +332,6 @@
             {% endblock %}
         </section>
         <br>
-        <br>
-        <footer>
-            {% block footer %}
-            <div>
-                <p>&copy; 2023 Hafeez Enterprise. All rights reserved.</p>
-            </div>
-            {% endblock %}
-        </footer>
         <script>
             window.addEventListener('DOMContentLoaded', () => {
                 const sections = document.querySelectorAll('.animated-section');

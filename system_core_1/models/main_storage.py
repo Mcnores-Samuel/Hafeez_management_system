@@ -154,6 +154,7 @@ class Airtel_mifi_storage(models.Model):
     in_stock = models.BooleanField(default=True)
     actived = models.BooleanField(default=False)
     payment_confirmed = models.BooleanField(default=False)
+    data_submitted = models.BooleanField(default=False)
     returned = models.BooleanField(default=False)
     returned_by = models.CharField(max_length=25, null=True, blank=True)
     returned_on = models.DateTimeField(timezone.now, default=timezone.now)
@@ -170,5 +171,5 @@ class Airtel_mifi_storage(models.Model):
 
     def __str__(self):
         """String representation of the phone data model"""
-        return "Device: {}, Imei: {}, heldby: {}".format(
-            self.device, self.device_imei, self.promoter)
+        return "Device: {}| Imei: {}| heldby: {}".format(
+            self.device_type, self.device_imei, self.promoter)

@@ -36,8 +36,8 @@
 	border: none;
 	padding: 5px;
 	background: transparent;
-    font-size: 1rem;
-    font-weight: bolder;
+  font-size: 1rem;
+  font-weight: bolder;
 }
 
 button:hover {
@@ -70,8 +70,8 @@ button:active {
 	width: 100%;
 	margin-bottom: 5px;
 	white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .userprofile .user-data p span {

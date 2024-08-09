@@ -83,8 +83,8 @@ class AirtelAgentFilter(admin.SimpleListFilter):
       title (str): The title of the filter.
       parameter_name (str): The parameter name of the filter.
     """
-    title = _('Airtel Agents')
-    parameter_name = 'agent'
+    title = _('Airtel Promoters')
+    parameter_name = 'promoter'
 
     def lookups(self, request, model_admin):
         """Return a list of tuples.
@@ -92,10 +92,9 @@ class AirtelAgentFilter(admin.SimpleListFilter):
         Returns:
           list: A list of tuples containing the agent IDs and usernames.
         """
-        agents = model_admin.model.objects.filter(agent__groups__name='airtel_agents') \
-                                            .values_list('agent__username', flat=True) \
+        agents = model_admin.model.objects.filter(promoter__groups__name='promoters') \
+                                            .values_list('promoter__username', flat=True) \
                                             .distinct()
-        print(agents)
         return [(agent, agent) for agent in agents]
     
     def queryset(self, request, queryset):
@@ -109,5 +108,5 @@ class AirtelAgentFilter(admin.SimpleListFilter):
           QuerySet: The filtered queryset.
         """
         if self.value():
-            return queryset.filter(agent__username=self.value())
+            return queryset.filter(promoter__username=self.value())
         return queryset
