@@ -16,50 +16,108 @@
             <input type="search" class="form-control me-2 bg-secondary" name="search_term" id="search_term" placeholder="Device IMEI, category, model etc">
             <button class="btn search-btn material-icons" type="submit">search</button>
         </form>
+        
     </div>
 </nav>
 <br>
+<div class="container filters">
+    <form action="{% url 'stock_out' %}" method="post" id="filters_form">
+        {% csrf_token %}
+        <div>
+        {{ form.month }}
+        </div>
+        <div>
+            {{ form.year }}
+        </div>
+    </form>
+</div>
+<br>
+{% if sales %}
+<h1 class="text-center fs-3 fw-bold common-bg header_t" style="padding: 10px;">Stock Out Summary | Total: {{ total }}</h1>
 <div class="container">
     <div class="row">
-        {% for item in sales %}
-        <div class="col-md-4 col-sm-6 mb-4">
-            <div class="card">
-                <div class="card-header  text-center">
-                    <h4 class="card-title">{{ item.name }}</h4>
-                </div>
-                <div class="card-body">
-                    <p class="card-text"><strong class="text-info">Category:</strong> <span>{{ item.category }}</span></p>
-                    <p class="card-text"><strong class="text-info">Device IMEI:</strong> <span>{{ item.device_imei }}</span></p>
-                    <p class="card-text"><strong class="text-info">Spec:</strong> <span>{{ item.spec }}</span></p>
-                    <p class="card-text"><strong class="text-info">Collected On:</strong> <span>{{ item.collected_on }}</span></p>
-                    <p class="card-text"><strong class="text-info">Sold On:</strong> <span>{{ item.stock_out_date }}</span></p>
-                    {% if item.sales_type == "Loan" %}
-                    <p class="card-text"><strong class="text-info">Sales Type:</strong> <span>{{ item.sales_type }}</span></p>
-                    <p class="card-text"><strong class="text-info">Contract No:</strong> <span>{{ item.contract_no }}</span></p>
-                    {% else %}
-                    <p class="card-text"><strong class="text-info">Sales Type:</strong> <span>{{ item.sales_type }}</span></p>
-                    {% endif %}
-                </div>
-            </div>
+        <div class="table-responsive" style="height: 430px; overflow-y: auto;">
+            <table class="table table-dark table-hover table-striped table-bordered
+            table-sm">
+                <thead style="position: sticky; top: -1px; background-color: azure;">
+                    <tr>
+                        <th class="col fw-bold">No</th>
+                        <th class="col fw-bold">Device Name</th>
+                        <th class="col fw-bold">Category</th>
+                        <th class="col fw-bold">Device IMEI</th>
+                        <th class="col fw-bold">Spec</th>
+                        <th class="col fw-bold">Collected On</th>
+                        <th class="col fw-bold">Sold On</th>
+                        <th class="col fw-bold">Sales Type</th>
+                        <th class="col fw-bold">Contract No</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in sales %}
+                    <tr>
+                        {% if item.sales_type == 'Cash' %}
+                            <td class="text-danger">{{ forloop.counter }}</td>
+                            <td class="text-danger">{{ item.name }}</td>
+                            <td class="text-danger">{{ item.category }}</td>
+                            <td class="text-danger">{{ item.device_imei }}</td>
+                            <td class="text-danger">{{ item.spec }}</td>
+                            <td class="text-danger">{{ item.collected_on }}</td>
+                            <td class="text-danger">{{ item.stock_out_date }}</td>
+                            <td class="text-danger">{{ item.sales_type }}</td>
+                            <td class="text-danger"> sold on Cash </td>
+                        {% else %}
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ item.name }}</td>
+                            <td>{{ item.category }}</td>
+                            <td>{{ item.device_imei }}</td>
+                            <td>{{ item.spec }}</td>
+                            <td>{{ item.collected_on }}</td>
+                            <td>{{ item.stock_out_date }}</td>
+                            <td>{{ item.sales_type }}</td>
+                            <td>{{ item.contract_no }}</td>
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
-        {% endfor %}
     </div>
 </div>
-<div class="container w-100">
-    <div class="pagination container-fluid w-100 d-flex justify-content-center">
-        <span class="step-links w-100 d-flex justify-content-around">
-            {% if sales.has_previous %}
-                <a href="?page=1" class="btn btn-primary">first</a>
-                <a href="?page={{ sales.previous_page_number }}" class="btn btn-primary">previous</a>
-            {% endif %}
-            <span class="current fs-5">
-                Page {{ sales.number }} of {{ sales.paginator.num_pages }}.
-            </span>
-            {% if sales.has_next %}
-                <a href="?page={{ sales.next_page_number }}" class="btn btn-primary">next</a>
-                <a href="?page={{ sales.paginator.num_pages }}" class="btn btn-primary">last</a>
-            {% endif %}
-        </span>
+{% else %}
+<div class="container">
+    <div class="alert alert-warning text-center" role="alert">
+        No sales found
     </div>
 </div>
+{% endif %}
+<style>
+    #filters_form {
+        display: flex;
+        justify-content: center;
+    }
+
+    #filters_form div {
+        margin: 0 10px;
+        width: 100px;
+    }
+
+    .header_t {
+        margin: 0;
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+    }
+</style>
+<script>
+    const month = $('#id_month');
+    const year = $('#id_year');
+    form = $('#filters_form');
+
+    month.on('change', function() {
+        form.submit();
+    });
+
+    year.on('change', function() {
+        form.submit();
+    });
+</script>
 {% endblock %}

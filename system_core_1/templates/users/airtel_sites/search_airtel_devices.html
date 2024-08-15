@@ -19,10 +19,13 @@
 <br>
 <div class="container">
     <div class="table-responsive">
-        <table class="table table-dark table-hover">
+        <table class="table table-dark table-hover table-striped table-bordered
+        table-sm">
             <thead>
                 <tr>
-                    <th scope="col">IMEI</th>
+                    <th scope="col">No</th>
+                    <th scope="col">Promoter</th>
+                    <th scope="col">IMEI Number</th>
                     <th scope="col">Device Type</th>
                     <th scope="col">In Stock</th>
                     <th scope="col">Action</th>
@@ -31,30 +34,109 @@
             <tbody>
                 {% for device in devices %}
                 <tr>
-                    <td>{{ device.device_imei }}</td>
-                    <td>{{ device.device_type }}</td>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td class="col">{{ device.promoter }}</td>
+                    <td class="col">{{ device.device_imei }}</td>
+                    <td class="col">{{ device.device_type }}</td>
                     {% if device.in_stock %}
-                    <td>
+                    <td class="col">
                         <span class="material-icons">
                             verified
                         </span>
                     </td>
                     {% else %}
-                    <td>
+                    <td class="col">
                         <span class="material-icons">
                             close
                         </span>
                     </td>
                     {% endif %}
-                    <td>
-                        <span class="material-icons btn">
+                    <td class="col">
+                        <button class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#device{{ device.id }}">
+                        <span class="material-icons">
                             send
                         </span>
+                        </button>
                     </td>
                 </tr>
+
+                <div class="modal fade" id="device{{ device.id }}" tabindex="-1" aria-labelledby="viewDeviceModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h3 class="modal-title" id="viewDeviceModalLabel fw-bold">Device Deployment</h3>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body common-bg">
+                                <form action="" method="post">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        <label for="id_device_imei">Device IMEI</label>
+                                        <input type="text" name="device_imei" class="form-control" id="id_device_imei"
+                                        value="{{ device.device_imei }}" readonly>
+                                    </div>
+                                    <br>
+                                    <div class="form-group">
+                                        <label for="id_device_type">Device Type</label>
+                                        <input type="text" name="device_type" class="form-control" id="id_device_type"
+                                        value="{{ device.device_type }}" readonly>
+                                    </div>
+                                    <br>
+                                    <div class="form-group">
+                                        <label for="id_promoter">Promoter</label>
+                                        <input type="text" name="promoter" class="form-control" id="id_promoter" required
+                                        list="promoter">
+
+                                        <datalist id="promoter">
+                                            {% for promoter in promoters %}
+                                            <option value="{{ promoter.first_name }} {{ promoter.last_name }}">{{ promoter.first_name }} {{ promoter.last_name }}</option>
+                                            {% endfor %}
+                                        </datalist>
+                                    </div>
+                                    <br>
+                                    <div class="form-group">
+                                        <label for="id_device_phone_number">
+                                            Device Phone Number
+                                        </label>
+                                        <input type="text" name="device_phone_number" class="form-control"
+                                        id="id_device_phone_number" required maxlength="9" minlength="9"
+                                        placeholder="Enter device phone number i.e 991234567">
+                                    </div>
+                                    <br>
+                                    <button type="submit" class="btn bg-dark text-light w-100">submit</button>
+                                </form>
+                            </div>
+                    </div>
+                </div>
                 {% endfor %}
             </tbody>
         </table>
     </div>
 </div>
+<div class="container w-100 common-color">
+    <div class="pagination container-fluid w-100 d-flex justify-content-center">
+        <span class="step-links w-100 d-flex justify-content-around">
+            {% if devices.has_previous %}
+                <a href="?page=1" class="btn common-bg">first</a>
+                <a href="?page={{ devices.previous_page_number }}" class="btn common-bg">previous</a>
+            {% endif %}
+            <span class="current fs-5">
+                Page {{ devices.number }} of {{ devices.paginator.num_pages }}.
+            </span>
+            {% if devices.has_next %}
+                <a href="?page={{ devices.next_page_number }}" class="btn common-bg">next</a>
+                <a href="?page={{ devices.paginator.num_pages }}" class="btn common-bg">last</a>
+            {% endif %}
+        </span>
+    </div>
+  </div>
+  <style>
+
+    table {
+        text-align: center;
+        border-radius: 10px;
+    }
+    
+
+  </style>
 {% endblock %}

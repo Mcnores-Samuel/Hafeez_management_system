@@ -46,15 +46,6 @@ class AgentsDataQuery:
                     stock_out_date__year=current_year,
                     pending=False, sold=True, issue=False,
                     faulty=False).all().order_by('-stock_out_date')
-                paginator = Paginator(stock_out, 12)
-                page_number = request.GET.get('page')
-
-                try:
-                    stock_out = paginator.page(page_number)
-                except PageNotAnInteger:
-                    stock_out = paginator.page(1)
-                except EmptyPage:
-                    stock_out = paginator.page(paginator.num_pages)
                 return stock_out
         return None
             
@@ -86,7 +77,17 @@ class AgentsDataQuery:
         return None
     
     def search_stock_out(self, user, search_term, request):
-        """Returns a list of devices matching the search term."""
+        """Returns a list of devices matching the search term.
+        This method is used to search for devices that have been sold.
+
+        Args:
+            user (User): The user object.
+            search_term (str): The search term.
+            request (HttpRequest): The request object.
+
+        Returns:
+            QuerySet: A queryset containing the search results.
+        """
         if user.groups.filter(name='agents').exists():
             agent_profile = AgentProfile.objects.get(user=user)
             if agent_profile:

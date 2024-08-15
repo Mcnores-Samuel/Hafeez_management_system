@@ -35,13 +35,13 @@ class FilterAgentAndData(forms.Form):
 class FilterAgentAndDataSales(forms.Form):
 
     """Filter for the agent and data."""
+    current_month = timezone.now().date().month
     user = forms.ModelChoiceField(
         queryset=AgentProfile.objects.all().order_by('id'),
         widget=forms.Select(
             attrs={
                 'class': 'form-control W-25',
-                'placeholder': 'Choose agent',
-                'required': 'required',
+                'placeholder': 'Choose agent'
             }
         )
     )
@@ -56,7 +56,41 @@ class FilterAgentAndDataSales(forms.Form):
                 'placeholder': 'Choose month',
                 'required': 'required',
             }
+        ),
+        initial=str(current_month)
+    )
+    
+    year = forms.ChoiceField(
+        choices=[(timezone.now().date().year, timezone.now().date().year),
+                 (timezone.now().date().year - 1, timezone.now().date().year - 1),
+                 (timezone.now().date().year - 2, timezone.now().date().year - 2),
+                 (timezone.now().date().year - 3, timezone.now().date().year - 3),
+                 (timezone.now().date().year - 4, timezone.now().date().year - 4)],
+        widget=forms.Select(
+            attrs={
+                'class': 'form-control W-25',
+                'placeholder': 'Choose year',
+                'required': 'required',
+            }
         )
+    )
+
+
+class FilterAgentAndDataStockOut(forms.Form):
+    """Filter for the agent and data."""
+    current_month = timezone.now().date().month
+    month = forms.ChoiceField(
+        choices=[('1', 'January'), ('2', 'February'), ('3', 'March'), ('4', 'April'),
+                 ('5', 'May'), ('6', 'June'), ('7', 'July'), ('8', 'August'), ('9', 'September'),
+                 ('10', 'October'), ('11', 'November'), ('12', 'December')],
+        widget=forms.Select(
+            attrs={
+                'class': 'form-control W-25',
+                'placeholder': 'Choose month',
+                'required': 'required',
+            }
+        ),
+        initial=str(current_month)
     )
     
     year = forms.ChoiceField(

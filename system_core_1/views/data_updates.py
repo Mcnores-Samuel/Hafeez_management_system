@@ -10,6 +10,7 @@ from django.http import JsonResponse
 from ..models.user_profile import UserAvatar
 from ..data_query_engine.agents_queries.agents_data_query import AgentsDataQuery
 from django.db import IntegrityError
+from ..forms.filters import FilterAgentAndDataStockOut
 
 
 @login_required
@@ -200,12 +201,27 @@ def stock_out(request):
     context = None
     user = request.user
     stock_out = AgentsDataQuery().stock(user, False, request)
+    form = FilterAgentAndDataStockOut()
+    total = stock_out.count()
     if request.method == 'POST':
-        stock_out = AgentsDataQuery().search_stock_out(
-            user, request.POST.get('search_term', None),
-            request)
+        form = FilterAgentAndDataStockOut(request.POST)
+        search_term = request.POST.get('search_term', None)
+        if form.is_valid():
+            month = form.cleaned_data.get('month', None)
+            year = form.cleaned_data.get('year', None)
+
+            stock_out = MainStorage.objects.filter(
+                agent=user, stock_out_date__month=month, stock_out_date__year=year,
+                in_stock=False, sold=True, missing=False, assigned=True,
+                pending=False).all().order_by('-stock_out_date')
+            total = stock_out.count()
+        elif search_term:
+            stock_out = AgentsDataQuery().search_stock_out(
+                user, search_term, request)
     context = {
-        'sales': stock_out
+        'sales': stock_out,
+        'form': form,
+        'total': total
     }
     return render(request, 'users/agent_sites/stock_out.html', context)
 
