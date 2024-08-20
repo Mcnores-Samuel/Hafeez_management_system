@@ -30,8 +30,8 @@ def create_new_promoter(request):
     if request.user.is_authenticated and request.user.groups.filter(name='airtel').exists():
         team_leaders = UserProfile.objects.filter(groups__name='team_leaders')
         if request.method == 'POST':
-            first_name = request.POST.get('first_name')
-            last_name = request.POST.get('last_name')
+            first_name = str(request.POST.get('first_name')).lower().capitalize()
+            last_name = str(request.POST.get('last_name')).lower().capitalize()
             email = 'promoter_' + first_name + '.' + last_name + '@system.net'
             phone_number = request.POST.get('phone_number')
             promoter_group = Group.objects.get(name='promoters')

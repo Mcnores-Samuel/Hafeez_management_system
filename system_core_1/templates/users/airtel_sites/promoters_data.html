@@ -1,0 +1,59 @@
+{% extends 'users/airtel_sites/dashboard.html' %}
+{% load plus_r %}
+{% load static %}
+{% load django_bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'styles/data_table.css' %}">
+<link rel="stylesheet" href="{% static 'styles/agent_stock_mobile.css' %}">
+{% endblock %}
+{% block content %}
+{% bootstrap_messages %}
+<div class="container heading">
+    <form action="" method="post" class="d-flex position-relative search-form text-light">
+        {% csrf_token %}
+        <input type="search" id="search_term" name="search_query" class="form-control me-2"
+        placeholder="Search promoter" aria-label="Search" aria-describedby="search-addon" />
+        <button type="submit" class="btn search-btn material-icons">search</button>
+    </form>
+</div>
+<br>
+<div class="container">
+    <div class="row d-flex justify-content-center">
+    {% for data in data_by_promoters %}
+    <div class="col-md-4 col-sm-6 mb-4">
+        <div class="card common-bg rounded-start">
+            <div class="card-header  text-center">
+                <h4 class="card-title fw-bold">{{ data.promoter }}</h4>
+            </div>
+            <a href="">
+            <div class="card-body {{ data.color_code }}">
+                <p class="card-text"><strong class="text-info fw-bold">Total In Stock:</strong> <span>{{ data.total_devices }}</span></p>
+                <p class="card-text"><strong class="text-info fw-bold">On-Time Devices:</strong> <span>{{ data.within_due_date }}</span></p>
+                <p class="card-text"><strong class="text-info fw-bold">Overdue Devices:</strong> <span>{{ data.missed_due_date }}</span></p>
+            </div>
+            </a>
+        </div>
+    </div>
+    {% endfor %}
+    </div>
+</div>
+<div class="container w-100 common-color">
+    <div class="pagination container-fluid w-100 d-flex justify-content-center">
+        <span class="step-links w-100 d-flex justify-content-around">
+            {% if data_by_promoters.has_previous %}
+                <a href="?page=1" class="btn common-bg">first</a>
+                <a href="?page={{ data_by_promoters.previous_page_number }}" class="btn common-bg">previous</a>
+            {% endif %}
+            <span class="current fs-5">
+                Page {{ data_by_promoters.number }} of {{ data_by_promoters.paginator.num_pages }}.
+            </span>
+            {% if data_by_promoters.has_next %}
+                <a href="?page={{ data_by_promoters.next_page_number }}" class="btn common-bg">next</a>
+                <a href="?page={{ data_by_promoters.paginator.num_pages }}" class="btn common-bg">last</a>
+            {% endif %}
+        </span>
+    </div>
+  </div>
+{% endblock %}

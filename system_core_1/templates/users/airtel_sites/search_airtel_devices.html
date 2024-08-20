@@ -68,7 +68,7 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body common-bg">
-                                <form action="" method="post">
+                                <form action="{% url 'assignPromoter' %}" method="post">
                                     {% csrf_token %}
                                     <div class="form-group">
                                         <label for="id_device_imei">Device IMEI</label>
