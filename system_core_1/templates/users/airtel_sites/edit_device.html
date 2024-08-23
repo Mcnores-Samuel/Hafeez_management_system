@@ -1,0 +1,29 @@
+{% extends 'users/airtel_sites/dashboard.html' %}
+{% load plus_r %}
+{% load static %}
+{% load django_bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'styles/data_table.css' %}">
+<link rel="stylesheet" href="{% static 'styles/agent_stock_mobile.css' %}">
+{% endblock %}
+{% block content %}
+{% bootstrap_messages %}
+<div  class="container common-bg rounded-end rounded-start" style="padding: 10px;">
+    <h2 class="text-center fw-bold">Edit Device {{ device.device_imei }}</h2>
+    <form action="{% url 'edit_device' %}" method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <input type="hidden" name="device_id" value="{{ device.id }}">
+            <label for="device_phone_no" class="form-label">Device Phone Number</label>
+            <input type="text" class="form-control" id="device_phone_no" name="device_phone_no" value="{{ device.device_phone_no }}">
+            <br>
+            <label for="device_type" class="form-label">Device Type</label>
+            <input type="text" class="form-control" id="device_type" name="device_type" value="{{ device.device_type }}">
+            <br>
+        </div>
+        <button type="submit" class="btn btn-primary">Update</button>
+    </form>
+</div>
+{% endblock %}

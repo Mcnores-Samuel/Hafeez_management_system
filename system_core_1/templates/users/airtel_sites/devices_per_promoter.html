@@ -62,25 +62,25 @@
                         <button type="submit" class="btn bg-danger w-100">Returned</button>
                     </form>
                     <br>
-                    <form action="" method="post">
+                    <form action="{% url 'edit_device' %}" method="get">
                         {% csrf_token %}
                         <input type="hidden" name="device_id" value="{{ device.id }}">
                         <input type="hidden" name="promoter_id" value="{{ promoter.id }}">
                         <button type="submit" class="btn bg-success w-100">Edit</button>
                     </form>
                     <br>
-                    <form action="" method="post">
+                    <form action="{% url 'sale_device' %}" method="post">
                         {% csrf_token %}
                         <input type="hidden" name="device_id" value="{{ device.id }}">
                         <input type="hidden" name="promoter_id" value="{{ promoter.id }}">
                         <button type="submit" class="btn bg-primary w-100">Sold</button>
                     </form>
                     <br>
-                    <form action="" method="post">
+                    <form action="{% url 'reset_device' %}" method="post">
                         {% csrf_token %}
                         <input type="hidden" name="device_id" value="{{ device.id }}">
                         <input type="hidden" name="promoter_id" value="{{ promoter.id }}">
-                        <button type="submit" class="btn bg-warning w-100">update</button>
+                        <button type="submit" class="btn bg-warning w-100">Promoter's Reset</button>
                     </form>
                 </div>
             </div>
