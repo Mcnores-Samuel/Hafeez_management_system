@@ -37,10 +37,14 @@ def create_new_promoter(request):
             promoter_group = Group.objects.get(name='promoters')
             team_leader = request.POST.get('team_leader')
             location = request.POST.get('residetial_area')
-            promoter = UserProfile.objects.create_user(
-                email=email, first_name=first_name, last_name=last_name,
-                phone_number=phone_number, location=location, team_leader=team_leader,
-                is_staff=False, is_active=True, username=first_name)
+            try:
+              promoter = UserProfile.objects.create_user(
+                  email=email, first_name=first_name, last_name=last_name,
+                  phone_number=phone_number, location=location, team_leader=team_leader,
+                  is_staff=False, is_active=True, username=first_name)
+            except:
+              messages.error(request, 'Promoter already exists')
+              return redirect('create_new_promoter')
             promoter.groups.add(promoter_group)
             promoter.save()
             messages.success(request, 'Promoter created successfully')

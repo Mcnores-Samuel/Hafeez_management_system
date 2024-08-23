@@ -82,15 +82,15 @@ def assignPromoter(request):
             device_imei = request.POST.get('device_imei')
             promoter = request.POST.get('promoter')
             device_phone_number = request.POST.get('device_phone_number')
+            promoter = " ".join(promoter.split())
             prom_first_name, prom_last_name = promoter.split(' ')
             prom = UserProfile.objects.get(
-                first_name=prom_first_name, last_name=prom_last_name)
+                Q(first_name__icontains=prom_first_name) & Q(last_name__icontains=prom_last_name))
             team_leader = UserProfile.objects.get(id=prom.team_leader)
-            print(team_leader)
             device = Airtel_mifi_storage.objects.get(device_imei=device_imei)
             if device:
                 try:
-                    date_after_14_days = timezone.now() + timezone.timedelta(days=12)
+                    date_after_14_days = timezone.now() + timezone.timedelta(days=13)
                     device.promoter = prom
                     device.device_phone_no = device_phone_number
                     device.in_stock = True
@@ -109,7 +109,6 @@ def assignPromoter(request):
                         messages.error(request, 'The device phone number is already assigned to another device')
                     else:
                         messages.error(request, 'something went wrong while assigning the device')
-                    print(e)
                     return redirect('search_airtel_devices')
             else:
                 messages.error(request, 'The device is not in stock or is not available')

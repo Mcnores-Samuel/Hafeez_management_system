@@ -1,0 +1,112 @@
+{% extends 'users/airtel_sites/dashboard.html' %}
+{% load plus_r %}
+{% load static %}
+{% load django_bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'styles/data_table.css' %}">
+<link rel="stylesheet" href="{% static 'styles/agent_stock_mobile.css' %}">
+{% endblock %}
+{% block content %}
+{% bootstrap_messages %}
+<div class="container heading">
+    <form action="" method="post" class="d-flex position-relative search-form text-light">
+        {% csrf_token %}
+        <input type="search" id="search_term" name="search_query" class="form-control me-2"
+        placeholder="Search promoter" aria-label="Search" aria-describedby="search-addon" />
+        <button type="submit" class="btn search-btn material-icons">search</button>
+    </form>
+</div>
+<div class="container">
+    <br>
+    <header class="common-bg rounded-start rounded-end">
+        <h2 class="text-center fw-bold">Current Stock collection for {{ promoter.first_name }} {{ promoter.last_name }}</h2>
+        <p class="text-center">Total devices in stock: {{ total_devices }}</p>
+    </header>
+    <br>
+    <div class="row d-flex justify-content-center">
+    {% if on_time_devices %}
+       {% for device in on_time_devices %}
+       <div class="col-md-4 col-sm-6 mb-4">
+        <div class="card rounded-start">
+            <div class="card-header  text-center">
+                <h4 class="card-title fw-bold">{{ device.device_type }}: {{ device.device_imei}} </h4>
+            </div>
+            <div class="card-body" data-bs-toggle="modal" data-bs-target="#device{{ device.id }}">
+                <p class="card-text"><strong class="text-info fw-bold">Device Name:</strong> <span>{{ device.device_type }}</span></p>
+                <p class="card-text"><strong class="text-info fw-bold">Device IMEI:</strong> <span>{{ device.device_imei }}</span></p>
+                <p class="card-text"><strong class="text-info fw-bold">Device Phone NO:</strong> <span>{{ device.device_phone_no }}</span></p>
+                <p class="card-text"><strong class="text-info fw-bold">Collected On:</strong> <span>{{ device.collected_on }}</span></p>
+                <p class="card-text"><strong class="text-info fw-bold">Last Modified:</strong> <span>{{ device.last_updated }}</span></p>
+                <p class="card-text"><strong class="text-info fw-bold">Due Date:</strong> <span>{{ device.next_due_date }}</span></p>
+                <p class="card-text"><strong class="text-info fw-bold">Status:</strong> <span class="text-success">On Time</span></p>
+                <p class="card-text"><strong class="text-info fw-bold">Days left:</strong> <span>{{ device.days_left }} Days</span></p>
+                <p class="card-text"><strong class="text-info fw-bold">Modified By:</strong> <span>{{ device.updated_by }}</span></p>
+            </div>
+        </div>
+       </div>
+
+       <div class="modal fade" id="device{{ device.id }}" tabindex="-1" aria-labelledby="deviceModalLabel{{ device.id }}" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="deviceModalLabel{{ device.id }}">Actions On {{ device.device_imei }}</h3>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{% url 'return_device' %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="device_id" value="{{ device.id }}">
+                        <input type="hidden" name="promoter_id" value="{{ promoter.id }}">
+                        <button type="submit" class="btn bg-danger w-100">Returned</button>
+                    </form>
+                    <br>
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="device_id" value="{{ device.id }}">
+                        <input type="hidden" name="promoter_id" value="{{ promoter.id }}">
+                        <button type="submit" class="btn bg-success w-100">Edit</button>
+                    </form>
+                    <br>
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="device_id" value="{{ device.id }}">
+                        <input type="hidden" name="promoter_id" value="{{ promoter.id }}">
+                        <button type="submit" class="btn bg-primary w-100">Sold</button>
+                    </form>
+                    <br>
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="device_id" value="{{ device.id }}">
+                        <input type="hidden" name="promoter_id" value="{{ promoter.id }}">
+                        <button type="submit" class="btn bg-warning w-100">update</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+       </div>
+         {% endfor %}
+    {% else %}
+        <p class="text-center">No devices collected on time</p>
+    {% endif %}
+    </div>
+</div>
+<div class="container w-100 common-color">
+    <div class="pagination container-fluid w-100 d-flex justify-content-center">
+        <span class="step-links w-100 d-flex justify-content-around">
+            {% if on_time_devices.has_previous %}
+                <a href="?page=1" class="btn common-bg">first</a>
+                <a href="?page={{ on_time_devices.previous_page_number }}" class="btn common-bg">previous</a>
+            {% endif %}
+            <span class="current fs-5">
+                Page {{ on_time_devices.number }} of {{ on_time_devices.paginator.num_pages }}.
+            </span>
+            {% if on_time_devices.has_next %}
+                <a href="?page={{ on_time_devices.next_page_number }}" class="btn common-bg">next</a>
+                <a href="?page={{ on_time_devices.paginator.num_pages }}" class="btn common-bg">last</a>
+            {% endif %}
+        </span>
+    </div>
+  </div>
+{% endblock %}

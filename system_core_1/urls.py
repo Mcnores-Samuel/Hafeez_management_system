@@ -19,7 +19,8 @@ from .views.staff_operations import contract_payment, device_locking
 from .views.deposit_payments import pending_deposit_payments, process_deposit_payment
 from .views.create_new_promoter import create_new_promoter
 from .views.airtel_device_destributer import search_airtel_devices, assignPromoter
-from .views.airtel_accounts import promoters_data
+from .views.airtel_accounts import promoters_data, devices_per_promoter
+from .views.airtel_dev_ops import return_device
 
 
 urlpatterns = [
@@ -51,7 +52,9 @@ urlpatterns = [
     path('create_new_promoter/', create_new_promoter, name='create_new_promoter'),
     path('search_airtel_devices/', search_airtel_devices, name='search_airtel_devices'),
     path('promoters_data/', promoters_data, name='promoters_data'),
+    path('devices_per_promoter/<int:promoter_id>/', devices_per_promoter, name='devices_per_promoter'),
     path('assignPromoter/', assignPromoter, name='assignPromoter'),
+    path('return_device/', return_device, name='return_device'),
     path('data_search/', search_and_filters.data_search, name='data_search'),
     path('verify_stock_recieved/', data_updates.verify_stock_recieved, name='verify_stock_recieved'),
     path('upload_image/', data_updates.upload_image, name='upload_image'),

@@ -140,7 +140,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = os.environ.get('TIME_ZONE')
+TIME_ZONE = "Africa/Blantyre"
 
 USE_I18N = True
 

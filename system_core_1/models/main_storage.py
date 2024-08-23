@@ -129,7 +129,7 @@ class Airtel_mifi_storage(models.Model):
       inventory.
     """
     DEVICES = (
-        ("MIFI", "MIFI"), ("ROUTER (IDU)", "ROUTER (IDU)"),
+        ("MIFI", "MIFI"), ("IDU", "IDU"),
       )
 
     cash_recieved_by = (

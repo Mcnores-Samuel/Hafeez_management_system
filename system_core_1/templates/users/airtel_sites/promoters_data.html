@@ -22,20 +22,20 @@
 <div class="container">
     <div class="row d-flex justify-content-center">
     {% for data in data_by_promoters %}
-    <div class="col-md-4 col-sm-6 mb-4">
-        <div class="card common-bg rounded-start">
-            <div class="card-header  text-center">
-                <h4 class="card-title fw-bold">{{ data.promoter }}</h4>
+        <div class="col-md-4 col-sm-6 mb-4">
+            <div class="card common-bg rounded-start">
+                <div class="card-header  text-center">
+                    <h4 class="card-title fw-bold">{{ data.promoter.first_name }} {{ data.promoter.last_name }}</h4>
+                </div>
+                <a href="{% url 'devices_per_promoter' promoter_id=data.promoter.id %}">
+                <div class="card-body {{ data.color_code }}" style="padding: 5px;">
+                    <p class="card-text"><strong class="text-info fw-bold">Total In Stock:</strong> <span>{{ data.total_devices }}</span></p>
+                    <p class="card-text"><strong class="text-info fw-bold">On-Time Devices:</strong> <span>{{ data.within_due_date }}</span></p>
+                    <p class="card-text"><strong class="text-info fw-bold">Overdue Devices:</strong> <span>{{ data.missed_due_date }}</span></p>
+                </div>
+                </a>
             </div>
-            <a href="">
-            <div class="card-body {{ data.color_code }}">
-                <p class="card-text"><strong class="text-info fw-bold">Total In Stock:</strong> <span>{{ data.total_devices }}</span></p>
-                <p class="card-text"><strong class="text-info fw-bold">On-Time Devices:</strong> <span>{{ data.within_due_date }}</span></p>
-                <p class="card-text"><strong class="text-info fw-bold">Overdue Devices:</strong> <span>{{ data.missed_due_date }}</span></p>
-            </div>
-            </a>
         </div>
-    </div>
     {% endfor %}
     </div>
 </div>
