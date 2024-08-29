@@ -21,6 +21,7 @@ from .views.create_new_promoter import create_new_promoter
 from .views.airtel_device_destributer import search_airtel_devices, assignPromoter
 from .views.airtel_accounts import promoters_data, devices_per_promoter
 from .views.airtel_dev_ops import return_device, edit_device, sale_device, reset_device
+from .views.airtel_admin_ops import airtel_devices_data
 
 
 urlpatterns = [
@@ -44,6 +45,7 @@ urlpatterns = [
     path('defects/', defects, name='defects'),
     path('pending_deposit_payments/', pending_deposit_payments, name='pending_deposit_payments'),
     path('process_deposit_payment/', process_deposit_payment, name='process_deposit_payment'),
+    path('airtel_devices_data/', airtel_devices_data, name='airtel_devices_data'),
     # General access points
     path('profile/', data_updates.profile, name='profile'),
     path('feedback/', feedback, name='feedback'),
