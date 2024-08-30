@@ -12,6 +12,7 @@ from .adminsites.admin_special_orders import SpecialOrdersAdmin
 from .adminsites.admin_feedback import FeedbackAdmin
 from .adminsites.admin_notification import NotificationsAdmin
 from .adminsites.admin_commission import CommissionAdmin
+from .adminsites.promoterPayments_admin import PromoterPaymentsAdmin
 from .adminsites.admin_contacts import ContactAdmin
 from .adminsites.admin_refarbished_phone import RefarbishedDevicesAdmin
 from .adminsites.admin_account_manager import AccountManagerAdmin
@@ -27,6 +28,7 @@ from .models.main_storage import Airtel_mifi_storage
 from .models.feedback import Feedback
 from .models.notifications import Notifications
 from .models.commission import Commission
+from .models.promoter_payments import PromoterPayments
 from .models.contacts import Contact
 from .models.refarbished_devices import RefarbishedDevices
 from .models.account_manager import AccountManager
@@ -63,3 +65,4 @@ admin.site.register(Chris25Prices, AdminChris25Prices)
 admin.site.register(BuzzMchinjiPrices, AdminBuzzMchinjiPrices)
 admin.site.register(RefarbishedDevices, RefarbishedDevicesAdmin)
 admin.site.register(AccountManager, AccountManagerAdmin)
+admin.site.register(PromoterPayments, PromoterPaymentsAdmin)

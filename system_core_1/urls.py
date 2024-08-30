@@ -19,10 +19,10 @@ from .views.staff_operations import contract_payment, device_locking
 from .views.deposit_payments import pending_deposit_payments, process_deposit_payment
 from .views.create_new_promoter import create_new_promoter
 from .views.airtel_device_destributer import search_airtel_devices, assignPromoter
-from .views.airtel_accounts import promoters_data, devices_per_promoter
+from .views.airtel_accounts import promoters_data, devices_per_promoter, airtel_promoter_accounts
 from .views.airtel_dev_ops import return_device, edit_device, sale_device, reset_device
-from .views.airtel_admin_ops import airtel_devices_data
-
+from .views.airtel_admin_ops import airtel_devices_data, airtel_device_data_entry
+from .views.recordairteldevices_payment import record_airtel_devices_payment
 
 urlpatterns = [
     # home page
@@ -46,6 +46,8 @@ urlpatterns = [
     path('pending_deposit_payments/', pending_deposit_payments, name='pending_deposit_payments'),
     path('process_deposit_payment/', process_deposit_payment, name='process_deposit_payment'),
     path('airtel_devices_data/', airtel_devices_data, name='airtel_devices_data'),
+    path('airtel_device_data_entry/', airtel_device_data_entry, name='airtel_device_data_entry'),
+    path('record_airtel_devices_payment/', record_airtel_devices_payment, name='record_airtel_devices_payment'),
     # General access points
     path('profile/', data_updates.profile, name='profile'),
     path('feedback/', feedback, name='feedback'),
@@ -54,6 +56,7 @@ urlpatterns = [
     path('create_new_promoter/', create_new_promoter, name='create_new_promoter'),
     path('search_airtel_devices/', search_airtel_devices, name='search_airtel_devices'),
     path('promoters_data/', promoters_data, name='promoters_data'),
+    path('airtel_promoter_accounts/', airtel_promoter_accounts, name='airtel_promoter_accounts'),
     path('devices_per_promoter/<int:promoter_id>/', devices_per_promoter, name='devices_per_promoter'),
     path('assignPromoter/', assignPromoter, name='assignPromoter'),
     path('return_device/', return_device, name='return_device'),

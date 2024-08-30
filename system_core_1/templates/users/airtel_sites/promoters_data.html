@@ -7,6 +7,7 @@
 {% block head %}
 <link rel="stylesheet" href="{% static 'styles/data_table.css' %}">
 <link rel="stylesheet" href="{% static 'styles/agent_stock_mobile.css' %}">
+<script src="{% static 'scripts/airtel_data_accounts.js' %}" defer></script>
 {% endblock %}
 {% block content %}
 {% bootstrap_messages %}
@@ -38,21 +39,16 @@
         </div>
     {% endfor %}
     </div>
+        <div class="d-flex justify-content-center">
+            <div class="spinner-border text-warning" role="status" id="loader">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+    </div>
 </div>
 <div class="container w-100 common-color">
     <div class="pagination container-fluid w-100 d-flex justify-content-center">
         <span class="step-links w-100 d-flex justify-content-around">
-            {% if data_by_promoters.has_previous %}
-                <a href="?page=1" class="btn common-bg">first</a>
-                <a href="?page={{ data_by_promoters.previous_page_number }}" class="btn common-bg">previous</a>
-            {% endif %}
-            <span class="current fs-5">
-                Page {{ data_by_promoters.number }} of {{ data_by_promoters.paginator.num_pages }}.
-            </span>
-            {% if data_by_promoters.has_next %}
-                <a href="?page={{ data_by_promoters.next_page_number }}" class="btn common-bg">next</a>
-                <a href="?page={{ data_by_promoters.paginator.num_pages }}" class="btn common-bg">last</a>
-            {% endif %}
         </span>
     </div>
   </div>

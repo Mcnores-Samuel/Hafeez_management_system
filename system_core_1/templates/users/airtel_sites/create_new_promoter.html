@@ -7,15 +7,12 @@
 {% block head %}
 {% endblock %}
 {% block content %}
-<div class="container common-bg intro_c text-center">
+<div class="container">
     {% bootstrap_messages %}
-    <h1>Add New Promoter</h1>
-    <p>
+    <h1 class="text-center common-bg fw-bold">Add New Promoter</h1>
+    <p class="text-center common-bg">
         Please fill in the form below to add a new promoter.
     </p>
-</div>
-<hr>
-<div class="container">
     <form action="{% url 'create_new_promoter' %}" method="post" class="common-bg data_form">
         {% csrf_token %}
         <div class="form-group">

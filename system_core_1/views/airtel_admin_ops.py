@@ -1,47 +1,95 @@
-from ..models.main_storage import Airtel_mifi_storage
+from django.http import JsonResponse
+from django.db.models import Count, Q
 from django.contrib.auth.decorators import login_required
-from ..models.user_profile import UserProfile
 from django.utils import timezone
-from django.shortcuts import render
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from ..models.main_storage import Airtel_mifi_storage
+from ..models.user_profile import UserProfile
+from django.shortcuts import render
+from django.http import HttpResponseForbidden
 
 
 @login_required
 def airtel_devices_data(request):
     if request.user.is_superuser:
-        promoters = UserProfile.objects.filter(groups__name='promoters').all().order_by('first_name')
-        data_by_promoters = []
-        promoters_data = {}
-        for promoter in promoters:
-            promoters_data['promoter'] = promoter
-            promoters_data['total_devices'] = Airtel_mifi_storage.objects.filter(
-                promoter=promoter, in_stock=True).count()
-            promoters_data['todays_collection'] = Airtel_mifi_storage.objects.filter(
-                promoter=promoter, in_stock=True, payment_confirmed=True, paid=True, activated=True,
-                collected_on__date=timezone.now().date()).count()
-            promoters_data['within_due_date'] = Airtel_mifi_storage.objects.filter(
-                promoter=promoter, in_stock=True, payment_confirmed=False, paid=False,
-                activated=False, next_due_date__gt=timezone.now()).count()
-            promoters_data['missed_due_date'] = Airtel_mifi_storage.objects.filter(
-                promoter=promoter, in_stock=True, payment_confirmed=False, paid=False,
-                activated=False, next_due_date__lte=timezone.now()).count()
-            data_by_promoters.append(promoters_data)
-            promoters_data = {}
+        # Prefetch related data to reduce the number of database queries
+        promoters = UserProfile.objects.filter(groups__name='promoters').all().order_by('first_name').select_related()
 
+        # Use aggregation to count related Airtel_mifi_storage objects
+        today = timezone.now().date()
+
+        data_by_promoters = promoters.annotate(
+            total_devices=Count('airtel_mifi_storage', filter=Q(airtel_mifi_storage__in_stock=True)),
+            todays_collection=Count('airtel_mifi_storage', filter=Q(
+                airtel_mifi_storage__in_stock=True,
+                airtel_mifi_storage__payment_confirmed=True,
+                airtel_mifi_storage__paid=True,
+                airtel_mifi_storage__activated=True,
+                airtel_mifi_storage__collected_on__date=today
+            )),
+            within_due_date=Count('airtel_mifi_storage', filter=Q(
+                airtel_mifi_storage__in_stock=True,
+                airtel_mifi_storage__payment_confirmed=False,
+                airtel_mifi_storage__paid=False,
+                airtel_mifi_storage__activated=False,
+                airtel_mifi_storage__next_due_date__gt=timezone.now()
+            )),
+            missed_due_date=Count('airtel_mifi_storage', filter=Q(
+                airtel_mifi_storage__in_stock=True,
+                airtel_mifi_storage__payment_confirmed=False,
+                airtel_mifi_storage__paid=False,
+                airtel_mifi_storage__activated=False,
+                airtel_mifi_storage__next_due_date__lte=timezone.now()
+            ))
+        )
+
+        data_by_promoters = sorted(data_by_promoters, key=lambda x: x.total_devices, reverse=True)
+
+        # Pagination
         paginator = Paginator(data_by_promoters, 15)
         page = request.GET.get('page')
+        
         try:
             data_by_promoters = paginator.page(page)
         except PageNotAnInteger:
             data_by_promoters = paginator.page(1)
         except EmptyPage:
             data_by_promoters = paginator.page(paginator.num_pages)
-        return render(request, 'users/admin_sites/airtel_devices_data.html', {'data_by_promoters': data_by_promoters})
-    
+
+        # Prepare JSON data
+        data = []
+        for promoter_data in data_by_promoters:
+            data.append({
+                'promoter': {
+                    'id': promoter_data.id,
+                    'first_name': promoter_data.first_name,
+                    'last_name': promoter_data.last_name
+                },
+                'total_devices': promoter_data.total_devices,
+                'todays_collection': promoter_data.todays_collection,
+                'within_due_date': promoter_data.within_due_date,
+                'missed_due_date': promoter_data.missed_due_date
+            })
+
+        # Add pagination info
+        response_data = {
+            'data_by_promoters': data,
+            'pagination': {
+                'has_previous': data_by_promoters.has_previous(),
+                'has_next': data_by_promoters.has_next(),
+                'previous_page_number': data_by_promoters.previous_page_number() if data_by_promoters.has_previous() else None,
+                'next_page_number': data_by_promoters.next_page_number() if data_by_promoters.has_next() else None,
+                'current_page': data_by_promoters.number,
+                'total_pages': paginator.num_pages
+            }
+        }
+
+        # Return JSON response
+        return JsonResponse(response_data)
+    return HttpResponseForbidden()
 
 
 @login_required
-def payment_confirmation(request, promoter_id):
+def airtel_device_data_entry(request):
     if request.user.is_superuser:
-        promoter = UserProfile.objects.get(id=promoter_id)
-        return render(request, 'users/admin_sites/payment_confirmation.html')
+        return render(request, 'users/admin_sites/airtel_devices_data.html')

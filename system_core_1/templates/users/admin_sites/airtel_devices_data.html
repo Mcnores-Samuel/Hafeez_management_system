@@ -4,6 +4,9 @@
 {% load django_bootstrap5 %}
 {% bootstrap_css %}
 {% bootstrap_javascript %}
+{% block head %}
+<script src="{% static 'scripts/airtel_data_query.js' %}" defer></script>
+{% endblock %}
 {% block content %}
 <div class="container">
     {% bootstrap_messages %}
@@ -17,7 +20,7 @@
     </div>
     <div class="table-responsive">
         <table class="table table-dark table-hover table-striped table-bordered
-        table-sm">
+        table-sm" id="airtelDevicesTable">
             <thead>
                 <tr>
                     <th scope="col">Promoter</th>
@@ -30,62 +33,18 @@
                 </tr>
             </thead>
             <tbody>
-                {% for data in data_by_promoters %}
-                <tr>
-                    <td class="col">{{ data.promoter.first_name }} {{ data.promoter.last_name }}</td>
-                    <td class="col">{{ data.total_devices }}</td>
-                    <td class="col">{{ data.total_devices }}</td>
-                    <td class="col">{{ data.todays_collection }}</td>
-                    <td class="col">{{ data.within_due_date }}</td>
-                    <td class="col">{{ data.missed_due_date }}</td>
-                    <td class="col">
-                        <button class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#Data{{ data.promoter.id }}">
-                            <span class="material-icons">
-                                send
-                            </span>
-                        </button>
-                    </td>
-                </tr>
-
-                <div class="modal fade bd-example-modal-lg" id="Data{{ data.promoter.id }}" tabindex="-1" aria-labelledby="Data{{ data.promoter.id))View" aria-hidden="true">
-                    <div class="modal-dialog modal-lg">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="Data{{ data.promoter.id }}View">Payment by {{ data.promoter.first_name }} {{ data.promoter.last_name }}</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <form action="" method="post">
-                                    <label for="Number_of_devices_paid">Number of devices paid</label>
-                                    <input type="number" name="Number_of_devices_paid" id="Number_of_devices_paid" class="form-control">
-                                    <br>
-                                    <label for="Amount_paid">Amount paid</label>
-                                    <input type="number" name="Amount_paid" id="Amount_paid" class="form-control">
-                                    <button type="submit btn common-bg">Send</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {% endfor %}
             </tbody>
         </table>
+    </div>
+</div>
+<div class="d-flex justify-content-center">
+    <div class="spinner-border text-warning" role="status" id="loader">
+      <span class="visually-hidden">Loading...</span>
     </div>
 </div>
 <div class="container w-100 common-color">
     <div class="pagination container-fluid w-100 d-flex justify-content-center">
         <span class="step-links w-100 d-flex justify-content-around">
-            {% if data_by_promoters.has_previous %}
-                <a href="?page=1" class="btn common-bg">first</a>
-                <a href="?page={{ data_by_promoters.previous_page_number }}" class="btn common-bg">previous</a>
-            {% endif %}
-            <span class="current fs-5">
-                Page {{ data_by_promoters.number }} of {{ data_by_promoters.paginator.num_pages }}.
-            </span>
-            {% if data_by_promoters.has_next %}
-                <a href="?page={{ data_by_promoters.next_page_number }}" class="btn common-bg">next</a>
-                <a href="?page={{ data_by_promoters.paginator.num_pages }}" class="btn common-bg">last</a>
-            {% endif %}
         </span>
     </div>
   </div>
@@ -94,8 +53,8 @@
     table {
         text-align: center;
         border-radius: 10px;
+        scrollbar-width: none;
     }
-    
 
   </style>
 {% endblock %}
