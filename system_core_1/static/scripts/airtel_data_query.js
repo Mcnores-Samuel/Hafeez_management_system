@@ -1,5 +1,9 @@
 $(document).ready(function() {
     // Function to fetch and display Airtel devices data
+    const input = $('#search_term');
+    const form = $('form');
+    const defualtFilter = $('#defualtfilter');
+
     function fetchAirtelDevicesData(page = 1, searchQuery = '') {
         const loader = $('#loader');
         $.ajax({
@@ -32,14 +36,14 @@ $(document).ready(function() {
         data.forEach(function(item) {
             const row = `
                 <tr>
-                    <td>${item.promoter.first_name} ${item.promoter.last_name}</td>
+                    <td style="background-color: ${item.bg};">${item.promoter.first_name} ${item.promoter.last_name}</td>
                     <td>${item.total_devices}</td>
                     <td>${item.total_devices}</td>
                     <td>${item.mifi}</td>
                     <td>${item.idu}</td>
                     <td>${item.todays_collection}</td>
                     <td>${item.within_due_date}</td>
-                    <td>${item.missed_due_date}</td>
+                    <td style="background-color: ${item.bg};">${item.missed_due_date}</td>
                     <td>
                         <button class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#Data${item.promoter.id}">
                             <span class="material-icons">send</span>
@@ -108,11 +112,21 @@ $(document).ready(function() {
     });
 
     // Handle search form submission
-    $('#search_term').on('onchange', function(event) {
+    input.on('input', function() {
+        console.log(input.val());
+        form.submit();
+    });
+
+    form.on('submit', function(event) {
         event.preventDefault();
-        const searchQuery = $('#search_term').val();
-        console.log(searchQuery);
+        const searchQuery = input.val();
         fetchAirtelDevicesData(1, searchQuery);
+    });
+
+    // Handle reset button click
+    defualtFilter.on('click', function(event) {
+        input.val('');
+        fetchAirtelDevicesData();
     });
 
     // Initial fetch

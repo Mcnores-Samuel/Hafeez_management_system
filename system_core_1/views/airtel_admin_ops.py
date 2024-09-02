@@ -12,8 +12,16 @@ from django.http import HttpResponseForbidden
 @login_required
 def airtel_devices_data(request):
     if request.user.is_superuser:
-        # Prefetch related data to reduce the number of database queries
-        promoters = UserProfile.objects.filter(groups__name='promoters').all().order_by('first_name').select_related()
+        promoters = None
+        searchQuery = request.GET.get('search_query')
+        if searchQuery:
+            searchQuery = ' '.join(searchQuery.split()).strip()
+            first_name, last_name = tuple(searchQuery.split(' ', maxsplit=1)) if ' ' in searchQuery else (searchQuery, '')
+            promoters = UserProfile.objects.filter(
+                groups__name='promoters', first_name__icontains=first_name,
+                last_name__icontains=last_name).all().order_by('first_name').select_related()
+        else:
+            promoters = UserProfile.objects.filter(groups__name='promoters').all().order_by('first_name').select_related()
 
         # Use aggregation to count related Airtel_mifi_storage objects
         today = timezone.now().date()
@@ -43,7 +51,6 @@ def airtel_devices_data(request):
             )),
             mifi=Count('airtel_mifi_storage', filter=Q(airtel_mifi_storage__in_stock=True, airtel_mifi_storage__device_type='MIFI')),
             idu=Count('airtel_mifi_storage', filter=Q(airtel_mifi_storage__in_stock=True, airtel_mifi_storage__device_type='IDU'))
-
         )
 
         data_by_promoters = sorted(data_by_promoters, key=lambda x: x.total_devices, reverse=True)
@@ -73,7 +80,8 @@ def airtel_devices_data(request):
                 'within_due_date': promoter_data.within_due_date,
                 'missed_due_date': promoter_data.missed_due_date,
                 'mifi': promoter_data.mifi,
-                'idu': promoter_data.idu
+                'idu': promoter_data.idu,
+                'bg': 'red' if promoter_data.missed_due_date > 0 else 'default',
             })
 
         # Add pagination info

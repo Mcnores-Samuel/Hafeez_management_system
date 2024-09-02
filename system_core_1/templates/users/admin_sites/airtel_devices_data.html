@@ -8,8 +8,8 @@
 <script src="{% static 'scripts/airtel_data_query.js' %}" defer></script>
 {% endblock %}
 {% block content %}
-<div class="container">
-    <form action="{% url 'search_airtel_devices' %}" method="post" class="d-flex position-relative search-form text-light">
+<div class="container d-flex">
+    <form action="" method="post" class="d-flex position-relative search-form text-light">
         {% csrf_token %}
         <input type="search" id="search_term" name="search_query" class="form-control me-2"
         placeholder="filter the specific promoter here" aria-label="Search" aria-describedby="search-addon"
@@ -21,6 +21,7 @@
             {% endfor %}
         </datalist>
     </form>
+    <button id="defualtfilter" class="btn common-bg">Reset defualt</button>
 </div>
 <br>
 <div class="container">
@@ -33,8 +34,8 @@
                     <th scope="col">Promoter</th>
                     <th scope="col">Total Devices</th>
                     <th scope="col">In Stock</th>
-                    <th scope="col">MIFI</th>
-                    <th scope="col">IDU</th>
+                    <th scope="col" style="background-color: blue;">MIFI</th>
+                    <th scope="col" style="background-color: purple;">IDU</th>
                     <th scope="col">Tody's Collection</th>
                     <th scope="col">Within due date</th>
                     <th scope="col">Overdue</th>
