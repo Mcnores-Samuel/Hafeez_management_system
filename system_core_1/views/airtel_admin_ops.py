@@ -40,7 +40,10 @@ def airtel_devices_data(request):
                 airtel_mifi_storage__paid=False,
                 airtel_mifi_storage__activated=False,
                 airtel_mifi_storage__next_due_date__lte=timezone.now()
-            ))
+            )),
+            mifi=Count('airtel_mifi_storage', filter=Q(airtel_mifi_storage__in_stock=True, airtel_mifi_storage__device_type='MIFI')),
+            idu=Count('airtel_mifi_storage', filter=Q(airtel_mifi_storage__in_stock=True, airtel_mifi_storage__device_type='IDU'))
+
         )
 
         data_by_promoters = sorted(data_by_promoters, key=lambda x: x.total_devices, reverse=True)
@@ -68,7 +71,9 @@ def airtel_devices_data(request):
                 'total_devices': promoter_data.total_devices,
                 'todays_collection': promoter_data.todays_collection,
                 'within_due_date': promoter_data.within_due_date,
-                'missed_due_date': promoter_data.missed_due_date
+                'missed_due_date': promoter_data.missed_due_date,
+                'mifi': promoter_data.mifi,
+                'idu': promoter_data.idu
             })
 
         # Add pagination info
@@ -92,4 +97,7 @@ def airtel_devices_data(request):
 @login_required
 def airtel_device_data_entry(request):
     if request.user.is_superuser:
-        return render(request, 'users/admin_sites/airtel_devices_data.html')
+        promoters = UserProfile.objects.filter(groups__name='promoters').all().order_by('first_name')
+        total_promoters = promoters.count()
+        return render(request, 'users/admin_sites/airtel_devices_data.html',
+                      {'promoters': promoters, 'total_promoters': total_promoters})

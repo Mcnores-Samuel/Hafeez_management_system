@@ -1,13 +1,16 @@
 $(document).ready(function() {
     // Function to fetch and display Airtel devices data
-    function fetchAirtelDevicesData(page = 1) {
+    function fetchAirtelDevicesData(page = 1, searchQuery = '') {
         const loader = $('#loader');
         $.ajax({
             url: '/system_core_1/airtel_devices_data', // Update this URL to match your Django URL routing
             type: 'GET',
-            data: { page: page },
+            data: {
+                page: page,
+                search_query: searchQuery
+             },
             dataType: 'json',
-            beforeSenda() {
+            beforeSend() {
                 loader.show();
             },
             success: function(response) {
@@ -32,6 +35,8 @@ $(document).ready(function() {
                     <td>${item.promoter.first_name} ${item.promoter.last_name}</td>
                     <td>${item.total_devices}</td>
                     <td>${item.total_devices}</td>
+                    <td>${item.mifi}</td>
+                    <td>${item.idu}</td>
                     <td>${item.todays_collection}</td>
                     <td>${item.within_due_date}</td>
                     <td>${item.missed_due_date}</td>
@@ -100,6 +105,14 @@ $(document).ready(function() {
         event.preventDefault();
         const page = $(this).data('page');
         fetchAirtelDevicesData(page);
+    });
+
+    // Handle search form submission
+    $('#search_term').on('onchange', function(event) {
+        event.preventDefault();
+        const searchQuery = $('#search_term').val();
+        console.log(searchQuery);
+        fetchAirtelDevicesData(1, searchQuery);
     });
 
     // Initial fetch

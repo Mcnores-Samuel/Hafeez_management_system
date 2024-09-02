@@ -90,6 +90,73 @@
     {% else %}
         <p class="text-center">No devices collected on time</p>
     {% endif %}
+
+
+    {% if overdue_devices %}
+       {% for device in overdue_devices %}
+       <div class="col-md-4 col-sm-6 mb-4">
+            <div class="card rounded-start">
+                <div class="card-header  text-center">
+                    <h4 class="card-title fw-bold">{{ device.device_type }}: {{ device.device_imei}} </h4>
+                </div>
+                <div class="card-body bg-danger" data-bs-toggle="modal" data-bs-target="#deviceOverdue{{ device.id }}">
+                    <p class="card-text"><strong class="text-info fw-bold">Device Name:</strong> <span>{{ device.device_type }}</span></p>
+                    <p class="card-text"><strong class="text-info fw-bold">Device IMEI:</strong> <span>{{ device.device_imei }}</span></p>
+                    <p class="card-text"><strong class="text-info fw-bold">Device Phone NO:</strong> <span>{{ device.device_phone_no }}</span></p>
+                    <p class="card-text"><strong class="text-info fw-bold">Collected On:</strong> <span>{{ device.collected_on }}</span></p>
+                    <p class="card-text"><strong class="text-info fw-bold">Last Modified:</strong> <span>{{ device.last_updated }}</span></p>
+                    <p class="card-text"><strong class="text-info fw-bold">Due Date:</strong> <span>{{ device.next_due_date }}</span></p>
+                    <p class="card-text"><strong class="text-info fw-bold">Status:</strong> <span>Overdue</span></p>
+                    <p class="card-text"><strong class="text-info fw-bold">Days left:</strong> <span>{{ device.days_left }} Days</span></p>
+                    <p class="card-text"><strong class="text-info fw-bold">Modified By:</strong> <span>{{ device.updated_by }}</span></p>
+                </div>
+            </div>
+       </div>
+
+       <div class="modal fade" id="deviceOverdue{{ device.id }}" tabindex="-1" >
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="deviceModalLabel{{ device.id }}">Actions On {{ device.device_imei }}</h3>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{% url 'return_device' %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="device_id" value="{{ device.id }}">
+                        <input type="hidden" name="promoter_id" value="{{ promoter.id }}">
+                        <button type="submit" class="btn bg-danger w-100">Returned</button>
+                    </form>
+                    <br>
+                    <form action="{% url 'edit_device' %}" method="get">
+                        {% csrf_token %}
+                        <input type="hidden" name="device_id" value="{{ device.id }}">
+                        <input type="hidden" name="promoter_id" value="{{ promoter.id }}">
+                        <button type="submit" class="btn bg-success w-100">Edit</button>
+                    </form>
+                    <br>
+                    <form action="{% url 'sale_device' %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="device_id" value="{{ device.id }}">
+                        <input type="hidden" name="promoter_id" value="{{ promoter.id }}">
+                        <button type="submit" class="btn bg-primary w-100">Sold</button>
+                    </form>
+                    <br>
+                    <form action="{% url 'reset_device' %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="device_id" value="{{ device.id }}">
+                        <input type="hidden" name="promoter_id" value="{{ promoter.id }}">
+                        <button type="submit" class="btn bg-warning w-100">Promoter's Reset</button>
+                    </form>
+                </div>
+            </div>
+       </div>
+       </div>
+       {% endfor %}
+    {% else %}
+        <p class="text-center">No devices overdue</p>
+    {% endif %}
+
     </div>
 </div>
 <div class="container w-100 common-color">

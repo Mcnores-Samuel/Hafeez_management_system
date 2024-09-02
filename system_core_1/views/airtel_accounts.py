@@ -138,12 +138,9 @@ def devices_per_promoter(request, promoter_id):
                 total_overdue += 1
             device.save()
 
-        if request.method == 'POST':
-            overdue_devices = Airtel_mifi_storage.objects.filter(
-                promoter=promoter, in_stock=True, payment_confirmed=False, paid=False,
-                activated=False, next_due_date__lte=timezone.now()).all().order_by('next_due_date')
-            return render(request, 'users/airtel_sites/devices_per_promoter.html',
-                            {'overdue_devices': overdue_devices, 'promoter': promoter})
+        overdue_devices = Airtel_mifi_storage.objects.filter(
+            promoter=promoter, in_stock=True, payment_confirmed=False, paid=False,
+            activated=False, next_due_date__lte=timezone.now()).all().order_by('next_due_date')
         on_time_devices = Airtel_mifi_storage.objects.filter(
             promoter=promoter, in_stock=True, payment_confirmed=False, paid=False,
             activated=False, next_due_date__gt=timezone.now()).all().order_by('next_due_date')
@@ -156,7 +153,8 @@ def devices_per_promoter(request, promoter_id):
         except EmptyPage:
             on_time_devices = paginator.page(paginator.num_pages)
         return render(request, 'users/airtel_sites/devices_per_promoter.html',
-                      {'on_time_devices': on_time_devices, 'overdue_devices': total_overdue, 'promoter': promoter})
+                      {'on_time_devices': on_time_devices, 'total_overdue': total_overdue, 'promoter': promoter,
+                       'overdue_devices': overdue_devices})
     return HttpResponseForbidden()
 
 
