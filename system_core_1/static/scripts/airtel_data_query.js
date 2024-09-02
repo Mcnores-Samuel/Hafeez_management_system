@@ -113,7 +113,6 @@ $(document).ready(function() {
 
     // Handle search form submission
     input.on('input', function() {
-        console.log(input.val());
         form.submit();
     });
 

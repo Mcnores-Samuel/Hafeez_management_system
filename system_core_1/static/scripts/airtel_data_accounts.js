@@ -1,5 +1,9 @@
 $(document).ready(function() {
     // Function to fetch and display promoter data
+    const input = $('#search_term');
+    const form = $('form');
+    const defualtFilter = $('#defualtfilter');
+
     function fetchPromoterData(page = 1, searchQuery = '') {
         const loader = $('#loader');
         $.ajax({
@@ -77,10 +81,14 @@ $(document).ready(function() {
     });
 
     // Handle search form submission
-    $('form').on('submit', function(event) {
+    input.on('input', function() {
+        form.submit();
+    });
+
+    form.on('submit', function(event) {
         event.preventDefault();
-        const searchQuery = $('#search_term').val();
-        fetchPromoterData(1, searchQuery); // Fetch data with search query, reset to page 1
+        const searchQuery = input.val();
+        fetchPromoterData(1, searchQuery);
     });
 
     // Initial fetch

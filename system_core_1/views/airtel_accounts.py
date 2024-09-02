@@ -16,9 +16,20 @@ def promoters_data(request):
 
     # Check if the user is authenticated and belongs to the 'airtel' group
     if request.user.is_authenticated and request.user.groups.filter(name='airtel').exists():
+
+        search_query = request.GET.get('search_query')
+        promoters = None
+        if search_query:
+            search_query = ' '.join(search_query.split()).strip()
+            first_name, last_name = tuple(search_query.split(' ', maxsplit=1)) if ' ' in search_query else (search_query, '')
+            promoters = UserProfile.objects.filter(
+                groups__name='promoters', first_name__icontains=first_name,
+                last_name__icontains=last_name).all().order_by('first_name')
+        else:
+            promoters = UserProfile.objects.filter(groups__name='promoters').all().order_by('first_name')
         
         # Aggregate data using Django's annotate() to minimize database queries
-        promoters = UserProfile.objects.filter(groups__name='promoters').annotate(
+        promoters = promoters.annotate(
             within_due_date=Count(
                 Case(
                     When(
@@ -176,5 +187,7 @@ def airtel_promoter_accounts(request):
     - If the staff member is authenticated, it renders the Airtel promoter accounts data.
     """
     if request.user.is_authenticated and request.user.groups.filter(name='airtel').exists():
-        return render(request, 'users/airtel_sites/promoters_data.html')
+        promoters = UserProfile.objects.filter(groups__name='promoters').all().order_by('first_name')
+        return render(request, 'users/airtel_sites/promoters_data.html',
+                      {'promoters': promoters})
     return HttpResponseForbidden()
