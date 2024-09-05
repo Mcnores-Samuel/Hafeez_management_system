@@ -16,10 +16,13 @@
         <link rel="stylesheet" href="{% static 'styles/common.css' %}">
         <link rel="stylesheet" href="{% static 'styles/base_header.css' %}">
         <link rel="stylesheet" href="{% static 'styles/dashboard.css' %}">
+        <link rel="stylesheet" href="{% static 'styles/data_table.css' %}">
+        <link rel="stylesheet" href="{% static 'styles/agent_stock_mobile.css' %}">
         {% block head %}
         {% endblock %}
         <script src="{% static 'scripts/web_push.js' %}" defer></script>
         <script src="{% static 'scripts/sidebar.js' %}" defer></script>
+        <script src="{% static 'scripts/payment_notifications.js' %}" defer></script>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <style>
             .pending-sales-notice, .note-bage {
@@ -182,25 +185,12 @@
                 </form>
                 <div class="notify">
                     <div class="dropdown">
-                        <button type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                        <button type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">
                             <span class="material-icons common-color">
                                 notifications
                             </span>
-                            <span class="badge bg-danger"></span>
+                            <span class="badge bg-danger note_badge"></span>
                         </button>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <a class="dropdown-item" href="#">
-                                    <div class="d-flex">
-                                            <span class="material-icons">
-                                                notifications
-                                            </span>
-                                        <div class="">
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                        </ul>
                     </div>
                 </div>
                 <div class="profile">
@@ -319,6 +309,19 @@
                     </div>
                 </div>
             </section>
+
+            <div class="offcanvas offcanvas-start common-bg" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title fw-bold" id="offcanvasWithBothOptionsLabel">Payment updates</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                <p class="text-center">
+                    The Following payments have been made by promoters attached to the payment details below.
+                </p>
+                <hr>
+            </div>
+            </div>
             <br>
             <div class="modal fade" id="web_push_request" tabindex="-1" aria-labelledby="web_push_request" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">

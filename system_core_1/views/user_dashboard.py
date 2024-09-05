@@ -8,9 +8,9 @@ from django.contrib.auth.decorators import login_required
 from ..models.agent_profile import AgentProfile
 from ..models.user_profile import UserAvatar, UserProfile
 from ..data_analysis_engine.admin_panel.calc_commitions import CalcCommissions
-from ..models.main_storage import MainStorage, Airtel_mifi_storage
+from ..models.main_storage import MainStorage
+from ..models.promoter_payments import PromoterPayments
 from django.utils import timezone
-from webpush import send_user_notification
 from django.shortcuts import redirect
 import os
 
@@ -119,10 +119,11 @@ def dashboard(request):
         avatar = UserAvatar.objects.get(
             user=request.user) if UserAvatar.objects.filter(
                 user=request.user).exists() else None
+        
         context = {
             'profile': user.email[0],
             'user': user,
-            'avatar': avatar
+            'avatar': avatar,
         }
         return render(request, 'users/airtel_sites/dashboard.html', context)
     return redirect('sign_in')

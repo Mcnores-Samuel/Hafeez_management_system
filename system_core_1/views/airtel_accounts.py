@@ -3,11 +3,13 @@ from ..models.user_profile import UserProfile
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from ..models.main_storage import Airtel_mifi_storage
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Count, Case, When, IntegerField
 from django.http import JsonResponse
+from ..models.promoter_payments import PromoterPayments
+from django.urls import reverse
 
 
 @login_required
@@ -190,4 +192,47 @@ def airtel_promoter_accounts(request):
         promoters = UserProfile.objects.filter(groups__name='promoters').all().order_by('first_name')
         return render(request, 'users/airtel_sites/promoters_data.html',
                       {'promoters': promoters})
+    return HttpResponseForbidden()
+
+
+@login_required
+def paymentsNotification(request, note_id=None):
+    """This view function is responsible for displaying the payments notification.
+
+    Functionality:
+    - Checks if the user is authenticated and is a staff member. Only staff members are allowed
+      to access this view.
+    - Renders the payments notification data.
+
+    Parameters:
+    - request: The HTTP request object containing user information.
+
+    Returns:
+    - If the user is not authenticated or is not a staff member, it returns a 403 Forbidden
+      response.
+    - If the staff member is authenticated, it renders the payments notification data.
+    """
+    if request.user.is_authenticated and request.user.groups.filter(name='airtel').exists():
+        if note_id:
+            payment = PromoterPayments.objects.get(id=note_id)
+            promoter_id = payment.promoter.id
+            payment.seen = True
+            payment.save()
+            url = reverse('devices_per_promoter', kwargs={'promoter_id': promoter_id})
+            return redirect(url)
+        payments = PromoterPayments.objects.filter(seen=False).all().order_by('-payment_date')
+        total_payments = payments.count()
+        data = []
+        for payment in payments:
+            data.append({
+                'id': payment.id,
+                'promoter': payment.promoter.first_name + ' ' + payment.promoter.last_name,
+                'promoter_id': payment.promoter.id,
+                'amount': payment.amount_paid,
+                'total_mifi': payment.total_mifi_paid,
+                'total_idu': payment.total_idu_paid,
+                'payment_date': payment.payment_date,
+                'seen': payment.seen,
+            })
+        return JsonResponse({'data': data, 'total_payments': total_payments})
     return HttpResponseForbidden()

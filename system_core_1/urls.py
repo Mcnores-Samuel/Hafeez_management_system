@@ -19,14 +19,16 @@ from .views.staff_operations import contract_payment, device_locking
 from .views.deposit_payments import pending_deposit_payments, process_deposit_payment
 from .views.create_new_promoter import create_new_promoter
 from .views.airtel_device_destributer import search_airtel_devices, assignPromoter
-from .views.airtel_accounts import promoters_data, devices_per_promoter, airtel_promoter_accounts
+from .views.airtel_accounts import promoters_data, devices_per_promoter, airtel_promoter_accounts, paymentsNotification
 from .views.airtel_dev_ops import return_device, edit_device, sale_device, reset_device
 from .views.airtel_admin_ops import airtel_devices_data, airtel_device_data_entry
 from .views.recordairteldevices_payment import record_airtel_devices_payment
 
+
 urlpatterns = [
     # home page
     path('', home_page.home_page, name='home_page'),
+
     # registration
     path('sign_up/', registration_view.sign_up, name='sign_up'),
     path('sign_in/', registration_view.sign_in, name='sign_in'),
@@ -56,6 +58,8 @@ urlpatterns = [
     path('create_new_promoter/', create_new_promoter, name='create_new_promoter'),
     path('search_airtel_devices/', search_airtel_devices, name='search_airtel_devices'),
     path('promoters_data/', promoters_data, name='promoters_data'),
+    path('paymentsNotification/<int:note_id>', paymentsNotification, name='paymentsNotification'),
+    path('paymentsNotification/', paymentsNotification, name='paymentsNotification'),
     path('airtel_promoter_accounts/', airtel_promoter_accounts, name='airtel_promoter_accounts'),
     path('devices_per_promoter/<int:promoter_id>/', devices_per_promoter, name='devices_per_promoter'),
     path('assignPromoter/', assignPromoter, name='assignPromoter'),
