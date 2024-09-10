@@ -30,9 +30,9 @@ def airtel_devices_data(request):
             total_devices=Count('airtel_mifi_storage', filter=Q(airtel_mifi_storage__in_stock=True)),
             todays_collection=Count('airtel_mifi_storage', filter=Q(
                 airtel_mifi_storage__in_stock=True,
-                airtel_mifi_storage__payment_confirmed=True,
-                airtel_mifi_storage__paid=True,
-                airtel_mifi_storage__activated=True,
+                airtel_mifi_storage__payment_confirmed=False,
+                airtel_mifi_storage__paid=False,
+                airtel_mifi_storage__activated=False,
                 airtel_mifi_storage__collected_on__date=today
             )),
             within_due_date=Count('airtel_mifi_storage', filter=Q(
@@ -109,3 +109,54 @@ def airtel_device_data_entry(request):
         total_promoters = promoters.count()
         return render(request, 'users/admin_sites/airtel_devices_data.html',
                       {'promoters': promoters, 'total_promoters': total_promoters})
+    
+
+@login_required
+def metrics(request):
+    if request.user.is_superuser:
+        promoters = UserProfile.objects.filter(groups__name='promoters').all().annotate(
+            total_devices=Count('airtel_mifi_storage', filter=Q(airtel_mifi_storage__in_stock=True)),
+            todays_collection=Count('airtel_mifi_storage', filter=Q(
+                airtel_mifi_storage__in_stock=True,
+                airtel_mifi_storage__payment_confirmed=False,
+                airtel_mifi_storage__paid=False,
+                airtel_mifi_storage__activated=False,
+                airtel_mifi_storage__collected_on__date=timezone.now().date()
+            )),
+            within_due_date=Count('airtel_mifi_storage', filter=Q(
+                airtel_mifi_storage__in_stock=True,
+                airtel_mifi_storage__payment_confirmed=False,
+                airtel_mifi_storage__paid=False,
+                airtel_mifi_storage__activated=False,
+                airtel_mifi_storage__next_due_date__gt=timezone.now()
+            )),
+            missed_due_date=Count('airtel_mifi_storage', filter=Q(
+                airtel_mifi_storage__in_stock=True,
+                airtel_mifi_storage__payment_confirmed=False,
+                airtel_mifi_storage__paid=False,
+                airtel_mifi_storage__activated=False,
+                airtel_mifi_storage__next_due_date__lte=timezone.now()
+            )),
+            mifi=Count('airtel_mifi_storage', filter=Q(airtel_mifi_storage__in_stock=True, airtel_mifi_storage__device_type='MIFI')),
+            idu=Count('airtel_mifi_storage', filter=Q(airtel_mifi_storage__in_stock=True, airtel_mifi_storage__device_type='IDU'))
+        ).order_by('first_name')
+
+        data = []
+        for promoter in promoters:
+            data.append({
+                'promoter': {
+                    'id': promoter.id,
+                    'first_name': promoter.first_name,
+                    'last_name': promoter.last_name
+                },
+                'total_devices': promoter.total_devices,
+                'todays_collection': promoter.todays_collection,
+                'within_due_date': promoter.within_due_date,
+                'missed_due_date': promoter.missed_due_date,
+                'mifi': promoter.mifi,
+                'idu': promoter.idu,
+                'bg': 'red' if promoter.missed_due_date > 0 else 'default',
+            })
+
+        return JsonResponse({'data': data})
+    return HttpResponseForbidden()

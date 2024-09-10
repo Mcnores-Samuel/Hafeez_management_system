@@ -3,6 +3,8 @@ $(document).ready(function() {
     const input = $('#search_term');
     const form = $('form');
     const defualtFilter = $('#defualtfilter');
+    const loader = $('#loader');
+    loader.show();
 
     function fetchAirtelDevicesData(page = 1, searchQuery = '') {
         const loader = $('#loader');

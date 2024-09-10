@@ -21,8 +21,9 @@ from .views.create_new_promoter import create_new_promoter
 from .views.airtel_device_destributer import search_airtel_devices, assignPromoter
 from .views.airtel_accounts import promoters_data, devices_per_promoter, airtel_promoter_accounts, paymentsNotification
 from .views.airtel_dev_ops import return_device, edit_device, sale_device, reset_device
-from .views.airtel_admin_ops import airtel_devices_data, airtel_device_data_entry
+from .views.airtel_admin_ops import airtel_devices_data, airtel_device_data_entry, metrics
 from .views.recordairteldevices_payment import record_airtel_devices_payment
+from .views.sales_update_api import stockQuery, salesUpdates
 
 
 urlpatterns = [
@@ -34,6 +35,9 @@ urlpatterns = [
     path('sign_in/', registration_view.sign_in, name='sign_in'),
     path('sign_out/', registration_view.sign_out, name='sign_out'),
     path('resend_confirmation_email', registration_view.resend_confirmation_email, name='resend_confirmation_email'),
+    # data query and update api
+    path('stockQuery/', stockQuery, name='stockQuery'),
+    path('salesUpdates/', salesUpdates, name='salesUpdates'),
     # Data on actions on data and admin panel
     path('dashboard/', user_dashboard.dashboard, name='dashboard'),
     path('main_stock_details/', central_display.main_stock_details, name='main_stock_details'),
@@ -50,6 +54,7 @@ urlpatterns = [
     path('airtel_devices_data/', airtel_devices_data, name='airtel_devices_data'),
     path('airtel_device_data_entry/', airtel_device_data_entry, name='airtel_device_data_entry'),
     path('record_airtel_devices_payment/', record_airtel_devices_payment, name='record_airtel_devices_payment'),
+    path('metrics/', metrics, name='metrics'),
     # General access points
     path('profile/', data_updates.profile, name='profile'),
     path('feedback/', feedback, name='feedback'),

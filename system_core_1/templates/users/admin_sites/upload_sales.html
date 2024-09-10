@@ -19,6 +19,8 @@
 
   .form_container {
     width: 50%;
+    padding: 10px;
+    border-radius: 10px;
   }
 
   .row {
@@ -26,6 +28,13 @@
   }
   .input-content {
     width: 25%;
+  }
+
+  .header {
+    padding: 10px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    background-color: #f8f9fa;
   }
 
   @media screen and (max-width: 768px) {
@@ -47,10 +56,18 @@
     
   }
 </style>
+<div class="d-flex justify-content-center">
+  <div class="spinner-border text-warning" role="status" id="loader">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+</div>
 <div class="container">
-  <div class="form_container">
-    <h1 class="text-center fw-bold">Upload Sales: Total <span  id="total"></span></h1>
-    <p class="text-center">Scan or enter imei numbers to deploy, Choose Date and Sales Type</p>
+  <div class="form_container bg-secondary">
+    <div class="header">
+      <h1 class="text-center fw-bold">Upload Sales: Total <span  id="total"></span></h1>
+      <p class="text-center">Scan or enter imei numbers to deploy, Choose Date and Sales Type</p>
+      <a href="{% url 'dispatch_stock' %}" class="btn common-bg">Distribute</a>
+    </div>
     <hr>
     <form action="" method="post">
       <p id="token" style="display: none;">{% csrf_token %}</p>
@@ -58,7 +75,7 @@
         <label for="data" class="fw-bold common-color">Enter Or scan imei Numbers Here</label>
         <input type="text" name="data" id="data" class="form-control" autofocus required minlength="15" maxlength="15">
         <br>
-        <h4 class="fw-bold common-color">Deployment Details</h4>
+        <h4 class="fw-bold common-color text-center">Deployment Details</h4>
         <div class="d-flex justify-content-between w-100">
           <div class="input-content">
             <label for="date" class="fw-bold common-color">Choose Date</label>
@@ -73,7 +90,7 @@
             </select>
           </div>
           <div class="input-content">
-            <label class="fw-bold common-color">Click Here to upload</label>
+            <label class="fw-bold common-color">Upload Sales</label>
             <button type="button" class="btn common-bg" id="deploy">Upload</button>
           </div>
         </div>

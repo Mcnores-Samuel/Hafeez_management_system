@@ -7,6 +7,8 @@ const agent = $('#agent');
 const deploy = $('#deploy');
 const total = $('#total');
 const csrf = $('#token');
+const load = $('#loader');
+load.hide();
 total.text(container.length);
 
 function deployData() {
@@ -63,11 +65,11 @@ function deployData() {
         agent: JSON.stringify(agent.val()),
       },
       beforeSend() {
-        const load = $('.loading');
-        load.addClass('loading-message');
+        load.show();
       },
       success(response) {
         if (response.status === 200) {
+          load.hide();
           container = [];
           waitingRoom.html('');
           date.val('');

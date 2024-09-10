@@ -7,7 +7,10 @@ const sales_type = $('#sales_type');
 const deploy = $('#deploy');
 const total = $('#total');
 const csrf = $('#token');
+const load = $('#loader');
 total.text(container.length);
+load.hide();
+
 
 function deployData() {
   form.on('submit', (e) => {
@@ -63,11 +66,11 @@ function deployData() {
         sales_type: JSON.stringify(sales_type.val()),
       },
       beforeSend() {
-        const load = $('.loading');
-        load.addClass('loading-message');
+        load.show();
       },
       success(response) {
         if (response.status === 200) {
+          load.hide();
           container = [];
           waitingRoom.html('');
           date.val('');
