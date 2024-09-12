@@ -23,7 +23,7 @@ from .views.airtel_accounts import promoters_data, devices_per_promoter, airtel_
 from .views.airtel_dev_ops import return_device, edit_device, sale_device, reset_device
 from .views.airtel_admin_ops import airtel_devices_data, airtel_device_data_entry, metrics
 from .views.recordairteldevices_payment import record_airtel_devices_payment
-from .views.sales_update_api import stockQuery, salesUpdates
+from .views.sales_update_api import stockQuery, salesUpdates, get_idus
 
 
 urlpatterns = [
@@ -38,6 +38,7 @@ urlpatterns = [
     # data query and update api
     path('stockQuery/', stockQuery, name='stockQuery'),
     path('salesUpdates/', salesUpdates, name='salesUpdates'),
+    path('get_idus/', get_idus, name='get_idus'),
     # Data on actions on data and admin panel
     path('dashboard/', user_dashboard.dashboard, name='dashboard'),
     path('main_stock_details/', central_display.main_stock_details, name='main_stock_details'),

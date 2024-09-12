@@ -1,4 +1,5 @@
-export default function metricsRender(container) {
+export default function metricsRender() {
+    const container = $('#container');
     const chartsContainer = `
         <section class="charts_by_chartjs">
             <div class="row gy-3">
@@ -18,8 +19,7 @@ export default function metricsRender(container) {
                             <h4 class="fw-bold text-muted">Available Stock</h4>
                         </div>
                         <div class="card-body">
-                            <div class="daily_sales_loader_cash"></div>
-                            <canvas class="daily_sales_chart_cash" width="300" height="300"></canvas>
+                            <canvas class="available_stock_chart" width="300" height="300"></canvas>
                         </div>
                     </div>
                 </div>
@@ -31,22 +31,22 @@ export default function metricsRender(container) {
                 <div class="col-md-6 col-12">
                     <div class="card bg-dark">
                         <div class="card-header text-center">
-                            <h4 class="fw-bold text-muted">Weekly Sales on loan</h4>
+                            <h4 class="fw-bold text-muted">Daily Payments</h4>
                         </div>
                         <div class="card-body">
                             <div class="weekly_sales_loader_loan"></div>
-                            <canvas class="Weekly_sales_chart_loan" width="400" height="400"></canvas>
+                            <canvas class="Weekly_sales_chart_loan" width="300" height="300"></canvas>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-6 col-12">
                     <div class="card bg-dark">
                         <div class="card-header text-center">
-                            <h4 class="fw-bold text-muted">Weekly Sales on Cash</h4>
+                            <h4 class="fw-bold text-muted">Stock By Individuals</h4>
                         </div>
                         <div class="card-body">
                             <div class="weekly_sales_loader_cash"></div>
-                            <canvas class="Weekly_sales_chart_cash" width="400" height="400"></canvas>
+                            <canvas class="Weekly_sales_chart_cash" width="300" height="300"></canvas>
                         </div>
                     </div>
                 </div>
@@ -58,7 +58,7 @@ export default function metricsRender(container) {
                 <div class="col-md-6 col-12">
                     <div class="card bg-dark">
                         <div class="card-header text-center">
-                            <h4 class="fw-bold text-muted">Monthly Sales on loan</h4>
+                            <h4 class="fw-bold text-muted">Overdue Stock</h4>
                         </div>
                         <div class="card-body">
                             <div class="agent_sales_loan_chart_loader"></div>
@@ -69,7 +69,7 @@ export default function metricsRender(container) {
                 <div class="col-md-6 col-12">
                     <div class="card bg-dark">
                         <div class="card-header text-center">
-                            <h4 class="fw-bold text-muted">Monthly Sales on Cash</h4>
+                            <h4 class="fw-bold text-muted">Monthly Sales</h4>
                         </div>
                         <div class="card-body">
                             <div class="agent_sales_cash_chart_loader"></div>

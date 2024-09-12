@@ -1,9 +1,10 @@
-import { metricsRender } from './metric_render.js';
+import metricsRender from './metric_render.js';
+import { dailyMetricsChart, availableStock } from './airtel_metric_charts.js';
 
 $(document).ready(function() {
     const metricsBtn = $('#metrics');
     const container = $('#container');
-    const pagination = $('#pagination');
+    const pagination = $('.pagination');
     const loader = $('#loader');
 
     function getData() {
@@ -15,7 +16,8 @@ $(document).ready(function() {
                 loader.show();
             },
             success: function(response) {
-                metricsCharts(response.data);
+                dailyMetricsChart(response.data);
+                availableStock(response.data);
                 loader.hide();
             },
             error: function(response) {
@@ -27,7 +29,7 @@ $(document).ready(function() {
     metricsBtn.click(function() {
         container.empty();
         pagination.empty();
-        metricsRender(container);
+        metricsRender();
         getData();
     });
 });

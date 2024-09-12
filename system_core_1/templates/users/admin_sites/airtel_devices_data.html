@@ -6,7 +6,8 @@
 {% bootstrap_javascript %}
 {% block head %}
 <script src="{% static 'scripts/airtel_data_query.js' %}" defer></script>
-<script src="{% static 'scripts/admin_metrics.js' %}" defer></script>
+<script type="module" src="{% static 'scripts/admin_metrics.js' %}" defer></script>
+<script type="module" src="{% static 'scripts/airtel_metric_charts.js' %}" defer></script>
 <script type="module" src="{% static 'scripts/metric_render.js' %}" defer></script>
 {% endblock %}
 {% block content %}
@@ -27,16 +28,40 @@
     <button id="metrics" class="btn common-bg">Metrics</button>
 </div>
 <br>
+<div class="container">
+    <div class="row d-flex justify-content-center">
+        <div class="col-md-4 col-sm-4 mb-4">
+            <div class="card common-bg rounded-start">
+                <div class="card-header  text-center">
+                    <h4 class="card-title fw-bold">Total Promoters:  {{ total_promoters }}</h4>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-4 mb-4">
+            <div class="card common-bg rounded-start">
+                <div class="card-header  text-center">
+                    <h4 class="card-title fw-bold">Total Collected:  {{ total_collected }}</h4>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-4 mb-4">
+            <div class="card common-bg rounded-start">
+                <div class="card-header  text-center">
+                    <h4 class="card-title fw-bold">Total Available:  {{ availableStock }}</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="d-flex justify-content-center">
     <div class="spinner-border text-warning" role="status" id="loader">
       <span class="visually-hidden">Loading...</span>
     </div>
 </div>
-<br>
 <div class="container" id="container">
     {% bootstrap_messages %}
     <div class="table-responsive">
-        <table class="table table-dark table-hover table-striped table-bordered
+        <table class="table table-dark table-hover table-bordered
         table-sm" id="airtelDevicesTable">
             <thead>
                 <tr>
@@ -54,6 +79,12 @@
             <tbody>
             </tbody>
         </table>
+    </div>
+</div>
+<div class="container w-100 common-color">
+    <div class="pagination container-fluid w-100 d-flex justify-content-center">
+        <span class="step-links w-100 d-flex justify-content-around">
+        </span>
     </div>
 </div>
 <style>

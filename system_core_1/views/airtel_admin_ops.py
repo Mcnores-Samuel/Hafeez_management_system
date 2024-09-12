@@ -107,13 +107,34 @@ def airtel_device_data_entry(request):
     if request.user.is_superuser:
         promoters = UserProfile.objects.filter(groups__name='promoters').all().order_by('first_name')
         total_promoters = promoters.count()
+        total_collected = Airtel_mifi_storage.objects.filter(
+            in_stock=True,
+            payment_confirmed=False,
+            paid=False,
+            activated=False,
+            promoter__groups__name='promoters',
+        ).count()
+        availableStock = Airtel_mifi_storage.objects.filter(
+            in_stock=True,
+            promoter=None,
+            payment_confirmed=False,
+            paid=False,
+            activated=False).count()
+
         return render(request, 'users/admin_sites/airtel_devices_data.html',
-                      {'promoters': promoters, 'total_promoters': total_promoters})
+                      {'promoters': promoters, 'total_promoters': total_promoters,
+                       'total_collected': total_collected, 'availableStock': availableStock})
     
 
 @login_required
 def metrics(request):
     if request.user.is_superuser:
+        availableStock = Airtel_mifi_storage.objects.filter(
+            in_stock=True,
+            promoter=None,
+            payment_confirmed=False,
+            paid=False,
+            activated=False)
         promoters = UserProfile.objects.filter(groups__name='promoters').all().annotate(
             total_devices=Count('airtel_mifi_storage', filter=Q(airtel_mifi_storage__in_stock=True)),
             todays_collection=Count('airtel_mifi_storage', filter=Q(
@@ -157,6 +178,14 @@ def metrics(request):
                 'idu': promoter.idu,
                 'bg': 'red' if promoter.missed_due_date > 0 else 'default',
             })
-
+        
+        data.append({
+            'available_stock': {
+                'mifi': 'MIFI',
+                'idu': 'IDU',
+                'total_mifi': availableStock.filter(device_type='MIFI').count(),
+                'total_idu': availableStock.filter(device_type='IDU').count()
+            }
+        })
         return JsonResponse({'data': data})
     return HttpResponseForbidden()
