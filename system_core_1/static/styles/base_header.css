@@ -6,8 +6,7 @@
     padding-bottom: 7px;
     color: #666;
     z-index: 100;
-    background-color: white;
-    background-color: rgba(0,168,168,255);
+    background-color: #022842;
 }
 
 
@@ -21,7 +20,7 @@
 }
 
 .card-bg {
-    background-color: rgba(0,168,168,255);
+    background-color: #022842;
 }
 
 .heading a::after {

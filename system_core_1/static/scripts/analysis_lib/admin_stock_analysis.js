@@ -6,6 +6,7 @@ function adminStockAnalysis() {
   const overallStock = $('#overall_stock_analysis');
   const overallSales = $('#overall_sales_analysis');
   const mainShopSales = $('#main_shop_sales_analysis');
+  const mainShopStock = $('#main_shop_stock_analysis');
   const progress = $('.progress-bar');
   const target = $('.text-end');
 
@@ -15,10 +16,13 @@ function adminStockAnalysis() {
       type: 'GET',
       dataType: 'json',
       beforeSend() {
-        overallStock.html('Loading...');
-        overallSales.html('Loading...');
-        mainShopSales.html('Loading...');
-        target.html('Loading...');
+        overallStock.html(
+          '<div class="spinner-border common-color spinner-border-sm" role="status"><span class="visually-hidden">Loading...</span></div>'
+        );
+        overallSales.html( '<div class="spinner-border common-color spinner-border-sm" role="status"><span class="visually-hidden">Loading...</span></div>');
+        mainShopSales.html('<div class="spinner-border common-color spinner-border-sm" role="status"><span class="visually-hidden">Loading...</span></div>');
+        target.html('<div class="spinner-border common-color spinner-border-sm" role="status"><span class="visually-hidden">Loading...</span></div>');
+        mainShopSales.html('<div class="spinner-border common-color spinner-border-sm" role="status"><span class="visually-hidden">Loading...</span></div>');
         progress.css('width', '100%');
         progress.html('0%');
       },
@@ -26,6 +30,7 @@ function adminStockAnalysis() {
         overallStock.html(`${data.overall_stock} Devices`);
         overallSales.html(`${data.overall_sales} Devices`);
         mainShopSales.html(`${data.sales} Devices`);
+        mainShopStock.html(`${data.main_shop_stock} Devices`);
         target.html(`${data.target} Devices`);
         if (data.progress < 50) {
           progress.css('background-color', 'red');
@@ -43,4 +48,38 @@ function adminStockAnalysis() {
   }
   setTimeout(updateStockAnalysis, 3000);
 }
-adminStockAnalysis();
+
+function formatRevenue(value) {
+  if (value >= 1000000) {
+    return (value / 1000000).toFixed(3) + 'M';
+  } else if (value >= 1000) {
+    return (value / 1000).toFixed(2) + 'K';
+  } else {
+    return value.toFixed(2);
+  }
+}
+
+function costaAndRevenueAnalysis() {
+
+  const estimatedCost = $('#estimated-cost');
+  const estimatedRevenue = $('#estimated-revenue');
+
+  $.ajax({
+    url: '/system_core_1/getCostAndRevenue/',
+    method: 'GET',
+    contentType: 'application/json',
+    beforeSend() {
+      estimatedCost.html('<div class="spinner-border text-success spinner-border-sm" role="status"><span class="visually-hidden">Loading...</span></div>');
+      estimatedRevenue.html('<div class="spinner-border text-primary spinner-border-sm" role="status"><span class="visually-hidden">Loading...</span></div>');
+    },
+    success(data) {
+      cost.html(`${formatRevenue(data.total_cost)}`);
+      revenue.html(`$${formatRevenue(data.total_revenue)}`);
+    },
+  });
+}
+
+$(document).ready(() => {
+  adminStockAnalysis();
+  costaAndRevenueAnalysis();
+});

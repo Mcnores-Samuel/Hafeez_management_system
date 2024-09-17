@@ -130,6 +130,7 @@ urlpatterns = [
     # Revenue analysis and concurent operations
     path('updateCreditPrices/', revenues.updateCreditPrices, name='updateCreditPrices'),
     path('calculateCreditRevenue/', revenues.calculateCreditRevenue, name='calculateCreditRevenue'),
+    path('getCostAndRevenue/', revenues.getCostAndRevenue, name='getCostAndRevenue'),
     # reseting user password
     path('password_reset/', auth_views.PasswordResetView.as_view(template_name='registration/reset_form.html'), name='password_reset'),
     path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(template_name='registration/reset_done.html'), name='password_reset_done'),

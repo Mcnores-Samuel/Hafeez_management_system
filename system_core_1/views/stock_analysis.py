@@ -45,6 +45,7 @@ def get_yearly_product_sales(request):
     return JsonResponse({'error': 'Invalid request.'})
 
 
+@login_required
 def admin_stock_analysis(request):
     """This function returns a JSON object containing the daily stock data."""
     if request.method == 'GET':
@@ -58,12 +59,15 @@ def admin_stock_analysis(request):
             total += value[1]
         CalcCommissions().update_commission(representatives, total)
         progress, target = CalcCommissions().target_progress(representatives)
+        main_shop_stock = MainStorage.objects.filter(
+            agent=representatives, in_stock=True, sold=False, missing=False, assigned=True).count()
         context = {
             'progress': progress,
             'target': target,
             'sales': total,
             'overall_sales': overall_sales,
             'overall_stock': overall_stock,
+            'main_shop_stock': main_shop_stock,
         }
         return JsonResponse(context, safe=False)
     return JsonResponse({'error': 'Invalid request.'})
