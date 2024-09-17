@@ -14,8 +14,9 @@ def stockQuery(request):
         # Get all devices in stock and assigned to agents in one query
         devices = MainStorage.objects.filter(
             in_stock=True,
+            paid=False,
             assigned=True,
-            agent__groups__name='agents'
+            agent__username='Chris-Mzimba'
         ).values_list('device_imei', flat=True)
         return JsonResponse({'data': list(devices)}, status=200)
     return JsonResponse({'message': 'Invalid request method'}, status=400)
@@ -37,10 +38,17 @@ def salesUpdates(request):
             # Check if 'DEPLOYED' is in the info array
             status = 'DEPLOYED' in info
 
-            # Extract the first date from the info array
+            # Extract the second timestamp from the info array
             date_pattern = r'\w{3} \d{1,2}, \d{4}, \d{1,2}:\d{2} (AM|PM)'
-            date_sold_str = next((item for item in info if re.match(date_pattern, item)), None)
+            timestamps = [item for item in info if re.match(date_pattern, item)]
 
+            # Ensure there are at least two timestamps in the list
+            if len(timestamps) >= 2:
+                date_sold_str = timestamps[1]  # Get the second timestamp
+            else:
+                return JsonResponse({'message': 'Not enough valid timestamps found in info'}, status=400)
+
+            # Extract and process prices
             prices = [item for item in info if re.match(r'MWK \d{1,3}(,\d{3})*', item)]
             numeric_prices = [int(price.replace('MWK ', '').replace(',', '')) for price in prices]
             numeric_prices.sort(reverse=True)
@@ -52,11 +60,8 @@ def salesUpdates(request):
                 if second_largest_price > 0:
                     price = second_largest_price
 
-            if date_sold_str:
-                # Convert the date string to a Django date object
-                date_sold_obj = datetime.strptime(date_sold_str, '%b %d, %Y, %I:%M %p')
-            else:
-                return JsonResponse({'message': 'No valid date found in info'}, status=400)
+            # Convert the date string to a Django date object
+            date_sold_obj = datetime.strptime(date_sold_str, '%b %d, %Y, %I:%M %p')
 
             # Get the device and update it
             try:
