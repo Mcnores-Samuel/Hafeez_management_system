@@ -13,10 +13,8 @@ def stockQuery(request):
     """Query the stock of phones available in the inventory."""
     if request.method == 'GET':
         # Get all devices in stock and assigned to agents in one query
-        three_hrs_ago = timezone.now() - timezone.timedelta(hours=3)
-        print("Three hours ago: ", three_hrs_ago)
         devices = MainStorage.objects.filter(
-            last_updated__lte=three_hrs_ago,
+            last_updated__date__lt=timezone.now().date(),
             in_stock=True,
             paid=False,
             assigned=True,
