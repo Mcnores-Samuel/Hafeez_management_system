@@ -128,7 +128,6 @@ urlpatterns = [
     path('get_total_rejected_contracts/', get_total_rejected_contracts, name='get_total_rejected_contracts'),
     path('get_total_pending_contracts/', get_total_pending_contracts, name='get_total_pending_contracts'),
     # Revenue analysis and concurent operations
-    path('updateCreditPrices/', revenues.updateCreditPrices, name='updateCreditPrices'),
     path('calculateCreditRevenue/', revenues.calculateCreditRevenue, name='calculateCreditRevenue'),
     path('getCostAndRevenue/', revenues.getCostAndRevenue, name='getCostAndRevenue'),
     # reseting user password

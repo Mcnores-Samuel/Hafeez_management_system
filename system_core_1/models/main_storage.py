@@ -80,6 +80,7 @@ class MainStorage(models.Model):
     entry_date = models.DateField(default=timezone.now)
     stock_out_date = models.DateField(default=timezone.now)
     collected_on = models.DateField(default=timezone.now)
+    last_updated = models.DateTimeField(default=timezone.now)
     cost = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     payg_number = models.CharField(max_length=15, null=True, blank=True)

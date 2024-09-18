@@ -22,7 +22,7 @@ function adminStockAnalysis() {
         overallSales.html( '<div class="spinner-border common-color spinner-border-sm" role="status"><span class="visually-hidden">Loading...</span></div>');
         mainShopSales.html('<div class="spinner-border common-color spinner-border-sm" role="status"><span class="visually-hidden">Loading...</span></div>');
         target.html('<div class="spinner-border common-color spinner-border-sm" role="status"><span class="visually-hidden">Loading...</span></div>');
-        mainShopSales.html('<div class="spinner-border common-color spinner-border-sm" role="status"><span class="visually-hidden">Loading...</span></div>');
+        mainShopStock.html('<div class="spinner-border common-color spinner-border-sm" role="status"><span class="visually-hidden">Loading...</span></div>');
         progress.css('width', '100%');
         progress.html('0%');
       },
@@ -55,7 +55,7 @@ function formatRevenue(value) {
   } else if (value >= 1000) {
     return (value / 1000).toFixed(2) + 'K';
   } else {
-    return value.toFixed(2);
+    return Number(value).toFixed(2);
   }
 }
 
@@ -73,8 +73,8 @@ function costaAndRevenueAnalysis() {
       estimatedRevenue.html('<div class="spinner-border text-primary spinner-border-sm" role="status"><span class="visually-hidden">Loading...</span></div>');
     },
     success(data) {
-      cost.html(`${formatRevenue(data.total_cost)}`);
-      revenue.html(`$${formatRevenue(data.total_revenue)}`);
+      estimatedCost.html(`MWK ${formatRevenue(data.total_cost)}`);
+      estimatedRevenue.html(`MWK ${formatRevenue(data.total_revenue)}`);
     },
   });
 }
