@@ -6,19 +6,47 @@ from django.views.decorators.csrf import csrf_exempt
 import re
 from datetime import datetime
 import json
+from django.utils import timezone
 
 
 def stockQuery(request):
     """Query the stock of phones available in the inventory."""
     if request.method == 'GET':
         # Get all devices in stock and assigned to agents in one query
+        three_hrs_ago = timezone.now() - timezone.timedelta(hours=3)
         devices = MainStorage.objects.filter(
+            last_updated__gte=three_hrs_ago,
             in_stock=True,
             paid=False,
             assigned=True,
-            agent__username='Chris-Mzimba'
-        ).values_list('device_imei', flat=True)
+            agent__groups__name='agents').values_list('device_imei', flat=True)
         return JsonResponse({'data': list(devices)}, status=200)
+    return JsonResponse({'message': 'Invalid request method'}, status=400)
+
+
+def updateTimeStamp(request):
+    """Update the timestamp of a phone in the inventory."""
+    if request.method == 'POST':
+        try:
+            # Parse the JSON body
+            data = json.loads(request.body)
+            imei = data.get('imei')
+
+            if imei is None:
+                return JsonResponse({'message': 'Missing required fields'}, status=400)
+            
+            # Get the device and update it
+            try:
+                device = MainStorage.objects.get(device_imei=imei)
+                device.stock_out_date = timezone.now()
+                device.save()
+                return JsonResponse({'message': 'Timestamp updated successfully'}, status=200)
+            except MainStorage.DoesNotExist:
+                return JsonResponse({'message': 'Device not found'}, status=404)
+        except json.JSONDecodeError:
+            return JsonResponse({'message': 'Invalid JSON'}, status=400)
+        except Exception as e:
+            return JsonResponse({'message': str(e)}, status=500)
     return JsonResponse({'message': 'Invalid request method'}, status=400)
 
 
