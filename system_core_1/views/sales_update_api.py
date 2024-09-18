@@ -39,7 +39,7 @@ def updateTimeStamp(request):
             # Get the device and update it
             try:
                 device = MainStorage.objects.get(device_imei=imei)
-                device.stock_out_date = timezone.now()
+                device.last_updated = timezone.now()
                 device.save()
                 return JsonResponse({'message': 'Timestamp updated successfully'}, status=200)
             except MainStorage.DoesNotExist:
