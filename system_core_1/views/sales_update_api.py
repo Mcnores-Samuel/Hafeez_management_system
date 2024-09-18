@@ -24,6 +24,7 @@ def stockQuery(request):
     return JsonResponse({'message': 'Invalid request method'}, status=400)
 
 
+@csrf_exempt
 def updateTimeStamp(request):
     """Update the timestamp of a phone in the inventory."""
     if request.method == 'POST':
