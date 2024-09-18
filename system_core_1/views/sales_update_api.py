@@ -16,7 +16,7 @@ def stockQuery(request):
         three_hrs_ago = timezone.now() - timezone.timedelta(hours=3)
         print("Three hours ago: ", three_hrs_ago)
         devices = MainStorage.objects.filter(
-            last_updated__gte=three_hrs_ago,
+            last_updated__lte=three_hrs_ago,
             in_stock=True,
             paid=False,
             assigned=True,
