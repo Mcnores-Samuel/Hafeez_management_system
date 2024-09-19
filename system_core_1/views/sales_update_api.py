@@ -13,10 +13,10 @@ def stockQuery(request):
     """Query the stock of phones available in the inventory."""
     if request.method == 'GET':
         # Get all devices in stock and assigned to agents in one query
+        today = timezone.now().date()
         devices = MainStorage.objects.filter(
-            in_stock=False,
-            pending=True,
-            missing=False,
+            last_updated__date_lt=today,
+            in_stock=True,
             assigned=True,
             agent__groups__name='agents').values_list('device_imei', flat=True)
         return JsonResponse({'data': list(devices)}, status=200)
