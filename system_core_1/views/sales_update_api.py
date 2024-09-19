@@ -15,7 +15,7 @@ def stockQuery(request):
         # Get all devices in stock and assigned to agents in one query
         today = timezone.now().date()
         devices = MainStorage.objects.filter(
-            last_updated__date_lt=today,
+            last_updated__date__lt=today,
             in_stock=True,
             assigned=True,
             agent__groups__name='agents').values_list('device_imei', flat=True)
