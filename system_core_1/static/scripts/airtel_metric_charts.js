@@ -6,14 +6,16 @@ function dailyMetricsChart(data) {
 
     const dailyDataCtx = $('.dailyCollectionsChart').get(0).getContext('2d');
     const modelList = [];
-    const total = [];
+    const iduTotals = [];
+    const mifiTotals = [];
     let grandTotal = 0;
 
     data.forEach(function(item) {
-        if (item.todays_collection > 0) {
+        if (item.todays_idu_collection > 0 || item.todays_mifi_collection > 0) {
             modelList.push(item.promoter.first_name + ' ' + item.promoter.last_name);
-            total.push(item.todays_collection);
-            grandTotal += item.todays_collection;
+            iduTotals.push(item.todays_idu_collection); // IDU collection
+            mifiTotals.push(item.todays_mifi_collection); // MIFI collection
+            grandTotal += item.todays_idu_collection + item.todays_mifi_collection;
         }
     });
 
@@ -21,11 +23,18 @@ function dailyMetricsChart(data) {
         type: 'bar',
         data: {
             labels: modelList,
-            datasets: [{
-                label: 'Daily Collections',
-                data: total,
-                backgroundColor: '#2980B9'
-            }],
+            datasets: [
+                {
+                    label: 'IDU Collections',
+                    data: iduTotals,
+                    backgroundColor: '#2980B9'
+                },
+                {
+                    label: 'MIFI Collections',
+                    data: mifiTotals,
+                    backgroundColor: '#E74C3C'
+                }
+            ],
         },
         options: {
             responsive: true,
@@ -47,24 +56,26 @@ function dailyMetricsChart(data) {
             },
             scales: {
                 x: {
+                    stacked: true, // Enable stacking for x-axis
                     grid: {
-                        display: false, // Hide grid lines
+                        display: false,
                     },
                     ticks: {
-                        color: '#fe9a43', // Color for x-axis labels
+                        color: '#fe9a43',
                         font: {
-                            weight: 'bold', // Font weight
+                            weight: 'bold',
                         },
                     },
                 },
                 y: {
+                    stacked: true, // Enable stacking for y-axis
                     grid: {
-                        display: false, // Hide grid lines
+                        display: false,
                     },
                     ticks: {
-                        color: '#fe9a43', // Color for y-axis labels
+                        color: '#fe9a43',
                         font: {
-                            weight: 'bold', // Font weight
+                            weight: 'bold',
                         },
                     },
                 }

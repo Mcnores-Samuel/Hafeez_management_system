@@ -137,8 +137,17 @@ def metrics(request):
             activated=False)
         promoters = UserProfile.objects.filter(groups__name='promoters').all().annotate(
             total_devices=Count('airtel_mifi_storage', filter=Q(airtel_mifi_storage__in_stock=True)),
-            todays_collection=Count('airtel_mifi_storage', filter=Q(
+            todays_idu_collection=Count('airtel_mifi_storage', filter=Q(
                 airtel_mifi_storage__in_stock=True,
+                airtel_mifi_storage__device_type='IDU',
+                airtel_mifi_storage__payment_confirmed=False,
+                airtel_mifi_storage__paid=False,
+                airtel_mifi_storage__activated=False,
+                airtel_mifi_storage__collected_on__date=timezone.now().date()
+            )),
+            todays_mifi_collection=Count('airtel_mifi_storage', filter=Q(
+                airtel_mifi_storage__in_stock=True,
+                airtel_mifi_storage__device_type='MIFI',
                 airtel_mifi_storage__payment_confirmed=False,
                 airtel_mifi_storage__paid=False,
                 airtel_mifi_storage__activated=False,
@@ -171,7 +180,8 @@ def metrics(request):
                     'last_name': promoter.last_name
                 },
                 'total_devices': promoter.total_devices,
-                'todays_collection': promoter.todays_collection,
+                'todays_idu_collection': promoter.todays_idu_collection,
+                'todays_mifi_collection': promoter.todays_mifi_collection,
                 'within_due_date': promoter.within_due_date,
                 'missed_due_date': promoter.missed_due_date,
                 'mifi': promoter.mifi,
