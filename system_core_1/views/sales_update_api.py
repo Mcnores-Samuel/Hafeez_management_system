@@ -15,9 +15,8 @@ def stockQuery(request):
         # Get all devices in stock and assigned to agents in one query
         devices = MainStorage.objects.filter(
             in_stock=False,
-            sold=True,
             pending=True,
-            paid=False,
+            missing=False,
             assigned=True,
             agent__groups__name='agents').values_list('device_imei', flat=True)
         return JsonResponse({'data': list(devices)}, status=200)
