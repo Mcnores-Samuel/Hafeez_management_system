@@ -143,6 +143,7 @@ def metrics(request):
                 airtel_mifi_storage__payment_confirmed=False,
                 airtel_mifi_storage__paid=False,
                 airtel_mifi_storage__activated=False,
+                airtel_mifi_storage__times_reseted=0,
                 airtel_mifi_storage__collected_on__date=timezone.now().date()
             )),
             todays_mifi_collection=Count('airtel_mifi_storage', filter=Q(
@@ -151,6 +152,7 @@ def metrics(request):
                 airtel_mifi_storage__payment_confirmed=False,
                 airtel_mifi_storage__paid=False,
                 airtel_mifi_storage__activated=False,
+                airtel_mifi_storage__times_reseted=0,
                 airtel_mifi_storage__collected_on__date=timezone.now().date()
             )),
             within_due_date=Count('airtel_mifi_storage', filter=Q(

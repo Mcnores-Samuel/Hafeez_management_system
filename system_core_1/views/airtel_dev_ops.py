@@ -172,6 +172,7 @@ def reset_device(request):
                 device.in_stock = True
                 device.last_updated = timezone.now()
                 device.collected_on = timezone.now()
+                device.times_reseted += 1
                 device.next_due_date = date_after_14_days
                 device.returned = False
                 device.days_left = 14

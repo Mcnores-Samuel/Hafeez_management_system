@@ -24,6 +24,7 @@
             <thead>
                 <tr>
                     <th scope="col">No</th>
+                    <th scope="col">Entry Date</th>
                     <th scope="col">Promoter</th>
                     <th scope="col">IMEI Number</th>
                     <th scope="col">Device Type</th>
@@ -35,6 +36,7 @@
                 {% for device in devices %}
                 <tr>
                     <th scope="row">{{ forloop.counter }}</th>
+                    <td class="col">{{ device.entry_date }}</td>
                     <td class="col">{{ device.promoter }}</td>
                     <td class="col">{{ device.device_imei }}</td>
                     <td class="col">{{ device.device_type }}</td>
