@@ -128,7 +128,7 @@ def airtel_device_data_entry(request):
 
 @login_required
 def metrics(request):
-    if request.user.is_superuser:
+    if request.user.is_superuser or request.user.groups.filter(name='airtel').exists():
         availableStock = Airtel_mifi_storage.objects.filter(
             in_stock=True,
             promoter=None,
@@ -155,22 +155,31 @@ def metrics(request):
                 airtel_mifi_storage__times_reseted=0,
                 airtel_mifi_storage__collected_on__date=timezone.now().date()
             )),
-            within_due_date=Count('airtel_mifi_storage', filter=Q(
-                airtel_mifi_storage__in_stock=True,
-                airtel_mifi_storage__payment_confirmed=False,
-                airtel_mifi_storage__paid=False,
-                airtel_mifi_storage__activated=False,
-                airtel_mifi_storage__next_due_date__gt=timezone.now()
+            todays_mifi_payments=Count('airtel_mifi_storage', filter=Q(
+                airtel_mifi_storage__in_stock=False,
+                airtel_mifi_storage__device_type='MIFI',
+                airtel_mifi_storage__payment_confirmed=True,
+                airtel_mifi_storage__paid=True,
+                airtel_mifi_storage__activated=True,
+                airtel_mifi_storage__date_sold__date=timezone.now().date()
             )),
-            missed_due_date=Count('airtel_mifi_storage', filter=Q(
-                airtel_mifi_storage__in_stock=True,
-                airtel_mifi_storage__payment_confirmed=False,
-                airtel_mifi_storage__paid=False,
-                airtel_mifi_storage__activated=False,
-                airtel_mifi_storage__next_due_date__lte=timezone.now()
+            todays_idu_payments=Count('airtel_mifi_storage', filter=Q(
+                airtel_mifi_storage__in_stock=False,
+                airtel_mifi_storage__device_type='IDU',
+                airtel_mifi_storage__payment_confirmed=True,
+                airtel_mifi_storage__paid=True,
+                airtel_mifi_storage__activated=True,
+                airtel_mifi_storage__date_sold__date=timezone.now().date()
             )),
-            mifi=Count('airtel_mifi_storage', filter=Q(airtel_mifi_storage__in_stock=True, airtel_mifi_storage__device_type='MIFI')),
-            idu=Count('airtel_mifi_storage', filter=Q(airtel_mifi_storage__in_stock=True, airtel_mifi_storage__device_type='IDU'))
+            idu_stock=Count('airtel_mifi_storage', filter=Q(
+                airtel_mifi_storage__in_stock=True,
+                airtel_mifi_storage__device_type='IDU'
+            )),
+            mifi_stock=Count('airtel_mifi_storage', filter=Q(
+                airtel_mifi_storage__in_stock=True,
+                airtel_mifi_storage__device_type='MIFI'
+            )),
+
         ).order_by('first_name')
 
         data = []
@@ -184,11 +193,10 @@ def metrics(request):
                 'total_devices': promoter.total_devices,
                 'todays_idu_collection': promoter.todays_idu_collection,
                 'todays_mifi_collection': promoter.todays_mifi_collection,
-                'within_due_date': promoter.within_due_date,
-                'missed_due_date': promoter.missed_due_date,
-                'mifi': promoter.mifi,
-                'idu': promoter.idu,
-                'bg': 'red' if promoter.missed_due_date > 0 else 'default',
+                'todays_mifi_payments': promoter.todays_mifi_payments,
+                'todays_idu_payments': promoter.todays_idu_payments,
+                'idu_stock': promoter.idu_stock,
+                'mifi_stock': promoter.mifi_stock
             })
         
         data.append({

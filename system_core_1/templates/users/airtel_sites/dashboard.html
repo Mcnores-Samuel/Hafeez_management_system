@@ -19,6 +19,9 @@
         <link rel="stylesheet" href="{% static 'styles/data_table.css' %}">
         <link rel="stylesheet" href="{% static 'styles/agent_stock_mobile.css' %}">
         {% block head %}
+        <script type="module" src="{% static 'scripts/admin_metrics.js' %}" defer></script>
+        <script type="module" src="{% static 'scripts/airtel_metric_charts.js' %}" defer></script>
+        <script type="module" src="{% static 'scripts/metric_render.js' %}" defer></script>
         {% endblock %}
         <script src="{% static 'scripts/web_push.js' %}" defer></script>
         <script src="{% static 'scripts/sidebar.js' %}" defer></script>
@@ -308,6 +311,14 @@
                         </div>
                     </div>
                 </div>
+            </section>
+            <br>
+            <div class="d-flex justify-content-center">
+                <div class="spinner-border text-warning" role="status" id="loader">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+            <section id="container">
             </section>
 
             <div class="offcanvas offcanvas-start common-bg" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">

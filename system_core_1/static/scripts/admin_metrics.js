@@ -1,5 +1,6 @@
 import metricsRender from './metric_render.js';
-import { dailyMetricsChart, availableStock } from './airtel_metric_charts.js';
+import { dailyMetricsChart, availableStock,
+    dailyPaymentsChart, stockByIndividuals } from './airtel_metric_charts.js';
 
 $(document).ready(function() {
     const metricsBtn = $('#metrics');
@@ -18,6 +19,8 @@ $(document).ready(function() {
             success: function(response) {
                 dailyMetricsChart(response.data);
                 availableStock(response.data);
+                dailyPaymentsChart(response.data);
+                stockByIndividuals(response.data);
                 loader.hide();
             },
             error: function(response) {
@@ -26,10 +29,17 @@ $(document).ready(function() {
         });
     }
 
-    metricsBtn.click(function() {
-        container.empty();
-        pagination.empty();
+    if (metricsBtn.length) {
+        metricsBtn.on('click', function() {
+            metricsRender();
+            getData();
+            container.show();
+            pagination.hide();
+        });
+    } else {
         metricsRender();
         getData();
-    });
+        container.show();
+        pagination.hide();
+    }
 });

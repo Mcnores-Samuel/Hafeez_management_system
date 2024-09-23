@@ -34,8 +34,7 @@ export default function metricsRender() {
                             <h4 class="fw-bold text-muted">Daily Payments</h4>
                         </div>
                         <div class="card-body">
-                            <div class="weekly_sales_loader_loan"></div>
-                            <canvas class="Weekly_sales_chart_loan" width="300" height="300"></canvas>
+                            <canvas class="dailyPaymentsChart" width="300" height="300"></canvas>
                         </div>
                     </div>
                 </div>
@@ -45,8 +44,7 @@ export default function metricsRender() {
                             <h4 class="fw-bold text-muted">Stock By Individuals</h4>
                         </div>
                         <div class="card-body">
-                            <div class="weekly_sales_loader_cash"></div>
-                            <canvas class="Weekly_sales_chart_cash" width="300" height="300"></canvas>
+                            <canvas class="stockByIndividualsChart" width="300" height="300"></canvas>
                         </div>
                     </div>
                 </div>
