@@ -1,5 +1,6 @@
 from ..models.main_storage import Airtel_mifi_storage
 from ..models.user_profile import UserProfile
+from ..models.promoter_payments import PromoterPayments
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -79,18 +80,36 @@ def sale_device(request):
             prom_id = request.POST.get('promoter_id')
             device = Airtel_mifi_storage.objects.get(id=device_id)
             promoter = UserProfile.objects.get(id=prom_id)
-            if device:
-                device.in_stock = False
-                device.last_updated = timezone.now()
-                device.paid = True
-                device.payment_confirmed = True
-                device.activated = True
-                device.days_left = 0
-                device.days_after_due = 0
-                device.date_sold = timezone.now()
-                device.updated_by = request.user.first_name + ' ' + request.user.last_name
-                device.save()
-                messages.success(request, 'Device sold successfully')
+            payment = PromoterPayments.objects.filter(
+                promoter=promoter, payment_date__date=timezone.now().date(),
+                updated_completed=False)
+            if payment:
+                payment.total_updated += 1
+                if payment.total_updated <= payment.total_devices_paid:
+                  device.in_stock = False
+                  device.last_updated = timezone.now()
+                  device.paid = True
+                  device.payment_confirmed = True
+                  device.activated = True
+                  device.days_left = 0
+                  device.days_after_due = 0
+                  device.date_sold = timezone.now()
+                  device.updated_by = request.user.first_name + ' ' + request.user.last_name
+                  device.save()
+                  payment.save()
+                  messages.success(request, 'Device sold successfully')
+                  messages.info(request, 'You are remaining with {} devices to update'.format(payment.total_devices_paid - payment.total_updated))
+                else:
+                    url = reverse('devices_per_promoter', kwargs={'promoter_id': promoter.id})
+                    payment.updated_completed = True
+                    payment.save()
+                    messages.error(request, 'All devices have been paid for and updated')
+                    return redirect(url)
+                    
+            else:
+                url = reverse('devices_per_promoter', kwargs={'promoter_id': promoter.id})
+                messages.error(request, 'No outstanding payment for {}'.format(promoter.first_name))
+                return redirect(url)
             url = reverse('devices_per_promoter', kwargs={'promoter_id': promoter.id})
         return redirect(url)
     return redirect('search_airtel_devices')
