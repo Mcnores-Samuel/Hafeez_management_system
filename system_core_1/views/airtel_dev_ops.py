@@ -82,7 +82,7 @@ def sale_device(request):
             promoter = UserProfile.objects.get(id=prom_id)
             payment = PromoterPayments.objects.filter(
                 promoter=promoter, payment_date__date=timezone.now().date(),
-                updated_completed=False)
+                updated_completed=False).first()
             if payment:
                 payment.total_updated += 1
                 if payment.total_updated <= payment.total_devices_paid:
