@@ -16,7 +16,13 @@ def stockQuery(request):
         today = timezone.now().date()
         devices = MainStorage.objects.filter(
             last_updated__date__lt=today,
-            in_stock=True,
+            in_stock=False,
+            pending=True,
+            sold=True,
+            recieved=True,
+            missing=False,
+            issue=False,
+            faulty=False,
             assigned=True,
             agent__groups__name='agents').values_list('device_imei', flat=True)
         return JsonResponse({'data': list(devices)}, status=200)
