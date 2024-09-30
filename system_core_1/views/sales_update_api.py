@@ -17,9 +17,7 @@ def stockQuery(request):
         devices = MainStorage.objects.filter(
             in_stock=False,
             pending=True,
-            recieved=True,
-            sold=True,
-            paid=False,
+            sales_type='Loan',
             missing=False,
             ).values_list('device_imei', flat=True)
         return JsonResponse({'data': list(devices)}, status=200)
