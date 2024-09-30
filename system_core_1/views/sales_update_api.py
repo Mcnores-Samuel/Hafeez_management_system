@@ -15,11 +15,9 @@ def stockQuery(request):
         # Get all devices in stock and assigned to agents in one query
         # one_hr_ago = timezone.now() - timezone.timedelta(hours=1)
         devices = MainStorage.objects.filter(
-            in_stock=False,
-            pending=True,
-            sales_type='Loan',
-            missing=False,
+            in_stock=True,
             ).values_list('device_imei', flat=True)
+        devices = reversed(devices)
         return JsonResponse({'data': list(devices)}, status=200)
     return JsonResponse({'message': 'Invalid request method'}, status=400)
 
