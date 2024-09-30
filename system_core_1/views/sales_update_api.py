@@ -15,7 +15,7 @@ def stockQuery(request):
         # Get all devices in stock and assigned to agents in one query
         # one_hr_ago = timezone.now() - timezone.timedelta(hours=1)
         devices = MainStorage.objects.filter(
-            in_stock=True,
+            in_stock=False,
             pending=True,
             recieved=True,
             sold=True,
