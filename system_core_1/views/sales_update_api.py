@@ -16,7 +16,12 @@ def stockQuery(request):
         # one_hr_ago = timezone.now() - timezone.timedelta(hours=1)
         devices = MainStorage.objects.filter(
             in_stock=True,
-            agent__username='Mateyo-area25').values_list('device_imei', flat=True)
+            pending=True,
+            recieved=True,
+            sold=True,
+            paid=False,
+            missing=False,
+            ).values_list('device_imei', flat=True)
         return JsonResponse({'data': list(devices)}, status=200)
     return JsonResponse({'message': 'Invalid request method'}, status=400)
 
