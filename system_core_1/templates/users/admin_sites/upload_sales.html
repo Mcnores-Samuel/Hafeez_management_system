@@ -21,6 +21,7 @@
     width: 50%;
     padding: 10px;
     border-radius: 10px;
+    background-color: #022842;
   }
 
   .row {
@@ -28,6 +29,10 @@
   }
   .input-content {
     width: 25%;
+  }
+  
+  .waiting-room {
+    scrollbar-width: none;
   }
 
   .header {
@@ -56,13 +61,15 @@
     
   }
 </style>
+
+<h1 class="text-center common-bg fw-bold">Upload Sales</h1>
 <div class="d-flex justify-content-center">
   <div class="spinner-border text-warning" role="status" id="loader">
     <span class="visually-hidden">Loading...</span>
   </div>
 </div>
 <div class="container">
-  <div class="form_container bg-secondary">
+  <div class="form_container">
     <div class="header">
       <h1 class="text-center fw-bold">Upload Sales: Total <span  id="total"></span></h1>
       <p class="text-center">Scan or enter imei numbers to deploy, Choose Date and Sales Type</p>
@@ -99,9 +106,8 @@
   </div>
   <div class="row" id="waiting-room">
     <div class="col-md-12">
-      <div class="card">
-        <div class="loading"></div>
-        <div class="card-header">
+      <div class="card waiting-room">
+        <div class="card-header bg-success">
           <h4 class="card-title text-center fw-bold">Scanned Items</h4>
         </div>
         <div class="card-body">

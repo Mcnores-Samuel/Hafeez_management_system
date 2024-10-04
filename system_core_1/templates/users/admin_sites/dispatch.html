@@ -18,11 +18,20 @@
     background-color: #8fa0af;
   }
 
+  .card-header {
+    background-color: #8fa0af;
+  }
+
+  .waiting-room {
+    scrollbar-width: none;
+  }
+
   .form_container {
     padding: 10px;
     border-radius: 10px;
   }
 </style>
+<h1 class="text-center bg-secondary fw-bold">Stock Distribution</h1>
 <div class="d-flex justify-content-center">
   <div class="spinner-border text-warning" role="status" id="loader">
     <span class="visually-hidden">Loading...</span>
@@ -70,7 +79,7 @@
   <div class="container" id="waiting-room">
     <div class="row">
       <div class="col-md-12">
-        <div class="card">
+        <div class="card waiting-room">
           <div class="loading"></div>
           <div class="card-header">
             <h4 class="card-title text-center fw-bold">Scanned Items</h4>

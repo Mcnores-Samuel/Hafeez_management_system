@@ -8,6 +8,8 @@ const supplier = $('#id_supplier');
 const waitRoom = $('#waiting-room');
 const send = $('#submit');
 const total = $('#total').text(container.length);
+const load = $('#loader')
+load.hide()
 
 imei_2.on('change', (e) => {
   e.preventDefault();
@@ -102,9 +104,6 @@ send.on('click', () => {
     return;
   }
 
-  const load = $('.loading-target');
-  load.addClass('loading-message');
-
   $.ajax({
     url: '/system_core_1/add_to_stock/',
     type: 'POST',
@@ -114,14 +113,24 @@ send.on('click', () => {
       cost_price: cost_price.val(),
       supplier: supplier.val(),
     },
+    beforeSend() {
+      load.show();
+    },
     success: (response) => {
-      load.removeClass('loading-message');
+      load.hide()
       if (response.status === 200) {
         container = [];
         waitRoom.find('.list-group').empty();
         form.trigger('reset');
         imei_1.focus();
         if (response.data.length > 0) {
+          const note = '<div class="alert alert-danger alert-dismissible fade show" role="alert">Items Displayed already exist\
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>\
+          </div>';
+          $(note).insertBefore(form);
+          setTimeout(() => {
+            $('.alert').alert('close');
+          }, 5000)
           response.data.forEach((item) => {
             waitRoom.find('.list-group').append(
               `<li class="list-group-item text-danger fw-bold">IMEI 1: ${item[0]} <===> IMEI 2: ${item[1]}</li>`,
