@@ -51,10 +51,20 @@
                                 <a class="nav-link d-flex align-items-center" href="{% url 'dashboard' %}"
                                 data-bs-toggle="tooltip" 
                                 title="Dashboard">
-                                    <span class="material-icons fs-3">
+                                    <span class="material-icons">
                                         dashboard
                                     </span>
                                     <span class="text"> Dashboard</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link d-flex align-items-center" href="{% url 'dataAccess' %}"
+                                data-bs-toggle="tooltip"
+                                title="Audit Tool Box">
+                                    <span class="material-icons">
+                                        home_repair_service
+                                    </span>
+                                    <span class="text"> Audit Tool</span>
                                 </a>
                             </li>
                             <li class="nav-item">
@@ -67,18 +77,6 @@
                                 <span class="text"> Point Of Sale</span>
                                 </a>
                             </li>
-                            {% for mbo in mbos %}
-                                <li class="nav-item">
-                                    <a class="nav-link d-flex align-items-center" href="{% url 'mbo_data' username=mbo.username %}"
-                                    data-bs-toggle="tooltip" 
-                                    title="{{ mbo.username }}">
-                                    <span class="material-icons">
-                                        account_circle
-                                    </span>
-                                    <span class="text"> {{ mbo.username }}</span>
-                                    </a>
-                                </li>
-                            {% endfor %}
                             <li class="nav-item">
                                 <a class="nav-link d-flex align-items-center" href="{% url 'add_to_stock' %}"
                                 data-bs-toggle="tooltip" 
@@ -156,14 +154,14 @@
             <div class="top-display d-flex card-bg">
                 <form action="{% url 'data_search' %}" method="post" class="d-flex position-relative search-form text-light">
                     {% csrf_token %}
-                    <input type="search" id="search" name="search_query" class="form-control me-2"
+                    <input type="search" id="search_term" name="search_query" class="form-control me-2"
                     placeholder="Search IMEI number or Contract number" aria-label="Search" aria-describedby="search-addon" />
                     <button type="submit" class="btn search-btn material-icons">search</button>
                 </form>
                 <div class="notify">
                     <div class="dropdown">
                         <button type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                            <span class="material-icons">
+                            <span class="material-icons common-color">
                                 notifications
                             </span>
                             <span class="badge bg-danger"></span>
@@ -176,7 +174,6 @@
                                                 notifications
                                             </span>
                                         <div class="">
-                                            <p></p>
                                         </div>
                                     </div>
                                 </a>
@@ -185,7 +182,7 @@
                     </div>
                 </div>
                 <div class="profile">
-                    {% if avatar %}
+                    {% if avatar.image %}
                     <img src="{{ avatar.image.url }}" alt="avatar" class="avatar">
                     {% else %}
                         <span class="material-icons">
@@ -307,13 +304,6 @@
         </section>
         <br>
         <hr>
-        <footer>
-            {% block footer %}
-            <div>
-                <p>&copy; 2023 Hafeez Enterprise. All rights reserved.</p>
-            </div>
-            {% endblock %}
-        </footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     </body>
 </html>

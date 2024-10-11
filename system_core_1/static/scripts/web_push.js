@@ -1,14 +1,14 @@
-const callModal = () => {
-  const allowWebBtn = $('#webpush-subscribe-button');
-  const modal = $('#web_push_request');
+// const callModal = () => {
+//   const allowWebBtn = $('#webpush-subscribe-button');
+//   const modal = $('#web_push_request');
 
-  if (allowWebBtn.text().includes('Subscribe')) {
-    modal.modal('show');
-  } else {
-    modal.modal('hide');
-  }
-};
+//   if (allowWebBtn.text().includes('Subscribe')) {
+//     modal.modal('show');
+//   } else {
+//     modal.modal('hide');
+//   }
+// };
 
-$(document).ready(() => {
-  setTimeout(callModal, 20000);
-});
+// $(document).ready(() => {
+//   setTimeout(callModal, 20000);
+// });

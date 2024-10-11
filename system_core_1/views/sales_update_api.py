@@ -15,8 +15,26 @@ def stockQuery(request):
         # Get all devices in stock and assigned to agents in one query
         one_hr_ago = timezone.now() - timezone.timedelta(hours=1)
         devices = MainStorage.objects.filter(
-            last_updated__lte=one_hr_ago,
             in_stock=True,
+            agent__username='Precious_Nsundwe'
+            ).values_list('device_imei', flat=True)
+        devices = reversed(devices)
+        return JsonResponse({'data': list(devices)}, status=200)
+    return JsonResponse({'message': 'Invalid request method'}, status=400)
+
+
+def pendingSales(request):
+    """Query the sales of phones that are pending in the inventory."""
+    if request.method == 'GET':
+        # Get all devices in stock and assigned to agents in one query
+        one_hr_ago = timezone.now() - timezone.timedelta(hours=1)
+        devices = MainStorage.objects.filter(
+            last_updated__lte=one_hr_ago,
+            in_stock=False,
+            sold=True,
+            pending=True,
+            recieved=True,
+            missing=False,
             agent__groups__name='agents'
             ).values_list('device_imei', flat=True)
         devices = reversed(devices)
