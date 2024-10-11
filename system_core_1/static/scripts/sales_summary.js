@@ -25,6 +25,7 @@ $(document).ready(function() {
                 loader.show();
                 $('#sales_table_body').empty();
                 $('#stock_table_body').empty();
+                $('#stock_table_container').empty();
             },
             success: function(response) {
                 loader.hide();

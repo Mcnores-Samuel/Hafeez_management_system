@@ -92,7 +92,6 @@ def sales_stock_summry(request):
                     'monthly_sales_details': monthly_sales_details,
                     'stock_details': stock_details
                 }}
-            print(content)
             return JsonResponse(content)
         return JsonResponse({'error': 'Invalid request.'})
     return JsonResponse({'error': 'Invalid request.'})
@@ -122,11 +121,11 @@ def dailySalesByShop(request):
         )
 
         data = []
-        item = {}
         for shop in daily_sales_pr_shop:
-            item[shop.username] = shop.total_sales
-            data.append(item)
-            item = {}
-        print(data)
+            if shop.total_sales > 0:
+                data.append({
+                    'shop': shop.username,
+                    'total_sales': shop.total_sales
+                })
         return JsonResponse({'data': data})
     return JsonResponse({'error': 'Invalid request.'})

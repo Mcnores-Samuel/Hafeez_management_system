@@ -18,10 +18,10 @@ function dailyUpdateByShop(url, dest, chartType) {
         method: 'GET',
         contentType: 'application/json',
         success(data) {
-          $.each(data.data, (model, value) => {
-            modelList.push(model);
-            total.push(value);
-            overallTotal += value;
+          $.each(data.data, (index, item) => {
+            modelList.push(item.shop);
+            total.push(item.total_sales);
+            overallTotal += item.total_sales;
           });
   
           if (dailySalesChartD === null) {
@@ -83,10 +83,6 @@ function dailyUpdateByShop(url, dest, chartType) {
                 },
               },
             });
-          } else {
-            dailySalesChartD.data.labels = modelList;
-            dailySalesChartD.data.datasets[0].data = total;
-            dailySalesChartD.update();
           }
           setTimeout(fetchAndUpdateDailyData, 5 * 60 * 1000);
         },
