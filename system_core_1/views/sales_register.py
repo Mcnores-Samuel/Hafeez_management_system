@@ -60,12 +60,13 @@ def combinedData_collection(request, data_id):
             item = MainStorage.objects.get(id=data_id)
             if item.in_stock and not item.sold:
                 if payment == 'Cash':
+                    date = request.POST.get('date')
                     price = request.POST.get('price')
                     item.in_stock = False
                     item.sold = True
                     item.pending = True
                     item.sales_type = 'Cash'
-                    item.stock_out_date = timezone.now()
+                    item.stock_out_date = date
                     item.price = price
                     messages.success(request, '{} of imei {} sold successfully'.format(
                         item.name, item.device_imei

@@ -31,6 +31,8 @@ function stockTable(data, targetElement) {
     const thead = $('<thead style="position: sticky; top: -1px; background-color: azure;"></thead>');
     const tbody = $('<tbody></tbody>');
 
+    const h1 = $('<h1 class="text-center bg-info w-100">Stock details</h1>');
+
 
 
     thead.append(`
@@ -39,6 +41,7 @@ function stockTable(data, targetElement) {
             <th>Model</th>
             <th>IMEI</th>
             <th>Date Collected</th>
+            <th>Action</th>
         <tr>
     `);
 
@@ -49,10 +52,17 @@ function stockTable(data, targetElement) {
                 <td>${item.phone_type}</td>
                 <td>${item.imei}</td>
                 <td>${formatDate(item.date_collected)}</td>
+                <td>
+                    <form action="/system_core_1/data_search/" method="post" class="d-flex w-100">
+                        <input type="search" class="form-control me-2" name="search_query" id="search" value="${item.imei}" hidden>
+                        <button class="btn btn-outline-success" type="submit"><span class="material-icons">search</span></button>
+                    </form>
+                </td>
             </tr>
         `);
     });
 
+    targetElement.append(h1);
     table.append(thead);
     table.append(tbody);
     targetElement.append(table);

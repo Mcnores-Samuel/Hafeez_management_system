@@ -39,7 +39,6 @@ def sales_stock_summry(request):
             stock = {}
             daily_sales = {}
             monthly_sales = {}
-            daily_sales_details = []
             monthly_sales_details = []
             stock_details = []
 
@@ -49,19 +48,12 @@ def sales_stock_summry(request):
                     'category': data.category,
                     'phone_type': data.phone_type,
                     'imei': data.device_imei,
-                    'date_collected': data.collected_on
+                    'date_collected': data.collected_on,
+                    'id': data.id
                 })
 
             for item in daily_sales_data:
                 daily_sales[item.phone_type] = daily_sales.get(item.phone_type, 0) + 1
-                daily_sales_details.append({
-                    'category': item.category,
-                    'phone_type': item.phone_type,
-                    'imei': item.device_imei,
-                    'date_collected': item.collected_on,
-                    'date_sold': item.stock_out_date,
-                    'Sales Type': item.sales_type
-                })
 
             for sale in monthly_sales_data:
                 monthly_sales[sale.phone_type] = monthly_sales.get(sale.phone_type, 0) + 1
@@ -88,7 +80,6 @@ def sales_stock_summry(request):
                     'stock': stock,
                     'daily_sales': daily_sales,
                     'monthly_sales': monthly_sales,
-                    'daily_sales_details': daily_sales_details,
                     'monthly_sales_details': monthly_sales_details,
                     'stock_details': stock_details
                 }}
@@ -129,3 +120,15 @@ def dailySalesByShop(request):
                 })
         return JsonResponse({'data': data})
     return JsonResponse({'error': 'Invalid request.'})
+
+
+def stock(request, data_id):
+    """Returns a JSON object containing the daily stock data."""
+    if request.method == 'GET':
+        item = MainStorage.objects.get(id=data_id)
+        content = {
+            'imei': item.device_imei,
+            'model': item.phone_type,
+            'id': item.id,
+        }
+    return render(request, 'users/staff_sites/stock.html', content)

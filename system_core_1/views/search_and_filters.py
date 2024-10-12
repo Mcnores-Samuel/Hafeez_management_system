@@ -16,10 +16,12 @@ from ..models.main_storage import MainStorage
 from django.db.models import Q
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
 from ..models.user_profile import UserProfile
 
 
 @login_required
+@csrf_exempt
 def data_search(request):
     """The `data_search` view function is responsible for handling the search
     functionality for all data in the application.
@@ -51,6 +53,8 @@ def data_search(request):
     return render(request, 'users/staff_sites/search.html', {'data': queryset, 'mbos': mbos})
 
 
+@login_required
+@csrf_exempt
 def search(search_query):
     """The `search` view function is responsible for handling the search
     functionality for all data in the application.

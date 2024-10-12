@@ -33,6 +33,8 @@
                     </div>
                     <div class="card-body">
                         <p class="card-text"><strong class="text-info">Entry Date:</strong> <span>{{ item.entry_date }}</span></p>
+                        <p class="card-text"><strong class="text-info">Date Collected:</strong> <span>{{ item.stock_out_date }}</span></p>
+                        <p class="card-text"><strong class="text-info">Assigned To:</strong> <span>{{ item.agent }}</span></p>
                         <p class="card-text"><strong class="text-info">Category:</strong> <span>{{ item.category }}</span></p>
                         <p class="card-text"><strong class="text-info">Name:</strong> <span>{{ item.name }}</span></p>
                         <p class="card-text"><strong class="text-info">Model:</strong> <span>{{ item.phone_type }}</span></p>
@@ -74,7 +76,7 @@
                                 </span>
                             </p>
                         {% else %}
-                            <p class="card-text"><strong class="text-info">Deploy:</strong>
+                            <p class="card-text"><strong class="text-info">Action:</strong>
                                 <span>
                                     <a href="{% url 'combinedData_collection' data_id=item.id %}">
                                         <span class="material-icons">
