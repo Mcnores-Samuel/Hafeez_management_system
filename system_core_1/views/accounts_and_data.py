@@ -2,7 +2,7 @@ from ..models.main_storage import MainStorage
 from ..models.user_profile import UserProfile
 from django.http import JsonResponse
 from django.db.models import Count, Q
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from ..forms.filters import FilterSalesAndStock
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
@@ -93,8 +93,13 @@ def dataAccess(request):
     """Returns a JSON object containing the daily stock data."""
     if request.method == 'GET':
         form = FilterSalesAndStock()
-        return render(request, 'users/staff_sites/accounts_and_data.html',
-                      {'form': form})
+        if request.user.groups.filter(name='staff_members').exists():
+            return render(request, 'users/staff_sites/accounts_and_data.html',
+                          {'form': form})
+        elif request.user.is_superuser:
+            return render(request, 'users/admin_sites/accounts_and_data.html',
+                          {'form': form})
+    return redirect('sign_in')
     
 
 @login_required
