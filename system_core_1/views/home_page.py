@@ -131,7 +131,7 @@ def dispatch_stock(request):
                 try:
                     stock_item = MainStorage.objects.get(device_imei=item)
                     stock_item.collected_on = date
-                    stock_item.recieved = True
+                    stock_item.recieved = False
                     stock_item.agent = UserProfile.objects.get(username=agent)
                     stock_item.save()
                 except MainStorage.DoesNotExist:
