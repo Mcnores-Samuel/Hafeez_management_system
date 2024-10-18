@@ -77,6 +77,7 @@ def promoters_data(request):
                     'id': promoter.id,
                     'first_name': promoter.first_name,
                     'last_name': promoter.last_name,
+                    'phone_number': promoter.phone_number,
                 },
                 'within_due_date': promoter.within_due_date,
                 'missed_due_date': promoter.missed_due_date,

@@ -119,8 +119,7 @@ def salesUpdates(request):
                     device.sold = True
                     device.price = price
                     device.paid = True
-                    device.pending = False
-                    device.sales_type = "Loan"
+                    device.pending = "Loan"
                     device.stock_out_date = date_sold_obj
                     device.save()
                 return JsonResponse({'message': 'Success'}, status=200)
@@ -133,13 +132,33 @@ def salesUpdates(request):
             return JsonResponse({'message': str(e)}, status=500)
     return JsonResponse({'message': 'Invalid request method'}, status=400)
 
-
-def get_idus(request):
+@csrf_exempt
+def airtel_sales_data(request):
     """Get the IDUs of the Airtel MiFi devices."""
     if request.method == 'GET':
         idus = Airtel_mifi_storage.objects.filter(
-            promoter__groups__name='promoters',
-            device_type='IDU',
-            in_stock=True).values_list('device_imei', flat=True)
+            in_stock=False,
+            activated=True,
+            data_submitted=False,
+            paid=True,
+            ).values_list('device_imei', 'device_type', 'device_phone_no')
         return JsonResponse({'data': list(idus)}, status=200)
+    elif request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            imei = data.get('imei')
+            
+            if imei is None:
+                return JsonResponse({'message': 'Missing required fields'}, status=400)
+            
+            # Get the device and update it
+            try:
+                device = Airtel_mifi_storage.objects.get(device_imei=imei)
+                device.data_submitted = True
+                device.save()
+                return JsonResponse({'message': 'Data submitted successfully'}, status=200)
+            except Airtel_mifi_storage.DoesNotExist:
+                return JsonResponse({'message': 'Device not found'}, status=404)
+        except Exception as e:
+            return JsonResponse({'message': str(e)}, status=500)
     return JsonResponse({'message': 'Invalid request method'}, status=400)

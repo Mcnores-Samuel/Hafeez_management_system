@@ -39,6 +39,7 @@ $(document).ready(function() {
                     <div class="card common-bg rounded-start">
                         <div class="card-header text-center">
                             <h4 class="card-title fw-bold">${item.promoter.first_name} ${item.promoter.last_name}</h4>
+                            <p class="card-text fw-bold">Phone No: ${item.promoter.phone_number}</p>
                         </div>
                         <a href="/system_core_1/devices_per_promoter/${item.promoter.id}">
                             <div class="card-body ${item.color_code}" style="padding: 5px;">

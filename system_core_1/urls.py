@@ -18,7 +18,7 @@ from .views.airtel_accounts import promoters_data, devices_per_promoter, airtel_
 from .views.airtel_dev_ops import return_device, edit_device, sale_device, reset_device
 from .views.airtel_admin_ops import airtel_devices_data, airtel_device_data_entry, metrics
 from .views.recordairteldevices_payment import record_airtel_devices_payment
-from .views.sales_update_api import stockQuery, salesUpdates, get_idus, updateTimeStamp, pendingSales
+from .views.sales_update_api import stockQuery, salesUpdates, airtel_sales_data, updateTimeStamp, pendingSales
 from .views.accounts_and_data import dataAccess, sales_stock_summry, dailySalesByShop
 
 
@@ -36,7 +36,7 @@ urlpatterns = [
     path('salesUpdates/', salesUpdates, name='salesUpdates'),
     path('updateTimeStamp/', updateTimeStamp, name='updateTimeStamp'),
     path('pendingSales/', pendingSales, name='pendingSales'),
-    path('get_idus/', get_idus, name='get_idus'),
+    path('airtel_sales_data/', airtel_sales_data, name='airtel_sales_data'),
     # Data on actions on data and admin panel
     path('dashboard/', user_dashboard.dashboard, name='dashboard'),
     path('main_stock_details/', central_display.main_stock_details, name='main_stock_details'),

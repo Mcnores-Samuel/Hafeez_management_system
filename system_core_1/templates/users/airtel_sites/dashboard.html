@@ -179,68 +179,70 @@
                         {% endfor %}
                     </div>
                 {% endif %}
-            <div class="top-display d-flex card-bg">
-                <form action="{% url 'search_airtel_devices' %}" method="post" class="d-flex position-relative search-form text-light">
-                    {% csrf_token %}
-                    <input type="search" id="search_term" name="search_query" class="form-control me-2"
-                    placeholder="Search IMEI number" aria-label="Search" aria-describedby="search-addon" />
-                    <button type="submit" class="btn search-btn material-icons">search</button>
-                </form>
-                <div class="notify">
-                    <div class="dropdown">
-                        <button type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">
-                            <span class="material-icons common-color">
-                                notifications
+            {% block searchbar %}
+                <div class="top-display d-flex card-bg">
+                    <form action="{% url 'search_airtel_devices' %}" method="post" class="d-flex position-relative search-form text-light">
+                        {% csrf_token %}
+                        <input type="search" id="search_term" name="search_query" class="form-control me-2"
+                        placeholder="Search IMEI number" aria-label="Search" aria-describedby="search-addon" />
+                        <button type="submit" class="btn search-btn material-icons">search</button>
+                    </form>
+                    <div class="notify">
+                        <div class="dropdown">
+                            <button type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">
+                                <span class="material-icons common-color">
+                                    notifications
+                                </span>
+                                <span class="badge bg-danger note_badge"></span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="profile">
+                        {% if avatar.image %}
+                        <img src="{{ avatar.image.url }}" alt="avatar" class="avatar">
+                        {% else %}
+                            <span class="material-icons">
+                                account_circle
                             </span>
-                            <span class="badge bg-danger note_badge"></span>
-                        </button>
-                    </div>
-                </div>
-                <div class="profile">
-                    {% if avatar.image %}
-                    <img src="{{ avatar.image.url }}" alt="avatar" class="avatar">
-                    {% else %}
-                        <span class="material-icons">
-                            account_circle
-                        </span>
-                    {% endif %}
-                    <div class="dropdown">
-                        <button type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                        {% endif %}
+                        <div class="dropdown">
+                            <button type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
 
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <a class="dropdown-item" href="{% url 'profile' %}">
-                                    <div class="d-flex">
-                                        <div class="icon">
-                                            <span class="material-icons">
-                                                account_circle
-                                            </span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a class="dropdown-item" href="{% url 'profile' %}">
+                                        <div class="d-flex">
+                                            <div class="icon">
+                                                <span class="material-icons">
+                                                    account_circle
+                                                </span>
+                                            </div>
+                                            <div class="">
+                                                <p>Profile</p>
+                                            </div>
                                         </div>
-                                        <div class="">
-                                            <p>Profile</p>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="{% url 'sign_out' %}">
+                                        <div class="d-flex">
+                                            <div class="icon">
+                                                <span class="material-icons">
+                                                    logout
+                                                </span>
+                                            </div>
+                                            <div class="">
+                                                <p>Logout</p>
+                                            </div>
                                         </div>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="{% url 'sign_out' %}">
-                                    <div class="d-flex">
-                                        <div class="icon">
-                                            <span class="material-icons">
-                                                logout
-                                            </span>
-                                        </div>
-                                        <div class="">
-                                            <p>Logout</p>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                        </ul>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-            </div>
+            {% endblock %}
             <br>
             <section class="charts-and-data">
                 <div class="row gy-3">
