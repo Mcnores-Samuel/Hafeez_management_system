@@ -181,6 +181,10 @@
         display: none;
     }
 
+    .heading-row {
+        display: flex;
+    }
+
     .dropmenu {
         background: white;
         position: absolute;
