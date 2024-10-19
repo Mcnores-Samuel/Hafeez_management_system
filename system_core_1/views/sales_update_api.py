@@ -16,7 +16,7 @@ def stockQuery(request):
         one_hr_ago = timezone.now() - timezone.timedelta(hours=1)
         devices = MainStorage.objects.filter(
             in_stock=True,
-            agent__username='Precious_Nsundwe'
+            agent__groups__name='agents',
             ).values_list('device_imei', flat=True)
         devices = reversed(devices)
         return JsonResponse({'data': list(devices)}, status=200)
@@ -29,7 +29,6 @@ def pendingSales(request):
         # Get all devices in stock and assigned to agents in one query
         one_hr_ago = timezone.now() - timezone.timedelta(hours=1)
         devices = MainStorage.objects.filter(
-            last_updated__lte=one_hr_ago,
             in_stock=False,
             sold=True,
             pending=True,
@@ -119,7 +118,8 @@ def salesUpdates(request):
                     device.sold = True
                     device.price = price
                     device.paid = True
-                    device.pending = "Loan"
+                    device.pending = False
+                    device.sales_type = "Loan"
                     device.stock_out_date = date_sold_obj
                     device.save()
                 return JsonResponse({'message': 'Success'}, status=200)
