@@ -80,17 +80,6 @@ def total_pending_sales(request):
                 pending=True, sold=True, in_stock=False,
                 missing=False, issue=False, faulty=False,
                 agent=request.user).count()
-        if total > 0:
-            admin = UserProfile.objects.filter(is_superuser=True)
-            for user in admin:
-                payload = {
-                    'head': 'Approval Reminder',
-                    'body': 'Hello {}!, There are {} pending your approval'.format(
-                        user.username, total),
-                    'icon': 'https://raw.githubusercontent.com/Mcnores-Samuel/Hafeez_management_system/main/system_core_1/static/images/logo.png',
-                    'url': 'www.hafeezmw.com'
-                }
-                send_user_notification(user=user, payload=payload, ttl=1000)
     return JsonResponse({'total': total})
 
 

@@ -15,6 +15,7 @@ class Feedback(models.Model):
     feedback = models.TextField()
     read = models.BooleanField(default=False)
     date = models.DateTimeField(default=timezone.now)
+    seen = models.BooleanField(default=False)
 
     def __str__(self):
         """Return a string representation of the model."""

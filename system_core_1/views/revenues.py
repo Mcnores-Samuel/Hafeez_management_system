@@ -4,7 +4,6 @@ The revenues app is responsible for handling the revenue data of the system.
 """
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from ..models.prices import YellowPrices
 from ..models.main_storage import MainStorage
 from django.http import JsonResponse
 from django.utils import timezone

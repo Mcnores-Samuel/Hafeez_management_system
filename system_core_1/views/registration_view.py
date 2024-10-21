@@ -1,68 +1,11 @@
-
-
-from ..forms.sign_up_form import SignUpForm
+# The `registration_view` module contains view functions for user registration and authentication.
 from ..forms.sign_in_form import SignInForm
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.contrib.auth import login, authenticate
-from django_email_verification import send_email
-from django.contrib.auth.models import Group
-from ..models.agent_profile import AgentProfile
-from ..models.agent_profile import Agent_sign_up_code
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.contrib import messages
-
-
-
-def sign_up(request):
-    """
-    The `sign_up` view function handles user registration and sign-up processes.
-
-    Functionality:
-    - Allows users to create new accounts by providing necessary registration details.
-    - Validates user input, ensuring it meets specified criteria.
-    - Upon successful registration, creates a new user account and redirects to the
-      sign-in page.
-
-    Parameters:
-    - request: The HTTP request object containing user registration data.
-
-    Returns:
-    - Renders the registration form for users to input their registration details.
-    - Redirects to the sign-in page after successful registration.
-
-    Usage:
-    - Users access this view to create new accounts within the application.
-    - Ensures a seamless registration process while maintaining data integrity.
-
-    Note:
-    - User authentication and validation logic should be implemented in the associated
-      authentication system.
-    """
-    if request.method == 'POST':
-        form = SignUpForm(request.POST)
-        if form.is_valid():
-            agent_code = form.cleaned_data['agent_code']
-            sign_up_code = Agent_sign_up_code.objects.filter(code=agent_code, used=False)
-            if sign_up_code:
-                sign_up_code.update(used=True)
-                user = form.save(commit=False)
-                user.is_active = False
-                user.save()
-                send_email(user)
-                user.groups.add(Group.objects.get(name="agents"))
-                agent_profile = AgentProfile.objects.create(user=user)
-                agent_profile.is_agent = True
-                return render(request, 'authentication/confirm_email.html', {'user': user})
-            else:
-                messages.error(request, "Invalid agent code, please contact your admin for a valid agent code.")
-        for field in form:
-            for error in field.errors:
-                messages.error(request, f"{error}")
-    else:
-        form = SignUpForm()
-    return render(request, 'authentication/sign_up.html', {'form': form})
 
 
 def sign_in(request):
@@ -142,13 +85,6 @@ def sign_in(request):
         form = SignInForm()
     return render(request, 'authentication/sign_in.html', {'form': form, 'user': user})
 
-
-@login_required
-def resend_confirmation_email(request):
-    user = request.user
-    if not user.is_active:
-        send_email(user)
-    return render(request, 'authentication/confirm_email.html')
 
 
 @login_required

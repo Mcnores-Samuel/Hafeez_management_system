@@ -43,7 +43,6 @@
             <div class="brandname">Hafeez Enterprise</div>
             <ul>
                 <li><a href="{% url 'sign_in' %}"><i class='bx bx-log-in'></i> Log In</a></li>
-                <li><a href="{% url 'sign_up' %}"><i class='bx bx-log-in-circle'></i> Sign Up</a></li>
             </ul>
         {% endblock %}
     </header>
@@ -77,9 +76,6 @@
                         <label class="form-check-label" for="{{ form.remember_me.id_for_label }}">Remember Me</label>
                     </div>
                     <button type="submit" class="btn common-bg w-100 fw-bold">Login</button>
-                    <div class="text-center fs-6 fw-bold">OR</div>
-                    <a href="{% url 'sign_up' %}" class="btn common-bg w-100 fw-bold">Sign Up</a>
-                    <div class="forget"><a href="{% url 'password_reset' %}" class="fw-bold">Forgot Password?</a>
                     </div>
                 </form>
             </div>

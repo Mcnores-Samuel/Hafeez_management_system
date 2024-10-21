@@ -10,8 +10,6 @@ from .views.defects import defects
 from .views import revenues
 from .views import agents_data_access
 from .views.system_routine_updates import (morning_update, afternoon_update, evening_update)
-from .views.staff_operations import contract_payment, device_locking
-from .views.deposit_payments import pending_deposit_payments, process_deposit_payment
 from .views.create_new_promoter import create_new_promoter
 from .views.airtel_device_destributer import search_airtel_devices, assignPromoter
 from .views.airtel_accounts import promoters_data, devices_per_promoter, airtel_promoter_accounts, paymentsNotification
@@ -27,10 +25,8 @@ urlpatterns = [
     path('', home_page.home_page, name='home_page'),
 
     # registration
-    path('sign_up/', registration_view.sign_up, name='sign_up'),
     path('sign_in/', registration_view.sign_in, name='sign_in'),
     path('sign_out/', registration_view.sign_out, name='sign_out'),
-    path('resend_confirmation_email', registration_view.resend_confirmation_email, name='resend_confirmation_email'),
     # data query and update api
     path('stockQuery/', stockQuery, name='stockQuery'),
     path('salesUpdates/', salesUpdates, name='salesUpdates'),
@@ -48,8 +44,6 @@ urlpatterns = [
     path('pending_sales/', pending_sales, name='pending_sales'),
     path('pending_sales_details/<str:username>/', pending_sales_details, name='pending_sales_details'),
     path('defects/', defects, name='defects'),
-    path('pending_deposit_payments/', pending_deposit_payments, name='pending_deposit_payments'),
-    path('process_deposit_payment/', process_deposit_payment, name='process_deposit_payment'),
     path('airtel_devices_data/', airtel_devices_data, name='airtel_devices_data'),
     path('airtel_device_data_entry/', airtel_device_data_entry, name='airtel_device_data_entry'),
     path('record_airtel_devices_payment/', record_airtel_devices_payment, name='record_airtel_devices_payment'),
@@ -88,8 +82,6 @@ urlpatterns = [
     path('new_stock/', agents_data_access.new_stock, name='new_stock'),
     path('sale_on_cash', action_on_data_select.sale_on_cash, name='sale_on_cash'),
     path('sale_on_loan/<int:data_id>/', action_on_data_select.sale_on_loan, name='sale_on_loan'),
-    path('contract_payment/', contract_payment, name='contract_payment'),
-    path('device_locking/', device_locking, name='device_locking'),
     # Concurent system operations with data analysis
     path('get_daily_sales_json_loan/', data_for_charts.get_daily_sales_json_loan, name='get_daily_sales_json_loan'),
     path('get_daily_sales_json_cash/', data_for_charts.get_daily_sales_json_cash, name='get_daily_sales_json_cash'),

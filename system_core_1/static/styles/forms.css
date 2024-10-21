@@ -2,8 +2,8 @@
     display: flex;
     font-size: 20px;
     padding: 20px;
-    border-radius: 12px;
-    width: 50%;
+    border-radius: 15px;
+    width: 40%;
     margin: 20px auto;
     caret-color: auto;
 }
@@ -87,7 +87,8 @@ form {
     padding: 30px;
     border-radius: 12px;
     box-shadow: 3px 3px 15px 3px #80808066;
-    background: #00a8a8;
+    background: #022842;
+    color: #FFFFFF;
 }
 
 .custom {
