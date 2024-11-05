@@ -95,8 +95,8 @@ def get_main_stock_analysis(request):
             missing=False, assigned=True, recieved=True, faulty=False,
             pending=False, issue=False)
         stock = {}
-        stock[representatives[0].username] = data_set.count()
-        stock['Target Capacity'] = 1000
+        for item in data_set:
+            stock[item.phone_type] = stock.get(item.phone_type, 0) + 1
         stock['Total'] = data_set.count()
         return JsonResponse(stock)
     return JsonResponse({'error': 'Invalid request.'})

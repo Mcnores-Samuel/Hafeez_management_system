@@ -99,7 +99,7 @@ function agentsStockChartDetails(url, dest, chartType, loader) {
                   labels: {
                     color: '#fe9a43',
                     font: {
-                      size: 10,
+                      size: 5,
                       weight: 'bold',
                     },
                   },
@@ -144,7 +144,7 @@ const loader_all_stock = '.loading-message-stock';
 const url_main_stock = '/system_core_1/get_main_stock_analysis/';
 const dest_main_stock = '.main_stock_chart';
 const loader_main_stock = '.loading-message-shop';
-const chartType_main_stock = 'doughnut';
+const chartType_main_stock = 'line';
 
 agentsStockChartDetails(
   url_agents_stock, dest_all_stock,
