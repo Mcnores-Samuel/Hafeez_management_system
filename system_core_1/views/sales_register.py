@@ -12,6 +12,8 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
 from webpush import send_user_notification
+from ..models.accessories import Accessories, Accessory_Sales
+from ..models.appliances import Appliances, Appliance_Sales
 
 
 @login_required
@@ -122,3 +124,146 @@ def uploadBulkSales(request):
         else:
             return JsonResponse({'status': 400, 'error': 'No data received'})
     return render(request, 'users/admin_sites/upload_sales.html')
+
+
+@login_required
+def accessary_sales(request):
+    """
+    The `Accessaries_Sales` view function is a Django view responsible for
+    handling the sales of accessories by agents.
+
+    Functionality:
+    - Checks if the user is authenticated and is an agent. Only agents are allowed
+      to access this view.
+    - Verifies if the agent has available stock of accessories.
+    - Renders the accessories sales form for agents to select accessories for sale.
+    - Creates a record of the accessories sale in the database.
+
+    Parameters:
+    - request: The HTTP request object containing user information.
+
+    Returns:
+    - If the user is not authenticated or is not an agent, it returns a 403 Forbidden
+      response.
+    - If the agent is authenticated and has stock, it renders the accessories sales form.
+
+    Usage:
+    Agents access this view to sell accessories.
+    It ensures that agents with available stock can proceed with accessory sales.
+    """
+    if request.user.is_staff and request.user.is_superuser:
+        data_list = Accessories.objects.all()
+        name_set = set()
+        model_set = set()
+        for data in data_list:
+            name_set.add(data.item)
+            model_set.add(data.model)
+        sorted_name_list = sorted(list(name_set))
+        sorted_model_list = sorted(list(model_set))
+        if request.method == 'POST':
+            accessory_name = request.POST.get('item')
+            model = request.POST.get('model')
+            quantity = int(request.POST.get('quantity'))
+            price_sold = request.POST.get('selling_price')
+            if quantity <= 0:
+                messages.error(request, 'Quantity must be greater than 0, please check and try again')
+                return redirect('accessary_sales')
+            try:
+                item = Accessories.objects.filter(item=accessory_name, model=model).first()
+                if item is None:
+                    messages.error(request, 'Invalid accessory name or model, please check and try again')
+                    return redirect('accessary_sales')
+                if item.total >= int(quantity):
+                    item.previous_total = item.total
+                    item.total -= int(quantity)
+                    item.date_modified = timezone.now()
+                    sales = Accessory_Sales()
+                    sales.item = item
+                    sales.model = model
+                    sales.total = int(quantity)
+                    sales.cost = item.cost_per_item
+                    sales.price_sold = int(price_sold)
+                    sales.profit = (int(price_sold) - item.cost_per_item) * int(quantity)
+                    sales.date_sold = timezone.now()
+                    sales.sold_by = request.user
+                    sales.save()
+                    item.save()
+                    messages.success(request, 'Successfully sold {} of {}(s)'.format(quantity, item.item))
+                    return redirect('accessary_sales')
+                messages.error(request, 'Insufficient stock, please check the quantity and try again')
+            except Accessories.DoesNotExist:
+                messages.error(request, 'Invalid accessory name or model, please check and try again')
+                return redirect('accessary_sales')
+        return render(request, 'users/admin_sites/accessories_sales.html', {'names': sorted_name_list, 'models': sorted_model_list})
+    return render(request, 'users/admin_sites/accessories_sales.html', {'names': sorted_name_list, 'models': sorted_model_list})
+
+
+@login_required
+def appliance_sales(request):
+    """
+    The `Appliance_Sales` view function is a Django view responsible for
+    handling the sales of appliances by agents.
+
+    Functionality:
+    - Checks if the user is authenticated and is an agent. Only agents are allowed
+      to access this view.
+    - Verifies if the agent has available stock of appliances.
+    - Renders the appliances sales form for agents to select appliances for sale.
+    - Creates a record of the appliance sale in the database.
+
+    Parameters:
+    - request: The HTTP request object containing user information.
+
+    Returns:
+    - If the user is not authenticated or is not an agent, it returns a 403 Forbidden
+      response.
+    - If the agent is authenticated and has stock, it renders the appliances sales form.
+
+    Usage:
+    Agents access this view to sell appliances.
+    It ensures that agents with available stock can proceed with appliance sales.
+    """
+    if request.user.is_staff and request.user.is_superuser:
+        data_list = Appliances.objects.all()
+        name_set = set()
+        model_set = set()
+        for data in data_list:
+            name_set.add(data.name)
+            model_set.add(data.model)
+        sorted_name_list = sorted(list(name_set))
+        sorted_model_list = sorted(list(model_set))
+        if request.method == 'POST':
+            appliance_name = request.POST.get('item')
+            model = request.POST.get('model')
+            quantity = int(request.POST.get('quantity'))
+            price_sold = request.POST.get('selling_price')
+            if quantity <= 0:
+                messages.error(request, 'Quantity must be greater than 0, please check and try again')
+                return redirect('appliance_sales')
+            try:
+                item = Appliances.objects.filter(name=appliance_name, model=model).first()
+                if item is None:
+                    messages.error(request, 'Invalid appliance name or model, please check and try again')
+                    return redirect('appliance_sales')
+                if item.total >= int(quantity):
+                    item.total -= int(quantity)
+                    item.date_modified = timezone.now()
+                    sales = Appliance_Sales()
+                    sales.item = item
+                    sales.model = model
+                    sales.total = int(quantity)
+                    sales.cost = item.cost
+                    sales.price_sold = int(price_sold)
+                    sales.profit = (int(price_sold) - item.cost) * int(quantity)
+                    sales.date_sold = timezone.now()
+                    sales.sold_by = request.user
+                    sales.save()
+                    item.save()
+                    messages.success(request, 'Successfully sold {} of {}(s)'.format(quantity, item.name))
+                    return redirect('appliance_sales')
+                messages.error(request, 'Insufficient stock, please check the quantity and try again')
+            except Appliances.DoesNotExist:
+                messages.error(request, 'Invalid appliance name or model, please check and try again')
+                return redirect('appliance_sales')
+        return render(request, 'users/admin_sites/appliances_sales.html', {'names': sorted_name_list, 'models': sorted_model_list})
+    return render(request, 'users/admin_sites/appliances_sales.html', {'names': sorted_name_list, 'models': sorted_model_list})

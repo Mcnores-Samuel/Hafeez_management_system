@@ -23,6 +23,118 @@
 </nav>
 <br>
 <div class="container">
+    {% if not data %}
+    <div class="sales-form">
+        <form action="" method="post" class="shadow-lg p-3 mb-5 rounded bg-secondary">
+            <h3 class="text-center text-light">Accessary Sales</h3>
+            <h5 class="text-center text-light">This form is for selling accessaries</h5>
+            {% csrf_token %}
+            <p>
+                <label for="item" class="text-light fw-bold">Accessary Name:</label>
+                <input type="text" name="item" class="form-control bg-dark text-light" placeholder="Enter Accessary name"
+                list="item_list" id="item" required>
+            </p>
+            <datalist id="item_list">
+                {% for item in names %}
+                <option value="{{ item }}">{{ item }}</option>
+                {% endfor %}
+            </datalist>
+            <p>
+                <label for="model" class="fw-bold text-light">Model:</label>
+                <input type="text" name="model" class="form-control bg-dark text-light" placeholder="Enter model"
+                list="model_list" id="model" required>
+            </p>
+            <datalist id="model_list">
+                {% for model in models %}
+                <option value="{{ model }}">{{ model }}</option>
+                {% endfor %}
+            </datalist>
+            <p>
+                <label for="quantity" class="fw-bold text-light">Quantity:</label>
+                <input type="number" name="quantity" class="form-control bg-dark text-light" placeholder="Enter quantity"
+                min="0" required>
+            </p>
+            <p>
+                <label for="id_selling_price" class="fw-bold text-light">Selling price:</label>
+                <input type="number" name="selling_price" class="form-control bg-dark text-light" placeholder="Enter selling price"
+                id="id_selling_price" min="0" required>
+            </p>
+            <button type="submit" class="btn btn-primary w-100" id="submit">submit</button>
+        </form>
+        <form action="" method="post" class="bg-secondary shadow-lg p-3 mb-5 rounded">
+            <h3 class="text-center text-light">Appliance Sales</h3>
+            <h5 class="text-center text-light">This form is for selling appliances</h5>
+            {% csrf_token %}
+            <p>
+                <label for="item" class="text-light fw-bold">Appliance Name:</label>
+                <input type="text" name="item" class="form-control bg-dark text-light" placeholder="Enter Appliance name"
+                list="item_list" id="item" required>
+            </p>
+            <datalist id="item_list">
+                {% for item in names %}
+                <option value="{{ item }}">{{ item }}</option>
+                {% endfor %}
+            </datalist>
+            <p>
+                <label for="model" class="fw-bold text-light">Model:</label>
+                <input type="text" name="model" class="form-control bg-dark text-light" placeholder="Enter model"
+                list="model_list" id="model" required>
+            </p>
+            <datalist id="model_list">
+                {% for model in models %}
+                <option value="{{ model }}">{{ model }}</option>
+                {% endfor %}
+            </datalist>
+            <p>
+                <label for="quantity" class="fw-bold text-light">Quantity:</label>
+                <input type="number" name="quantity" class="form-control bg-dark text-light" placeholder="Enter quantity"
+                min="0" required>
+            </p>
+            <p>
+                <label for="id_selling_price" class="fw-bold text-light">Selling price:</label>
+                <input type="number" name="selling_price" class="form-control bg-dark text-light" placeholder="Enter selling price"
+                id="id_selling_price" min="0" required>
+            </p>
+            <button type="submit" class="btn btn-primary w-100" id="submit">submit</button>
+        </form>
+        <form action="" method="post" class="shadow-lg p-3 mb-5 rounded bg-secondary">
+            <h3 class="text-center text-light">Refurbished Device Sales</h3>
+            <h5 class="text-center text-light">This form is for selling refurbished devices</h5>
+            {% csrf_token %}
+            <p>
+                <label for="item" class="text-light fw-bold">Device Name:</label>
+                <input type="text" name="item" class="form-control bg-dark text-light" placeholder="Enter Appliance name"
+                list="item_list" id="item" required>
+            </p>
+            <datalist id="item_list">
+                {% for item in names %}
+                <option value="{{ item }}">{{ item }}</option>
+                {% endfor %}
+            </datalist>
+            <p>
+                <label for="model" class="fw-bold text-light">Model:</label>
+                <input type="text" name="model" class="form-control bg-dark text-light" placeholder="Enter model"
+                list="model_list" id="model" required>
+            </p>
+            <datalist id="model_list">
+                {% for model in models %}
+                <option value="{{ model }}">{{ model }}</option>
+                {% endfor %}
+            </datalist>
+            <p>
+                <label for="quantity" class="fw-bold text-light">Quantity:</label>
+                <input type="number" name="quantity" class="form-control bg-dark text-light" placeholder="Enter quantity"
+                min="0" required>
+            </p>
+            <p>
+                <label for="id_selling_price" class="fw-bold text-light">Selling price:</label>
+                <input type="number" name="selling_price" class="form-control bg-dark text-light" placeholder="Enter selling price"
+                id="id_selling_price" min="0" required>
+            </p>
+            <button type="submit" class="btn btn-primary w-100" id="submit">submit</button>
+        </form>
+    </div>
+    {% endif %}
     <div class="row d-flex justify-content-center">
         {% if data %}
             {% for item in data %}
@@ -97,5 +209,26 @@
         {% endif %}
     </div>
 </div>
-<div class="divider"></div>
+
+<style>
+    .sales-form {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1rem;
+    }
+
+    .sales-form form {
+        padding: 1rem;
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .sales-form form input {
+        margin-bottom: 1rem;
+    }
+
+    .sales-form form:hover {
+        transform: scale(1.05);
+    }
+</style>
 {% endblock %}
+
