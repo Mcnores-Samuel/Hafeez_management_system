@@ -52,3 +52,19 @@ $(window).on('resize', () => {
     }
   }
 });
+
+
+$(document).ready(function() {
+  // Get the current page URL path
+  const currentPath = window.location.pathname;
+
+  // Select all navigation links
+  $(".navbar-nav .nav-item").each(function() {
+      // Check if the href matches the current path
+      if ($(this).find('a').attr('href') === currentPath) {
+          // Add the active class to the parent list item
+          console.log($(this).find('a').attr('href'));
+          $(this).addClass('active');
+      }
+  });
+});

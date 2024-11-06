@@ -99,6 +99,7 @@ urlpatterns = [
     path('total_pending_sales/', total_pending_sales, name='total_pending_sales'),
     path('get_yearly_sales/', data_for_charts.get_yearly_sales, name='get_yearly_sales'),
     path('get_yearly_sales_total/', data_for_charts.get_yearly_sales_total, name='get_yearly_sales_total'),
+    path('agent_daily_sales/', data_for_charts.agent_daily_sales, name='agent_daily_sales'),
     #system email and notifications auto updates
     path('morning_update/', morning_update, name='morning_update'),
     path('afternoon_update/', afternoon_update, name='afternoon_update'),

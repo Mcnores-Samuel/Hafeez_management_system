@@ -20,7 +20,7 @@ body {
 .wrapper .sidebar {
     width: 170px;
     height: 100%;
-    background: #2d3436;
+    background: #c8c9c9;
     position: fixed;
     top: 0;
     left: 0;
@@ -28,6 +28,7 @@ body {
     scrollbar-width: none;
     -ms-overflow-style: none;
     transition: all 0.5s ease-in-out;
+    margin-top: 3.9rem;
 }
 
 .wrapper::-webkit-scrollbar,
@@ -68,7 +69,7 @@ body {
 }
 
 .wrapper .sidebar ul li a {
-    color: #fff;
+    color: #000000;
     display: block;
     text-decoration: none;
 }
@@ -85,6 +86,7 @@ body {
     padding-top: 10px;
     width: 85%;
     transition: all 0.5s ease-in-out;
+    margin-top: 2.5rem;
 }
 
 .presentaion-resize {
@@ -96,23 +98,22 @@ body {
 }
 
 .top-display {
-    padding: 8px;
-    height: 100%;
+    padding: 5px;
     width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 10px;
-    position: sticky;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    position: fixed;
     top: -1px;
-    z-index: 1000;
+    z-index: 999;
     background: #022842;
-    border-radius: 5px;
 }
 
 .search-form {
-    width: 50%;
-    margin-left: 10px;
+    padding: 8px;
+}
+
+.topbar-wrapper {
+    padding: 0;
 }
 
 .notify {
@@ -152,7 +153,7 @@ body {
 }
 
 .wrapper .sidebar ul li.active {
-    background-color: #636e72; /* Background color for active section */
+    background-color: #025e80; /* Background color for active section */
 }
 
 .wrapper .sidebar ul li.active a {
@@ -185,6 +186,7 @@ body {
     .wrapper .sidebar {
         background: linear-gradient(90deg, #23435c, #2d3436);
         height: 100%;
+        margin-top: 1px;
     }
 
     .wrapper .sidebar ul li {
@@ -212,6 +214,7 @@ body {
     }
 
     .presentaion {
+        margin-top: 7rem;
         margin-left: 0;
         width: 100%;
     }
@@ -223,7 +226,6 @@ body {
 
     .top-display {
         padding: 8px;
-        height: 100%;
         width: 100%;
         display: flex;
         flex-wrap: wrap;

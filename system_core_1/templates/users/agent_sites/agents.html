@@ -45,21 +45,9 @@
         <button class="scroll-back"><i class='bx bxs-up-arrow-square'></i></button>
         <div class="row w-100">
             <div class="col-md-2 col-12">
-                <div class="topbar">
-                    <div class="logo custom-logo">HE</div>
-                    <button class="btn d-md-none menu-btn menu" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarCollapse" aria-expanded="false" aria-controls="sidebarCollapse">
-                        <span class="material-icons">
-                            menu
-                            </span>
-                    </button>
-                </div>
                 <br>
                 <div class="collapse d-md-block wrapper" id="sidebarCollapse">
                     <div class="sidebar">
-                        <div class="topbar-wrapper heading">
-                            <div class="logo">HE</div>
-                            <div class="text-center text-fs text-light brandname text">Hafeez Enterprise</div>
-                        </div>
                         <ul class="navbar-nav flex-column">
                             <li class="nav-item">
                                 <a class="nav-link d-flex align-items-center" href="{% url 'dashboard' %}"
@@ -148,6 +136,91 @@
                 </div>
             </div>
         </div>
+        <div class="top-display card-bg">
+            <div class="topbar-wrapper">
+                <div class="logo">HE</div>
+            </div>
+            <div class="topbar">
+                <button class="btn d-md-none menu-btn menu" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarCollapse" aria-expanded="false" aria-controls="sidebarCollapse">
+                    <span class="material-icons">
+                        menu
+                        </span>
+                </button>
+            </div>
+            <form action="{% url 'in_stock' %}" method="post" class="d-flex position-relative search-form text-light">
+                {% csrf_token %}
+                <input type="search" id="search_term" name="search_term" class="form-control me-2"
+                placeholder="Search IMEI number or Contract number" aria-label="Search" aria-describedby="search-addon" />
+                <button type="submit" class="btn search-btn material-icons">search</button>
+            </form>
+            <div class="notify">
+                <div class="dropdown">
+                    <button type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                        <span class="material-icons common-color">
+                            notifications
+                        </span>
+                        <span class="badge bg-danger"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a class="dropdown-item" href="#">
+                                <div class="d-flex">
+                                        <span class="material-icons">
+                                            notifications
+                                        </span>
+                                    <div class="">
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="profile">
+                {% if avatar.image %}
+                <img src="{{ avatar.image.url }}" alt="avatar" class="avatar">
+                {% else %}
+                    <span class="material-icons">
+                        account_circle
+                    </span>
+                {% endif %}
+                <div class="dropdown">
+                    <button type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a class="dropdown-item" href="{% url 'profile' %}">
+                                <div class="d-flex">
+                                    <div class="icon">
+                                        <span class="material-icons">
+                                            account_circle
+                                        </span>
+                                    </div>
+                                    <div class="">
+                                        <p>Profile</p>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{% url 'sign_out' %}">
+                                <div class="d-flex">
+                                    <div class="icon">
+                                        <span class="material-icons">
+                                            logout
+                                        </span>
+                                    </div>
+                                    <div class="">
+                                        <p>Logout</p>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
         <section class="presentaion">
             {% block content %}
                 {% if messages %}
@@ -177,81 +250,6 @@
                         {% endfor %}
                     </div>
                 {% endif %}
-            <div class="top-display d-flex card-bg">
-                <form action="{% url 'in_stock' %}" method="post" class="d-flex position-relative search-form text-light">
-                    {% csrf_token %}
-                    <input type="search" id="search_term" name="search_term" class="form-control me-2"
-                    placeholder="Search IMEI number or Contract number" aria-label="Search" aria-describedby="search-addon" />
-                    <button type="submit" class="btn search-btn material-icons">search</button>
-                </form>
-                <div class="notify">
-                    <div class="dropdown">
-                        <button type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                            <span class="material-icons common-color">
-                                notifications
-                            </span>
-                            <span class="badge bg-danger"></span>
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <a class="dropdown-item" href="#">
-                                    <div class="d-flex">
-                                            <span class="material-icons">
-                                                notifications
-                                            </span>
-                                        <div class="">
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="profile">
-                    {% if avatar.image %}
-                    <img src="{{ avatar.image.url }}" alt="avatar" class="avatar">
-                    {% else %}
-                        <span class="material-icons">
-                            account_circle
-                        </span>
-                    {% endif %}
-                    <div class="dropdown">
-                        <button type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <a class="dropdown-item" href="{% url 'profile' %}">
-                                    <div class="d-flex">
-                                        <div class="icon">
-                                            <span class="material-icons">
-                                                account_circle
-                                            </span>
-                                        </div>
-                                        <div class="">
-                                            <p>Profile</p>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="{% url 'sign_out' %}">
-                                    <div class="d-flex">
-                                        <div class="icon">
-                                            <span class="material-icons">
-                                                logout
-                                            </span>
-                                        </div>
-                                        <div class="">
-                                            <p>Logout</p>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
             <br>
             <section class="charts-and-data">
                 <div class="row gy-3">
@@ -349,22 +347,22 @@
                     <div class="col-md-6 col-12">
                         <div class="card">
                             <div class="card-header text-center">
-                                <h4 class="fw-bold text-muted">Stock</h4>
+                                <h4 class="fw-bold text-muted">Daily Sales</h4>
                             </div>
                             <div class="card-body">
-                                <div class="loading-message-agent-stock"></div>
-                                <canvas class="StockChart" width="400" height="400"></canvas>
+                                <div class="loading-message-Daily-Sales"></div>
+                                <canvas class="dailySalesChart" width="400" height="400"></canvas>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6 col-12">
                         <div class="card">
                             <div class="card-header text-center">
-                                <h4 class="fw-bold text-muted">Sales</h4>
+                                <h4 class="fw-bold text-muted">Available Stock</h4>
                             </div>
                             <div class="card-body">
-                                <div class="loading-message-main-stock"></div>
-                                <canvas class="salesChart" width="400" height="400"></canvas>
+                                <div class="loading-message-agent-stock"></div>
+                                <canvas class="StockChart" width="400" height="400"></canvas>
                             </div>
                         </div>
                     </div>
@@ -373,7 +371,18 @@
             <br>
             <section class="yearly_analysis">
                 <div class="row">
-                    <div class="col-md-6 col-12 w-100">
+                    <div class="col-md-6 col-12">
+                        <div class="card">
+                            <div class="card-header text-center">
+                                <h4 class="fw-bold text-muted">Monthly Sales</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="loading-message-main-stock"></div>
+                                <canvas class="salesChart" width="400" height="400"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-12">
                         <div class="card">
                             <div class="card-header text-center">
                                 <h4 class="fw-bold text-muted">Yearly Sales</h4>

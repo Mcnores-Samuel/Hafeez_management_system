@@ -5,6 +5,7 @@ from ..models.agent_profile import AgentProfile
 from django.contrib.auth.models import Group
 from ..models.user_profile import UserProfile
 from ..data_analysis_engine.admin_panel.mainstorage_analysis import MainStorageAnalysis
+from ..data_query_engine.agents_queries.agents_data_query import AgentsDataQuery
 
 
 @login_required
@@ -16,6 +17,7 @@ def get_daily_sales_json_loan(request):
     return JsonResponse({'error': 'Invalid request.'})
 
 
+@login_required
 def get_daily_sales_json_cash(request):
     """Returns a JSON object containing the daily sales data."""
     if request.method == 'GET':
@@ -33,6 +35,7 @@ def get_weekly_sales_json_loan(request):
     return JsonResponse({'error': 'Invalid request.'})
 
 
+@login_required
 def get_weekly_sales_json_cash(request):
     """Returns a JSON object containing the weekly sales data."""
     if request.method == 'GET':
@@ -137,4 +140,13 @@ def get_yearly_sales_total(request):
     if request.method == 'GET':
         sales = MainStorageAnalysis().get_sales_for_all_months(request.user)
         return JsonResponse(sales[1], safe=False)
+    return JsonResponse({'error': 'Invalid request.'})
+
+
+@login_required
+def agent_daily_sales(request):
+    """Returns a JSON object containing the daily sales data."""
+    if request.method == 'GET':
+        sales = AgentsDataQuery().daily_sales(request.user)
+        return JsonResponse(sales)
     return JsonResponse({'error': 'Invalid request.'})

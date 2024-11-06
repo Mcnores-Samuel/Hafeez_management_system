@@ -15,6 +15,22 @@ class AgentsDataQuery:
     def __init__(self, *args, **kwargs):
         pass
 
+    def daily_sales(self, user):
+        """Returns the daily sales for the agent."""
+        if user.groups.filter(name='agents').exists():
+            agent_profile = AgentProfile.objects.get(user=user)
+            if agent_profile:
+                daily_sales = MainStorage.objects.filter(
+                    agent=user, stock_out_date=timezone.now().date(),
+                    in_stock=False, assigned=True, sold=True,
+                    missing=False, pending=False, issue=False,
+                    faulty=False)
+                sales = {}
+                for sale in daily_sales:
+                    sales[sale.phone_type] = sales.get(sale.phone_type, 0) + 1
+                return sales
+        return None
+
     def stock(self, user, status, request):
         """Returns a list of devices in stock."""
         if user.groups.filter(name='agents').exists():
