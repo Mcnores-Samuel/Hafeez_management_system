@@ -20,7 +20,7 @@ body {
 .wrapper .sidebar {
     width: 170px;
     height: 100%;
-    background: #c8c9c9;
+    background: gray;
     position: fixed;
     top: 0;
     left: 0;
@@ -214,7 +214,7 @@ body {
     }
 
     .presentaion {
-        margin-top: 7rem;
+        margin-top: 8rem;
         margin-left: 0;
         width: 100%;
     }
