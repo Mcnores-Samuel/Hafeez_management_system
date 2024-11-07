@@ -4,7 +4,7 @@ export default function metricsRender() {
         <section class="charts_by_chartjs">
             <div class="row gy-3">
                 <div class="col-md-6 col-12">
-                    <div class="card bg-dark">
+                    <div class="card">
                         <div class="card-header text-center">
                             <h4 class="text-muted fw-bold">Daily Devices collected</h4>
                         </div>
@@ -14,7 +14,7 @@ export default function metricsRender() {
                     </div>
                 </div>
                 <div class="col-md-6 col-12">
-                    <div class="card bg-dark">
+                    <div class="card">
                         <div class="card-header text-center">
                             <h4 class="fw-bold text-muted">Available Stock</h4>
                         </div>
@@ -29,7 +29,7 @@ export default function metricsRender() {
         <section class="charts_by_chartjs">
             <div class="row gy-3">
                 <div class="col-md-6 col-12">
-                    <div class="card bg-dark">
+                    <div class="card">
                         <div class="card-header text-center">
                             <h4 class="fw-bold text-muted">Daily Payments</h4>
                         </div>
@@ -39,7 +39,7 @@ export default function metricsRender() {
                     </div>
                 </div>
                 <div class="col-md-6 col-12">
-                    <div class="card bg-dark">
+                    <div class="card">
                         <div class="card-header text-center">
                             <h4 class="fw-bold text-muted">Stock By Individuals</h4>
                         </div>
@@ -54,7 +54,7 @@ export default function metricsRender() {
         <section class="charts_by_chartjs">
             <div class="row gy-3">
                 <div class="col-md-6 col-12">
-                    <div class="card bg-dark">
+                    <div class="card">
                         <div class="card-header text-center">
                             <h4 class="fw-bold text-muted">Overdue Stock</h4>
                         </div>
@@ -65,7 +65,7 @@ export default function metricsRender() {
                     </div>
                 </div>
                 <div class="col-md-6 col-12">
-                    <div class="card bg-dark">
+                    <div class="card">
                         <div class="card-header text-center">
                             <h4 class="fw-bold text-muted">Monthly Sales</h4>
                         </div>
@@ -81,7 +81,7 @@ export default function metricsRender() {
         <section class="charts_by_chartjs">
             <div class="row gy-3">
                 <div class="col-md-6 col-12">
-                    <div class="card bg-dark">
+                    <div class="card">
                         <div class="card-header text-center">
                             <h4 class="fw-bold text-muted">Agent Overall Stock</h4>
                         </div>
@@ -92,7 +92,7 @@ export default function metricsRender() {
                     </div>
                 </div>
                 <div class="col-md-6 col-12">
-                    <div class="card bg-dark">
+                    <div class="card">
                         <div class="card-header text-center">
                             <h4 class="fw-bold text-muted">Main Shop Stock</h4>
                         </div>

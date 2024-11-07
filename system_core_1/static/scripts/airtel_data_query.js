@@ -1,6 +1,6 @@
 $(document).ready(function() {
     // Function to fetch and display Airtel devices data
-    const input = $('#search_term');
+    const input = $('#search_data');
     const form = $('form');
     const defualtFilter = $('#defualtfilter');
     const loader = $('#loader');
@@ -57,7 +57,7 @@ $(document).ready(function() {
             $('body').append(
                 `
                 <div class="modal fade" id="Data${item.promoter.id}" tabindex="-1" aria-labelledby="Data${item.promoter.id}View" aria-hidden="true">
-                    <div class="modal-dialog modal-lg">
+                    <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title text-center fw-bold">Payment by ${item.promoter.first_name} ${item.promoter.last_name}</h5>

@@ -14,7 +14,7 @@
 <div class="container d-flex justify-content-between bg-dark" style="padding: 10px;">
     <form action="" method="post" class="d-flex position-relative search-form text-light">
         {% csrf_token %}
-        <input type="search" id="search_term" name="search_query" class="form-control me-2"
+        <input type="search" id="search_data" name="search_query" class="form-control me-2"
         placeholder="filter the specific promoter here" aria-label="Search" aria-describedby="search-addon"
         list="promoters">
 
@@ -61,10 +61,10 @@
 <div class="container" id="container">
     {% bootstrap_messages %}
     <div class="table-responsive">
-        <table class="table table-dark table-hover table-bordered
+        <table class="table table-secondary table-hover table-bordered
         table-sm" id="airtelDevicesTable">
             <thead>
-                <tr>
+                <t class="common-bg">
                     <th scope="col">Promoter</th>
                     <th scope="col">Total Devices</th>
                     <th scope="col">In Stock</th>

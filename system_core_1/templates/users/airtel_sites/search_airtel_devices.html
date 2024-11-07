@@ -12,7 +12,7 @@
     <form action="{% url 'search_airtel_devices' %}" method="post" class="d-flex position-relative search-form text-light">
         {% csrf_token %}
         <input type="search" id="search_term" name="search_query" class="form-control me-2"
-        placeholder="Search IMEI number" aria-label="Search" aria-describedby="search-addon" />
+        placeholder="Search IMEI number" aria-label="Search" aria-describedby="search-addon" autofocus/>
         <button type="submit" class="btn search-btn material-icons">search</button>
     </form>
 </div>

@@ -40,8 +40,8 @@ class Accessories(models.Model):
     total = models.IntegerField()
     previous_total = models.IntegerField()
     cost_per_item = models.DecimalField(max_digits=20, decimal_places=2)
-    date_added = models.DateTimeField(timezone.now())
-    date_modified = models.DateTimeField(timezone.now())
+    date_added = models.DateTimeField(default=timezone.now)
+    date_modified = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return self.item
@@ -71,7 +71,7 @@ class Accessory_Sales(models.Model):
     cost = models.DecimalField(max_digits=20, decimal_places=2)
     price_sold = models.DecimalField(max_digits=20, decimal_places=2)
     profit = models.DecimalField(max_digits=20, decimal_places=2)
-    date_sold = models.DateTimeField(timezone.now())
+    date_sold = models.DateTimeField(default=timezone.now)
     sold_by = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
 
 

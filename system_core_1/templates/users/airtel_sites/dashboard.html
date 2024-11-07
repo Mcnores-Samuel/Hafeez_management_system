@@ -318,19 +318,6 @@
             </div>
             <section id="container">
             </section>
-
-            <div class="offcanvas offcanvas-start common-bg" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
-            <div class="offcanvas-header">
-                <h5 class="offcanvas-title fw-bold" id="offcanvasWithBothOptionsLabel">Payment updates</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-            </div>
-            <div class="offcanvas-body">
-                <p class="text-center">
-                    The Following payments have been made by promoters attached to the payment details below.
-                </p>
-                <hr>
-            </div>
-            </div>
             <br>
             <div class="modal fade" id="web_push_request" tabindex="-1" aria-labelledby="web_push_request" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
@@ -353,6 +340,18 @@
             </div>
             {% endblock %}
         </section>
+        <div class="offcanvas offcanvas-start common-bg" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title fw-bold" id="offcanvasWithBothOptionsLabel">Payment updates</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                <p class="text-center">
+                    The Following payments have been made by promoters attached to the payment details below.
+                </p>
+                <hr>
+            </div>
+        </div>
         <br>
         <script>
             window.addEventListener('DOMContentLoaded', () => {

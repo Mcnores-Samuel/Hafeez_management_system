@@ -4,7 +4,7 @@ from .views import (registration_view, data_updates, central_display, home_page,
                     user_dashboard, action_on_data_select, search_and_filters, data_for_charts)
 from .views.stock_analysis import (get_source_stock, get_yearly_product_sales, admin_stock_analysis)
 from .views.feedback import feedback
-from .views.add_to_stock import add_to_stock, add_airtel_devices_stock
+from .views.add_to_stock import (add_to_stock, add_airtel_devices_stock, add_accessaries, add_appliances)
 from .views.pending_sales import total_pending_sales, revert_to_stock, pending_sales, pending_sales_details
 from .views.defects import defects
 from .views import revenues
@@ -52,6 +52,8 @@ urlpatterns = [
     path('profile/', data_updates.profile, name='profile'),
     path('feedback/', feedback, name='feedback'),
     path('add_to_stock/', add_to_stock, name='add_to_stock'),
+    path('add_accessaries/', add_accessaries, name='add_accessaries'),
+    path('add_appliances/', add_appliances, name='add_appliances'),
     path('add_airtel_devices_stock/', add_airtel_devices_stock, name='add_airtel_devices_stock'),
     path('create_new_promoter/', create_new_promoter, name='create_new_promoter'),
     path('search_airtel_devices/', search_airtel_devices, name='search_airtel_devices'),

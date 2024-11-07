@@ -36,7 +36,7 @@ body {
     display: none;
 }
 
-#search_term {
+#search_term, #search_data {
     background: transparent;
     border-top-left-radius: 20px;
     border-bottom-left-radius: 20px;

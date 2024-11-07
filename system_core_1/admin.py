@@ -12,6 +12,8 @@ from .adminsites.admin_commission import CommissionAdmin
 from .adminsites.promoterPayments_admin import PromoterPaymentsAdmin
 from .adminsites.admin_contacts import ContactAdmin
 from .adminsites.admin_refarbished_phone import RefarbishedDevicesAdmin
+from .adminsites.accessories import AdminAccessories, AdminAccessary_Sales
+from .adminsites.admin_appliances import AppliancesAdmin, Appliance_SalesAdmin
 from .models.agent_profile import AgentProfile
 from .models.user_profile import UserProfile, UserAvatar
 from .models.main_storage import MainStorage
@@ -23,6 +25,8 @@ from .models.commission import Commission
 from .models.promoter_payments import PromoterPayments
 from .models.contacts import Contact
 from .models.refarbished_devices import RefarbishedDevices
+from .models.accessories import Accessories, Accessory_Sales
+from .models.appliances import Appliances, Appliance_Sales
 
 
 admin.site.site_url = "/system_core_1/dashboard"
@@ -42,3 +46,7 @@ admin.site.register(Commission, CommissionAdmin)
 admin.site.register(Contact, ContactAdmin)
 admin.site.register(RefarbishedDevices, RefarbishedDevicesAdmin)
 admin.site.register(PromoterPayments, PromoterPaymentsAdmin)
+admin.site.register(Accessories, AdminAccessories)
+admin.site.register(Accessory_Sales, AdminAccessary_Sales)
+admin.site.register(Appliances, AppliancesAdmin)
+admin.site.register(Appliance_Sales, Appliance_SalesAdmin)

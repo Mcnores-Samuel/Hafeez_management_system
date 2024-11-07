@@ -1,6 +1,6 @@
 $(document).ready(function() {
     // Function to fetch and display promoter data
-    const input = $('#search_term');
+    const input = $('#search_data');
     const form = $('form');
     const defualtFilter = $('#defualtfilter');
 
