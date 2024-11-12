@@ -135,6 +135,14 @@ def metrics(request):
             payment_confirmed=False,
             paid=False,
             activated=False)
+        
+        monthly_sales = Airtel_mifi_storage.objects.filter(
+            in_stock=False,
+            payment_confirmed=True,
+            paid=True,
+            activated=True,
+            date_sold__month=timezone.now().month
+        )
         promoters = UserProfile.objects.filter(groups__name='promoters').all().annotate(
             total_devices=Count('airtel_mifi_storage', filter=Q(airtel_mifi_storage__in_stock=True)),
             todays_idu_collection=Count('airtel_mifi_storage', filter=Q(
@@ -180,6 +188,24 @@ def metrics(request):
                 airtel_mifi_storage__device_type='MIFI'
             )),
 
+            overdue_idu=Count('airtel_mifi_storage', filter=Q(
+                airtel_mifi_storage__in_stock=True,
+                airtel_mifi_storage__device_type='IDU',
+                airtel_mifi_storage__payment_confirmed=False,
+                airtel_mifi_storage__paid=False,
+                airtel_mifi_storage__activated=False,
+                airtel_mifi_storage__next_due_date__lte=timezone.now()
+            )),
+
+            overdue_mifi=Count('airtel_mifi_storage', filter=Q(
+                airtel_mifi_storage__in_stock=True,
+                airtel_mifi_storage__device_type='MIFI',
+                airtel_mifi_storage__payment_confirmed=False,
+                airtel_mifi_storage__paid=False,
+                airtel_mifi_storage__activated=False,
+                airtel_mifi_storage__next_due_date__lte=timezone.now()
+            ))
+
         ).order_by('first_name')
 
         data = []
@@ -196,7 +222,9 @@ def metrics(request):
                 'todays_mifi_payments': promoter.todays_mifi_payments,
                 'todays_idu_payments': promoter.todays_idu_payments,
                 'idu_stock': promoter.idu_stock,
-                'mifi_stock': promoter.mifi_stock
+                'mifi_stock': promoter.mifi_stock,
+                'overdue_idu': promoter.overdue_idu,
+                'overdue_mifi': promoter.overdue_mifi
             })
         
         data.append({
@@ -205,6 +233,15 @@ def metrics(request):
                 'idu': 'IDU',
                 'total_mifi': availableStock.filter(device_type='MIFI').count(),
                 'total_idu': availableStock.filter(device_type='IDU').count()
+            }
+        })
+
+        data.append({
+            'monthly_sales': {
+                'mifi': 'MIFI',
+                'idu': 'IDU',
+                'total_mifi': monthly_sales.filter(device_type='MIFI').count(),
+                'total_idu': monthly_sales.filter(device_type='IDU').count()
             }
         })
         return JsonResponse({'data': data})

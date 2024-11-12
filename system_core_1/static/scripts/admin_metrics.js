@@ -1,6 +1,7 @@
 import metricsRender from './metric_render.js';
 import { dailyMetricsChart, availableStock,
-    dailyPaymentsChart, stockByIndividuals } from './airtel_metric_charts.js';
+    dailyPaymentsChart, stockByIndividuals,
+    overdueStock, airtelMonthlySalesChart } from './airtel_metric_charts.js';
 
 $(document).ready(function() {
     const metricsBtn = $('#metrics');
@@ -19,8 +20,10 @@ $(document).ready(function() {
             success: function(response) {
                 dailyMetricsChart(response.data);
                 availableStock(response.data);
+                airtelMonthlySalesChart(response.data);
                 dailyPaymentsChart(response.data);
                 stockByIndividuals(response.data);
+                overdueStock(response.data);
                 loader.hide();
             },
             error: function(response) {

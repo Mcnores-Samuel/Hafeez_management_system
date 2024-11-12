@@ -32,21 +32,21 @@
             <p>
                 <label for="item" class="text-light fw-bold">Accessary Name:</label>
                 <input type="text" name="item" class="form-control bg-dark text-light" placeholder="Enter Accessary name"
-                list="item_list" id="item" required>
+                list="item_list_ac" id="item" required>
             </p>
-            <datalist id="item_list">
-                {% for item in names %}
-                <option value="{{ item }}">{{ item }}</option>
+            <datalist id="item_list_ac">
+                {% for item_ac in names_ac %}
+                <option value="{{ item_ac }}">{{ item_ac }}</option>
                 {% endfor %}
             </datalist>
             <p>
                 <label for="model" class="fw-bold text-light">Model:</label>
                 <input type="text" name="model" class="form-control bg-dark text-light" placeholder="Enter model"
-                list="model_list" id="model" required>
+                list="model_list_ac" id="model" required>
             </p>
-            <datalist id="model_list">
-                {% for model in models %}
-                <option value="{{ model }}">{{ model }}</option>
+            <datalist id="model_list_ac">
+                {% for model_ac in models_ac %}
+                <option value="{{ model_ac }}">{{ model_ac }}</option>
                 {% endfor %}
             </datalist>
             <p>
@@ -68,21 +68,21 @@
             <p>
                 <label for="item" class="text-light fw-bold">Appliance Name:</label>
                 <input type="text" name="item" class="form-control bg-dark text-light" placeholder="Enter Appliance name"
-                list="item_list" id="item" required>
+                list="item_list_ap" id="item" required>
             </p>
-            <datalist id="item_list">
-                {% for item in names %}
-                <option value="{{ item }}">{{ item }}</option>
+            <datalist id="item_list_ap">
+                {% for item_ap in names_ap %}
+                <option value="{{ item_ap }}">{{ item_ap }}</option>
                 {% endfor %}
             </datalist>
             <p>
                 <label for="model" class="fw-bold text-light">Model:</label>
                 <input type="text" name="model" class="form-control bg-dark text-light" placeholder="Enter model"
-                list="model_list" id="model" required>
+                list="model_list_ap" id="model" required>
             </p>
-            <datalist id="model_list">
-                {% for model in models %}
-                <option value="{{ model }}">{{ model }}</option>
+            <datalist id="model_list_ap">
+                {% for model_ap in models_ap %}
+                <option value="{{ model_ap }}">{{ model_ap }}</option>
                 {% endfor %}
             </datalist>
             <p>

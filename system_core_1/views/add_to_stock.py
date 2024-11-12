@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from ..models.main_storage import MainStorage, Airtel_mifi_storage
 from ..models.accessories import Accessories
 from ..models.appliances import Appliances
+from ..models.refarbished_devices import  RefarbishedDevices
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import Group
 from ..models.user_profile import UserProfile
@@ -183,6 +184,7 @@ def add_appliances(request):
                         date_added=timezone.now(), date_modified=timezone.now())
                     messages.success(request, 'Successfully added {} {}(s)'.format(total, item))
                 else:
+                    instance.previous_total = instance.total
                     instance.total += int(total)
                     instance.cost = cost
                     instance.date_modified = timezone.now()
@@ -192,3 +194,39 @@ def add_appliances(request):
                 messages.error(request, 'Something went wrong, please try again.')
         return render(request, 'users/admin_sites/add_appliances.html', {'names': sorted_name_list, 'models': sorted_model_list})
     return render(request, 'users/admin_sites/add_appliances.html', {'names': sorted_name_list, 'models': sorted_model_list})
+
+
+@login_required
+def add_refarbished(request):
+    if request.user.is_staff and request.user.is_superuser:
+        data = RefarbishedDevices.objects.all()
+        name_set = set()
+        model_set = set()
+        for item in data:
+            name_set.add(item.name)
+            model_set.add(item.model)
+        sorted_name_list = sorted(list(name_set))
+        sorted_model_list = sorted(list(model_set))
+        if request.method == 'POST':
+            item = request.POST.get('refarbished_name')
+            model = request.POST.get('model')
+            total = request.POST.get('quantity')
+            cost = request.POST.get('cost_price')
+            try:
+                instance = RefarbishedDevices.objects.filter(name=item, model=model).first()
+                if instance is None:
+                    RefarbishedDevices.objects.create(
+                        name=item, model=model, total=total, cost=cost,
+                        date_added=timezone.now(), date_modified=timezone.now())
+                    messages.success(request, 'Successfully added {} {}(s)'.format(total, item))
+                else:
+                    instance.previous_total = instance.total
+                    instance.total += int(total)
+                    instance.cost = cost
+                    instance.date_modified = timezone.now()
+                    instance.save()
+                    messages.success(request, 'Successfully added {} {}(s)'.format(total, item))
+            except Exception as e:
+                messages.error(request, 'Something went wrong, please try again.')
+        return render(request, 'users/admin_sites/add_refarbished.html', {'names': sorted_name_list, 'models': sorted_model_list})
+    return render(request, 'users/admin_sites/add_refarbished.html', {'names': sorted_name_list, 'models': sorted_model_list})

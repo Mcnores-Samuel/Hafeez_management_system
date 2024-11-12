@@ -54,56 +54,28 @@ export default function metricsRender() {
         <section class="charts_by_chartjs">
             <div class="row gy-3">
                 <div class="col-md-6 col-12">
-                    <div class="card">
+                    <div class="card bg-danger">
                         <div class="card-header text-center">
-                            <h4 class="fw-bold text-muted">Overdue Stock</h4>
+                            <h4 class="fw-bold">Overdue Stock</h4>
                         </div>
                         <div class="card-body">
-                            <div class="agent_sales_loan_chart_loader"></div>
-                            <canvas class="agent_sales_loan_chart" width="400" height="400"></canvas>
+                            <canvas class="overdueStockChart" width="300" height="300"></canvas>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-6 col-12">
-                    <div class="card">
+                    <div class="card bg-success">
                         <div class="card-header text-center">
-                            <h4 class="fw-bold text-muted">Monthly Sales</h4>
+                            <h4 class="fw-bold">Monthly Sales</h4>
                         </div>
                         <div class="card-body">
-                            <div class="agent_sales_cash_chart_loader"></div>
-                            <canvas class="agent_sales_cash_chart" width="400" height="400"></canvas>
+                            <canvas class="monthlySalesChart" width="300" height="300"></canvas>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
         <br>
-        <section class="charts_by_chartjs">
-            <div class="row gy-3">
-                <div class="col-md-6 col-12">
-                    <div class="card">
-                        <div class="card-header text-center">
-                            <h4 class="fw-bold text-muted">Agent Overall Stock</h4>
-                        </div>
-                        <div class="card-body">
-                            <div class="loading-message-stock"></div>
-                            <canvas class="all_agents_stock_chart" width="400" height="400"></canvas>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-12">
-                    <div class="card">
-                        <div class="card-header text-center">
-                            <h4 class="fw-bold text-muted">Main Shop Stock</h4>
-                        </div>
-                        <div class="card-body">
-                            <div class="loading-message-shop"></div>
-                            <canvas class="main_stock_chart" width="400" height="400"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
     `;
     container.html(chartsContainer);
 }

@@ -22,6 +22,7 @@ class Appliances(models.Model):
     name = models.CharField(max_length=100)
     model = models.CharField(max_length=100)
     total = models.IntegerField()
+    previous_total = models.IntegerField(default=0)
     cost = models.DecimalField(max_digits=10, decimal_places=2)
     date_added = models.DateTimeField(default=timezone.now)
     date_modified = models.DateTimeField(default=timezone.now)

@@ -20,6 +20,8 @@ def sales_stock_summry(request):
             agent = UserProfile.objects.get(id=agent_id)
             actual_date = timezone.datetime.strptime(date, '%Y-%m-%d')
 
+            username = agent.username
+
             available_stock = MainStorage.objects.filter(
                 agent=agent, in_stock=True, sold=False, assigned=True,
                 pending=False, missing=False, recieved=True)
@@ -74,6 +76,7 @@ def sales_stock_summry(request):
             stock = dict(stock)
             content = {
                 'data': {
+                    'username': username,
                     'total_stock': total_stock,
                     'total_daily_sales': tota_daily_sales,
                     'total_monthly_sales': total_monthly_sales,

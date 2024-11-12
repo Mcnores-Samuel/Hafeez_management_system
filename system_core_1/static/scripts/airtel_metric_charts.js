@@ -97,7 +97,6 @@ function availableStock(data) {
     const colors = [];
 
     data.forEach(function(item) {
-        console.log(item);
         if (item.available_stock) {
             if (item.available_stock.mifi === 'MIFI') {
                 modelList.push(item.available_stock.mifi);
@@ -170,6 +169,94 @@ function availableStock(data) {
         },
     });
 }
+
+function airtelMonthlySalesChart(data) {
+    let monthlySalesChart = null;
+    if (monthlySalesChart !== null) {
+        monthlySalesChart.destroy();
+    }
+
+    const monthlySalesCtx = $('.monthlySalesChart').get(0).getContext('2d');
+    const modelList = [];
+    const total = [];
+    let grandTotal = 0;
+    const colors = [];
+
+    data.forEach(function(item) {
+        if (item.monthly_sales) {
+            if (item.monthly_sales.mifi === 'MIFI') {
+                modelList.push(item.monthly_sales.mifi);
+                total.push(item.monthly_sales.total_mifi);
+                grandTotal += item.monthly_sales.total_mifi;
+            }
+            if (item.monthly_sales.idu === 'IDU') {
+                modelList.push(item.monthly_sales.idu);
+                total.push(item.monthly_sales.total_idu);
+                grandTotal += item.monthly_sales.total_idu;
+            }
+        }
+    });
+
+
+    for (let i = 0; i < modelList.length; i++) {
+        const num1 = Math.round(Math.random() * 255 + 1);
+        const num2 = Math.round(Math.random() * 255 + 1);
+        const num3 = Math.round(Math.random() * 255 + 1);
+        colors.push(`rgb(${num1}, ${num2}, ${num3})`);
+    }
+
+    monthlySalesChart = new Chart(monthlySalesCtx, {
+        type: 'doughnut',
+        data: {
+            labels: modelList,
+            datasets: [{
+                label: 'Monthly Sales',
+                data: total,
+                backgroundColor: colors,
+                borderColor: colors,
+                borderWidth: 2
+            }],
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: {
+              animateScale: true,
+              animateRotate: true,
+            },
+            events: ['mousemove'],
+            interaction: {
+              mode: 'nearest',
+            },
+            plugins: {
+              title: {
+                display: true,
+                text: `Total sales: ${grandTotal}`,
+                color: '#fe9a43',
+                position: 'bottom',
+                align: 'center',
+                font: {
+                  weight: 'bold',
+                },
+                padding: 8,
+                fullSize: true,
+              },
+              legend: {
+                display: true,
+                position: 'right',
+                labels: {
+                  color: '#fe9a43',
+                  font: {
+                    size: 10,
+                    weight: 'bold',
+                  },
+                },
+              },
+            },
+        },
+    });
+}
+
 
 function dailyPaymentsChart(data) {
     let dailyPaymentsChart = null;
@@ -350,5 +437,88 @@ function stockByIndividuals(data) {
     });
 }
 
+function overdueStock(data) {
+    let overdueStockChart = null;
+    if (overdueStockChart !== null) {
+        overdueStockChart.destroy();
+    }
+
+    const overdueStockCtx = $('.overdueStockChart').get(0).getContext('2d');
+    const modelList = [];
+    const totalStocks = []; // Total IDU + MIFI stock
+    const iduTotals = [];
+    const mifiTotals = [];
+    let grandTotal = 0;
+    const colors = [];
+
+    data.forEach(function(item) {
+        if (item.overdue_idu > 0 || item.overdue_mifi > 0) {
+            modelList.push(item.promoter.first_name + ' ' + item.promoter.last_name);
+            const totalStock = item.overdue_idu + item.overdue_mifi;
+            totalStocks.push(totalStock); // Total for doughnut chart
+            iduTotals.push(item.overdue_idu);
+            mifiTotals.push(item.overdue_mifi);
+            grandTotal += totalStock;
+        }
+    });
+
+    for (let i = 0; i < modelList.length; i++) {
+        const num1 = Math.round(Math.random() * 255 + 1);
+        const num2 = Math.round(Math.random() * 255 + 1);
+        const num3 = Math.round(Math.random() * 255 + 1);
+        colors.push(`rgb(${num1}, ${num2}, ${num3})`);
+    }
+
+    overdueStockChart = new Chart(overdueStockCtx, {
+        type: 'doughnut',
+        data: {
+            labels: modelList,
+            datasets: [
+                {
+                    label: 'Total Stock',
+                    data: totalStocks, // Total IDU + MIFI per individual
+                    backgroundColor: colors, // Use the generated random colors
+                    borderColor: colors,
+                    borderWidth: 2
+                }
+            ],
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        // Custom tooltip to show IDU and MIFI breakdown
+                        label: function(context) {
+                            const index = context.dataIndex;
+                            const idu = iduTotals[index];
+                            const mifi = mifiTotals[index];
+                            return `${context.label}: Total: ${totalStocks[index]}, IDU: ${idu}, MIFI: ${mifi}`;
+                        }
+                    }
+                },
+                title: {
+                    display: true,
+                    text: `Total Stock: ${grandTotal}`,
+                    color: '#fe9a43',
+                    position: 'bottom',
+                    align: 'center',
+                    font: {
+                        weight: 'bold',
+                        size: 16
+                    },
+                    padding: 10,
+                    fullSize: true
+                },
+                legend: {
+                    display: false // Hide the legend
+                }
+            }
+        }
+    });
+}
+
 export { dailyMetricsChart, availableStock,
-    dailyPaymentsChart, stockByIndividuals };
+    dailyPaymentsChart, stockByIndividuals, overdueStock,
+    airtelMonthlySalesChart };

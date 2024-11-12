@@ -7,7 +7,7 @@ $(document).ready(function() {
     const monthFilter = $('#id_month');
     const yearFilter = $('#id_year');
     const loader = $('#loader');
-    const username = document.getElementsByClassName('id_name')
+    const username = $('.id_name');
     loader.hide();
 
     function fetchSalesSummaryData() {
@@ -29,6 +29,7 @@ $(document).ready(function() {
             },
             success: function(response) {
                 loader.hide();
+                username.text(response.data.username);
                 dailySalesChart(response.data.daily_sales, dateFilter.val());
                 monthlySalesChart(response.data.monthly_sales, yearFilter.val(), monthFilter.val());
                 stockChart(response.data.stock);

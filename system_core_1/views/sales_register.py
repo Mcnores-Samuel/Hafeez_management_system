@@ -153,14 +153,6 @@ def accessary_sales(request):
     It ensures that agents with available stock can proceed with accessory sales.
     """
     if request.user.is_staff and request.user.is_superuser:
-        data_list = Accessories.objects.all()
-        name_set = set()
-        model_set = set()
-        for data in data_list:
-            name_set.add(data.item)
-            model_set.add(data.model)
-        sorted_name_list = sorted(list(name_set))
-        sorted_model_list = sorted(list(model_set))
         if request.method == 'POST':
             accessory_name = request.POST.get('item')
             model = request.POST.get('model')
@@ -168,12 +160,12 @@ def accessary_sales(request):
             price_sold = request.POST.get('selling_price')
             if quantity <= 0:
                 messages.error(request, 'Quantity must be greater than 0, please check and try again')
-                return redirect('accessary_sales')
+                return redirect('data_search')
             try:
                 item = Accessories.objects.filter(item=accessory_name, model=model).first()
                 if item is None:
                     messages.error(request, 'Invalid accessory name or model, please check and try again')
-                    return redirect('accessary_sales')
+                    return redirect('data_search')
                 if item.total >= int(quantity):
                     item.previous_total = item.total
                     item.total -= int(quantity)
@@ -190,13 +182,13 @@ def accessary_sales(request):
                     sales.save()
                     item.save()
                     messages.success(request, 'Successfully sold {} of {}(s)'.format(quantity, item.item))
-                    return redirect('accessary_sales')
+                    return redirect('data_search')
                 messages.error(request, 'Insufficient stock, please check the quantity and try again')
             except Accessories.DoesNotExist:
                 messages.error(request, 'Invalid accessory name or model, please check and try again')
-                return redirect('accessary_sales')
-        return render(request, 'users/admin_sites/accessories_sales.html', {'names': sorted_name_list, 'models': sorted_model_list})
-    return render(request, 'users/admin_sites/accessories_sales.html', {'names': sorted_name_list, 'models': sorted_model_list})
+                return redirect('data_search')
+        return redirect('data_search')
+    return redirect('data_search')
 
 
 @login_required
@@ -225,14 +217,6 @@ def appliance_sales(request):
     It ensures that agents with available stock can proceed with appliance sales.
     """
     if request.user.is_staff and request.user.is_superuser:
-        data_list = Appliances.objects.all()
-        name_set = set()
-        model_set = set()
-        for data in data_list:
-            name_set.add(data.name)
-            model_set.add(data.model)
-        sorted_name_list = sorted(list(name_set))
-        sorted_model_list = sorted(list(model_set))
         if request.method == 'POST':
             appliance_name = request.POST.get('item')
             model = request.POST.get('model')
@@ -240,12 +224,12 @@ def appliance_sales(request):
             price_sold = request.POST.get('selling_price')
             if quantity <= 0:
                 messages.error(request, 'Quantity must be greater than 0, please check and try again')
-                return redirect('appliance_sales')
+                return redirect('data_search')
             try:
                 item = Appliances.objects.filter(name=appliance_name, model=model).first()
                 if item is None:
                     messages.error(request, 'Invalid appliance name or model, please check and try again')
-                    return redirect('appliance_sales')
+                    return redirect('data_search')
                 if item.total >= int(quantity):
                     item.total -= int(quantity)
                     item.date_modified = timezone.now()
@@ -261,10 +245,10 @@ def appliance_sales(request):
                     sales.save()
                     item.save()
                     messages.success(request, 'Successfully sold {} of {}(s)'.format(quantity, item.name))
-                    return redirect('appliance_sales')
+                    return redirect('data_search')
                 messages.error(request, 'Insufficient stock, please check the quantity and try again')
             except Appliances.DoesNotExist:
                 messages.error(request, 'Invalid appliance name or model, please check and try again')
-                return redirect('appliance_sales')
-        return render(request, 'users/admin_sites/appliances_sales.html', {'names': sorted_name_list, 'models': sorted_model_list})
-    return render(request, 'users/admin_sites/appliances_sales.html', {'names': sorted_name_list, 'models': sorted_model_list})
+                return redirect('data_search')
+        return redirect('data_search')
+    return redirect('data_search')

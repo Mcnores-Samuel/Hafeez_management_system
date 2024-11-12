@@ -11,8 +11,17 @@
 <script type="module" src="{% static 'scripts/metric_render.js' %}" defer></script>
 {% endblock %}
 {% block content %}
-<div class="container d-flex justify-content-between bg-dark" style="padding: 10px;">
-    <form action="" method="post" class="d-flex position-relative search-form text-light">
+<ul class="nav nav-tabs">
+    <li class="nav-item common-bg">
+      <span class="nav-link fw-bold" id="defualtfilter">Reset defualt</span>
+    </li>
+    <li class="nav-item">
+      <span class="nav-link fw-bold common-bg" id="metrics">Metrics</span>
+    </li>
+</ul>
+<br> 
+<div class="container bg-dark" id="container_head">
+    <form action="" method="post" class="search-form text-light">
         {% csrf_token %}
         <input type="search" id="search_data" name="search_query" class="form-control me-2"
         placeholder="filter the specific promoter here" aria-label="Search" aria-describedby="search-addon"
@@ -24,34 +33,32 @@
             {% endfor %}
         </datalist>
     </form>
-    <button id="defualtfilter" class="btn common-bg">Reset defualt</button>
-    <button id="metrics" class="btn common-bg">Metrics</button>
-</div>
-<br>
-<div class="container">
     <div class="row d-flex justify-content-center">
         <div class="col-md-4 col-sm-4 mb-4">
             <div class="card common-bg rounded-start">
                 <div class="card-header  text-center">
-                    <h4 class="card-title fw-bold">Total Promoters:  {{ total_promoters }}</h4>
+                    <p class="card-title fw-bold">Total Promoters:  {{ total_promoters }}</p>
                 </div>
             </div>
         </div>
         <div class="col-md-4 col-sm-4 mb-4">
             <div class="card common-bg rounded-start">
                 <div class="card-header  text-center">
-                    <h4 class="card-title fw-bold">Total Collected:  {{ total_collected }}</h4>
+                    <p class="card-title fw-bold">Total Collected:  {{ total_collected }}</p>
                 </div>
             </div>
         </div>
         <div class="col-md-4 col-sm-4 mb-4">
             <div class="card common-bg rounded-start">
                 <div class="card-header  text-center">
-                    <h4 class="card-title fw-bold">Total Available:  {{ availableStock }}</h4>
+                    <p class="card-title fw-bold">Total Available:  {{ availableStock }}</p>
                 </div>
             </div>
         </div>
     </div>
+</div>
+<br>
+<div class="container">
 </div>
 <div class="d-flex justify-content-center">
     <div class="spinner-border text-warning" role="status" id="loader">
@@ -93,6 +100,33 @@
         text-align: center;
         border-radius: 10px;
         scrollbar-width: none;
+    }
+
+    #container_head {
+        display: flex;
+        padding-top: 10px;
+    }
+
+    #container_head form {
+        width: 40%;
+    }
+
+    #container_head .row {
+        width: 100%;
+    }
+
+    @media screen and (max-width: 600px) {
+        #container_head {
+            display: block;
+        }
+        #container_head form {
+            width: 100%;
+        }
+
+        #container_head form {
+            width: 100%;
+        }
+        
     }
 
 </style>

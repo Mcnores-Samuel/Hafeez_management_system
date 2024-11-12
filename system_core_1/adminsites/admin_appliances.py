@@ -6,7 +6,7 @@ class AppliancesAdmin(admin.ModelAdmin):
     """This class represents the AppliancesAdmin model.
     It is used to customize the admin interface for the Appliances model.
     """
-    list_display = ('name', 'model', 'total', 'cost', 'date_added', 'date_modified')
+    list_display = ('name', 'model', 'total', 'previous_total', 'cost', 'date_added', 'date_modified')
     list_filter = ('name', 'model', 'total', 'cost', 'date_added', 'date_modified')
     search_fields = ('name', 'model', 'total', 'cost', 'date_added', 'date_modified')
     ordering = ('-id',)

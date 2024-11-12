@@ -18,6 +18,8 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from ..models.user_profile import UserProfile
+from ..models.accessories import Accessories
+from ..models.appliances import Appliances
 
 
 @login_required
@@ -37,6 +39,25 @@ def data_search(request):
     handled in the authentication system and UserProfile model.
     """
     queryset = []
+
+    data_list_ac = Accessories.objects.all()
+    name_set_ac = set()
+    model_set_ac = set()
+    for data in data_list_ac:
+        name_set_ac.add(data.item)
+        model_set_ac.add(data.model)
+    sorted_name_list_ac = sorted(list(name_set_ac))
+    sorted_model_list_ac = sorted(list(model_set_ac))
+    
+    data_list_ap = Appliances.objects.all()
+    name_set_ap = set()
+    model_set_ap = set()
+    for data in data_list_ap:
+        name_set_ap.add(data.name)
+        model_set_ap.add(data.model)
+    sorted_name_list_ap = sorted(list(name_set_ap))
+    sorted_model_list_ap = sorted(list(model_set_ap))
+    
     if request.method == 'POST':
         search_query = request.POST.get('search_query', None)
         queryset = []
@@ -48,9 +69,9 @@ def data_search(request):
                     Q(contract_no__icontains=search_query)
                 )
     if request.user.is_staff and request.user.is_superuser:
-        return render(request, 'users/admin_sites/search.html', {'data': queryset})
-    mbos = UserProfile.objects.filter(groups__name='MBOs').all()
-    return render(request, 'users/staff_sites/search.html', {'data': queryset, 'mbos': mbos})
+        return render(request, 'users/admin_sites/search.html',
+                      {'data': queryset, 'names_ac': sorted_name_list_ac, 'models_ac': sorted_model_list_ac,
+                       'names_ap': sorted_name_list_ap, 'models_ap': sorted_model_list_ap})
 
 
 @login_required

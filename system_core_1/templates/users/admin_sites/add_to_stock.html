@@ -73,13 +73,27 @@
 </style>
 
 <h1 class="common-bg fw-bold text-center">Add Stock</h1>
+<ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a class="nav-link active fw-bold" aria-current="page" href="{% url 'add_to_stock' %}">New Phones</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link fw-bold" href="{% url 'add_accessaries' %}">Accessories</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link fw-bold" href="{% url 'add_appliances' %}">Appliances</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link fw-bold" href="{% url 'add_refarbished' %}">Refarbished</a>
+      </li>
+</ul>
 <div class="d-flex justify-content-center">
     <div class="spinner-border text-warning" role="status" id="loader">
       <span class="visually-hidden">Loading...</span>
     </div>
 </div>
 <div class="container">
-    <div class="form_container">
+    <div class="form_container shadow-lg">
         <div class="header">
             <h4 class="text-center fw-bold">Add Stock: Total Scanned: <span  id="total"></span></h4>
             <p class="text-center">Please enter the Imei numbers and the phone name to add to stock</p>
@@ -112,12 +126,12 @@
                 <input type="text" name="supplier" class="form-control"
                 placeholder="Enter supplier" id="id_supplier">
             </p>
-            <button type="button" class="btn btn-primary" id="submit">submit</button>
+            <button type="button" class="btn common-bg w-100 fw-bold" id="submit">submit</button>
         </form>
     </div>
     <div class="row"  id="waiting-room">
         <div class="col-md-12">
-            <div class="card waiting-room">
+            <div class="card waiting-room shadow-lg">
                 <div class="card-header">
                     <h4 class="card-title text-center fw-bold">Scanned Items</h4>
                 </div>
