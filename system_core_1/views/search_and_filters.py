@@ -72,6 +72,9 @@ def data_search(request):
         return render(request, 'users/admin_sites/search.html',
                       {'data': queryset, 'names_ac': sorted_name_list_ac, 'models_ac': sorted_model_list_ac,
                        'names_ap': sorted_name_list_ap, 'models_ap': sorted_model_list_ap})
+    return render(request, 'users/staff_sites/search.html',
+                    {'data': queryset, 'names_ac': sorted_name_list_ac, 'models_ac': sorted_model_list_ac,
+                     'names_ap': sorted_name_list_ap, 'models_ap': sorted_model_list_ap})
 
 
 @login_required
