@@ -56,7 +56,7 @@ def concludedPayments(request):
     """
     if request.user.is_superuser and request.method == 'GET':
         payments = PromoterPayments.objects.filter(
-            seen=True, updated_completed=True).order_by('-payment_date')
+            updated_completed=True).order_by('-payment_date')
         
         total = payments.count()
         data = []
