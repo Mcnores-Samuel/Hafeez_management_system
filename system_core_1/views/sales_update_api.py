@@ -155,6 +155,7 @@ def airtel_sales_data(request):
             try:
                 device = Airtel_mifi_storage.objects.get(device_imei=imei)
                 device.data_submitted = True
+                device.date_submitted = timezone.now()
                 device.save()
                 return JsonResponse({'message': 'Data submitted successfully'}, status=200)
             except Airtel_mifi_storage.DoesNotExist:

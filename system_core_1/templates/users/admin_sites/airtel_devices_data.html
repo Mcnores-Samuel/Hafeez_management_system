@@ -9,14 +9,22 @@
 <script type="module" src="{% static 'scripts/admin_metrics.js' %}" defer></script>
 <script type="module" src="{% static 'scripts/airtel_metric_charts.js' %}" defer></script>
 <script type="module" src="{% static 'scripts/metric_render.js' %}" defer></script>
+<script type="module" src="{% static 'scripts/admin_payments.js' %}" defer></script>
+<link rel="stylesheet" href="{% static 'styles/agent_stock_mobile.css' %}">
 {% endblock %}
 {% block content %}
 <ul class="nav nav-tabs">
-    <li class="nav-item common-bg">
-      <span class="nav-link fw-bold" id="defualtfilter">Reset defualt</span>
+    <li class="nav-item">
+      <a class="nav-link fw-bold btn" id="defualtfilter" href="#">Table Data</a>
     </li>
     <li class="nav-item">
-      <span class="nav-link fw-bold common-bg" id="metrics">Metrics</span>
+      <a class="nav-link fw-bold btn" id="metrics" href="#">Metrics</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link fw-bold btn" id="currentPayments" href="#">Current Payments</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link fw-bold btn" id="concludedPayments" href="#">Concluded Payments</a>
     </li>
 </ul>
 <br> 
@@ -89,7 +97,7 @@
     </div>
 </div>
 <div class="container w-100 common-color">
-    <div class="pagination container-fluid w-100 d-flex justify-content-center">
+    <div class="pagination container-fluid w-100 d-flex justify-content-center" id="pagination">
         <span class="step-links w-100 d-flex justify-content-around">
         </span>
     </div>

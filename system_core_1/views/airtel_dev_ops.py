@@ -155,7 +155,8 @@ def edit_device(request):
                 device.device_type = device_type
                 device.save()
                 messages.success(request, 'Device updated successfully')
-        return redirect('promoters_data')
+            url = reverse('devices_per_promoter', kwargs={'promoter_id': device.promoter.id})
+            return redirect(url)
     return redirect('search_airtel_devices')
 
 

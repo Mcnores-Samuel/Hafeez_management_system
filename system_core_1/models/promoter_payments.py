@@ -13,6 +13,7 @@ class PromoterPayments(models.Model):
     total_devices_paid = models.IntegerField(default=0)
     total_updated = models.IntegerField(default=0)
     updated_completed = models.BooleanField(default=False)
+    valid = models.BooleanField(default=True)
     payment_date = models.DateTimeField(default=timezone.now)
     seen = models.BooleanField(default=False)
     updated_by = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='updated_by')

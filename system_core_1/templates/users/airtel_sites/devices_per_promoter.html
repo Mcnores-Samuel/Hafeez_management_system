@@ -59,28 +59,28 @@
                         {% csrf_token %}
                         <input type="hidden" name="device_id" value="{{ device.id }}">
                         <input type="hidden" name="promoter_id" value="{{ promoter.id }}">
-                        <button type="submit" class="btn bg-danger w-100">Returned</button>
+                        <button type="submit" class="btn bg-danger w-100 fw-bold ">Returned</button>
                     </form>
                     <br>
                     <form action="{% url 'edit_device' %}" method="get">
                         {% csrf_token %}
                         <input type="hidden" name="device_id" value="{{ device.id }}">
                         <input type="hidden" name="promoter_id" value="{{ promoter.id }}">
-                        <button type="submit" class="btn bg-success w-100">Edit</button>
+                        <button type="submit" class="btn bg-success w-100 fw-bold">Edit</button>
                     </form>
                     <br>
                     <form action="{% url 'sale_device' %}" method="post">
                         {% csrf_token %}
                         <input type="hidden" name="device_id" value="{{ device.id }}">
                         <input type="hidden" name="promoter_id" value="{{ promoter.id }}">
-                        <button type="submit" class="btn bg-primary w-100">Sold</button>
+                        <button type="submit" class="btn bg-primary w-100 fw-bold">Sold</button>
                     </form>
                     <br>
                     <form action="{% url 'reset_device' %}" method="post">
                         {% csrf_token %}
                         <input type="hidden" name="device_id" value="{{ device.id }}">
                         <input type="hidden" name="promoter_id" value="{{ promoter.id }}">
-                        <button type="submit" class="btn bg-warning w-100">Promoter's Reset</button>
+                        <button type="submit" class="btn bg-warning w-100 fw-bold">Reset</button>
                     </form>
                 </div>
             </div>

@@ -152,6 +152,7 @@ class Airtel_mifi_storage(models.Model):
     last_updated = models.DateTimeField(default=timezone.now)
     next_due_date = models.DateTimeField(default=timezone.now)
     date_sold = models.DateTimeField(default=timezone.now)
+    date_submitted = models.DateTimeField(default=timezone.now)
     times_reseted = models.IntegerField(default=0)
     in_stock = models.BooleanField(default=True)
     activated = models.BooleanField(default=False)

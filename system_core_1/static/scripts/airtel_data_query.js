@@ -2,9 +2,32 @@ $(document).ready(function() {
     // Function to fetch and display Airtel devices data
     const input = $('#search_data');
     const form = $('form');
+    const container = $('#container');
     const defualtFilter = $('#defualtfilter');
+    const heading = $('#container_head');
     const loader = $('#loader');
     loader.show();
+
+    const airtelDevicesTable = `<div class="table-responsive">
+        <table class="table table-secondary table-hover table-bordered
+        table-sm" id="airtelDevicesTable">
+            <thead>
+                <t class="common-bg">
+                    <th scope="col">Promoter</th>
+                    <th scope="col">Total Devices</th>
+                    <th scope="col">In Stock</th>
+                    <th scope="col" style="background-color: blue;">MIFI</th>
+                    <th scope="col" style="background-color: purple;">IDU</th>
+                    <th scope="col">Tody's Collection</th>
+                    <th scope="col">Within due date</th>
+                    <th scope="col">Overdue</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>`;
 
     function fetchAirtelDevicesData(page = 1, searchQuery = '') {
         const loader = $('#loader');
@@ -127,6 +150,8 @@ $(document).ready(function() {
     // Handle reset button click
     defualtFilter.on('click', function(event) {
         input.val('');
+        container.empty();
+        container.append(airtelDevicesTable);
         fetchAirtelDevicesData();
     });
 
