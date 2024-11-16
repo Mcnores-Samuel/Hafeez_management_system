@@ -85,6 +85,8 @@ def sale_device(request):
                 updated_completed=False).first()
             if payment:
                 payment.total_updated += 1
+                if payment.total_updated == payment.total_devices_paid:
+                    payment.updated_completed = True
                 if payment.total_updated <= payment.total_devices_paid:
                   device.in_stock = False
                   device.last_updated = timezone.now()
