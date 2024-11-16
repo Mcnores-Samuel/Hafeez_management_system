@@ -98,6 +98,13 @@ $(document).ready(function() {
                                     <label for="Amount_paid">Amount paid</label>
                                     <input type="number" name="Amount_paid" class="form-control">
                                     <br>
+                                    <label for="payment_method">Payment Method</label>
+                                    <select name="payment_method" class="form-control">
+                                        <option value="Cash">Cash</option>
+                                        <option value="Bank Transfer">Bank Transfer</option>
+                                        <option value="Mobile Money">Mobile Money</option>
+                                    </select>
+                                    <br>
                                     <div class="d-flex justify-content-center">
                                         <button type="submit" class="btn bg-secondary w-25">Send</button>
                                     </div>

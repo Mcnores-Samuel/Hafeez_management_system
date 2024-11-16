@@ -16,6 +16,7 @@ class PromoterPayments(models.Model):
     valid = models.BooleanField(default=True)
     payment_date = models.DateTimeField(default=timezone.now)
     seen = models.BooleanField(default=False)
+    payment_method = models.CharField(max_length=50, default='Cash')
     updated_by = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='updated_by')
 
     def __str__(self):

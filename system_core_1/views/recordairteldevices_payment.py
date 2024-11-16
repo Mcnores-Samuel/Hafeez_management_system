@@ -15,6 +15,7 @@ def record_airtel_devices_payment(request):
         if request.method == 'POST':
             promoter_id = request.POST.get('promoter_id')
             amount_paid = request.POST.get('Amount_paid', 0)
+            payment_method = request.POST.get('payment_method', 'Cash')
             if not amount_paid:
                 amount_paid = 0
             total_mifi_paid = request.POST.get('id_mifi', 0)
@@ -35,6 +36,7 @@ def record_airtel_devices_payment(request):
                 total_idu_paid=total_idu_paid,
                 total_devices_paid=total_devices_paid,
                 payment_date=timezone.now(),
+                payment_method=payment_method,
                 updated_by=updated_by
             )
 

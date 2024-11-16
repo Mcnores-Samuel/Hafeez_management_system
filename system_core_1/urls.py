@@ -19,7 +19,7 @@ from .views.airtel_admin_ops import airtel_devices_data, airtel_device_data_entr
 from .views.recordairteldevices_payment import record_airtel_devices_payment
 from .views.sales_update_api import stockQuery, salesUpdates, airtel_sales_data, updateTimeStamp, pendingSales
 from .views.accounts_and_data import dataAccess, sales_stock_summry, dailySalesByShop
-from .views.admin_airtel_payments import currentPayments
+from .views.admin_airtel_payments import currentPayments, renewPayment, concludedPayments, deletePayment
 
 
 urlpatterns = [
@@ -36,6 +36,9 @@ urlpatterns = [
     path('pendingSales/', pendingSales, name='pendingSales'),
     path('airtel_sales_data/', airtel_sales_data, name='airtel_sales_data'),
     path('currentPayments/', currentPayments, name='currentPayments'),
+    path('renewPayment/', renewPayment, name='renewPayment'),
+    path('concludedPayments/', concludedPayments, name='concludedPayments'),
+    path('deletePayment/', deletePayment, name='deletePayment'),
     # Data on actions on data and admin panel
     path('dashboard/', user_dashboard.dashboard, name='dashboard'),
     path('main_stock_details/', central_display.main_stock_details, name='main_stock_details'),
