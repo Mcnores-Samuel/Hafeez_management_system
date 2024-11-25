@@ -1,7 +1,7 @@
 from django.contrib import admin
 from ..models.main_storage import MainStorage
 from ..customfilters.date_filters import YesterdayFilter
-from ..customfilters.year_months_filter import YearMonthFilter
+from ..customfilters.year_months_filter import YearMonthFilter, CollectionMonthFilter
 from ..customfilters.agent_filter import AgentFilter, SpecialAgentsFilter
 from django.utils import timezone
 
@@ -14,7 +14,7 @@ class MainStorageAdmin(admin.ModelAdmin):
     search_fields = ('device_imei', 'device_imei_2', 'name', 'phone_type', 'entry_date', 'category', 'agent__username',
                      'contract_no', 'sales_type', 'stock_out_date', 'assigned', 'sold', 'paid', 'collected_on', 'supplier')
     list_filter = ('in_stock', 'on_display', 'missing', 'faulty', 'pending', 'category', 'supplier', 'sales_type', 'assigned', 'sold', 'paid',
-                   'entry_date', 'collected_on', 'stock_out_date', SpecialAgentsFilter, AgentFilter, YesterdayFilter, YearMonthFilter)
+                   'entry_date', CollectionMonthFilter, 'stock_out_date', SpecialAgentsFilter, AgentFilter, YesterdayFilter, YearMonthFilter)
     
     list_per_page = 50
 
