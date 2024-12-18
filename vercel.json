@@ -20,7 +20,6 @@
       "dest": "Hafeez_management_system/wsgi.py"
     }
   ],
-  "buildCommand": "python manage.py collectstatic --noinput",
   "env": {
     "PYTHONUNBUFFERED": "1",
     "DJANGO_SETTINGS_MODULE": "Hafeez_management_system.settings" 
