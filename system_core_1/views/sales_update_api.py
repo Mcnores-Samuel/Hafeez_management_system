@@ -16,7 +16,7 @@ def stockQuery(request):
         one_hr_ago = timezone.now() - timezone.timedelta(hours=1)
         devices = MainStorage.objects.filter(
             in_stock=True,
-            agent__groups__name='agents'
+            agent__username="Innocent-Mponela"
             ).values_list('device_imei', flat=True)
         devices = reversed(devices)
         return JsonResponse({'data': list(devices)}, status=200)
