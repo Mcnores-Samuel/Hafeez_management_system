@@ -18,14 +18,12 @@
         <link rel="stylesheet" href="{% static 'styles/dashboard.css' %}">
         {% block head %}
         <link rel="stylesheet" href="{% static 'styles/loading-message.css' %}">
-        <script src="{% static 'scripts/data_updates.js' %}"></script>
         <script src="{% static 'scripts/analysis_lib/agent_stock.js' %}" defer></script>
         <script src="{% static 'scripts/analysis_lib/agent_sales.js' %}" defer></script>
         <script src="{% static 'scripts/analysis_lib/yearly_analysis.js' %}" defer></script>
         {% endblock %}
         <script src="{% static 'scripts/pending_sales.js' %}" defer></script>
         <script src="{% static 'scripts/sidebar.js' %}" defer></script>
-        <script src="{% static 'scripts/placeholders.js' %}" defer></script>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <script>
             $(document).ready(function() {
