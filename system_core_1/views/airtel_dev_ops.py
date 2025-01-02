@@ -198,7 +198,6 @@ def reset_device(request):
                 device.next_due_date = date_after_14_days
                 device.returned = False
                 device.days_left = 14
-                device.device_phone_no = None
                 device.updated_by = request.user.first_name + ' ' + request.user.last_name
                 device.save()
                 messages.success(request, 'Device reset successfully for {}'.format(promoter.first_name))
