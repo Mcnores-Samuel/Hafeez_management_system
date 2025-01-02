@@ -76,7 +76,7 @@
       <a href="{% url 'dispatch_stock' %}" class="btn common-bg">Distribute</a>
     </div>
     <hr>
-    <form action="" method="post">
+    <form action="" method="post" id="inputForm">
       <p id="token" style="display: none;">{% csrf_token %}</p>
       <div class="form-group custom-form-group">
         <label for="data" class="fw-bold common-color">Enter Or scan imei Numbers Here</label>

@@ -37,8 +37,7 @@ The Hafeez Management System is a comprehensive business management solution des
 
 ### Install dependencies:
 ```
-$ cd hafeez-management-system
-pip install -r requirements.txt
+$ cd hafeez-management-system && pip install -r requirements.txt
 ```
 # Usage
 - Start the Django development server:

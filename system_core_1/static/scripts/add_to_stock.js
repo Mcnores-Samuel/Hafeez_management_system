@@ -1,5 +1,5 @@
 let container = [];
-const form = $('form');
+const form = $('#stock_form');
 const imei_1 = $('#id_device_imei');
 const imei_2 = $('#id_device_imei_2');
 const name = $('#id_name');
@@ -64,7 +64,12 @@ imei_2.on('change', (e) => {
     form.trigger('reset');
     imei_1.focus();
     waitRoom.find('.list-group').append(
-      `<li class="list-group-item text-success fw-bold">IMEI 1: ${newItem.join(' <===> IMEI 2: ')}</li>`,
+      `<li class="list-group-item d-flex justify-content-between align-items-center">
+        <span class="text-success fw-bold">IMEI 1: ${newItem.join(' <===> IMEI 2: ')}</span>
+        <button class="btn btn-sm delete-item" data-index="${container.length - 1}">
+          <span class="material-icons text-danger">delete</span>
+        </button>
+      </li>`
     );
   } else {
     const note = '<div class="alert alert-warning alert-dismissible fade show" role="alert">IMEI numbers already scanned or added in the list\
@@ -77,6 +82,27 @@ imei_2.on('change', (e) => {
     form.trigger('reset');
     imei_1.focus();
   }
+});
+
+// Handle delete button click
+waitRoom.on('click', '.delete-item', function () {
+  const index = $(this).data('index'); // Get the index of the item
+  container.splice(index, 1); // Remove the item from the container
+  total.text(container.length); // Update total count
+
+  // Re-render the list with updated container
+  const updatedList = container
+    .map(
+      (item, i) =>
+        `<li class="list-group-item d-flex justify-content-between align-items-center">
+           <span class="text-success fw-bold">IMEI 1: ${item.join(' <===> IMEI 2: ')}</span>
+           <button class="btn btn-sm delete-item" data-index="${i}">
+             <span class="material-icons text-danger">delete</span>
+           </button>
+         </li>`
+    )
+    .join('');
+  waitRoom.find('.list-group').html(updatedList);
 });
 
 send.on('click', () => {
