@@ -63,9 +63,6 @@
                         <button type="button" class="btn common-bg w-100 fw-bold" data-bs-toggle="modal"
                         data-bs-target="#viewSalesCash{{ item.device_imei }}">Sale On Cash</button>
                         <br>
-                        <br>
-                        <button type="button" class="btn common-bg w-100 fw-bold" data-bs-toggle="modal"
-                        data-bs-target="#viewSalesModal{{ item.id }}">Sale On Credit</button>
 
                         <div class="modal fade" id="viewSalesCash{{ item.device_imei }}" tabindex="-1" aria-labelledby="viewJobModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
@@ -82,7 +79,7 @@
                                             <p>You are selling <strong>{{ item.name }}</strong> of IMEI number
                                                 <strong>{{ item.device_imei }}</strong> on cash.
                                             </p>
-                                            <p>Please!! Proceed by providing transaction image and the image must bear the following clearly:</p>
+                                            <!-- <p>Please!! Proceed by providing transaction image and the image must bear the following clearly:</p>
                                             <ul>
                                                 <li>Amount</li>
                                                 <li>Bank Name or mobile transaction method</li>
@@ -92,7 +89,10 @@
                                             <label for="cash_proof" class="fw-bold">
                                                 <strong>Upload Your Transaction Image Here</strong>
                                             </label>
-                                            <input type="file" name="cash_proof" id="cash_proof" class="form-control" accept="image/*" required>
+                                            <input type="file" name="cash_proof" id="cash_proof" class="form-control" accept="image/*" required> -->
+                                            <br>
+                                            <label for="date_sold">Date Sold</label>
+                                            <input type="date" name="date_sold" id="date_sold" class="form-control" required>
                                             <br>
                                             <label for="amount">Confirm Cash Amount</label>
                                             <input type="number" name="amount" id="amount" class="form-control" required>
@@ -100,24 +100,6 @@
                                             <br>
                                             <button type="submit" class="btn common-bg w-100 fw-bold">Confirm</button>
                                         </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="modal fade" id="viewSalesModal{{ item.id }}" tabindex="-1" aria-labelledby="viewJobModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="viewSalesModal{{ item.id }}">Credit Sales Confirmation</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <p>You are selling <strong>{{ item.name }}</strong> of IMEI number
-                                            <strong>{{ item.device_imei }}</strong> on credit.
-                                        </p>
-                                        <a href="{% url 'sale_on_loan' data_id=item.id %}"
-                                        class="btn common-bg w-100 fw-bold">Confirm</a>
                                     </div>
                                 </div>
                             </div>

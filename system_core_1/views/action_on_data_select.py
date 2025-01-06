@@ -21,7 +21,8 @@ def sale_on_cash(request):
         if user.groups.filter(name='agents').exists():
             device_imei = request.POST.get('device_imei')
             amount = request.POST.get('amount')
-            cassproof_image = request.FILES.get('cash_proof')
+            date_sold = request.POST.get('date_sold')
+            # cassproof_image = request.FILES.get('cash_proof')
             agent_profile = AgentProfile.objects.get(user=user)
             admin = UserProfile.objects.filter(is_staff=True, is_superuser=True, is_active=True)
             admin_list = [admin.email for admin in admin]
@@ -32,8 +33,7 @@ def sale_on_cash(request):
                 device.sold = True
                 device.sales_type = 'Cash'
                 device.price = amount
-                device.stock_out_date = timezone.now()
-                device.trans_image = cassproof_image
+                device.stock_out_date = date_sold
                 device.save()
                 send_mail(
                     'New Sale On Cash: Action Required',
