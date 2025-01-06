@@ -12,7 +12,7 @@
   }
 
   .container {
-    margin-top: 50px;
+    margin-top: 20px;
     display: flex;
     gap: 20px;
   }
@@ -61,7 +61,18 @@
     
   }
 </style>
-
+<ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a class="nav-link active fw-bold" aria-current="page" href="{% url 'uploadBulkSales' %}">Sales</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link fw-bold" href="{% url 'add_appliances' %}">Stock Taking</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link fw-bold" href="{% url 'dispatch_stock' %}">Distribute</a>
+  </li>
+</ul>
+<br>
 <h1 class="text-center common-bg fw-bold">Upload Sales</h1>
 <div class="d-flex justify-content-center">
   <div class="spinner-border text-warning" role="status" id="loader">
@@ -73,7 +84,6 @@
     <div class="header">
       <h1 class="text-center fw-bold">Upload Sales: Total <span  id="total"></span></h1>
       <p class="text-center">Scan or enter imei numbers to deploy, Choose Date and Sales Type</p>
-      <a href="{% url 'dispatch_stock' %}" class="btn common-bg">Distribute</a>
     </div>
     <hr>
     <form action="" method="post" id="inputForm">

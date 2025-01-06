@@ -94,6 +94,7 @@ class MainStorage(models.Model):
     is_locked = models.BooleanField(default=False)
     recieved = models.BooleanField(default=False)
     on_display = models.BooleanField(default=False)
+    available = models.BooleanField(default=False)
     pending = models.BooleanField(default=False)
     missing = models.BooleanField(default=False)
     faulty = models.BooleanField(default=False)
