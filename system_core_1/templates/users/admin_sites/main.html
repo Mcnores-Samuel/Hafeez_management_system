@@ -120,26 +120,6 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link d-flex align-items-center" href="{% url 'main_stock_details' %}"
-                                data-bs-toggle="tooltip"
-                                title="Stock">
-                                <span class="material-icons">
-                                    inventory
-                                </span>
-                                <span class="text"> Stock</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link d-flex align-items-center" href="{% url 'main_sales_details' %}"
-                                data-bs-toggle="tooltip"
-                                title="Sales">
-                                <span class="material-icons">
-                                outbound
-                                </span>
-                                <span class="text"> Sales</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
                                 <a class="nav-link d-flex align-items-center" href="{% url 'data_search' %}"
                                 data-bs-toggle="tooltip"
                                 title="Sales">
@@ -170,6 +150,37 @@
                                 </a>
                             </li>
                             <li class="nav-item">
+                                <a class="nav-link d-flex align-items-center" href="{% url 'pending_sales' %}"
+                                data-bs-toggle="tooltip" 
+                                title="Pending Actions">
+                                <span class="material-icons">
+                                    pending_actions
+                                </span>
+                                <span class="badge bg-danger pending-sales-notice"></span>
+                                <span class="text"> Pending Sales</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link d-flex align-items-center" href="{% url 'main_stock_details' %}"
+                                data-bs-toggle="tooltip"
+                                title="Stock">
+                                <span class="material-icons">
+                                    inventory
+                                </span>
+                                <span class="text"> Stock</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link d-flex align-items-center" href="{% url 'main_sales_details' %}"
+                                data-bs-toggle="tooltip"
+                                title="Sales">
+                                <span class="material-icons">
+                                outbound
+                                </span>
+                                <span class="text"> Sales</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link d-flex align-items-center" href="{% url 'revenues' %}"
                                 data-bs-toggle="tooltip"
                                 title="Revenue">
@@ -187,17 +198,6 @@
                                     report_problem
                                 </span>
                                 <span class="text"> Defects</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link d-flex align-items-center" href="{% url 'pending_sales' %}"
-                                data-bs-toggle="tooltip" 
-                                title="Pending Actions">
-                                <span class="material-icons">
-                                    pending_actions
-                                </span>
-                                <span class="badge bg-danger pending-sales-notice"></span>
-                                <span class="text"> Pending Sales</span>
                                 </a>
                             </li>
                             <li class="nav-item">
@@ -230,6 +230,8 @@
                                     <span class="text"> Feedback</span>
                                 </a>
                             </li>
+                            <br>
+                            <br>
                         </ul>
                     </div>
                 </div>

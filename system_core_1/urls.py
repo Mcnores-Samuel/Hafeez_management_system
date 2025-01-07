@@ -20,6 +20,7 @@ from .views.recordairteldevices_payment import record_airtel_devices_payment
 from .views.sales_update_api import stockQuery, salesUpdates, airtel_sales_data, updateTimeStamp, pendingSales
 from .views.accounts_and_data import dataAccess, sales_stock_summry, dailySalesByShop
 from .views.admin_airtel_payments import currentPayments, renewPayment, concludedPayments, deletePayment
+from .views.stock_taking import stock_taking
 
 
 urlpatterns = [
@@ -45,6 +46,7 @@ urlpatterns = [
     path('main_sales_details/', central_display.main_sales_details, name='main_sales_details'),
     path('dispatch_stock/', home_page.dispatch_stock, name='dispatch_stock'),
     path('uploadBulkSales/', sales_register.uploadBulkSales, name='uploadBulkSales'),
+    path('stock_taking/', stock_taking, name='stock_taking'),
     path('revenues/', revenues.revenues, name='revenues'),
     path('revert_to_stock/', revert_to_stock, name='revert_to_stock'),
     path('pending_sales/', pending_sales, name='pending_sales'),

@@ -60,7 +60,8 @@ def admin_stock_analysis(request):
         CalcCommissions().update_commission(representatives, total)
         progress, target = CalcCommissions().target_progress(representatives)
         main_shop_stock = MainStorage.objects.filter(
-            agent=representatives, in_stock=True, sold=False, missing=False, assigned=True).count()
+            agent=representatives, in_stock=True, sold=False, missing=False,
+            assigned=True, available=True).count()
         context = {
             'progress': progress,
             'target': target,

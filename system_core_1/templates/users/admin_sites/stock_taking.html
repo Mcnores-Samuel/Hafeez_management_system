@@ -2,7 +2,7 @@
 {% load static %}
 {% load plus_r %}
 {% block head %}
-<script src="{% static 'scripts/upload_sales.js' %}" defer></script>
+<script src="{% static 'scripts/stock_taking.js' %}" defer></script>
 {% endblock %}
 {% block content %}
 <style>
@@ -21,14 +21,11 @@
     width: 50%;
     padding: 10px;
     border-radius: 10px;
-    background-color: #022842;
+    background-color: #ececec;
   }
 
   .row {
     width: 50%;
-  }
-  .input-content {
-    width: 25%;
   }
   
   .waiting-room {
@@ -62,18 +59,18 @@
   }
 </style>
 <ul class="nav nav-tabs">
+    <li class="nav-item">
+        <a class="nav-link active fw-bold" aria-current="page" href="{% url 'stock_taking' %}">Stock Taking</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link fw-bold" href="{% url 'dispatch_stock' %}">Distribute</a>
+      </li>
   <li class="nav-item">
-    <a class="nav-link active fw-bold" aria-current="page" href="{% url 'uploadBulkSales' %}">Sales</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link fw-bold" href="{% url 'stock_taking' %}">Stock Taking</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link fw-bold" href="{% url 'dispatch_stock' %}">Distribute</a>
+    <a class="nav-link fw-bold" href="{% url 'uploadBulkSales' %}">Sales</a>
   </li>
 </ul>
 <br>
-<h1 class="text-center common-bg fw-bold">Upload Sales</h1>
+<h1 class="text-center fw-bold">Stock Taking</h1>
 <div class="d-flex justify-content-center">
   <div class="spinner-border text-warning" role="status" id="loader">
     <span class="visually-hidden">Loading...</span>
@@ -82,8 +79,8 @@
 <div class="container">
   <div class="form_container">
     <div class="header">
-      <h1 class="text-center fw-bold">Upload Sales: Total <span  id="total"></span></h1>
-      <p class="text-center">Scan or enter imei numbers to deploy, Choose Date and Sales Type</p>
+      <h4 class="text-center fw-bold">Stock Taking: Total <span  id="total"></span></h4>
+      <p class="text-center">Scan or enter imei numbers to inform the system of the stock you have</p>
     </div>
     <hr>
     <form action="" method="post" id="inputForm">
@@ -92,24 +89,8 @@
         <label for="data" class="fw-bold common-color">Enter Or scan imei Numbers Here</label>
         <input type="text" name="data" id="data" class="form-control" autofocus required minlength="15" maxlength="15">
         <br>
-        <h4 class="fw-bold common-color text-center">Deployment Details</h4>
         <div class="d-flex justify-content-between w-100">
-          <div class="input-content">
-            <label for="date" class="fw-bold common-color">Choose Date</label>
-            <input type="date" name="date" id="date" class="form-control w-100">
-          </div>
-          <div class="input-content">
-            <label class="fw-bold common-color">Select Sales Type</label>
-            <select name="sales_type" id="sales_type" class="form-control w-100">
-              <option value="">Select Sales Type</option>
-              <option value="Loan">Loan</option>
-              <option value="Cash">Cash</option>
-            </select>
-          </div>
-          <div class="input-content">
-            <label class="fw-bold common-color">Upload Sales</label>
-            <button type="button" class="btn common-bg" id="deploy">Upload</button>
-          </div>
+            <button type="button" class="btn common-bg fw-bold w-100" id="deploy">Upload</button>
         </div>
       </div>
     </form>
@@ -117,7 +98,7 @@
   <div class="row" id="waiting-room">
     <div class="col-md-12">
       <div class="card waiting-room">
-        <div class="card-header bg-success">
+        <div class="card-header">
           <h4 class="card-title text-center fw-bold">Scanned Items</h4>
         </div>
         <div class="card-body">

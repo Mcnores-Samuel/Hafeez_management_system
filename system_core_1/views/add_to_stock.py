@@ -63,7 +63,7 @@ def add_to_stock(request):
                         phone_type=instance.phone_type, category=instance.category,
                         spec=instance.spec, screen_size=instance.screen_size,
                         battery=instance.battery, camera=instance.camera, os=instance.os,
-                        in_stock=True, sales_type='##', contract_no='##',
+                        in_stock=True, sales_type='##', contract_no='##', available=True,
                         entry_date=timezone.now(), stock_out_date=timezone.now(),
                         collected_on=timezone.now(), assigned=True, sold=False,
                         issue=False, paid=False, cost=cost_price, price=0.00, agent=agent,
