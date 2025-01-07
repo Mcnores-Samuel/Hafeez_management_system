@@ -22,141 +22,47 @@
     </div>
 </nav>
 <br>
-<div class="container">
-    {% if not data %}
-    <div class="sales-form">
-        <form action="" method="post" class="shadow-lg p-3 mb-5 rounded bg-secondary">
-            <h3 class="text-center text-light">Accessary Sales</h3>
-            <h5 class="text-center text-light">This form is for selling accessaries</h5>
-            {% csrf_token %}
-            <p>
-                <label for="item" class="text-light fw-bold">Accessary Name:</label>
-                <input type="text" name="item" class="form-control bg-dark text-light" placeholder="Enter Accessary name"
-                list="item_list_ac" id="item" required>
-            </p>
-            <datalist id="item_list_ac">
-                {% for item_ac in names_ac %}
-                <option value="{{ item_ac }}">{{ item_ac }}</option>
-                {% endfor %}
-            </datalist>
-            <p>
-                <label for="model" class="fw-bold text-light">Model:</label>
-                <input type="text" name="model" class="form-control bg-dark text-light" placeholder="Enter model"
-                list="model_list_ac" id="model" required>
-            </p>
-            <datalist id="model_list_ac">
-                {% for model_ac in models_ac %}
-                <option value="{{ model_ac }}">{{ model_ac }}</option>
-                {% endfor %}
-            </datalist>
-            <p>
-                <label for="quantity" class="fw-bold text-light">Quantity:</label>
-                <input type="number" name="quantity" class="form-control bg-dark text-light" placeholder="Enter quantity"
-                min="0" required>
-            </p>
-            <p>
-                <label for="id_selling_price" class="fw-bold text-light">Selling price:</label>
-                <input type="number" name="selling_price" class="form-control bg-dark text-light" placeholder="Enter selling price"
-                id="id_selling_price" min="0" required>
-            </p>
-            <button type="submit" class="btn btn-primary w-100" id="submit">submit</button>
-        </form>
-        <form action="" method="post" class="bg-secondary shadow-lg p-3 mb-5 rounded">
-            <h3 class="text-center text-light">Appliance Sales</h3>
-            <h5 class="text-center text-light">This form is for selling appliances</h5>
-            {% csrf_token %}
-            <p>
-                <label for="item" class="text-light fw-bold">Appliance Name:</label>
-                <input type="text" name="item" class="form-control bg-dark text-light" placeholder="Enter Appliance name"
-                list="item_list_ap" id="item" required>
-            </p>
-            <datalist id="item_list_ap">
-                {% for item_ap in names_ap %}
-                <option value="{{ item_ap }}">{{ item_ap }}</option>
-                {% endfor %}
-            </datalist>
-            <p>
-                <label for="model" class="fw-bold text-light">Model:</label>
-                <input type="text" name="model" class="form-control bg-dark text-light" placeholder="Enter model"
-                list="model_list_ap" id="model" required>
-            </p>
-            <datalist id="model_list_ap">
-                {% for model_ap in models_ap %}
-                <option value="{{ model_ap }}">{{ model_ap }}</option>
-                {% endfor %}
-            </datalist>
-            <p>
-                <label for="quantity" class="fw-bold text-light">Quantity:</label>
-                <input type="number" name="quantity" class="form-control bg-dark text-light" placeholder="Enter quantity"
-                min="0" required>
-            </p>
-            <p>
-                <label for="id_selling_price" class="fw-bold text-light">Selling price:</label>
-                <input type="number" name="selling_price" class="form-control bg-dark text-light" placeholder="Enter selling price"
-                id="id_selling_price" min="0" required>
-            </p>
-            <button type="submit" class="btn btn-primary w-100" id="submit">submit</button>
-        </form>
-        <form action="" method="post" class="shadow-lg p-3 mb-5 rounded bg-secondary">
-            <h3 class="text-center text-light">Refurbished Device Sales</h3>
-            <h5 class="text-center text-light">This form is for selling refurbished devices</h5>
-            {% csrf_token %}
-            <p>
-                <label for="item" class="text-light fw-bold">Device Name:</label>
-                <input type="text" name="item" class="form-control bg-dark text-light" placeholder="Enter Appliance name"
-                list="item_list" id="item" required>
-            </p>
-            <datalist id="item_list">
-                {% for item in names %}
-                <option value="{{ item }}">{{ item }}</option>
-                {% endfor %}
-            </datalist>
-            <p>
-                <label for="model" class="fw-bold text-light">Model:</label>
-                <input type="text" name="model" class="form-control bg-dark text-light" placeholder="Enter model"
-                list="model_list" id="model" required>
-            </p>
-            <datalist id="model_list">
-                {% for model in models %}
-                <option value="{{ model }}">{{ model }}</option>
-                {% endfor %}
-            </datalist>
-            <p>
-                <label for="quantity" class="fw-bold text-light">Quantity:</label>
-                <input type="number" name="quantity" class="form-control bg-dark text-light" placeholder="Enter quantity"
-                min="0" required>
-            </p>
-            <p>
-                <label for="id_selling_price" class="fw-bold text-light">Selling price:</label>
-                <input type="number" name="selling_price" class="form-control bg-dark text-light" placeholder="Enter selling price"
-                id="id_selling_price" min="0" required>
-            </p>
-            <button type="submit" class="btn btn-primary w-100" id="submit">submit</button>
-        </form>
-    </div>
-    {% endif %}
-    <div class="row d-flex justify-content-center">
-        {% if data %}
-            {% for item in data %}
-            <div class="col-md-6 col-12">
-                <div class="card">
-                    <div class="card-header  text-center">
-                        <h4 class="card-title">{{ item.name }}</h4>
-                    </div>
-                    <div class="card-body">
-                        <p class="card-text"><strong class="text-info">Assigned To:</strong> <span>{{ item.agent }}</span></p>
-                        <p class="card-text"><strong class="text-info">Entry Date:</strong> <span>{{ item.entry_date }}</span></p>
-                        <p class="card-text"><strong class="text-info">Collected On:</strong> <span>{{ item.stock_out_date }}</span></p>
-                        <p class="card-text"><strong class="text-info">Category:</strong> <span>{{ item.category }}</span></p>
-                        <p class="card-text"><strong class="text-info">Name:</strong> <span>{{ item.name }}</span></p>
-                        <p class="card-text"><strong class="text-info">Model:</strong> <span>{{ item.phone_type }}</span></p>
-                        <p class="card-text"><strong class="text-info">Device IMEI:</strong> <span>{{ item.device_imei }}</span></p>
-                        {% if item.device_imei_2 %}
-                            <p class="card-text"><strong class="text-info">Device IMEI 2:</strong> <span>{{ item.device_imei_2 }}</span></p>
+<div class="container text-center">
+    <button class="btn common-bg fw-bold" data-bs-toggle="modal" data-bs-target="#accessarySalesModal">Accessary</button>
+    <button class="btn common-bg fw-bold" data-bs-toggle="modal" data-bs-target="#applianceSalesModal">Appliance</button>
+    <button class="btn common-bg fw-bold" data-bs-toggle="modal" data-bs-target="#refurbishedDeviceSalesModal">Refurbished</button>
+</div>
+<br>
+
+<div class="row d-flex justify-content-center">
+    {% if data %}
+        {% for item in data %}
+        <div class="col-md-6 col-12">
+            <div class="card">
+                <div class="card-header  text-center">
+                    <h4 class="card-title">{{ item.name }}</h4>
+                </div>
+                <div class="card-body">
+                    <p class="card-text"><strong class="text-info">Assigned To:</strong> <span>{{ item.agent }}</span></p>
+                    <p class="card-text"><strong class="text-info">Entry Date:</strong> <span>{{ item.entry_date }}</span></p>
+                    <p class="card-text"><strong class="text-info">Collected On:</strong> <span>{{ item.stock_out_date }}</span></p>
+                    <p class="card-text"><strong class="text-info">Category:</strong> <span>{{ item.category }}</span></p>
+                    <p class="card-text"><strong class="text-info">Name:</strong> <span>{{ item.name }}</span></p>
+                    <p class="card-text"><strong class="text-info">Model:</strong> <span>{{ item.phone_type }}</span></p>
+                    <p class="card-text"><strong class="text-info">Device IMEI:</strong> <span>{{ item.device_imei }}</span></p>
+                    {% if item.device_imei_2 %}
+                        <p class="card-text"><strong class="text-info">Device IMEI 2:</strong> <span>{{ item.device_imei_2 }}</span></p>
+                    {% endif %}
+                    <p class="card-text"><strong class="text-info">Spec:</strong> <span>{{ item.spec }}</span></p>
+                    <p class="card-text"><strong class="text-info">In Stock:</strong>
+                        {% if item.in_stock %}
+                            <span class="material-icons text-success">
+                                done
+                            </span>
+                        {% else %}
+                            <span class="material-icons text-danger">
+                                close
+                            </span>
                         {% endif %}
-                        <p class="card-text"><strong class="text-info">Spec:</strong> <span>{{ item.spec }}</span></p>
-                        <p class="card-text"><strong class="text-info">In Stock:</strong>
-                            {% if item.in_stock %}
+                    </p>
+                    {% if not item.in_stock and item.sold %}
+                        <p class="card-text"><strong class="text-info">Sold:</strong>
+                            {% if item.sold %}
                                 <span class="material-icons text-success">
                                     done
                                 </span>
@@ -165,70 +71,168 @@
                                     close
                                 </span>
                             {% endif %}
-                        </p>
-                        {% if not item.in_stock and item.sold %}
-                            <p class="card-text"><strong class="text-info">Sold:</strong>
-                                {% if item.sold %}
-                                    <span class="material-icons text-success">
-                                        done
-                                    </span>
-                                {% else %}
-                                    <span class="material-icons text-danger">
-                                        close
-                                    </span>
-                                {% endif %}
-                            <p class="card-text"><strong class="text-info">Sales Type:</strong> <span>{{ item.sales_type }}</span></p>
-                            {% if item.sales_type == 'Loan' %}
-                            <p class="card-text"><strong class="text-info">Contract No:</strong> <span>{{ item.contract_no }}</span></p>
-                            {% endif %}
-                            <p class="card-text"><strong class="text-info">Sold Date:</strong> <span>{{ item.stock_out_date }}</span></p>
-                            <p class="card-text"><strong class="text-info">Deployed:</strong>
-                                <span class="material-icons text-success">
-                                    done
-                                </span>
-                            </p>
-                        {% else %}
-                            <p class="card-text"><strong class="text-info">Deploy:</strong>
-                                <span>
-                                    <a href="{% url 'combinedData_collection' data_id=item.id %}">
-                                        <span class="material-icons">
-                                            send
-                                        </span>
-                                    </a>
-                                </span>
-                            </p>
+                        <p class="card-text"><strong class="text-info">Sales Type:</strong> <span>{{ item.sales_type }}</span></p>
+                        {% if item.sales_type == 'Loan' %}
+                        <p class="card-text"><strong class="text-info">Contract No:</strong> <span>{{ item.contract_no }}</span></p>
                         {% endif %}
-                    </div>
+                        <p class="card-text"><strong class="text-info">Sold Date:</strong> <span>{{ item.stock_out_date }}</span></p>
+                        <p class="card-text"><strong class="text-info">Deployed:</strong>
+                            <span class="material-icons text-success">
+                                done
+                            </span>
+                        </p>
+                    {% else %}
+                        <p class="card-text"><strong class="text-info">Deploy:</strong>
+                            <span>
+                                <a href="{% url 'combinedData_collection' data_id=item.id %}">
+                                    <span class="material-icons">
+                                        send
+                                    </span>
+                                </a>
+                            </span>
+                        </p>
+                    {% endif %}
                 </div>
             </div>
-            {% endfor %}
-        {% else %}
-        <div class="text-center">
-            <h2 class="fs-6 text-center text-danger">Not Found</h2>
         </div>
-        {% endif %}
+        {% endfor %}
+    {% else %}
+    <div class="text-center">
+        <h2 class="fs-6 text-center text-danger fw-bold">Not Found</h2>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Accessary Sales Modal -->
+<div class="modal fade" id="accessarySalesModal" tabindex="-1" aria-labelledby="accessarySalesLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-secondary text-light">
+                <h5 class="modal-title" id="accessarySalesLabel">Accessary Sales</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{% url 'accessary_sales' %}" method="post">
+                    {% csrf_token %}
+                    <p>
+                        <label for="item" class="fw-bold">Accessary Name:</label>
+                        <input type="text" name="item" class="form-control" list="item_list_ac" required>
+                    </p>
+                    <datalist id="item_list_ac">
+                        {% for item_ac in names_ac %}
+                        <option value="{{ item_ac }}">{{ item_ac }}</option>
+                        {% endfor %}
+                    </datalist>
+                    <p>
+                        <label for="model" class="fw-bold">Model:</label>
+                        <input type="text" name="model" class="form-control" list="model_list_ac" required>
+                    </p>
+                    <datalist id="model_list_ac">
+                        {% for model_ac in models_ac %}
+                        <option value="{{ model_ac }}">{{ model_ac }}</option>
+                        {% endfor %}
+                    </datalist>
+                    <p>
+                        <label for="quantity" class="fw-bold">Quantity:</label>
+                        <input type="number" name="quantity" class="form-control" min="0" required>
+                    </p>
+                    <p>
+                        <label for="id_selling_price" class="fw-bold">Selling price:</label>
+                        <input type="number" name="selling_price" class="form-control" min="0" required>
+                    </p>
+                    <button type="submit" class="btn common-bg w-100">Submit</button>
+                </form>
+            </div>
+        </div>
     </div>
 </div>
 
-<style>
-    .sales-form {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        gap: 1rem;
-    }
+<!-- Appliance Sales Modal -->
+<div class="modal fade" id="applianceSalesModal" tabindex="-1" aria-labelledby="applianceSalesLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-secondary text-light">
+                <h5 class="modal-title" id="applianceSalesLabel">Appliance Sales</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{% url 'appliance_sales' %}" method="post">
+                    {% csrf_token %}
+                    <p>
+                        <label for="name" class="fw-bold">Appliance Name:</label>
+                        <input type="text" name="name" class="form-control" list="item_list_ap" required>
+                    </p>
+                    <datalist id="item_list_ap">
+                        {% for item_ap in names_ap %}
+                        <option value="{{ item_ap }}">{{ item_ap }}</option>
+                        {% endfor %}
+                    </datalist>
+                    <p>
+                        <label for="model" class="fw-bold">Model:</label>
+                        <input type="text" name="model" class="form-control" list="model_list_ap" required>
+                    </p>
+                    <datalist id="model_list_ap">
+                        {% for model_ap in models_ap %}
+                        <option value="{{ model_ap }}">{{ model_ap }}</option>
+                        {% endfor %}
+                    </datalist>
+                    <p>
+                        <label for="quantity" class="fw-bold">Quantity:</label>
+                        <input type="number" name="quantity" class="form-control" min="0" required>
+                    </p>
+                    <p>
+                        <label for="id_selling_price" class="fw-bold">Selling price:</label>
+                        <input type="number" name="selling_price" class="form-control" min="0" required>
+                    </p>
+                    <button type="submit" class="btn common-bg w-100">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
-    .sales-form form {
-        padding: 1rem;
-        transition: transform 0.3s ease-in-out;
-    }
-
-    .sales-form form input {
-        margin-bottom: 1rem;
-    }
-
-    .sales-form form:hover {
-        transform: scale(1.05);
-    }
-</style>
+<!-- Refurbished Device Sales Modal -->
+<div class="modal fade" id="refurbishedDeviceSalesModal" tabindex="-1" aria-labelledby="refurbishedDeviceSalesLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-secondary text-light">
+                <h5 class="modal-title" id="refurbishedDeviceSalesLabel">Refurbished Device Sales</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{% url 'refarbished_sales' %}" method="post">
+                    {% csrf_token %}
+                    <p>
+                        <label for="name" class="fw-bold">Device Name:</label>
+                        <input type="text" name="name" class="form-control" list="item_list" required>
+                    </p>
+                    <datalist id="item_list">
+                        {% for item in names_rd %}
+                        <option value="{{ item }}">{{ item }}</option>
+                        {% endfor %}
+                    </datalist>
+                    <p>
+                        <label for="model" class="fw-bold">Model:</label>
+                        <input type="text" name="model" class="form-control" list="model_list" required>
+                    </p>
+                    <datalist id="model_list">
+                        {% for model in models_rd %}
+                        <option value="{{ model }}">{{ model }}</option>
+                        {% endfor %}
+                    </datalist>
+                    <p>
+                        <label for="quantity" class="fw-bold">Quantity:</label>
+                        <input type="number" name="quantity" class="form-control" min="0" required>
+                    </p>
+                    <p>
+                        <label for="id_selling_price" class="fw-bold">Selling price:</label>
+                        <input type="number" name="selling_price" class="form-control" min="0" required>
+                    </p>
+                    <button type="submit" class="btn common-bg w-100">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
 

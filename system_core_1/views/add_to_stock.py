@@ -143,8 +143,8 @@ def add_accessaries(request):
                 instance = Accessories.objects.filter(item=item, model=model).first()
                 if instance is None:
                     Accessories.objects.create(
-                        held_by=request.user,
-                        item=item, model=model, total=total, previous_total=0, cost_per_item=cost,
+                        held_by=request.user, item=item, model=model, total=total,
+                        previous_total=0, cost_per_item=cost,
                         date_added=timezone.now(), date_modified=timezone.now())
                     messages.success(request, 'Successfully added {} {}(s)'.format(total, item))
                 else:
@@ -208,7 +208,7 @@ def add_refarbished(request):
         sorted_name_list = sorted(list(name_set))
         sorted_model_list = sorted(list(model_set))
         if request.method == 'POST':
-            item = request.POST.get('refarbished_name')
+            item = request.POST.get('name')
             model = request.POST.get('model')
             total = request.POST.get('quantity')
             cost = request.POST.get('cost_price')
@@ -216,6 +216,7 @@ def add_refarbished(request):
                 instance = RefarbishedDevices.objects.filter(name=item, model=model).first()
                 if instance is None:
                     RefarbishedDevices.objects.create(
+                        held_by=request.user, previous_total=0,
                         name=item, model=model, total=total, cost=cost,
                         date_added=timezone.now(), date_modified=timezone.now())
                     messages.success(request, 'Successfully added {} {}(s)'.format(total, item))
@@ -227,6 +228,7 @@ def add_refarbished(request):
                     instance.save()
                     messages.success(request, 'Successfully added {} {}(s)'.format(total, item))
             except Exception as e:
+                print(e)
                 messages.error(request, 'Something went wrong, please try again.')
         return render(request, 'users/admin_sites/add_refarbished.html', {'names': sorted_name_list, 'models': sorted_model_list})
     return render(request, 'users/admin_sites/add_refarbished.html', {'names': sorted_name_list, 'models': sorted_model_list})

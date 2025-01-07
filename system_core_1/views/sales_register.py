@@ -14,6 +14,7 @@ import json
 from webpush import send_user_notification
 from ..models.accessories import Accessories, Accessory_Sales
 from ..models.appliances import Appliances, Appliance_Sales
+from ..models.refarbished_devices import RefarbishedDevices, RefarbishedDevicesSales
 from django.utils import timezone
 
 
@@ -154,7 +155,7 @@ def accessary_sales(request):
     """
     if request.user.is_staff and request.user.is_superuser:
         if request.method == 'POST':
-            accessory_name = request.POST.get('item')
+            accessory_name = request.POST.get('name')
             model = request.POST.get('model')
             quantity = int(request.POST.get('quantity'))
             price_sold = request.POST.get('selling_price')
@@ -218,7 +219,7 @@ def appliance_sales(request):
     """
     if request.user.is_staff and request.user.is_superuser:
         if request.method == 'POST':
-            appliance_name = request.POST.get('item')
+            appliance_name = request.POST.get('name')
             model = request.POST.get('model')
             quantity = int(request.POST.get('quantity'))
             price_sold = request.POST.get('selling_price')
@@ -231,6 +232,7 @@ def appliance_sales(request):
                     messages.error(request, 'Invalid appliance name or model, please check and try again')
                     return redirect('data_search')
                 if item.total >= int(quantity):
+                    item.previous_total = item.total
                     item.total -= int(quantity)
                     item.date_modified = timezone.now()
                     sales = Appliance_Sales()
@@ -249,6 +251,68 @@ def appliance_sales(request):
                 messages.error(request, 'Insufficient stock, please check the quantity and try again')
             except Appliances.DoesNotExist:
                 messages.error(request, 'Invalid appliance name or model, please check and try again')
+                return redirect('data_search')
+        return redirect('data_search')
+    return redirect('data_search')
+
+
+@login_required
+def refarbished_sales(request):
+    """
+    The `salesRegister` view function is a Django view responsible for
+    handling the sales register of agents.
+
+    Functionality:
+    - Checks if the user is authenticated and is an agent. Only agents are allowed
+      to access this view.
+    - Renders the sales register page for agents to view their sales records.
+
+    Parameters:
+    - request: The HTTP request object containing user information.
+
+    Returns:
+    - If the user is not authenticated or is not an agent, it returns a 403 Forbidden
+      response.
+    - If the agent is authenticated, it renders the sales register page.
+
+    Usage:
+    Agents access this view to view their sales records.
+    It ensures that only agents are able to access this view.
+    """
+    if request.user.is_staff and request.user.is_superuser:
+        if request.method == 'POST':
+            device_name = request.POST.get('name')
+            model = request.POST.get('model')
+            quantity = int(request.POST.get('quantity'))
+            price_sold = request.POST.get('selling_price')
+            if quantity <= 0:
+                messages.error(request, 'Quantity must be greater than 0, please check and try again')
+                return redirect('data_search')
+            try:
+                item = RefarbishedDevices.objects.filter(name=device_name, model=model).first()
+                if item is None:
+                    messages.error(request, 'Invalid device name or model, please check and try again')
+                    return redirect('data_search')
+                if item.total >= int(quantity):
+                    item.previous_total = item.total
+                    item.total -= int(quantity)
+                    item.date_modified = timezone.now()
+                    sales = RefarbishedDevicesSales()
+                    sales.name = item
+                    sales.model = model
+                    sales.total = int(quantity)
+                    sales.cost = item.cost
+                    sales.price_sold = int(price_sold)
+                    sales.profit = (int(price_sold) - item.cost) * int(quantity)
+                    sales.date_sold = timezone.now()
+                    sales.sold_by = request.user
+                    sales.save()
+                    item.save()
+                    messages.success(request, 'Successfully sold {} of {}(s)'.format(quantity, item.name))
+                    return redirect('data_search')
+                messages.error(request, 'Insufficient stock, please check the quantity and try again')
+            except MainStorage.DoesNotExist:
+                messages.error(request, 'Invalid device name or model, please check and try again')
                 return redirect('data_search')
         return redirect('data_search')
     return redirect('data_search')

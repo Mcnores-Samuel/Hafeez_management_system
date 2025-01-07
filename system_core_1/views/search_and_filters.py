@@ -17,9 +17,9 @@ from django.db.models import Q
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
-from ..models.user_profile import UserProfile
 from ..models.accessories import Accessories
 from ..models.appliances import Appliances
+from ..models.refarbished_devices import RefarbishedDevices
 
 
 @login_required
@@ -57,6 +57,15 @@ def data_search(request):
         model_set_ap.add(data.model)
     sorted_name_list_ap = sorted(list(name_set_ap))
     sorted_model_list_ap = sorted(list(model_set_ap))
+
+    data_list_rd = RefarbishedDevices.objects.all()
+    name_set_rd = set()
+    model_set_rd = set()
+    for data in data_list_rd:
+        name_set_rd.add(data.name)
+        model_set_rd.add(data.model)
+    sorted_name_list_rd = sorted(list(name_set_rd))
+    sorted_model_list_rd = sorted(list(model_set_rd))
     
     if request.method == 'POST':
         search_query = request.POST.get('search_query', None)
@@ -71,10 +80,12 @@ def data_search(request):
     if request.user.is_staff and request.user.is_superuser:
         return render(request, 'users/admin_sites/search.html',
                       {'data': queryset, 'names_ac': sorted_name_list_ac, 'models_ac': sorted_model_list_ac,
-                       'names_ap': sorted_name_list_ap, 'models_ap': sorted_model_list_ap})
+                       'names_ap': sorted_name_list_ap, 'models_ap': sorted_model_list_ap,
+                       'names_rd': sorted_name_list_rd, 'models_rd': sorted_model_list_rd})
     return render(request, 'users/staff_sites/search.html',
                     {'data': queryset, 'names_ac': sorted_name_list_ac, 'models_ac': sorted_model_list_ac,
-                     'names_ap': sorted_name_list_ap, 'models_ap': sorted_model_list_ap})
+                     'names_ap': sorted_name_list_ap, 'models_ap': sorted_model_list_ap,
+                     'names_rd': sorted_name_list_rd, 'models_rd': sorted_model_list_rd})
 
 
 @login_required

@@ -11,7 +11,7 @@ from .adminsites.admin_notification import NotificationsAdmin
 from .adminsites.admin_commission import CommissionAdmin
 from .adminsites.promoterPayments_admin import PromoterPaymentsAdmin
 from .adminsites.admin_contacts import ContactAdmin
-from .adminsites.admin_refarbished_phone import RefarbishedDevicesAdmin
+from .adminsites.admin_refarbished_phone import RefarbishedDevicesAdmin, RefarbishedDevicesSalesAdmin
 from .adminsites.accessories import AdminAccessories, AdminAccessary_Sales
 from .adminsites.admin_appliances import AppliancesAdmin, Appliance_SalesAdmin
 from .models.agent_profile import AgentProfile
@@ -24,7 +24,7 @@ from .models.notifications import Notifications
 from .models.commission import Commission
 from .models.promoter_payments import PromoterPayments
 from .models.contacts import Contact
-from .models.refarbished_devices import RefarbishedDevices
+from .models.refarbished_devices import RefarbishedDevices, RefarbishedDevicesSales
 from .models.accessories import Accessories, Accessory_Sales
 from .models.appliances import Appliances, Appliance_Sales
 
@@ -50,3 +50,4 @@ admin.site.register(Accessories, AdminAccessories)
 admin.site.register(Accessory_Sales, AdminAccessary_Sales)
 admin.site.register(Appliances, AppliancesAdmin)
 admin.site.register(Appliance_Sales, Appliance_SalesAdmin)
+admin.site.register(RefarbishedDevicesSales, RefarbishedDevicesSalesAdmin)
