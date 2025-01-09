@@ -37,7 +37,8 @@ ALLOWED_HOSTS = [MAIN_DOMAIN, SUBDOMAIN_NAME, SERVER_DOMAIN1,
                  SERVER_DOMAIN2, OTHER_DOMAIN, 'localhost', '127.0.0.1']
 CRSF_COOKIE_SECURE = True
 CRSF_TRUSTED_ORIGINS = [MAIN_DOMAIN, SUBDOMAIN_NAME, SERVER_DOMAIN1,
-                        SERVER_DOMAIN2, OTHER_DOMAIN, 'localhost', '127.0.0.1']
+                        SERVER_DOMAIN2, OTHER_DOMAIN, 'localhost', '127.0.0.1',
+                        'https://symctechs.com', 'https://www.symctechs.com']
 
 SESSION_COOKIE_SECURE = True
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
