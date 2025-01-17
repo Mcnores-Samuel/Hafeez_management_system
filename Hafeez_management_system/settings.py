@@ -34,13 +34,21 @@ SERVER_DOMAIN1 = os.environ.get('SERVER_DOMAIN', default=".vercel.app")
 SERVER_DOMAIN2 = os.environ.get('SERVER_DOMAIN2', default=".railway.app")
 OTHER_DOMAIN = os.environ.get('OTHER_DOMAIN')
 ALLOWED_HOSTS = [MAIN_DOMAIN, SUBDOMAIN_NAME, SERVER_DOMAIN1,
-                 SERVER_DOMAIN2, OTHER_DOMAIN, 'localhost', '127.0.0.1']
-CRSF_COOKIE_SECURE = False
-CRSF_TRUSTED_ORIGINS = [MAIN_DOMAIN, SUBDOMAIN_NAME, SERVER_DOMAIN1,
-                        SERVER_DOMAIN2, OTHER_DOMAIN, 'localhost', '127.0.0.1',
-                        'https://symctechs.com', 'https://www.symctechs.com']
+                 SERVER_DOMAIN2, OTHER_DOMAIN, 'localhost', '127.0.0.1',]
 
-SESSION_COOKIE_SECURE = False
+CRSF_COOKIE_SECURE = (bool(int(os.environ.get('CRSF_COOKIE_SECURE', 0))))
+
+CRSF_TRUSTED_ORIGINS = [
+    'https://' + MAIN_DOMAIN,
+    'https://' + SUBDOMAIN_NAME,
+    'http://' + MAIN_DOMAIN,
+    'http://' + SUBDOMAIN_NAME,
+]
+
+USE_X_FORWARDED_HOST = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+SESSION_COOKIE_SECURE = (bool(int(os.environ.get('SESSION_COOKIE_SECURE', 0))))
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
 SESSION_COOKIE_AGE = 60 * 60 * 24 * 7
@@ -183,7 +191,7 @@ PASSWORD_RESET_TIMEOUT_DAYS = 1
 PASSWORD_RESET_EMAIL_SUBJECT = 'registration/reset_email_subject.txt'
 
 STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATIC_ROOT = BASE_DIR / 'static'
 
 
 MEDIA_URL = '/media/'
@@ -217,31 +225,3 @@ LOGGING = {
         'propagate': True,
     },
 }
-
-
-# STATIC_SOURCE = os.environ.get('STATIC_SOURCE')
-
-# if STATIC_SOURCE == 'local':
-#     STATIC_ROOT = BASE_DIR / 'staticfiles'
-#     STATIC_URL = '/static/'
-
-#     MEDIA_ROOT =  os.path.join(BASE_DIR, 'media')
-#     MEDIA_URL = '/media/'
-# else:
-#     AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
-#     AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
-#     AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
-#     AWS_S3_SIGNATURE_NAME = os.environ.get('AWS_S3_SIGNATURE_NAME')
-#     AWS_S3_REGION_NAME = os.environ.get('AWS_S3_REGION_NAME')
-#     AWS_S3_FILE_OVERWRITE = True
-#     AWS_DEFAULT_ACL = None
-#     AWS_S3_VERITY = True
-#     AWS_S3_OBJECT_PARAMETERS = {
-#         'CacheControl': 'max-age=2592000',
-#     }
-#     DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-#     STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-#     AWS_LOCATION = 'static'
-#     MEDIA_LOCATION = 'media'
-#     STATIC_URL = 'https://%s/%s/' % (AWS_STORAGE_BUCKET_NAME, AWS_LOCATION)
-#     MEDIA_URL = 'https://%s/%s/' % (AWS_STORAGE_BUCKET_NAME, MEDIA_LOCATION)
