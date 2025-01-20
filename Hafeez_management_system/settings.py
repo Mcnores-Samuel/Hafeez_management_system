@@ -40,7 +40,7 @@ OTHER_DOMAIN = os.environ.get('OTHER_DOMAIN')
 ALLOWED_HOSTS = [MAIN_DOMAIN, SUBDOMAIN_NAME, SERVER_DOMAIN1,
                  SERVER_DOMAIN2, OTHER_DOMAIN, 'localhost', '127.0.0.1',]
 
-CSRF_COOKIE_SECURE = (bool(int(os.environ.get('CRSF_COOKIE_SECURE', 0))))
+CSRF_COOKIE_SECURE = (bool(int(os.environ.get('CSRF_COOKIE_SECURE', 1))))
 
 CSRF_TRUSTED_ORIGINS = [
     'https://' + MAIN_DOMAIN,
@@ -58,7 +58,7 @@ X_FRAME_OPTIONS = 'DENY'
 USE_X_FORWARDED_HOST = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
-SESSION_COOKIE_SECURE = (bool(int(os.environ.get('SESSION_COOKIE_SECURE', 0))))
+SESSION_COOKIE_SECURE = (bool(int(os.environ.get('SESSION_COOKIE_SECURE', 1))))
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
 SESSION_COOKIE_AGE = 60 * 60 * 24 * 7
