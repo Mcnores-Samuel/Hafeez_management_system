@@ -40,11 +40,13 @@ OTHER_DOMAIN = os.environ.get('OTHER_DOMAIN')
 ALLOWED_HOSTS = [MAIN_DOMAIN, SUBDOMAIN_NAME, SERVER_DOMAIN1,
                  SERVER_DOMAIN2, OTHER_DOMAIN, 'localhost', '127.0.0.1',]
 
-CRSF_COOKIE_SECURE = (bool(int(os.environ.get('CRSF_COOKIE_SECURE', 0))))
+CSRF_COOKIE_SECURE = (bool(int(os.environ.get('CRSF_COOKIE_SECURE', 0))))
 
-CRSF_TRUSTED_ORIGINS = [
-    'https://*.hafeezmw.com',
-    'http://*.hafeezmw.com',
+CSRF_TRUSTED_ORIGINS = [
+    'https://' + MAIN_DOMAIN,
+    'https://' + SUBDOMAIN_NAME,
+    'http://' + MAIN_DOMAIN,
+    'http://' + SUBDOMAIN_NAME,
 ]
 
 USE_X_FORWARDED_HOST = True
