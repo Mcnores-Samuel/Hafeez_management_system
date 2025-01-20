@@ -76,7 +76,6 @@ WEBPUSH_SETTINGS = {
    "VAPID_ADMIN_EMAIL": os.environ.get('VAPID_ADMIN_EMAIL'),
 }
 
-FILTERS_EMPTY_CHOICE_LABEL = 'All'
 MESSAGE_STORAGE = "django.contrib.messages.storage.cookie.CookieStorage"
 
 MIDDLEWARE = [
@@ -90,8 +89,6 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'system_core_1.middleware.RedirectAuthenticatedUsersMiddleware',
 ]
-
-X_FRAME_OPTIONS = 'DENY'
 
 ROOT_URLCONF = 'Hafeez_management_system.urls'
 
