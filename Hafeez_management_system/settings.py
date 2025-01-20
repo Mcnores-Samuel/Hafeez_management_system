@@ -43,11 +43,8 @@ ALLOWED_HOSTS = [MAIN_DOMAIN, SUBDOMAIN_NAME, SERVER_DOMAIN1,
 CRSF_COOKIE_SECURE = (bool(int(os.environ.get('CRSF_COOKIE_SECURE', 0))))
 
 CRSF_TRUSTED_ORIGINS = [
-    'https://home.hafeezmw.com',
-    'https://' + MAIN_DOMAIN,
-    'https://' + SUBDOMAIN_NAME,
-    'http://' + MAIN_DOMAIN,
-    'http://' + SUBDOMAIN_NAME,
+    'https://*.hafeezmw.com',
+    'http://*.hafeezmw.com',
 ]
 
 USE_X_FORWARDED_HOST = True
