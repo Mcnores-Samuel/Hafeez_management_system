@@ -59,9 +59,9 @@ function updateWeeklyChart(url, dest, chartType = 'line', loader) {
                   color: '#fe9a43',
                   font: {
                     weight: 'bold',
-                    size: 16,
+                    size: 12,
                   },
-                  padding: 20,
+                  padding: 5,
                 },
                 legend: {
                   display: false,
@@ -75,6 +75,7 @@ function updateWeeklyChart(url, dest, chartType = 'line', loader) {
                   ticks: {
                     color: '#fe9a43',
                     font: {
+                      size: 9,
                       weight: 'bold',
                     },
                   },
@@ -84,8 +85,10 @@ function updateWeeklyChart(url, dest, chartType = 'line', loader) {
                     display: false,
                   },
                   ticks: {
+                    stepSize: 1,
                     color: '#fe9a43',
                     font: {
+                      size: 9,
                       weight: 'bold',
                     },
                   },

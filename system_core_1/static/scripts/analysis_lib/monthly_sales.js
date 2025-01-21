@@ -63,9 +63,9 @@ function updateSalesByAgentChart(url, dest, chartType, loader) {
                   align: 'center',
                   font: {
                     weight: 'bold',
-                    size: 16, // Adjust font size
+                    size: 12, // Adjust font size
                   },
-                  padding: 10, // Adjust padding for spacing
+                  padding: 5, // Adjust padding for spacing
                   fullSize: true,
                 },
                 legend: {
@@ -86,6 +86,7 @@ function updateSalesByAgentChart(url, dest, chartType, loader) {
                     stepSize: 1, // Show values for each agent
                     color: '#fe9a43', // Darker blue color
                     font: {
+                      size: 9, // Adjust font size
                       weight: 'bold', // Regular font weight
                     },
                   },
@@ -97,6 +98,7 @@ function updateSalesByAgentChart(url, dest, chartType, loader) {
                   ticks: {
                     color: '#fe9a43', // Darker blue color
                     font: {
+                      size: 9, // Adjust font size
                       weight: 'bold', // Regular font weight
                     },
                   },

@@ -20,7 +20,7 @@ html {
 body {
     position: relative;
     font-size: 14px;
-    background: linear-gradient(90deg, black, #e0e0e0);
+    background: rgb(255, 254, 253);
 }
 
 .content {

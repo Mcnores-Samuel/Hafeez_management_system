@@ -39,7 +39,7 @@
             <div class="logo">HE</div>
             <div class="brandname">Hafeez Enterprise</div>
             <ul>
-                <li><a href="{% url 'sign_in' %}"><i class='bx bx-log-in'></i> Log In</a></li>
+                <li><a href="{% url 'sign_in' %}" class="text-light"><i class='bx bx-log-in'></i> Log In</a></li>
             </ul>
         {% endblock %}
     </header>
@@ -52,7 +52,9 @@
                     <div class="brandname">Hafeez Enterprise</div>
                 </div>
                 <br>
-                <h2>Login</h2>
+                <div class="container text-center">
+                    <h5>Login</h5>
+                </div>
                 <form method="post" class="sign_in">
                     {% csrf_token %}
                     <div class="form-group sign_in_group">

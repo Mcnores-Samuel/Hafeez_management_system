@@ -18,7 +18,7 @@ body {
 }
 
 .wrapper .sidebar {
-    width: 170px;
+    width: 150px;
     height: 100%;
     background: gray;
     position: fixed;
@@ -57,7 +57,7 @@ body {
 }
 
 .wrapper.resize .sidebar {
-    width: 60px; /* Adjust the width as needed */
+    width: 60px;
 }
 
 .wrapper .sidebar ul li {
