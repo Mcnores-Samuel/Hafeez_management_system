@@ -8,7 +8,6 @@ from .views.add_to_stock import (add_to_stock, add_airtel_devices_stock, add_acc
                                  add_appliances, add_refarbished)
 from .views.pending_sales import total_pending_sales, revert_to_stock, pending_sales, pending_sales_details
 from .views.defects import defects
-from .views import revenues
 from .views import agents_data_access
 from .views.system_routine_updates import (morning_update, afternoon_update, evening_update)
 from .views.create_new_promoter import create_new_promoter
@@ -21,7 +20,10 @@ from .views.sales_update_api import stockQuery, salesUpdates, airtel_sales_data,
 from .views.accounts_and_data import dataAccess, sales_stock_summry, dailySalesByShop
 from .views.admin_airtel_payments import currentPayments, renewPayment, concludedPayments, deletePayment
 from .views.stock_taking import stock_taking
-from system_core_1.views.accounts.total_revenue import current_year_revenue
+from system_core_1.views.accounting.total_revenue import (
+    current_year_revenue, revenue_by_category, calculateCreditRevenue
+)
+from system_core_1.views.accounting.accounting import getCostAndRevenue, accounting
 
 
 urlpatterns = [
@@ -51,7 +53,6 @@ urlpatterns = [
     path('appliance_sales', sales_register.appliance_sales, name='appliance_sales'),
     path('refarbished_sales', sales_register.refarbished_sales, name='refarbished_sales'),
     path('stock_taking/', stock_taking, name='stock_taking'),
-    path('revenues/', revenues.revenues, name='revenues'),
     path('revert_to_stock/', revert_to_stock, name='revert_to_stock'),
     path('pending_sales/', pending_sales, name='pending_sales'),
     path('pending_sales_details/<str:username>/', pending_sales_details, name='pending_sales_details'),
@@ -120,9 +121,11 @@ urlpatterns = [
     path('afternoon_update/', afternoon_update, name='afternoon_update'),
     path('evening_update/', evening_update, name='evening_update'),
     # Revenue analysis and concurent operations
-    path('calculateCreditRevenue/', revenues.calculateCreditRevenue, name='calculateCreditRevenue'),
-    path('getCostAndRevenue/', revenues.getCostAndRevenue, name='getCostAndRevenue'),
+    path('accounting/', accounting, name='accounting'),
+    path('calculateCreditRevenue/', calculateCreditRevenue, name='calculateCreditRevenue'),
+    path('getCostAndRevenue/', getCostAndRevenue, name='getCostAndRevenue'),
     path('current_year_revenue/', current_year_revenue, name='current_year_revenue'),
+    path('revenue_by_category/', revenue_by_category, name='revenue_by_category'),
     # reseting user password
     path('password_reset/', auth_views.PasswordResetView.as_view(template_name='registration/reset_form.html'), name='password_reset'),
     path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(template_name='registration/reset_done.html'), name='password_reset_done'),
