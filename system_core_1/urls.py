@@ -21,6 +21,7 @@ from .views.sales_update_api import stockQuery, salesUpdates, airtel_sales_data,
 from .views.accounts_and_data import dataAccess, sales_stock_summry, dailySalesByShop
 from .views.admin_airtel_payments import currentPayments, renewPayment, concludedPayments, deletePayment
 from .views.stock_taking import stock_taking
+from system_core_1.views.accounts.total_revenue import current_year_revenue
 
 
 urlpatterns = [
@@ -121,6 +122,7 @@ urlpatterns = [
     # Revenue analysis and concurent operations
     path('calculateCreditRevenue/', revenues.calculateCreditRevenue, name='calculateCreditRevenue'),
     path('getCostAndRevenue/', revenues.getCostAndRevenue, name='getCostAndRevenue'),
+    path('current_year_revenue/', current_year_revenue, name='current_year_revenue'),
     # reseting user password
     path('password_reset/', auth_views.PasswordResetView.as_view(template_name='registration/reset_form.html'), name='password_reset'),
     path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(template_name='registration/reset_done.html'), name='password_reset_done'),

@@ -40,7 +40,6 @@ def get_yearly_product_sales(request):
         products = {}
         for product in data_set:
             products[product.phone_type] = products.get(product.phone_type, 0) + 1
-        products = sorted(products.items(), key=lambda x: x[1], reverse=True)
         return JsonResponse(products, safe=False)
     return JsonResponse({'error': 'Invalid request.'})
 

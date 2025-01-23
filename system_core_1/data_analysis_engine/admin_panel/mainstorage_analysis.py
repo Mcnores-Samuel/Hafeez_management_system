@@ -146,13 +146,8 @@ class MainStorageAnalysis:
         the overall stock data.
         """
         agents = AgentProfile.objects.all().order_by('user__username')
-        stock = 0
-        for agent in agents:
-            stock += MainStorage.objects.filter(
-                agent=agent.user,
-                in_stock=True, assigned=True,
-                sold=False, missing=False,
-                pending=False, faulty=False, recieved=True,
+        stock = MainStorage.objects.filter( agent__groups__name='agents', in_stock=True, assigned=True,
+                sold=False, missing=False, pending=False, faulty=False, recieved=True,
                 issue=False).count()
         return stock
     
@@ -163,15 +158,8 @@ class MainStorageAnalysis:
         month = timezone.now().date().month
         year = timezone.now().date().year
 
-        agents = AgentProfile.objects.all().order_by('user__username')
-        sales = 0
-        for agent in agents:
-            sales += MainStorage.objects.filter(
-                agent=agent.user,
-                in_stock=False, assigned=True,
-                sold=True, missing=False,
-                pending=False, faulty=False,
-                stock_out_date__month=month,
+        sales = MainStorage.objects.filter(agent__groups__name='agents', in_stock=False, assigned=True,
+                sold=True, missing=False, pending=False, faulty=False, stock_out_date__month=month,
                 stock_out_date__year=year).count()
         return sales
     

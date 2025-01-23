@@ -169,37 +169,38 @@ function yearlySalesAnalysisProduct(url, dest, chartType, loader) {
         const load = $(loader);
         load.removeClass('loading-message');
 
-        for (let i = 0; i < data.length; i++) {
-          if (data[i][1] > 10 || data[i][1] === 10) {
-            modelList.push(data[i][0]);
-            total.push(data[i][1]);
+        $.each(data, (key, value) => {
+          if (value >= 5) {
+            modelList.push(key);
+            total.push(value);
           }
-        }
+        });
 
         if (salesAnalystChartPro === null) {
           salesAnalystChartPro = new Chart(yearlyAnalysisctxPro, {
             type: chartType,
             data: {
               labels: modelList,
-              datasets: [{
-                label: date.toDateString(),
-                data: total,
-                backgroundColor: '#4285F4',
-                borderColor: '#4285F4',
-                borderWidth: 2,
-              },
+              datasets: [
+              //   {
+              //   label: date.toDateString(),
+              //   data: total,
+              //   backgroundColor: '#4285F4',
+              //   borderColor: '#4285F4',
+              //   borderWidth: 2,
+              // },
               {
                 label: 'Total Sales',
                 data: total,
-                backgroundColor: '#0F9D58',
+                backgroundColor: '#70a4f880',
                 borderColor: '#0F9D58',
-                borderWidth: 2,
+                borderWidth: 0,
                 type: 'line',
-                fill: false,
+                fill: true,
                 yAxisID: 'y',
                 order: 1,
                 tension: 0.4,
-                pointRadius: 5,
+                pointRadius: 0,
                 pointHoverRadius: 7,
                 pointBackgroundColor: '#0F9D58',
                 pointBorderColor: '#0F9D58',
@@ -227,9 +228,9 @@ function yearlySalesAnalysisProduct(url, dest, chartType, loader) {
                   align: 'center',
                   font: {
                     weight: 'bold',
-                    size: 16,
+                    size: 12,
                   },
-                  padding: 20,
+                  padding: 5,
                 },
                 legend: {
                   display: false,
@@ -244,6 +245,7 @@ function yearlySalesAnalysisProduct(url, dest, chartType, loader) {
                   ticks: {
                     color: '#fe9a43',
                     font: {
+                      size: 9,
                       weight: 'bold',
                     },
                   },
@@ -256,6 +258,7 @@ function yearlySalesAnalysisProduct(url, dest, chartType, loader) {
                   ticks: {
                     color: '#fe9a43',
                     font: {
+                      size: 9,
                       weight: 'bold',
                     },
                   },
