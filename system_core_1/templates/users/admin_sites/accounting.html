@@ -5,6 +5,8 @@
 {% bootstrap_javascript %}
 {% block head %}
 <script src="{% static 'scripts/accounting/revenueOverview.js' %}" defer></script>
+<script src="{% static 'scripts/accounting/revCostByCategory.js' %}" defer></script>
+<script src="{% static 'scripts/accounting/previous_revenue.js' %}" defer></script>
 {% endblock %}
 {% block content %}
 <div class="row gy-3">
@@ -108,17 +110,17 @@
                     <h4 class="fw-bold text-muted">Revenue and Cost By Category</h4>
                 </div>
                 <div class="card-body">
-                    <canvas class="yearly_revenue_chart" width="400" height="300"></canvas>
+                    <canvas class="revCostByCategoryChart" width="400" height="300"></canvas>
                 </div>
             </div>
         </div>
         <div class="col-md-6 col-12">
             <div class="card">
                 <div class="card-header text-center">
-                    <h4 class="fw-bold text-muted">Cost And Revenue Distribution</h4>
+                    <h4 class="fw-bold text-muted">Same Period Last year</h4>
                 </div>
                 <div class="card-body">
-                    <canvas class="revenue_distribution_chart" width="400" height="300"></canvas>
+                    <canvas class="last_revenue_chart" width="400" height="300"></canvas>
                 </div>
             </div>
         </div>

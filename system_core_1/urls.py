@@ -20,8 +20,9 @@ from .views.sales_update_api import stockQuery, salesUpdates, airtel_sales_data,
 from .views.accounts_and_data import dataAccess, sales_stock_summry, dailySalesByShop
 from .views.admin_airtel_payments import currentPayments, renewPayment, concludedPayments, deletePayment
 from .views.stock_taking import stock_taking
-from system_core_1.views.accounting.total_revenue import (
-    current_year_revenue, revenue_by_category, calculateCreditRevenue
+from system_core_1.views.accounting.revenue import (
+    current_year_revenue, revenue_by_category, calculateCreditRevenue, lastyearBycurrentMonth,
+    revenue_growth, average_order_value
 )
 from system_core_1.views.accounting.accounting import getCostAndRevenue, accounting
 
@@ -126,6 +127,9 @@ urlpatterns = [
     path('getCostAndRevenue/', getCostAndRevenue, name='getCostAndRevenue'),
     path('current_year_revenue/', current_year_revenue, name='current_year_revenue'),
     path('revenue_by_category/', revenue_by_category, name='revenue_by_category'),
+    path('lastyearBycurrentMonth/', lastyearBycurrentMonth, name='lastyearBycurrentMonth'),
+    path('revenue_growth/', revenue_growth, name='revenue_growth'),
+    path('average_order_value/', average_order_value, name='average_order_value'),
     # reseting user password
     path('password_reset/', auth_views.PasswordResetView.as_view(template_name='registration/reset_form.html'), name='password_reset'),
     path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(template_name='registration/reset_done.html'), name='password_reset_done'),

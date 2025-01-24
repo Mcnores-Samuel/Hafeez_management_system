@@ -79,12 +79,13 @@ def revenue_by_category(request):
         revenueByCategory = []
         for category in categories:
             items = data.filter(category=category)
-            total = sum([item.price for item in items])
+            cost = items.aggregate(total_cost=Sum('cost'))
+            revenue = items.aggregate(total_revenue=Sum('price'))
             revenueByCategory.append(
                 {
                     'category': category,
-                    'total_revenue': total,
-                    'total_items': items.count()
+                    'total_cost': cost['total_cost'],
+                    'total_revenue': revenue['total_revenue']
                 }
             )
         return JsonResponse(revenueByCategory, safe=False)
@@ -107,4 +108,74 @@ def calculateCreditRevenue(request):
             total = sum([item.price for item in items])
             revenue[month] = total
         return JsonResponse(revenue, safe=False)
+    return JsonResponse({'error': 'Invalid request.'})
+
+
+@login_required
+def lastyearBycurrentMonth(request):
+    """Calculate the total revenue for the last year by the current month."""
+    if request.method == 'GET':
+        current_month = timezone.now().month
+        last_year = timezone.now().year - 1
+        data = MainStorage.objects.filter(
+            in_stock=False, sold=True, missing=False, pending=False, assigned=True,
+            stock_out_date__month__lte=current_month,
+            stock_out_date__year=last_year, price__gt=0,
+            agent__groups__name='agents'
+        )
+        group_by_month = {}
+        for i in range(1, current_month+1):
+            items = data.filter(stock_out_date__month=i)
+            total = sum([item.price for item in items])
+            group_by_month[timezone.datetime(last_year, i, 1).strftime('%B')] = total
+        return JsonResponse(group_by_month)
+    return JsonResponse({'error': 'Invalid request.'})
+
+
+@login_required
+def revenue_growth(request):
+    """Calculate the revenue growth."""
+    if request.method == 'GET':
+        current_year = timezone.now().year
+        last_year = current_year - 1
+        current_month = timezone.now().month
+        current_year_data = MainStorage.objects.filter(
+            in_stock=False, sold=True, missing=False, pending=False, assigned=True,
+            stock_out_date__year=current_year, cost__gt=0, price__gt=0, stock_out_date__month__lte=current_month,
+            agent__groups__name='agents'
+        )
+        last_year_data = MainStorage.objects.filter(
+            in_stock=False, sold=True, missing=False, pending=False, assigned=True,
+            stock_out_date__year=last_year, cost__gt=0, price__gt=0, stock_out_date__month__lte=current_month,
+            agent__groups__name='agents'
+        )
+        current_year_revenue = sum([item.price for item in current_year_data])
+        last_year_revenue = sum([item.price for item in last_year_data])
+        if last_year_revenue == 0:
+            return JsonResponse({'growth': 100})
+        
+        if current_year_revenue == 0:
+            return JsonResponse({'growth': -100})
+        growth = (current_year_revenue - last_year_revenue) / last_year_revenue * 100
+        return JsonResponse({'growth': growth})
+    return JsonResponse({'error': 'Invalid request.'})
+
+
+@login_required
+def average_order_value(request):
+    """Calculate the average order value."""
+    if request.method == 'GET':
+        current_year = timezone.now().year
+        current_month = timezone.now().month
+        data = MainStorage.objects.filter(
+            in_stock=False, sold=True, missing=False, pending=False, assigned=True,
+            stock_out_date__year=current_year, cost__gt=0, price__gt=0, stock_out_date__month__lte=current_month,
+            agent__groups__name='agents'
+        )
+        total_revenue = sum([item.price for item in data])
+        total_orders = data.count()
+        if total_orders == 0:
+            return JsonResponse({'average_order_value': 0})
+        average_order_value = total_revenue / total_orders
+        return JsonResponse({'average_order_value': average_order_value})
     return JsonResponse({'error': 'Invalid request.'})

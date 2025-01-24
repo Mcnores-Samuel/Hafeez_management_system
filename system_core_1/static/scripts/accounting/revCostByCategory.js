@@ -11,6 +11,8 @@ $(document).ready(function () {
             },
             success(data) {
                 $('#loader').hide();
+                console.log(data);
+                revCostByCategory(data);
             },
         });
     }
@@ -18,54 +20,54 @@ $(document).ready(function () {
     fetchData();
 });
 
-// function revCostByCategory(data) {
-//     let revCostByCategoryChart = null;
-//     let revCostByCategoryctx = null;
+function revCostByCategory(data) {
+    let revCostByCategoryChart = null;
+    let revCostByCategoryctx = null;
 
-//     if (revCostByCategoryChart === null) {
-//         revCostByCategoryctx = $('.revCostByCategoryChart').get(0).getContext('2d');
-//     }
+    if (revCostByCategoryChart === null) {
+        revCostByCategoryctx = $('.revCostByCategoryChart').get(0).getContext('2d');
+    }
 
-//     const date = new Date();
+    function fetchAndUpdateDailyData() {
+        const modelList = [];
+        const revenue = [];
+        const cost = [];
 
-//     function fetchAndUpdateDailyData() {
-//         const modelList = [
-//             "Both Price & Cost",
-//             "Cost Only",
-//             "Price Only",
-//             "No Price or Cost",
-//         ];
-//         const values = [
-//             data.both_price_and_cost,
-//             data.cost_only,
-//             data.price_only,
-//             data.no_price_or_cost,
-//         ]
+        data.forEach((item) => {
+            modelList.push(item.category);
+            revenue.push(item.total_revenue);
+            cost.push(item.total_cost);
+        });
 
-//         if (revCostByCategoryChart === null) {
-//             revCostByCategoryChart = new Chart(revCostByCategoryctx, {
-//                 type: 'doughnut',
-//                 data: {
-//                     labels: modelList,
-//                     datasets: [],
-//                 },
-//                 options: {
-//                     responsive: true,
-//                     maintainAspectRatio: false,
-//                     plugins: {
-//                         title: {
-//                             display: true,
-//                             text: 'Revenue and Cost by Category',
-//                         },
-//                     },
-//                 },
-//             });
-//         } else {
-//             revCostByCategoryChart.data.labels = modelList;
-//             revCostByCategoryChart.data.datasets[0].data = values;
-//             revCostByCategoryChart.update();
-//         }
-//     }
+        revCostByCategoryChart = new Chart(revCostByCategoryctx, {
+            type: 'bar',
+            data: {
+                labels: modelList,
+                datasets: [
+                    {
+                        label: 'Revenue',
+                        data: revenue,
+                        backgroundColor: "rgba(75, 192, 192, 0.8)",
+                    },
+                    {
+                        label: 'Cost',
+                        data: cost,
+                        backgroundColor: "rgba(255, 159, 64, 0.8)",
+                    },
+                ],
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Revenue and Cost by Category',
+                    },
+                },
+            },
+        });
+    }
 
-//     fetchAndUpdateDailyData();
-// }
+    fetchAndUpdateDailyData();
+}
