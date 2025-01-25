@@ -22,7 +22,7 @@ from .views.admin_airtel_payments import currentPayments, renewPayment, conclude
 from .views.stock_taking import stock_taking
 from system_core_1.views.accounting.revenue import (
     current_year_revenue, revenue_by_category, calculateCreditRevenue, lastyearBycurrentMonth,
-    revenue_growth, average_order_value
+    revenue_growth, average_order_value, calculateCashRevenue
 )
 from system_core_1.views.accounting.accounting import getCostAndRevenue, accounting
 
@@ -124,6 +124,7 @@ urlpatterns = [
     # Revenue analysis and concurent operations
     path('accounting/', accounting, name='accounting'),
     path('calculateCreditRevenue/', calculateCreditRevenue, name='calculateCreditRevenue'),
+    path('calculateCashRevenue/', calculateCashRevenue, name='calculateCashRevenue'),
     path('getCostAndRevenue/', getCostAndRevenue, name='getCostAndRevenue'),
     path('current_year_revenue/', current_year_revenue, name='current_year_revenue'),
     path('revenue_by_category/', revenue_by_category, name='revenue_by_category'),

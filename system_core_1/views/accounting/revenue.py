@@ -112,6 +112,25 @@ def calculateCreditRevenue(request):
 
 
 @login_required
+def calculateCashRevenue(request):
+    """Calculate the cash revenue Sort by Month"""
+    if request.method == 'GET':
+        months = ['January', 'February', 'March', 'April', 'May',
+            'June', 'July', 'August', 'September', 'October',
+            'November', 'December']
+        revenue = {}
+        for month in months:
+            items = MainStorage.objects.filter(
+                in_stock=False, sold=True, pending=False, missing=False, cost__gt=0, price__gt=0,
+                assigned=True, sales_type='Cash', stock_out_date__month=months.index(month)+1,
+                stock_out_date__year=timezone.now().year)
+            total = sum([item.price for item in items])
+            revenue[month] = total
+        return JsonResponse(revenue, safe=False)
+    return JsonResponse({'error': 'Invalid request.'})
+
+
+@login_required
 def lastyearBycurrentMonth(request):
     """Calculate the total revenue for the last year by the current month."""
     if request.method == 'GET':
@@ -141,12 +160,12 @@ def revenue_growth(request):
         current_month = timezone.now().month
         current_year_data = MainStorage.objects.filter(
             in_stock=False, sold=True, missing=False, pending=False, assigned=True,
-            stock_out_date__year=current_year, cost__gt=0, price__gt=0, stock_out_date__month__lte=current_month,
+            stock_out_date__year=current_year, price__gt=0, stock_out_date__month__lte=current_month,
             agent__groups__name='agents'
         )
         last_year_data = MainStorage.objects.filter(
             in_stock=False, sold=True, missing=False, pending=False, assigned=True,
-            stock_out_date__year=last_year, cost__gt=0, price__gt=0, stock_out_date__month__lte=current_month,
+            stock_out_date__year=last_year, price__gt=0, stock_out_date__month__lte=current_month,
             agent__groups__name='agents'
         )
         current_year_revenue = sum([item.price for item in current_year_data])
@@ -157,6 +176,7 @@ def revenue_growth(request):
         if current_year_revenue == 0:
             return JsonResponse({'growth': -100})
         growth = (current_year_revenue - last_year_revenue) / last_year_revenue * 100
+        growth = round(growth, 2)
         return JsonResponse({'growth': growth})
     return JsonResponse({'error': 'Invalid request.'})
 
@@ -177,5 +197,6 @@ def average_order_value(request):
         if total_orders == 0:
             return JsonResponse({'average_order_value': 0})
         average_order_value = total_revenue / total_orders
+        average_order_value = round(average_order_value, 3)
         return JsonResponse({'average_order_value': average_order_value})
     return JsonResponse({'error': 'Invalid request.'})
