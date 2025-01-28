@@ -25,6 +25,7 @@ from system_core_1.views.accounting.revenue import (
     revenue_growth, average_order_value, calculateCashRevenue
 )
 from system_core_1.views.accounting.accounting import getCostAndRevenue, accounting
+from system_core_1.views.expenses import expenses
 
 
 urlpatterns = [
@@ -122,6 +123,7 @@ urlpatterns = [
     path('afternoon_update/', afternoon_update, name='afternoon_update'),
     path('evening_update/', evening_update, name='evening_update'),
     # Revenue analysis and concurent operations
+    path('expenses/', expenses, name='expenses'),
     path('accounting/', accounting, name='accounting'),
     path('calculateCreditRevenue/', calculateCreditRevenue, name='calculateCreditRevenue'),
     path('calculateCashRevenue/', calculateCashRevenue, name='calculateCashRevenue'),

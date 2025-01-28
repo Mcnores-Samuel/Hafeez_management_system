@@ -48,11 +48,23 @@ def dashboard(request):
         avatar = UserAvatar.objects.get(
             user=request.user) if UserAvatar.objects.filter(
                 user=request.user).exists() else None
+        agents = UserProfile.objects.filter(groups__name='agents').values_list(
+            'username', flat=True)
+        partners = UserProfile.objects.filter(groups__name='special_sales').values_list(
+            'username', flat=True)
+        staff = UserProfile.objects.filter(groups__name='staff_members').values_list(
+            'username', flat=True)
+        admin = UserProfile.objects.filter(is_superuser=True).values_list(
+            'username', flat=True)
+        expense_holder = UserProfile.objects.filter(groups__name='expense_holders').values_list(
+            'username', flat=True)
+        users = sorted(agents.union(partners, staff, admin, expense_holder))
         context = {
             'profile': user.email[0],
             'user': user,
             'admin_url': admin_url,
             'avatar': avatar,
+            'users': users,
         }
         return render(request, 'users/admin_sites/main.html', context)
     elif request.user.groups.filter(name='staff_members').exists():

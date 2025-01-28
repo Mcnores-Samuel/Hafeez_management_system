@@ -21,6 +21,19 @@ def accounting(request):
         HttpResponse: The response object.
     """
     return render(request, 'users/admin_sites/accounting.html')
+
+
+@login_required
+def cost_and_expenses(request):
+    """Display the cost and expenses page.
+
+    Args:
+        request (HttpRequest): The request object.
+
+    Returns:
+        HttpResponse: The response object.
+    """
+    return render(request, 'users/admin_sites/cost_and_expenses.html')
     
     
 
