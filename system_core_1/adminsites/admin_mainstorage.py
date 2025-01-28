@@ -7,13 +7,13 @@ from django.utils import timezone
 
 
 class MainStorageAdmin(admin.ModelAdmin):
-    list_display = ('assigned_to', 'device_imei', 'device_imei_2', 'name', 'phone_type', 'spec', 'recieved', 'on_display',
+    list_display = ('assigned_to', 'device_imei', 'device_imei_2', 'name', 'phone_type', 'spec', 'recieved',
                     'faulty', 'in_stock', 'pending', 'missing', 'assigned', 'sold', 'paid', 'issue', 'sales_type', 'cost', 'price', 'contract_no',
                     'assigned_from', 'updated_by', 'entry_date', 'stock_out_date','collected_on', 'comment', 'supplier'
     )
     search_fields = ('device_imei', 'device_imei_2', 'name', 'phone_type', 'entry_date', 'category', 'agent__username',
                      'contract_no', 'sales_type', 'stock_out_date', 'assigned', 'sold', 'paid', 'collected_on', 'supplier')
-    list_filter = ('in_stock', 'on_display', 'missing', 'faulty', 'pending', 'category', 'supplier', 'sales_type', 'assigned', 'sold', 'paid',
+    list_filter = ('in_stock', 'missing', 'faulty', 'pending', 'category', 'supplier', 'sales_type', 'assigned', 'sold', 'paid',
                    'entry_date', CollectionMonthFilter, 'stock_out_date', SpecialAgentsFilter, AgentFilter, YesterdayFilter, YearMonthFilter)
     
     list_per_page = 50
