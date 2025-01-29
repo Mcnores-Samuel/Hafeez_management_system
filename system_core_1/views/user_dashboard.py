@@ -50,7 +50,7 @@ def dashboard(request):
                 user=request.user).exists() else None
         agents = UserProfile.objects.filter(groups__name='agents').values_list(
             'username', flat=True)
-        partners = UserProfile.objects.filter(groups__name='special_sales').values_list(
+        partners = UserProfile.objects.filter(groups__name='partners').values_list(
             'username', flat=True)
         staff = UserProfile.objects.filter(groups__name='staff_members').values_list(
             'username', flat=True)

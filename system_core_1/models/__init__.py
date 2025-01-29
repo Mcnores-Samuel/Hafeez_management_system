@@ -8,3 +8,4 @@ from .commission import Commission
 from .accessories import Accessories
 from .refarbished_devices import RefarbishedDevices
 from .promoter_payments import PromoterPayments
+from .cost_per_invoice import CostPerInvoice

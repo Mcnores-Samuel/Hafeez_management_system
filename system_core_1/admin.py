@@ -14,6 +14,7 @@ from system_core_1.adminsites.admin_refarbished_phone import RefarbishedDevicesA
 from system_core_1.adminsites.accessories import AdminAccessories, AdminAccessary_Sales
 from system_core_1.adminsites.admin_expenses import ExpensesAdmin, FixedAssetsAdmin, CapitalAdmin, LiabilityAdmin
 from system_core_1.adminsites.admin_appliances import AppliancesAdmin, Appliance_SalesAdmin
+from system_core_1.adminsites.admin_cost_per_invoice import CostPerInvoiceAdmin, DailyExchangeRateAdmin
 from system_core_1.models.agent_profile import AgentProfile
 from system_core_1.models.user_profile import UserProfile, UserAvatar
 from system_core_1.models.main_storage import MainStorage
@@ -28,6 +29,7 @@ from system_core_1.models.refarbished_devices import RefarbishedDevices, Refarbi
 from system_core_1.models.accessories import Accessories, Accessory_Sales
 from system_core_1.models.appliances import Appliances, Appliance_Sales
 from system_core_1.models.expenses import Expenses, FixedAssets, Capital, Liability
+from system_core_1.models.cost_per_invoice import CostPerInvoice, DailyExchangeRate
 
 
 admin.site.site_url = "/system_core_1/dashboard"
@@ -56,3 +58,5 @@ admin.site.register(Expenses, ExpensesAdmin)
 admin.site.register(FixedAssets, FixedAssetsAdmin)
 admin.site.register(Capital, CapitalAdmin)
 admin.site.register(Liability, LiabilityAdmin)
+admin.site.register(CostPerInvoice, CostPerInvoiceAdmin)
+admin.site.register(DailyExchangeRate, DailyExchangeRateAdmin)

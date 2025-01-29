@@ -65,8 +65,7 @@ class MainStorage(models.Model):
     """
     agent = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
     device_imei = models.CharField(max_length=15, unique=True)
-    device_imei_2 = models.CharField(max_length=15, unique=True,
-                                     null=True, blank=True)
+    device_imei_2 = models.CharField(max_length=15, unique=True, null=True, blank=True)
     name = models.CharField(max_length=50, null=True)
     phone_type = models.CharField(max_length=25, blank=True, null=True)
     category = models.CharField(max_length=25, null=True, default='Tecno')
@@ -82,7 +81,6 @@ class MainStorage(models.Model):
     collected_on = models.DateField(default=timezone.now)
     last_updated = models.DateTimeField(default=timezone.now)
     cost = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
-    cost_per_current_ex_rate = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     payg_number = models.CharField(max_length=15, null=True, blank=True)
     in_stock = models.BooleanField(default=True)
@@ -90,8 +88,6 @@ class MainStorage(models.Model):
     sold = models.BooleanField(default=False)
     paid = models.BooleanField(default=False)
     recieved = models.BooleanField(default=False)
-    current_ex_rate = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
-    ex_rate_date = models.DateField(default=timezone.now)
     available = models.BooleanField(default=False)
     pending = models.BooleanField(default=False)
     missing = models.BooleanField(default=False)
