@@ -92,18 +92,9 @@ class DailyExchangeRate(models.Model):
         date: A date field to store the date of the exchange rate.
         exchange_rate: A decimal field to store the exchange rate.
     """
-    date = models.DateField(auto_created=True)
+    date = models.DateTimeField(default=timezone.now)
     exchange_rate = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
-
-    def update_exchange_rate(self, exchange_rate):
-        """This method is used to update the exchange rate.
-
-        Args:
-            exchange_rate: The new exchange rate.
-        """
-        self.exchange_rate = exchange_rate
-        self.date = timezone.now()
-        self.save()
+    valid = models.BooleanField(default=True)
 
     def __str__(self):
         return self.date

@@ -146,7 +146,7 @@ def dispatch_stock(request):
                     partner=user, invoice_date=date, created_at=date, updated_at=date,
                     original_cost=0.0, cost_per_ex_rate=0.0, total_items_sold=0,
                     last_payment_amount=0.0, last_payment_date=date, current_balance=0.0,
-                    total_amount_paid=0.0)
+                    total_amount_paid=0.0, is_paid=False)
                 cost_per_invoice.attach_items(invoice_items)
                 cost_per_invoice.save()
             return JsonResponse({'status': 200, 'not_in_stock': not_in_stock})
