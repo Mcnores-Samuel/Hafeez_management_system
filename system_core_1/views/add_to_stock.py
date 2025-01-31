@@ -67,11 +67,12 @@ def add_to_stock(request):
                         entry_date=timezone.now(), stock_out_date=timezone.now(),
                         collected_on=timezone.now(), assigned=True, sold=False,
                         issue=False, paid=False, cost=cost_price, price=0.00, agent=agent,
-                        recieved=True, on_display=False, pending=False, missing=False,
+                        recieved=True, pending=False, missing=False,
                         supplier=supplier, faulty=False, assigned_from='Hafeez Enterprises',
                         updated_by=user.username, comment='##'
                     )
                 except Exception as e:
+                    print(e)
                     already_exists.append(item)
             return JsonResponse({'status': 200, 'data': already_exists})
     if request.user.is_staff and request.user.is_superuser:
