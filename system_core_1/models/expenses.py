@@ -115,3 +115,14 @@ class Liability(models.Model):
     is_paid = models.BooleanField(default=False)
     interest_rate = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
     date_paid = models.DateTimeField(blank=True, null=True)
+
+    def __str__(self):
+        return f'{self.creditor} - {self.amount}'
+    
+    class Meta:
+        db_table = 'liabilities'
+        verbose_name = 'Liability'
+        verbose_name_plural = 'Liabilities'
+        indexes = [
+            models.Index(fields=['effective_date'])
+        ]

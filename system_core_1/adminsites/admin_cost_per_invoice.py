@@ -22,5 +22,6 @@ class DailyExchangeRateAdmin(admin.ModelAdmin):
     """The `DailyExchangeRateAdmin` class is used to customize the
     admin interface for the DailyExchangeRate model.
     """
-    list_display = ('date', 'exchange_rate')
+    list_display = ('date', 'exchange_rate', 'valid')
+    list_filter = ('date', 'valid')
     search_fields = ('date', 'exchange_rate')

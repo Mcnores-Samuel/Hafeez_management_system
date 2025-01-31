@@ -7,6 +7,7 @@ from system_core_1.models.cost_per_invoice import DailyExchangeRate
 from system_core_1.models.user_profile import UserProfile
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib import messages
 
 
 
@@ -72,21 +73,48 @@ def data_per_partner(request):
 
 
 @login_required
+@csrf_exempt
 def add_exchange_rate(request):
     """Add a new exchange rate to the system."""
     if request.method == 'POST':
         exchange_rate = request.POST.get('current_ex_rate')
         # Validate exchange rate and date
         exchange_rate = float(exchange_rate)
-        previous_rate = DailyExchangeRate.objects.last()
+        previous_rate = DailyExchangeRate.objects.filter(valid=True).first()
         if previous_rate:
             previous_rate.valid = False
             previous_rate.save()
         date = timezone.now()
-        if exchange_rate and exchange_rate.isdigit():
-            DailyExchangeRate.objects.create(
+        if exchange_rate:
+            ex_rate = DailyExchangeRate.objects.create(
                 exchange_rate=exchange_rate,
                 date=date, valid=True
             )
-            return redirect('ex_rate_pricing')
-        return redirect('ex_rate_pricing')
+            res = {
+                'current_ex_rate': ex_rate.exchange_rate,
+                'message': 'Exchange rate added successfully.'
+            }
+            return JsonResponse(res)
+        else:
+            return JsonResponse({'error': 'Invalid exchange rate.'}, status=400)
+    return JsonResponse({'error': 'Invalid request.'}, status=400)
+
+
+@login_required
+def get_exchange_rate(request):
+    """Get the current exchange rate."""
+    if request.method == 'GET':
+        exchange_rate = DailyExchangeRate.objects.filter(valid=True).first()
+        if exchange_rate:
+            return JsonResponse({'current_ex_rate': exchange_rate.exchange_rate})
+    return JsonResponse({'error': 'No exchange rate found.'}, status=404)
+
+
+@login_required
+def get_outstanding_invoice(request):
+    """Get the total outstanding invoice for the month."""
+    if request.method == 'GET':
+        invoices = CostPerInvoice.objects.filter(is_paid=False)
+        total_outstanding = invoices.count()
+        return JsonResponse({'total_outstanding': total_outstanding})
+    return JsonResponse({'error': 'No outstanding invoice found.'}, status=404)

@@ -26,8 +26,12 @@ from system_core_1.views.accounting.revenue import (
 )
 from system_core_1.views.accounting.accounting import getCostAndRevenue, accounting
 from system_core_1.views.expenses import expenses
-from system_core_1.views.ex_rate_pricing.admin_views.entry import ex_rate_pricing, data_per_partner, add_exchange_rate
-
+from system_core_1.views.ex_rate_pricing.admin_views.entry import (
+    ex_rate_pricing, data_per_partner, add_exchange_rate, get_exchange_rate, get_outstanding_invoice
+)
+from system_core_1.views.ex_rate_pricing.admin_views.update import (
+    update_cost_by_rate
+)
 
 urlpatterns = [
     # home page
@@ -138,6 +142,9 @@ urlpatterns = [
     path('ex_rate_pricing/', ex_rate_pricing, name='ex_rate_pricing'),
     path('data_per_partner/', data_per_partner, name='data_per_partner'),
     path('add_exchange_rate/', add_exchange_rate, name='add_exchange_rate'),
+    path('get_exchange_rate/', get_exchange_rate, name='get_exchange_rate'),
+    path('get_outstanding_invoice/', get_outstanding_invoice, name='get_outstanding_invoice'),
+    path('update_cost_by_rate/', update_cost_by_rate, name='update_cost_by_rate'),
     # reseting user password
     path('password_reset/', auth_views.PasswordResetView.as_view(template_name='registration/reset_form.html'), name='password_reset'),
     path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(template_name='registration/reset_done.html'), name='password_reset_done'),

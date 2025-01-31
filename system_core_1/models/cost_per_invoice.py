@@ -97,7 +97,7 @@ class DailyExchangeRate(models.Model):
     valid = models.BooleanField(default=True)
 
     def __str__(self):
-        return self.date
+        return f'{self.date} - {self.exchange_rate}'
     
 
     class Meta:
