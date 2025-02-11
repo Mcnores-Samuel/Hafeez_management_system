@@ -16,7 +16,9 @@ from .views.airtel_accounts import promoters_data, devices_per_promoter, airtel_
 from .views.airtel_dev_ops import return_device, edit_device, sale_device, reset_device
 from .views.airtel_admin_ops import airtel_devices_data, airtel_device_data_entry, metrics
 from .views.recordairteldevices_payment import record_airtel_devices_payment
-from .views.sales_update_api import stockQuery, salesUpdates, airtel_sales_data, updateTimeStamp, pendingSales
+from .views.sales_update_api import (
+    stockQuery, salesUpdates, airtel_sales_data, updateTimeStamp, pendingSales,
+    partners_stockQuery, partner_invoices)
 from .views.accounts_and_data import dataAccess, sales_stock_summry, dailySalesByShop
 from .views.admin_airtel_payments import currentPayments, renewPayment, concludedPayments, deletePayment
 from .views.stock_taking import stock_taking
@@ -45,6 +47,8 @@ urlpatterns = [
     path('salesUpdates/', salesUpdates, name='salesUpdates'),
     path('updateTimeStamp/', updateTimeStamp, name='updateTimeStamp'),
     path('pendingSales/', pendingSales, name='pendingSales'),
+    path('partners_stockQuery/', partners_stockQuery, name='partners_stockQuery'),
+    path('partner_invoices/<str:partner_username>/', partner_invoices, name='partner_invoices'),
     path('airtel_sales_data/', airtel_sales_data, name='airtel_sales_data'),
     path('currentPayments/', currentPayments, name='currentPayments'),
     path('renewPayment/', renewPayment, name='renewPayment'),

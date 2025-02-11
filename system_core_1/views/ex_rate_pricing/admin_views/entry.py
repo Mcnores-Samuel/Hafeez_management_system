@@ -30,7 +30,6 @@ def ex_rate_pricing(request):
 def data_per_partner(request):
     """Returns data for the requested partner with optimized queries."""
     if request.method == 'POST':
-        current_month = timezone.now().month
         partner_id = request.POST.get('partner')
 
         # Get partner safely without exceptions
@@ -38,8 +37,7 @@ def data_per_partner(request):
 
         # Optimize invoice query using select_related & prefetch_related
         invoices = CostPerInvoice.objects.filter(
-            partner=partner,
-            invoice_date__month=current_month
+            partner=partner, is_paid=False
         ).select_related('partner').prefetch_related('items')
 
         # Fetch only required fields

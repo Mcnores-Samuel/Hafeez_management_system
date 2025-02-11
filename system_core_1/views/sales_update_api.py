@@ -1,6 +1,7 @@
 """This model represent the entire stock available and sold in all posts."""
 from ..models.main_storage import MainStorage
 from ..models.main_storage import Airtel_mifi_storage
+from system_core_1.models.cost_per_invoice import CostPerInvoice
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import re
@@ -20,6 +21,41 @@ def stockQuery(request):
             ).values_list('device_imei', flat=True)
         devices = reversed(devices)
         return JsonResponse({'data': list(devices)}, status=200)
+    return JsonResponse({'message': 'Invalid request method'}, status=400)
+
+
+def partners_stockQuery(request):
+    """Query the stock of phones available in the inventory."""
+    if request.method == 'GET':
+        # Get all devices in stock and assigned to agents in one query
+        invoices = CostPerInvoice.objects.filter(is_paid=False)
+        data = []
+        for invoice in invoices.all():
+            items = invoice.items.all()
+            for item in items:
+                data.append(item.device_imei)
+        return JsonResponse({'data': data}, status=200)
+    return JsonResponse({'message': 'Invalid request method'}, status=400)
+
+
+def partner_invoices(request, partner_username):
+    """Query the stock of phones available in the inventory."""
+    if request.method == 'GET':
+        # Get all devices in stock and assigned to agents in one query
+        invoices = CostPerInvoice.objects.filter(
+            is_paid=False,
+            partner__username=partner_username
+            )
+        data = []
+        for invoice in invoices:
+            data.append({
+                'invoice_number': invoice.invoice_number,
+                'invoice_date': invoice.invoice_date,
+                'items': list(invoice.get_invoice_items().values(
+                    'device_imei', 'name', 'cost', 'in_stock', 'sold', 'collected_on',
+                ))
+            })
+        return JsonResponse({'data': data}, status=200)
     return JsonResponse({'message': 'Invalid request method'}, status=400)
 
 

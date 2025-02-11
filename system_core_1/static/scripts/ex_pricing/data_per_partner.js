@@ -61,7 +61,7 @@ const invoiceTable = (data) => {
                     </div>
                     <div class="modal-body">
                         <div class="table-container">
-                        <table class="table table-striped" id="invoiceTable">
+                        <table class="table" id="invoiceTable">
                             <thead>
                                 <tr>
                                     <th>Item Name</th>
@@ -89,7 +89,7 @@ const invoiceTable = (data) => {
 
         element.items.forEach(item => {
             $(`#invoiceItems-${element.invoice_number.replace(/\W/g, "_")}`).append(
-                `<tr>
+                `<tr style="background-color: ${item.sold ? 'rgba(221, 118, 118, 0.2)' : 'rgba(130, 192, 130, 0.2)'}">
                     <td>${item.name}</td>
                     <td>${item.device_imei}</td>
                     <td>MK${formatValue(item.cost)}</td>
