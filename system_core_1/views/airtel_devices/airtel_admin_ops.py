@@ -3,8 +3,8 @@ from django.db.models import Count, Q
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from ..models.main_storage import Airtel_mifi_storage
-from ..models.user_profile import UserProfile
+from ...models.main_storage import Airtel_mifi_storage
+from ...models.user_profile import UserProfile
 from django.shortcuts import render
 from django.http import HttpResponseForbidden
 

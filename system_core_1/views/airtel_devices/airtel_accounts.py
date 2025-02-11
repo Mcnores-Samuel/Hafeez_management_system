@@ -1,14 +1,14 @@
 """This view function is responsible for assigning a promoter to an Airtel device."""
-from ..models.user_profile import UserProfile
+from ...models.user_profile import UserProfile
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
 from django.shortcuts import render, redirect
-from ..models.main_storage import Airtel_mifi_storage
+from ...models.main_storage import Airtel_mifi_storage
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Count, Case, When, IntegerField
 from django.http import JsonResponse
-from ..models.promoter_payments import PromoterPayments
+from ...models.promoter_payments import PromoterPayments
 from django.urls import reverse
 
 

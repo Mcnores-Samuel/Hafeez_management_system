@@ -4,38 +4,22 @@ from .views import (registration_view, data_updates, central_display, home_page,
                     user_dashboard, action_on_data_select, search_and_filters, data_for_charts)
 from .views.stock_analysis import (get_source_stock, get_yearly_product_sales, admin_stock_analysis)
 from .views.feedback import feedback
-from .views.add_to_stock import (add_to_stock, add_airtel_devices_stock, add_accessaries,
-                                 add_appliances, add_refarbished)
+from .views.add_to_stock import (add_to_stock, add_accessaries, add_appliances, add_refarbished)
 from .views.pending_sales import total_pending_sales, revert_to_stock, pending_sales, pending_sales_details
 from .views.defects import defects
 from .views import agents_data_access
 from .views.system_routine_updates import (morning_update, afternoon_update, evening_update)
-from .views.create_new_promoter import create_new_promoter
-from .views.airtel_device_destributer import search_airtel_devices, assignPromoter
-from .views.airtel_accounts import promoters_data, devices_per_promoter, airtel_promoter_accounts, paymentsNotification
-from .views.airtel_dev_ops import return_device, edit_device, sale_device, reset_device
-from .views.airtel_admin_ops import airtel_devices_data, airtel_device_data_entry, metrics
-from .views.recordairteldevices_payment import record_airtel_devices_payment
 from .views.sales_update_api import (
     stockQuery, salesUpdates, airtel_sales_data, updateTimeStamp, pendingSales,
     partners_stockQuery, partner_invoices)
 from .views.accounts_and_data import dataAccess, sales_stock_summry, dailySalesByShop
-from .views.admin_airtel_payments import currentPayments, renewPayment, concludedPayments, deletePayment
 from .views.stock_taking import stock_taking
-from system_core_1.views.accounting.revenue import (
-    current_year_revenue, revenue_by_category, calculateCreditRevenue, lastyearBycurrentMonth,
-    revenue_growth, average_order_value, calculateCashRevenue
-)
-from system_core_1.views.accounting.accounting import getCostAndRevenue, accounting
-from system_core_1.views.expenses import expenses
-from system_core_1.views.ex_rate_pricing.admin_views.entry import (
-    ex_rate_pricing, data_per_partner, add_exchange_rate, get_exchange_rate, get_outstanding_invoice
-)
-from system_core_1.views.ex_rate_pricing.admin_views.update import (
-    update_cost_by_rate
-)
+from system_core_1.views.airtel_devices.urls import urlpatterns as airtel_devices_urls
+from system_core_1.views.accounting.urls import urlpatterns as accounting_urls
+from system_core_1.views.ex_rate_pricing.admin_views.urls import urlpatterns as ex_rate_pricing_urls
 
-urlpatterns = [
+urlpatterns = accounting_urls + ex_rate_pricing_urls + airtel_devices_urls
+urlpatterns += [
     # home page
     path('', home_page.home_page, name='home_page'),
 
@@ -50,10 +34,6 @@ urlpatterns = [
     path('partners_stockQuery/', partners_stockQuery, name='partners_stockQuery'),
     path('partner_invoices/<str:partner_username>/', partner_invoices, name='partner_invoices'),
     path('airtel_sales_data/', airtel_sales_data, name='airtel_sales_data'),
-    path('currentPayments/', currentPayments, name='currentPayments'),
-    path('renewPayment/', renewPayment, name='renewPayment'),
-    path('concludedPayments/', concludedPayments, name='concludedPayments'),
-    path('deletePayment/', deletePayment, name='deletePayment'),
     # Data on actions on data and admin panel
     path('dashboard/', user_dashboard.dashboard, name='dashboard'),
     path('main_stock_details/', central_display.main_stock_details, name='main_stock_details'),
@@ -68,10 +48,6 @@ urlpatterns = [
     path('pending_sales/', pending_sales, name='pending_sales'),
     path('pending_sales_details/<str:username>/', pending_sales_details, name='pending_sales_details'),
     path('defects/', defects, name='defects'),
-    path('airtel_devices_data/', airtel_devices_data, name='airtel_devices_data'),
-    path('airtel_device_data_entry/', airtel_device_data_entry, name='airtel_device_data_entry'),
-    path('record_airtel_devices_payment/', record_airtel_devices_payment, name='record_airtel_devices_payment'),
-    path('metrics/', metrics, name='metrics'),
     # General access points
     path('profile/', data_updates.profile, name='profile'),
     path('feedback/', feedback, name='feedback'),
@@ -79,19 +55,6 @@ urlpatterns = [
     path('add_accessaries/', add_accessaries, name='add_accessaries'),
     path('add_appliances/', add_appliances, name='add_appliances'),
     path('add_refarbished/', add_refarbished, name='add_refarbished'),
-    path('add_airtel_devices_stock/', add_airtel_devices_stock, name='add_airtel_devices_stock'),
-    path('create_new_promoter/', create_new_promoter, name='create_new_promoter'),
-    path('search_airtel_devices/', search_airtel_devices, name='search_airtel_devices'),
-    path('promoters_data/', promoters_data, name='promoters_data'),
-    path('paymentsNotification/<int:note_id>', paymentsNotification, name='paymentsNotification'),
-    path('paymentsNotification/', paymentsNotification, name='paymentsNotification'),
-    path('airtel_promoter_accounts/', airtel_promoter_accounts, name='airtel_promoter_accounts'),
-    path('devices_per_promoter/<int:promoter_id>/', devices_per_promoter, name='devices_per_promoter'),
-    path('assignPromoter/', assignPromoter, name='assignPromoter'),
-    path('return_device/', return_device, name='return_device'),
-    path('edit_device/', edit_device, name='edit_device'),
-    path('sale_device/', sale_device, name='sale_device'),
-    path('reset_device/', reset_device, name='reset_device'),
     path('data_search/', search_and_filters.data_search, name='data_search'),
     path('verify_stock_recieved/', data_updates.verify_stock_recieved, name='verify_stock_recieved'),
     path('upload_image/', data_updates.upload_image, name='upload_image'),
@@ -131,24 +94,6 @@ urlpatterns = [
     path('morning_update/', morning_update, name='morning_update'),
     path('afternoon_update/', afternoon_update, name='afternoon_update'),
     path('evening_update/', evening_update, name='evening_update'),
-    # Revenue analysis and concurent operations
-    path('expenses/', expenses, name='expenses'),
-    path('accounting/', accounting, name='accounting'),
-    path('calculateCreditRevenue/', calculateCreditRevenue, name='calculateCreditRevenue'),
-    path('calculateCashRevenue/', calculateCashRevenue, name='calculateCashRevenue'),
-    path('getCostAndRevenue/', getCostAndRevenue, name='getCostAndRevenue'),
-    path('current_year_revenue/', current_year_revenue, name='current_year_revenue'),
-    path('revenue_by_category/', revenue_by_category, name='revenue_by_category'),
-    path('lastyearBycurrentMonth/', lastyearBycurrentMonth, name='lastyearBycurrentMonth'),
-    path('revenue_growth/', revenue_growth, name='revenue_growth'),
-    path('average_order_value/', average_order_value, name='average_order_value'),
-    # Exchange rate pricing and data
-    path('ex_rate_pricing/', ex_rate_pricing, name='ex_rate_pricing'),
-    path('data_per_partner/', data_per_partner, name='data_per_partner'),
-    path('add_exchange_rate/', add_exchange_rate, name='add_exchange_rate'),
-    path('get_exchange_rate/', get_exchange_rate, name='get_exchange_rate'),
-    path('get_outstanding_invoice/', get_outstanding_invoice, name='get_outstanding_invoice'),
-    path('update_cost_by_rate/', update_cost_by_rate, name='update_cost_by_rate'),
     # reseting user password
     path('password_reset/', auth_views.PasswordResetView.as_view(template_name='registration/reset_form.html'), name='password_reset'),
     path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(template_name='registration/reset_done.html'), name='password_reset_done'),

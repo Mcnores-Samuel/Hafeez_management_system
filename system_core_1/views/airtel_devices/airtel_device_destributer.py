@@ -1,8 +1,8 @@
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
 from django.shortcuts import render
-from ..models.main_storage import Airtel_mifi_storage
-from ..models.user_profile import UserProfile
+from ...models.main_storage import Airtel_mifi_storage
+from ...models.user_profile import UserProfile
 from django.db.models import Q
 from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger

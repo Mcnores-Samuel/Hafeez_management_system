@@ -1,6 +1,6 @@
-from ..models.main_storage import Airtel_mifi_storage
-from ..models.user_profile import UserProfile
-from ..models.promoter_payments import PromoterPayments
+from ...models.main_storage import Airtel_mifi_storage
+from ...models.user_profile import UserProfile
+from ...models.promoter_payments import PromoterPayments
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required

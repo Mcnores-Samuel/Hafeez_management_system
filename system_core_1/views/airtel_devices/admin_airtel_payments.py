@@ -1,5 +1,5 @@
 """This view function is responsible for payments updates in the Airtel system."""
-from ..models.promoter_payments import PromoterPayments
+from ...models.promoter_payments import PromoterPayments
 from django.shortcuts import redirect, render
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
