@@ -61,7 +61,7 @@ def data_per_partner(request):
                 'items': list(invoice.get_invoice_items().values(
                     'device_imei', 'name', 'cost', 'price', 'in_stock', 'sold', 'pending',
                     'stock_out_date', 'collected_on', 'cost_per_ex_rate'
-                ))
+                ).order_by('stock_out_date').order_by('sold'))
             }
             invoices_data.append(invoice_data)
 

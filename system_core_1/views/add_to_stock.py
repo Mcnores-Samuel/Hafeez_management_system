@@ -1,7 +1,7 @@
 """This module contains a view function for adding phones to stock."""
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from ..models.main_storage import MainStorage, Airtel_mifi_storage
+from ..models.main_storage import MainStorage
 from ..models.accessories import Accessories
 from ..models.appliances import Appliances
 from ..models.refarbished_devices import  RefarbishedDevices

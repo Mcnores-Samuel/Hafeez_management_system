@@ -70,8 +70,8 @@ const invoiceTable = (data) => {
                                     <th>Cost by rate</th>
                                     <th>Date collected</th>
                                     <th>Sold</th>
+                                    <th>Date Sold</th>
                                     <th>Price Sold</th>
-                                    <th>Payment Status</th>
                                     <th>Status</th>
                                 </tr>
                             </thead>
@@ -96,9 +96,9 @@ const invoiceTable = (data) => {
                     <td>MK${formatValue(item.cost_per_ex_rate)}</td>
                     <td>${dateFormat(item.collected_on)}</td>
                     <td>${item.sold ? 'yes' : 'no'}</td>
+                    <td>${item.sold ? dateFormat(item.stock_out_date) : 'not sold'}</td>
                     <td>MK${formatValue(item.price)}</td>
-                    <td>${item.pending ? 'pending' : 'freezed state'}</td>
-                    <td>${item.in_stock ? 'in stock' : 'out of stock'}</td>
+                    <td>${item.in_stock ? 'in stock' : 'sold'}</td>
                 </tr>`
             )
         })
