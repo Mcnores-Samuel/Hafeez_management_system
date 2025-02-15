@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "buildCommand": "python manage.py collectstatic --noinput",
+  "buildCommand": "./manage.py collectstatic --noinput",
   "builds": [
     {
       "src": "Hafeez_management_system/wsgi.py",
