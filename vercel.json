@@ -22,14 +22,7 @@
   ],
   "env": {
     "PYTHONUNBUFFERED": "1",
-    "DJANGO_SETTINGS_MODULE": "Hafeez_management_system.settings"
+    "DJANGO_SETTINGS_MODULE": "Hafeez_management_system.settings" 
   },
-  "build": {
-    "env": {
-      "DJANGO_SETTINGS_MODULE": "Hafeez_management_system.settings"
-    },
-    "commands": [
-      "python manage.py collectstatic --noinput"
-    ]
-  }
+  "buildCommand": "python manage.py collectstatic --noinput"
 }
