@@ -24,7 +24,7 @@
     "PYTHONUNBUFFERED": "1",
     "DJANGO_SETTINGS_MODULE": "Hafeez_management_system.settings" 
   },
-  "scripts": {
-    "postinstall": "python manage.py collectstatic --noinput"
+  "build": {
+    "buildCommand": "python manage.py collectstatic --noinput"
   }
 }
