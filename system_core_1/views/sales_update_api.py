@@ -33,7 +33,8 @@ def partners_stockQuery(request):
         for invoice in invoices.all():
             items = invoice.items.all()
             for item in items:
-                data.append(item.device_imei)
+                if item.in_stock:
+                    data.append(item.device_imei)
         return JsonResponse({'data': data}, status=200)
     return JsonResponse({'message': 'Invalid request method'}, status=400)
 
