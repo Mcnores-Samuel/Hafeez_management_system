@@ -9,14 +9,14 @@ botocore==1.31.70
 build==1.2.2.post1
 bump2version==1.0.1
 bumpversion==0.6.0
-certifi==2024.2.2
+certifi==2025.1.31
 cffi==1.16.0
 charset-normalizer==3.3.2
 click==8.1.8
 cryptography==44.0.1
 deprecation==2.1.0
 dj-database-url==2.1.0
-Django==5.1.6
+Django==5.0.7
 django-bootstrap5==23.3
 django-email-verification==0.3.3
 django-filter==23.3
