@@ -4,6 +4,7 @@
     {
       "src": "Hafeez_management_system/wsgi.py",
       "use": "@vercel/python",
+      "buildCommand": "python manage.py collectstatic --noinput",
       "config": {
         "maxLambdaSize": "15mb",
         "runtime": "python3.8"
