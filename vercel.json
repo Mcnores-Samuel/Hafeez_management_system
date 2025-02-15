@@ -1,5 +1,6 @@
 {
   "version": 2,
+  "buildCommand": "python manage.py collectstatic --noinput",
   "builds": [
     {
       "src": "Hafeez_management_system/wsgi.py",
@@ -23,6 +24,5 @@
   "env": {
     "PYTHONUNBUFFERED": "1",
     "DJANGO_SETTINGS_MODULE": "Hafeez_management_system.settings" 
-  },
-  "buildCommand": "python manage.py collectstatic --noinput"
+  }
 }
