@@ -2,7 +2,6 @@
   "version": 2,
   "builds": [
     {
-      "buildCommand": "python manage.py collectstatic --noinput",
       "src": "Hafeez_management_system/wsgi.py",
       "use": "@vercel/python",
       "config": {
@@ -24,5 +23,8 @@
   "env": {
     "PYTHONUNBUFFERED": "1",
     "DJANGO_SETTINGS_MODULE": "Hafeez_management_system.settings" 
+  },
+  "scripts": {
+    "postinstall": "python manage.py collectstatic --noinput"
   }
 }
