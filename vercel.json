@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "buildCommand": "python manage.py collectstatic --noinput",
   "builds": [
     {
+      "buildCommand": "python manage.py collectstatic --noinput",
       "src": "Hafeez_management_system/wsgi.py",
       "use": "@vercel/python",
       "config": {
