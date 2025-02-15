@@ -16,7 +16,7 @@ click==8.1.8
 cryptography==44.0.1
 deprecation==2.1.0
 dj-database-url==2.1.0
-Django==5.0.7
+Django==4.2.19
 django-bootstrap5==23.3
 django-email-verification==0.3.3
 django-filter==23.3
