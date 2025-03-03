@@ -4,7 +4,8 @@ from system_core_1.views.accounting.revenue import (
     lastyearBycurrentMonth, revenue_growth, average_order_value, calculateCashRevenue
 )
 from system_core_1.views.accounting.accounting import getCostAndRevenue, accounting
-from system_core_1.views.expenses import expenses
+from system_core_1.views.accounting.expenses import expenses
+from system_core_1.views.accounting.cost_and_expenses import cost_and_expenses, availableStockCost
 
 
 urlpatterns = [
@@ -18,4 +19,6 @@ urlpatterns = [
     path('lastyearBycurrentMonth/', lastyearBycurrentMonth, name='lastyearBycurrentMonth'),
     path('revenue_growth/', revenue_growth, name='revenue_growth'),
     path('average_order_value/', average_order_value, name='average_order_value'),
+    path("cost_and_expenses/", cost_and_expenses, name="cost_and_expenses"),
+    path("availableStockCost/", availableStockCost, name="availableStockCost"),
 ]

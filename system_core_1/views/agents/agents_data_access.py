@@ -4,7 +4,7 @@ for agents to access and interact with the application's data.
 The agents data access views provide agents with access to the application's data, allowing them
 to view, search, and manage stock data, sales data, and other relevant information.
 """
-from ..data_query_engine.agents_queries.agents_data_query import AgentsDataQuery
+from ...data_query_engine.agents_queries.agents_data_query import AgentsDataQuery
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages

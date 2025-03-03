@@ -7,7 +7,7 @@ from .views.feedback import feedback
 from .views.add_to_stock import (add_to_stock, add_accessaries, add_appliances, add_refarbished)
 from .views.pending_sales import total_pending_sales, revert_to_stock, pending_sales, pending_sales_details
 from .views.defects import defects
-from .views import agents_data_access
+from .views.agents import agents_data_access
 from .views.system_routine_updates import (morning_update, afternoon_update, evening_update)
 from .views.sales_update_api import (
     stockQuery, salesUpdates, airtel_sales_data, updateTimeStamp, pendingSales,

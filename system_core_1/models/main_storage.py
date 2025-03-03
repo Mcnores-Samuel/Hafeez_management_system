@@ -25,6 +25,7 @@ phone sales program.
 from django.db import models
 from django.conf import settings
 from django.utils import timezone
+from django.db.models import Sum
 
 
 sales_type = (
@@ -109,6 +110,22 @@ class MainStorage(models.Model):
     def __str__(self):
         """String representation of the phone data model"""
         return "Device: {}, Imei: {}".format(self.name, self.device_imei)
+    
+    @classmethod
+    def total_cost(cls):
+        total = cls.objects.filter(
+            in_stock=True, sold=False, pending=False, cost__gt=0, available=True,
+            assigned=True, agent__groups__name='agents').aggregate(
+            total_cost=Sum('cost'))
+        return total['total_cost']
+    
+    @classmethod
+    def total_revenue(cls):
+        total = cls.objects.filter(
+            in_stock=False, sold=True, pending=False, assigned=True,
+            cost__gt=0, price__gt=0, agent__groups__name='agents').aggregate(
+            total_revenue=Sum('price'))
+        return total['total_revenue']
 
 
 class Airtel_mifi_storage(models.Model):

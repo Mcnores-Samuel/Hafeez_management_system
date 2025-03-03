@@ -119,6 +119,7 @@ def add_accessaries(request):
 
 @login_required
 def add_appliances(request):
+    """This module adds appliance to the database"""
     if request.user.is_staff and request.user.is_superuser:
         data = Appliances.objects.all()
         name_set = set()
