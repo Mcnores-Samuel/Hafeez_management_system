@@ -4,7 +4,6 @@ __pycache__/
 venv/
 media/
 migrations/
-static/
 .vim/
 *.pyc
 # Database
