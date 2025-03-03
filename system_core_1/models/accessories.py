@@ -57,6 +57,8 @@ class Accessories(models.Model):
         """Returns the total cost of all devices."""
         total = cls.objects.aggregate(
             total_cost=Sum(F('cost_per_item') * F('total')))
+        if total['total_cost'] is None:
+            return 0
         return total['total_cost']
 
 

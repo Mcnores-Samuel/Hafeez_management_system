@@ -117,6 +117,8 @@ class MainStorage(models.Model):
             in_stock=True, sold=False, pending=False, cost__gt=0, available=True,
             assigned=True, agent__groups__name='agents').aggregate(
             total_cost=Sum('cost'))
+        if total['total_cost'] is None:
+            return 0
         return total['total_cost']
     
     @classmethod
@@ -125,6 +127,8 @@ class MainStorage(models.Model):
             in_stock=False, sold=True, pending=False, assigned=True,
             cost__gt=0, price__gt=0, agent__groups__name='agents').aggregate(
             total_revenue=Sum('price'))
+        if total['total_revenue'] is None:
+            return 0
         return total['total_revenue']
 
 

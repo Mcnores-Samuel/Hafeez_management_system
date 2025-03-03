@@ -85,12 +85,16 @@ class FixedAssets(models.Model):
     def total_assets_cost(cls):
         """Returns the total cost of the assets."""
         total = cls.objects.aggregate(total_cost=Sum('cost'))
+        if total['total_cost'] is None:
+            return 0
         return total['total_cost']
     
     @classmethod
     def total_assets_current_value(cls):
         """Returns the total current value of the assets."""
         total = cls.objects.aggregate(total_current_value=Sum('depreciation'))
+        if total['total_current_value'] is None:
+            return 0
         return total['total_current_value']
 
 
@@ -165,6 +169,8 @@ class Liability(models.Model):
             type='current',
             is_paid=False
         ).aggregate(total_current_liabilities=Sum('amount'))
+        if total['total_current_liabilities'] is None:
+            return 0
         return total['total_current_liabilities']
     
     @classmethod
@@ -174,4 +180,6 @@ class Liability(models.Model):
             type='non_current',
             is_paid=False
         ).aggregate(total_non_current_liabilities=Sum('amount'))
+        if total['total_non_current_liabilities'] is None:
+            return 0
         return total['total_non_current_liabilities']

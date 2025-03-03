@@ -6,6 +6,9 @@ from system_core_1.views.accounting.revenue import (
 from system_core_1.views.accounting.accounting import getCostAndRevenue, accounting
 from system_core_1.views.accounting.expenses import expenses, get_total_expenses
 from system_core_1.views.accounting.cost_and_expenses import cost_and_expenses, availableStockCost
+from system_core_1.views.accounting.networth import networth
+from system_core_1.views.accounting.liabilities import total_liabilities
+from system_core_1.views.accounting.assets import total_assets
 
 
 urlpatterns = [
@@ -22,4 +25,7 @@ urlpatterns = [
     path("cost_and_expenses/", cost_and_expenses, name="cost_and_expenses"),
     path("availableStockCost/", availableStockCost, name="availableStockCost"),
     path('get_total_expenses/', get_total_expenses, name='get_total_expenses'),
+    path('networth/', networth, name='networth'),
+    path('total_liabilities/', total_liabilities, name='total_liabilities'),
+    path('total_assets/', total_assets, name='total_assets'),
 ]
