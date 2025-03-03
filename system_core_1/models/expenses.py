@@ -1,6 +1,8 @@
 """This module contains the model for the expenses table in the database."""
 from django.db import models
 from .user_profile import UserProfile
+from django.utils import timezone
+from django.db.models import Sum
 
 
 class Expenses(models.Model):
@@ -28,6 +30,23 @@ class Expenses(models.Model):
         indexes = [
             models.Index(fields=['date'])
         ]
+    
+    @classmethod
+    def total_expenses(cls):
+        """Returns the total expenses."""
+        total = cls.objects.filter(
+            date__year=timezone.now().year,
+        ).aggregate(total_expenses=Sum('amount'))
+        return total['total_expenses']
+    
+    @classmethod
+    def total_current_month_expenses(cls):
+        """Returns the total expenses for the current month."""
+        total = cls.objects.filter(
+            date__month=timezone.now().month,
+            date__year=timezone.now().year
+        ).aggregate(total_expenses=Sum('amount'))
+        return total['total_expenses']
 
 
 class FixedAssets(models.Model):
@@ -61,6 +80,18 @@ class FixedAssets(models.Model):
         indexes = [
             models.Index(fields=['date_purchased'])
         ]
+
+    @classmethod
+    def total_assets_cost(cls):
+        """Returns the total cost of the assets."""
+        total = cls.objects.aggregate(total_cost=Sum('cost'))
+        return total['total_cost']
+    
+    @classmethod
+    def total_assets_current_value(cls):
+        """Returns the total current value of the assets."""
+        total = cls.objects.aggregate(total_current_value=Sum('depreciation'))
+        return total['total_current_value']
 
 
 class Capital(models.Model):
@@ -126,3 +157,21 @@ class Liability(models.Model):
         indexes = [
             models.Index(fields=['effective_date'])
         ]
+
+    @classmethod
+    def total_current_liabilities(cls):
+        """Returns the total current liabilities."""
+        total = cls.objects.filter(
+            type='current',
+            is_paid=False
+        ).aggregate(total_current_liabilities=Sum('amount'))
+        return total['total_current_liabilities']
+    
+    @classmethod
+    def total_non_current_liabilities(cls):
+        """Returns the total non-current liabilities."""
+        total = cls.objects.filter(
+            type='non_current',
+            is_paid=False
+        ).aggregate(total_non_current_liabilities=Sum('amount'))
+        return total['total_non_current_liabilities']

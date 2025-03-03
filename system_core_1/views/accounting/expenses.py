@@ -4,6 +4,7 @@ from system_core_1.models.expenses import Expenses
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.http import JsonResponse
 
 
 @login_required
@@ -28,5 +29,14 @@ def expenses(request):
             messages.success(request, 'Expense added successfully')
         return redirect('dashboard')
     return redirect('dashboard')
+
+
+@login_required
+def get_total_expenses(request):
+    """This function returns the total expenses."""
+    if request.method == 'GET':
+        total_expenses = Expenses.total_expenses()
+        return JsonResponse({'total_expenses': total_expenses})
+    return JsonResponse({'error': 'Invalid request.'})
 
         
