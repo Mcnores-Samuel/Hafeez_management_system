@@ -35,6 +35,13 @@ class Appliances(models.Model):
         ordering = ['-id']
         verbose_name_plural = 'Appliances'
 
+    @classmethod
+    def total_cost(cls):
+        """Returns the total cost of all appliances."""
+        total = cls.objects.aggregate(
+            total_cost=models.Sum(models.F('cost') * models.F('total')))
+        return total['total_cost']
+
 
 class Appliance_Sales(models.Model):
     """This class represents the Appliance_Sales model.

@@ -7,6 +7,7 @@ Classes:
 from django.db import models
 from .user_profile import UserProfile
 from django.utils import timezone
+from django.db.models import F, Sum
 
 
 class RefarbishedDevices(models.Model):
@@ -39,6 +40,13 @@ class RefarbishedDevices(models.Model):
         db_table = 'refarbished_devices'
         verbose_name = 'Refarbished Device'
         verbose_name_plural = 'Refarbished Devices'
+
+    @classmethod
+    def total_cost(cls):
+        """Returns the total cost of all devices."""
+        total = cls.objects.aggregate(
+            total_cost=Sum(F('cost') * F('total')))
+        return total['total_cost']
 
 
 class RefarbishedDevicesSales(models.Model):

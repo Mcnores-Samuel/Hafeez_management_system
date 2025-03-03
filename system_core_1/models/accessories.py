@@ -18,6 +18,7 @@ Attributes:
 from django.db import models
 from .user_profile import UserProfile
 from django.utils import timezone
+from django.db.models import F, Sum
 
 
 class Accessories(models.Model):
@@ -50,6 +51,13 @@ class Accessories(models.Model):
         db_table = 'accessories'
         verbose_name = 'Accessory'
         verbose_name_plural = 'Accessories'
+
+    @classmethod
+    def total_cost(cls):
+        """Returns the total cost of all devices."""
+        total = cls.objects.aggregate(
+            total_cost=Sum(F('cost_per_item') * F('total')))
+        return total['total_cost']
 
 
 class Accessory_Sales(models.Model):
