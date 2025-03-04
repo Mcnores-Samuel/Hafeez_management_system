@@ -27,8 +27,8 @@ def expenses(request):
             user = UserProfile.objects.get(username=username)
             Expenses.objects.create(user=user, amount=amount, description=description, date=date, category=category)
             messages.success(request, 'Expense added successfully')
-        return redirect('dashboard')
-    return redirect('dashboard')
+        return redirect('cost_and_expenses')
+    return redirect('cost_and_expenses')
 
 
 @login_required

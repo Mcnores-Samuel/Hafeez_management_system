@@ -2,7 +2,36 @@
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from system_core_1.models.expenses import Liability
+from django.shortcuts import redirect
+from django.contrib import messages
 
+
+@login_required
+def add_liability(request):
+    """This function adds a liability."""
+    if request.method == 'POST' and request.user.is_superuser:
+        liability_type = request.POST.get('liabilityType')
+        creditor = request.POST.get('liabilityCreditor')
+        amount = request.POST.get('liabilityAmount')
+        description = request.POST.get('liabilityDescription')
+        interest_rate = request.POST.get('liabilityInterestRate')
+        effective_date = request.POST.get('liabilityeffectiveDate')
+        due_date = request.POST.get('liabilityDueDate')
+
+        Liability.objects.create(
+            type=liability_type,
+            creditor=creditor,
+            amount=amount,
+            description=description,
+            interest_rate=interest_rate,
+            effective_date=effective_date,
+            due_date=due_date,
+            is_paid=False
+        )
+        messages.success(request, 'Liability added successfully.')
+        return redirect('cost_and_expenses')
+    messages.error(request, 'Error adding liability.')
+    return redirect('cost_and_expenses')
 
 @login_required
 def total_liabilities(request):

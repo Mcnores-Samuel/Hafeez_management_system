@@ -12,26 +12,33 @@
 {% endblock %}
 {% block content %}
 <div class="container">
-    <ul class="nav nav-tabs">
-        <li class="nav-item">
-          <a class="nav-link active fw-bold" aria-current="page" href="{% url 'accounting' %}">Sales and Revenue</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link fw-bold" href="{% url 'cost_and_expenses' %}">Cost and Expenses</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link fw-bold" href="">Profit Metrics</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link fw-bold" href="">Performance and Efficiency</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link fw-bold" href="">Cash Flow Metrics</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link fw-bold" href="">Debt and Equity</a>
-        </li>
-    </ul>
+    <br>
+    <button class="btn btn-sm bg-info d-md-none mb-2" type="button" data-bs-toggle="collapse" data-bs-target="#mobileNav">
+        <span class="material-icons">menu</span>
+    </button>
+    <br>
+    <div class="collapse d-md-block" id="mobileNav">
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+            <a class="nav-link active fw-bold" aria-current="page" href="{% url 'accounting' %}">Sales and Revenue</a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link fw-bold" href="{% url 'cost_and_expenses' %}">Cost and Expenses</a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link fw-bold" href="">Profit Metrics</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link fw-bold" href="">Performance and Efficiency</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link fw-bold" href="">Cash Flow Metrics</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link fw-bold" href="">Debt and Equity</a>
+            </li>
+        </ul>
+    </div>
     <br>
     <div class="row gy-3">
         <div class="col-md-2 col-12">

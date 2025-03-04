@@ -7,8 +7,8 @@ from system_core_1.views.accounting.accounting import getCostAndRevenue, account
 from system_core_1.views.accounting.expenses import expenses, get_total_expenses
 from system_core_1.views.accounting.cost_and_expenses import cost_and_expenses, availableStockCost
 from system_core_1.views.accounting.networth import networth
-from system_core_1.views.accounting.liabilities import total_liabilities
-from system_core_1.views.accounting.assets import total_assets
+from system_core_1.views.accounting.liabilities import total_liabilities, add_liability
+from system_core_1.views.accounting.assets import total_assets, add_assets
 
 
 urlpatterns = [
@@ -28,4 +28,6 @@ urlpatterns = [
     path('networth/', networth, name='networth'),
     path('total_liabilities/', total_liabilities, name='total_liabilities'),
     path('total_assets/', total_assets, name='total_assets'),
+    path('add_assets/', add_assets, name='add_assets'),
+    path('add_liability/', add_liability, name='add_liability'),
 ]
