@@ -33,10 +33,12 @@ def add_liability(request):
     messages.error(request, 'Error adding liability.')
     return redirect('cost_and_expenses')
 
+
 @login_required
 def total_liabilities(request):
     """This function returns the total liabilities."""
     if request.method == 'GET' and request.user.is_superuser:
         total = Liability.total_current_liabilities() + Liability.total_non_current_liabilities()
+        print(total)
         return JsonResponse({'total_liabilities': total})
     return JsonResponse({'error': 'Invalid request.'})
