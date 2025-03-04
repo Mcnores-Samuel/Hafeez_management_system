@@ -32,13 +32,51 @@ const formatValue = (value) => {
     return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
+function submitInvoice(event, button) {
+    event.preventDefault();
+
+    const invoiceForm = $(button).closest('form');
+    const invoiceId = invoiceForm.attr('action').split('/')[3];
+    const invoiceRow = $("#invoice-" + invoiceId);
+
+    $.ajax({
+        url: invoiceForm.attr('action'),
+        type: 'POST',
+        success: function(response) {
+            if (response.message) {
+                $("#invoiceAlert")
+                    .removeClass("d-none alert-danger")
+                    .addClass("alert-success")
+                    .text("Invoice has been marked as paid")
+                    .fadeIn();
+
+                invoiceRow.find('.status').text("Paid").addClass("text-success fw-bold");
+                invoiceRow.addClass("table-success");
+
+                invoiceForm.find("button").prop("disabled", true).text("Paid");
+            } else {
+                $("#invoiceAlert")
+                    .removeClass("d-none alert-success")
+                    .addClass("alert-danger")
+                    .text("Invoice has already been marked as paid")
+                    .fadeIn();
+            }
+
+            setTimeout(() => {
+                $("#invoiceAlert").fadeOut();
+            }, 3000);
+        }
+    });
+}
+
+
 const invoiceTable = (data) => {
     const container = $('.container')
     $('#tableBody').empty()
     $('.modal').remove()
     data.forEach(element => {
         $('#tableBody').append(
-            `<tr>
+            `<tr id="invoice-${element.id}">
                 <td><button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#${element.invoice_number.replace(/\W/g, "_")}">${element.invoice_number}</button></td>
                 <td>${dateFormat(element.invoice_date)}</td>
                 <td>${element.total_invoice_items}</td>
@@ -48,7 +86,11 @@ const invoiceTable = (data) => {
                 <td>MK${formatValue(element.total_amount_paid)}</td>
                 <td>MK${formatValue(element.last_payment_amount)}</td>
                 <td>${dateFormat(element.last_payment_date)}</td>
-                <td>${element.is_paid ? 'unpaid' : 'paid'}</td>
+                <td>
+                <form action="/system_core_1/invoice_paid/${element.id}/" method="POST" id="invoicePaidForm">
+                    <button type="submit" class="btn btn-primary btn-sm" onclick="submitInvoice(event, this)">Mark as Paid</button>
+                </form>
+                </td>
             </tr>`
         )
         let modal = $(
@@ -102,5 +144,6 @@ const invoiceTable = (data) => {
                 </tr>`
             )
         })
+
     });
 }

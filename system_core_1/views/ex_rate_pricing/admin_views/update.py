@@ -6,6 +6,7 @@ from system_core_1.models.main_storage import MainStorage
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.db.models import Sum
+from django.views.decorators.csrf import csrf_exempt
 
 
 @login_required
@@ -43,5 +44,25 @@ def update_cost_by_rate(request):
         CostPerInvoice.objects.bulk_update(invoices_to_update, ['cost_per_ex_rate', 'updated_at'])
 
         return JsonResponse({'message': 'Cost per invoice updated successfully.'})
+
+    return JsonResponse({'error': 'Invalid request.'}, status=400)
+
+
+@login_required
+@csrf_exempt
+def invoice_paid(request, invoice_id):
+    """Update the invoice as paid."""
+    if request.method == 'POST':
+        invoice = CostPerInvoice.objects.filter(id=invoice_id).first()
+
+        if not invoice:
+            return JsonResponse({'error': 'Invoice not found.'}, status=400)
+
+        invoice.is_paid = True
+        invoice.date_paid = timezone.now()
+        invoice.updated_at = timezone.now()
+        invoice.save()
+
+        return JsonResponse({'message': 'Invoice paid successfully.'})
 
     return JsonResponse({'error': 'Invalid request.'}, status=400)

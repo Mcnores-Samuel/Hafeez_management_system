@@ -44,6 +44,7 @@ def data_per_partner(request):
         invoices_data = []
         for invoice in invoices:
             invoice_data = {
+                'id': invoice.id,
                 'invoice_number': invoice.invoice_number,
                 'invoice_date': invoice.invoice_date,
                 'total_invoice_items': invoice.total_invoice_items,
