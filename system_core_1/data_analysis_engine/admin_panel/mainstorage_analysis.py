@@ -145,9 +145,8 @@ class MainStorageAnalysis:
         """This function returns a JSON object containing
         the overall stock data.
         """
-        agents = AgentProfile.objects.all().order_by('user__username')
         stock = MainStorage.objects.filter( agent__groups__name='agents', in_stock=True, assigned=True,
-                sold=False, missing=False, pending=False, faulty=False, recieved=True,
+                sold=False, missing=False, pending=False, faulty=False, recieved=True, available=True,
                 issue=False).count()
         return stock
     
