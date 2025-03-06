@@ -45,11 +45,18 @@ class CalcCommissions:
             commission.total_devices_sold = stock_out
             commission.save()
         else:
+            last_month_target = Commission.objects.filter(
+                agent=agent, year=year, month=month-1).first()
+            target = 0
+            if last_month_target:
+                target = last_month_target.total_devices_sold
+            else:
+                target = 50
             commission = Commission.objects.create(
                 agent=agent,
                 total_devices_sold=0,
                 month=month,
-                year=year, target=30, paid=False,
+                year=year, target=target, paid=False,
                 amount=5000
             )
             commission.total_devices_sold = stock_out
