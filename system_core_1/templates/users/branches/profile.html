@@ -12,10 +12,12 @@
     {% bootstrap_messages %}
     <h1 class="text-center">Profile</h1>
     <div class="container image-section d-flex justify-content-center align-items-center">
-        {% if avatar.image.url %}
+        {% if avatar %}
             <img src="{{ avatar.image.url }}" alt="" class="profile-avatar">
         {% else %}
-            <img src="{% static 'images/employee.png' %}" alt="" class="profile-avatar">
+            <span class="material-icons profile-avatar">
+                account_circle
+            </span>
         {% endif %}
         <form id="uploadForm" action="{% url 'upload_image' %}" method="post" enctype="multipart/form-data" class="upload-form position-relative">
             {% csrf_token %}
