@@ -87,17 +87,6 @@
                                 <span class="text"> Analytics</span>
                                 </a>
                             </li>
-                            {% if user.is_authenticated and user.is_superuser %}
-                            <li class="nav-item">
-                                <a class="nav-link d-flex align-items-center" href="{{ admin_url }}"
-                                data-bs-toggle="tooltip" 
-                                title="Control Center">
-                                <span class="material-icons">
-                                    settings
-                                    </span>
-                                    <span class="text"> Control Center</span>
-                                </a>
-                            </li>
                             <li class="nav-item">
                                 <a class="nav-link d-flex align-items-center" href="{% url 'accounting' %}"
                                 data-bs-toggle="tooltip"
@@ -106,37 +95,6 @@
                                     paid
                                 </span>
                                 <span class="text"> Accounting</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link d-flex align-items-center" href="{% url 'ex_rate_pricing' %}"
-                                data-bs-toggle="tooltip"
-                                title="Exchange Rate">
-                                <span class="material-icons">
-                                    handshake
-                                </span>
-                                <span class="text"> Ex Rate Pricing</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link d-flex align-items-center" href="{% url 'airtel_device_data_entry' %}"
-                                data-bs-toggle="tooltip"
-                                title="Airtel Devices">
-                                <span class="material-icons">
-                                    phone_android
-                                </span>
-                                <span class="text"> Airtel Devices</span>
-                                </a>
-                            </li>
-                            {% endif %}
-                            <li class="nav-item">
-                                <a class="nav-link d-flex align-items-center" href="{% url 'dataAccess' %}"
-                                data-bs-toggle="tooltip"
-                                title="Audit Tool Box">
-                                    <span class="material-icons">
-                                        home_repair_service
-                                    </span>
-                                    <span class="text"> Audit Tool</span>
                                 </a>
                             </li>
                             <li class="nav-item">
@@ -166,7 +124,7 @@
                                 <span class="material-icons">
                                     add_circle
                                 </span>
-                                <span class="text"> Add To Stock</span>
+                                <span class="text"> Add Stock</span>
                                 </a>
                             </li>
                             <li class="nav-item">
@@ -198,16 +156,6 @@
                                 outbound
                                 </span>
                                 <span class="text"> Sales</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link d-flex align-items-center" href="{% url 'defects' %}"
-                                data-bs-toggle="tooltip" 
-                                title="Defective Devices">
-                                <span class="material-icons">
-                                    report_problem
-                                </span>
-                                <span class="text"> Defects</span>
                                 </a>
                             </li>
                             <li class="nav-item">
@@ -290,7 +238,7 @@
                 </div>
             </div>
             <div class="profile">
-                {% if avatar.image %}
+                {% if avatar %}
                 <img src="{{ avatar.image.url }}" alt="avatar" class="avatar">
                 {% else %}
                     <span class="material-icons">
@@ -582,6 +530,7 @@
                     </div>
                 </div>
             </div>
+            <br>
             <div class="modal fade" id="viewExpensesModal" tabindex="-1" aria-labelledby="viewExpensesModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">

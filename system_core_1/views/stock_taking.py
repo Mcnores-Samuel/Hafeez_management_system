@@ -2,8 +2,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
-from ..models.main_storage import MainStorage
-from django.contrib import messages as message
+from system_core_1.models.main_storage import MainStorage
 from django.http import JsonResponse
 import json
 
@@ -11,7 +10,8 @@ import json
 @login_required
 @csrf_exempt
 def stock_taking(request):
-    if request.method == 'POST' and request.user.is_superuser:
+    if request.method == 'POST' and request.user.is_superuser\
+        or request.user.groups.filter(name='branches').exists() and request.method == 'POST':
         data = request.POST.get('data', None)
         if data:
             scanned_items = json.loads(data)
@@ -27,4 +27,6 @@ def stock_taking(request):
         return JsonResponse({'status': 400, 'message': 'Invalid request data format'})
     if request.user.is_superuser:
         return render(request, 'users/admin_sites/stock_taking.html')
+    if request.user.groups.filter(name='branches').exists():
+        return render(request, 'users/branches/stock_taking.html')
     return redirect('dashboard')

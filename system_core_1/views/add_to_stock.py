@@ -1,13 +1,13 @@
 """This module contains a view function for adding phones to stock."""
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from ..models.main_storage import MainStorage
-from ..models.accessories import Accessories
-from ..models.appliances import Appliances
-from ..models.refarbished_devices import  RefarbishedDevices
+from system_core_1.models.main_storage import MainStorage
+from system_core_1.models.user_profile import UserProfile
+from system_core_1.models.accessories import Accessories
+from system_core_1.models.appliances import Appliances
+from system_core_1.models.refarbished_devices import RefarbishedDevices
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import Group
-from ..models.user_profile import UserProfile
 from django.utils import timezone
 from django.http import JsonResponse
 from django.contrib import messages
@@ -38,7 +38,8 @@ def add_to_stock(request):
     It ensures that only agents are able to access this view.
     """
     if (request.user.is_authenticated and request.user.groups.filter(name='staff_members').exists()
-        or request.user.is_staff and request.user.is_superuser):
+        or request.user.is_staff and request.user.is_superuser
+        or request.user.groups.filter(name='branches').exists()):
         user = request.user
         data = MainStorage.objects.all()
         phone_names = set()
@@ -77,12 +78,16 @@ def add_to_stock(request):
             return JsonResponse({'status': 200, 'data': already_exists})
     if request.user.is_staff and request.user.is_superuser:
         return render(request, 'users/admin_sites/add_to_stock.html', {'phone_names': sorted_phone_list})
+    if request.user.groups.filter(name='branches').exists():
+        return render(request, 'users/branches/add_to_stock.html', {'phone_names': sorted_phone_list})
     return render(request, 'users/staff_sites/add_to_stock.html', {'phone_names': sorted_phone_list})
 
 
 @login_required
 def add_accessaries(request):
-    if request.user.is_staff and request.user.is_superuser:
+    """This module adds accessories to the database"""
+    if request.user.is_staff and request.user.is_superuser\
+        or request.user.groups.filter(name='branches').exists():
         data = Accessories.objects.all()
         name_set = set()
         model_set = set()
@@ -113,6 +118,8 @@ def add_accessaries(request):
                     messages.success(request, 'Successfully added {} {}(s)'.format(total, item))
             except Exception as e:
                 messages.error(request, 'Something went wrong, please try again.')
+        if request.user.groups.filter(name='branches').exists():
+            return render(request, 'users/branches/add_accessaries.html', {'names': sorted_name_list, 'models': sorted_model_list})
         return render(request, 'users/admin_sites/add_accessaries.html', {'names': sorted_name_list, 'models': sorted_model_list})
     return render(request, 'users/admin_sites/add_accessaries.html', {'names': sorted_name_list, 'models': sorted_model_list})
 
@@ -120,7 +127,8 @@ def add_accessaries(request):
 @login_required
 def add_appliances(request):
     """This module adds appliance to the database"""
-    if request.user.is_staff and request.user.is_superuser:
+    if request.user.is_staff and request.user.is_superuser\
+        or request.user.groups.filter(name='branches').exists():
         data = Appliances.objects.all()
         name_set = set()
         model_set = set()
@@ -150,13 +158,16 @@ def add_appliances(request):
                     messages.success(request, 'Successfully added {} {}(s)'.format(total, item))
             except Exception as e:
                 messages.error(request, 'Something went wrong, please try again.')
+        if request.user.groups.filter(name='branches').exists():
+            return render(request, 'users/branches/add_appliances.html', {'names': sorted_name_list, 'models': sorted_model_list})
         return render(request, 'users/admin_sites/add_appliances.html', {'names': sorted_name_list, 'models': sorted_model_list})
     return render(request, 'users/admin_sites/add_appliances.html', {'names': sorted_name_list, 'models': sorted_model_list})
 
 
 @login_required
 def add_refarbished(request):
-    if request.user.is_staff and request.user.is_superuser:
+    if request.user.is_staff and request.user.is_superuser\
+        or request.user.groups.filter(name='branches').exists():
         data = RefarbishedDevices.objects.all()
         name_set = set()
         model_set = set()
@@ -186,7 +197,8 @@ def add_refarbished(request):
                     instance.save()
                     messages.success(request, 'Successfully added {} {}(s)'.format(total, item))
             except Exception as e:
-                print(e)
                 messages.error(request, 'Something went wrong, please try again.')
+        if request.user.groups.filter(name='branches').exists():
+            return render(request, 'users/branches/add_refarbished.html', {'names': sorted_name_list, 'models': sorted_model_list})
         return render(request, 'users/admin_sites/add_refarbished.html', {'names': sorted_name_list, 'models': sorted_model_list})
     return render(request, 'users/admin_sites/add_refarbished.html', {'names': sorted_name_list, 'models': sorted_model_list})

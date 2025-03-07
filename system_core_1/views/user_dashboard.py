@@ -67,7 +67,6 @@ def dashboard(request):
             'users': users,
         }
         return render(request, 'users/admin_sites/main.html', context)
-    
     elif request.user.groups.filter(name='branches').exists():
         user = request.user
         avatar = UserAvatar.objects.get(

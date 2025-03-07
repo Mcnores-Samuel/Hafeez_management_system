@@ -35,7 +35,6 @@ class MainStorageAdmin(admin.ModelAdmin):
                 obj.save()
     missing.short_description = "Mark as missing"
 
-    
     def mark_as_sold(self, request, queryset):
         """Mark the phone as sold"""
         for obj in queryset:

@@ -14,6 +14,7 @@ from .views.sales_update_api import (
     partners_stockQuery, partner_invoices)
 from .views.accounts_and_data import dataAccess, sales_stock_summry, dailySalesByShop
 from .views.stock_taking import stock_taking
+from system_core_1.views.dispatch import dispatch_stock
 from system_core_1.views.airtel_devices.urls import urlpatterns as airtel_devices_urls
 from system_core_1.views.accounting.urls import urlpatterns as accounting_urls
 from system_core_1.views.ex_rate_pricing.admin_views.urls import urlpatterns as ex_rate_pricing_urls
@@ -38,7 +39,7 @@ urlpatterns += [
     path('dashboard/', user_dashboard.dashboard, name='dashboard'),
     path('main_stock_details/', central_display.main_stock_details, name='main_stock_details'),
     path('main_sales_details/', central_display.main_sales_details, name='main_sales_details'),
-    path('dispatch_stock/', home_page.dispatch_stock, name='dispatch_stock'),
+    path('dispatch_stock/', dispatch_stock, name='dispatch_stock'),
     path('uploadBulkSales/', sales_register.uploadBulkSales, name='uploadBulkSales'),
     path('accessary_sales', sales_register.accessary_sales, name='accessary_sales'),
     path('appliance_sales', sales_register.appliance_sales, name='appliance_sales'),

@@ -82,6 +82,12 @@ def data_search(request):
                       {'data': queryset, 'names_ac': sorted_name_list_ac, 'models_ac': sorted_model_list_ac,
                        'names_ap': sorted_name_list_ap, 'models_ap': sorted_model_list_ap,
                        'names_rd': sorted_name_list_rd, 'models_rd': sorted_model_list_rd})
+    
+    if request.user.groups.filter(name='branches').exists():
+        return render(request, 'users/branches/search.html',
+                      {'data': queryset, 'names_ac': sorted_name_list_ac, 'models_ac': sorted_model_list_ac,
+                       'names_ap': sorted_name_list_ap, 'models_ap': sorted_model_list_ap,
+                       'names_rd': sorted_name_list_rd, 'models_rd': sorted_model_list_rd})
     return render(request, 'users/staff_sites/search.html',
                     {'data': queryset, 'names_ac': sorted_name_list_ac, 'models_ac': sorted_model_list_ac,
                      'names_ap': sorted_name_list_ap, 'models_ap': sorted_model_list_ap,

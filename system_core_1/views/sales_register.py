@@ -82,6 +82,8 @@ def combinedData_collection(request, data_id):
                 messages.error(request, 'Phone out of stock')
     if request.user.is_staff and request.user.is_superuser:
         return render(request, 'users/admin_sites/salespoint.html')
+    if request.user.groups.filter(name='branches').exists():
+        return render(request, 'users/branches/salespoint.html')
     return render(request, 'registration/salespoint.html')
 
 
@@ -97,7 +99,8 @@ def uploadBulkSales(request):
       to access this view.
     - Verifies if the agent has available stock of phones.
     """
-    if request.method == 'POST' and request.user.is_staff and request.user.is_superuser:
+    if request.method == 'POST' and request.user.is_staff and request.user.is_superuser\
+        or request.user.groups.filter(name='branches').exists() and request.method == 'POST':
         data = request.POST.get('data', None)
         date = request.POST.get('date', None)
         sales_type = request.POST.get('sales_type', None)
@@ -125,6 +128,8 @@ def uploadBulkSales(request):
             return JsonResponse({'status': 200, 'not_in_stock': not_in_stock})
         else:
             return JsonResponse({'status': 400, 'error': 'No data received'})
+    if request.user.groups.filter(name='branches').exists():
+        return render(request, 'users/branches/upload_sales.html')
     return render(request, 'users/admin_sites/upload_sales.html')
 
 
