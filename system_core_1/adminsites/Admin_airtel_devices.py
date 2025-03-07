@@ -20,7 +20,7 @@ class Airtel_mifi_storageAdmin(admin.ModelAdmin):
 
     list_per_page = 50
 
-    actions = ['mark_as_sold', 'mark_as_returned', 'mark_as_not_in_stock']
+    actions = ['mark_as_sold', 'mark_as_returned', 'not_in_stock']
 
     def entry_timestamp(self, obj):
         """Return the timestamp of the entry date"""
@@ -51,7 +51,7 @@ class Airtel_mifi_storageAdmin(admin.ModelAdmin):
             if obj:
                 obj.in_stock = False
                 obj.save()
-    not_in_stock.short_description = "Mark as not in stock"
+    not_in_stock.short_description = "not in stock"
 
     def mark_as_sold(self, request, queryset):
         """Mark the phone as sold"""
