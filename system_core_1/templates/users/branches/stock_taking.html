@@ -1,0 +1,116 @@
+{% extends 'users/admin_sites/main.html' %}
+{% load static %}
+{% load plus_r %}
+{% block head %}
+<script src="{% static 'scripts/stock_taking.js' %}" defer></script>
+{% endblock %}
+{% block content %}
+<style>
+  .card {
+    height: 400px;
+    overflow-y: scroll;
+  }
+
+  .container {
+    margin-top: 20px;
+    display: flex;
+    gap: 20px;
+  }
+
+  .form_container {
+    width: 50%;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #ececec;
+  }
+
+  .row {
+    width: 50%;
+  }
+  
+  .waiting-room {
+    scrollbar-width: none;
+  }
+
+  .header {
+    padding: 10px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    background-color: #f8f9fa;
+  }
+
+  @media screen and (max-width: 768px) {
+    .container {
+      flex-direction: column;
+    }
+
+    .form_container {
+      width: 100%;
+    }
+
+    .row {
+      width: 100%;
+    }
+
+    .input-content {
+      width: 100%;
+    }
+    
+  }
+</style>
+<ul class="nav nav-tabs">
+    <li class="nav-item">
+        <a class="nav-link active fw-bold" aria-current="page" href="{% url 'stock_taking' %}">Stock Taking</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link fw-bold" href="{% url 'dispatch_stock' %}">Distribute</a>
+      </li>
+  <li class="nav-item">
+    <a class="nav-link fw-bold" href="{% url 'uploadBulkSales' %}">Sales</a>
+  </li>
+</ul>
+<br>
+<h1 class="text-center fw-bold">Stock Taking</h1>
+<div class="d-flex justify-content-center">
+  <div class="spinner-border text-warning" role="status" id="loader">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+</div>
+<div class="container">
+  <div class="form_container">
+    <div class="header">
+      <h4 class="text-center fw-bold">Stock Taking: Total <span  id="total"></span></h4>
+      <p class="text-center">Scan or enter imei numbers to inform the system of the stock you have</p>
+    </div>
+    <hr>
+    <form action="" method="post" id="inputForm">
+      <p id="token" style="display: none;">{% csrf_token %}</p>
+      <div class="form-group custom-form-group">
+        <label for="data" class="fw-bold common-color">Enter Or scan imei Numbers Here</label>
+        <input type="text" name="data" id="data" class="form-control" autofocus required minlength="15" maxlength="15">
+        <br>
+        <div class="d-flex justify-content-between w-100">
+            <button type="button" class="btn common-bg fw-bold w-100" id="deploy">Upload</button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="row" id="waiting-room">
+    <div class="col-md-12">
+      <div class="card waiting-room">
+        <div class="card-header">
+          <h4 class="card-title text-center fw-bold">Scanned Items</h4>
+        </div>
+        <div class="card-body">
+          <ul class="list-group">
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<br>
+<hr>
+<div class="container" >
+</div>
+{% endblock %}

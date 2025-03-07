@@ -1,0 +1,146 @@
+{% extends 'users/admin_sites/main.html' %}
+{% load plus_r %}
+{% load static %}
+{% load django_bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'styles/loading-message.css' %}">
+<script src="{% static 'scripts/add_to_stock.js' %}" defer></script>
+{% endblock %}
+{% block content %}
+<style>
+    .card {
+        height: 500px;
+        overflow-y: scroll;
+    }
+
+    .container {
+        margin-top: 50px;
+        display: flex;
+        gap: 20px;
+    }
+
+    .row {
+        width: 50%;
+    }
+
+    .form_container {
+        width: 50%;
+        padding: 10px;
+        border-radius: 10px;
+        background-color: #f8f9fa;
+    }
+
+    .input-content {
+        width: 25%;
+    }
+    
+    .waiting-room {
+        scrollbar-width: none;
+    }
+
+    .header {
+        padding: 10px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        background-color: #f8f9fa;
+    }
+
+    .input_container {
+        display: flex;
+        gap: 12px;
+    }
+
+  @media screen and (max-width: 768px) {
+    .container {
+      flex-direction: column;
+    }
+
+    .form_container {
+      width: 100%;
+    }
+
+    .row {
+      width: 100%;
+    }
+
+    .input-content {
+      width: 100%;
+    }
+    
+  }
+</style>
+
+<h1 class="common-bg fw-bold text-center">Add Stock</h1>
+<ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a class="nav-link active fw-bold" aria-current="page" href="{% url 'add_to_stock' %}">New Phones</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link fw-bold" href="{% url 'add_accessaries' %}">Accessories</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link fw-bold" href="{% url 'add_appliances' %}">Appliances</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link fw-bold" href="{% url 'add_refarbished' %}">Refarbished</a>
+      </li>
+</ul>
+<div class="d-flex justify-content-center">
+    <div class="spinner-border text-warning" role="status" id="loader">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+</div>
+<div class="container">
+    <div class="form_container shadow-lg">
+        <div class="header">
+            <h4 class="text-center fw-bold">Add Stock: Total Scanned: <span  id="total"></span></h4>
+            <p class="text-center">Please enter the Imei numbers and the phone name to add to stock</p>
+        </div>
+        <hr>
+        <form action="" method="post" id="stock_form">
+            {% csrf_token %}
+            <div class="input_container">
+                <input type="text" name="device_imei" class="form-control" placeholder="Enter IMEI number"
+                required="" minlength="15" maxlength="15"
+                autofocus="autofocus" id="id_device_imei">
+                <input type="text" name="device_imei_2" class="form-control" placeholder="Enter IMEI number 2"
+                required="" minlength="15" maxlength="15" id="id_device_imei_2">
+            </div>
+            <hr class="text-danger" style="height: 15px;">
+            <p>
+                <input type="text" name="cost_price" class="form-control" placeholder="Enter cost price"
+                id="id_cost_price">
+            </p>
+            <p>
+                <input type="text" name="name" class="form-control" placeholder="Enter phone name"
+                list="phone_list" id="id_name">   
+            </p>
+            <datalist id="phone_list">
+                {% for phone in phone_names %}
+                <option value="{{ phone }}">{{ phone }}</option>
+                {% endfor %}
+            </datalist>
+            <p>
+                <input type="text" name="supplier" class="form-control"
+                placeholder="Enter supplier" id="id_supplier">
+            </p>
+            <button type="button" class="btn common-bg w-100 fw-bold" id="submit">submit</button>
+        </form>
+    </div>
+    <div class="row"  id="waiting-room">
+        <div class="col-md-12">
+            <div class="card waiting-room shadow-lg">
+                <div class="card-header">
+                    <h4 class="card-title text-center fw-bold">Scanned Items</h4>
+                </div>
+                <div class="card-body">
+                    <ol class="list-group list-group-numbered">
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

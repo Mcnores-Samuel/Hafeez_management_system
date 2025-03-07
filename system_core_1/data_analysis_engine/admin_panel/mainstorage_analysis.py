@@ -72,7 +72,7 @@ class MainStorageAnalysis:
         """Returns a dictionary containing the agent's stock in data."""
         stock_in = MainStorage.objects.filter(
             agent=agent,
-            in_stock=True, assigned=True,
+            in_stock=True, assigned=True, available=True,
             missing=False, sold=False, pending=False,
             faulty=False, issue=False, recieved=True, paid=False)
         stock = {}

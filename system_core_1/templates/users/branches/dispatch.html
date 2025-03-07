@@ -1,0 +1,107 @@
+{% extends 'users/admin_sites/main.html' %}
+{% load static %}
+{% load plus_r %}
+{% block head %}
+<script src="{% static 'scripts/deploy.js' %}" defer></script>
+{% endblock %}
+{% block content %}
+<style>
+  .card {
+    height: 400px;
+    overflow-y: scroll;
+  }
+
+  .header {
+    padding: 10px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    background-color: #8fa0af;
+  }
+
+  .card-header {
+    background-color: #8fa0af;
+  }
+
+  .waiting-room {
+    scrollbar-width: none;
+  }
+
+  .form_container {
+    padding: 10px;
+    border-radius: 10px;
+  }
+</style>
+<ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a class="nav-link active fw-bold" aria-current="page" href="{% url 'dispatch_stock' %}">Distribute</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link fw-bold" href="{% url 'uploadBulkSales' %}">Sales</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link fw-bold" href="{% url 'stock_taking' %}">Stock Taking</a>
+  </li>
+</ul>
+<br>
+<h1 class="text-center bg-secondary fw-bold">Stock Distribution</h1>
+<div class="d-flex justify-content-center">
+  <div class="spinner-border text-warning" role="status" id="loader">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+</div>
+<br>
+<div class="container d-flex">
+  <div class="container bg-secondary form_container">
+    <div class="header">
+      <h1 class="text-center fw-bold">Distribute Stock: Total <span  id="total"></span></h1>
+      <p class="text-center">Scan or enter imei numbers to deploy, Choose Date and Destination</p>
+    </div>
+    <hr>
+    <form action="" method="post" id="inputForm">
+      <p id="token" style="display: none;">{% csrf_token %}</p>
+      <div class="form-group custom-form-group">
+        <label for="data" class="fw-bold common-color">Enter Or scan imei Numbers Here</label>
+        <input type="text" name="data" id="data" class="form-control" autofocus required minlength="15" maxlength="15">
+        <br>
+        <h4 class="fw-bold common-color text-center">Deployment Details</h4>
+        <div class="d-flex justify-content-between w-100">
+          <div class="w-25">
+            <label for="date" class="fw-bold common-color">Choose Date</label>
+            <input type="date" name="date" id="date" class="form-control w-100">
+          </div>
+          <div class="w-25">
+            <label for="agent" class="fw-bold common-color">Choose Agent</label>
+            <select name="agent" id="agent" class="form-control">
+              <option value="">Select Agent</option>
+              {% for agent in agents %}
+              <option value="{{ agent }}">{{ agent }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="w-25">
+            <label for="destination" class="fw-bold common-color">Choose Destination</label>
+            <button type="button" class="btn common-bg" id="deploy">Deploy</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <br>
+  <div class="container" id="waiting-room">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card waiting-room">
+          <div class="loading"></div>
+          <div class="card-header">
+            <h4 class="card-title text-center fw-bold">Scanned Items</h4>
+          </div>
+          <div class="card-body">
+            <ul class="list-group">
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

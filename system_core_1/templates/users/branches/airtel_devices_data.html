@@ -1,0 +1,141 @@
+{% extends 'users/admin_sites/main.html' %}
+{% load plus_r %}
+{% load static %}
+{% load django_bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% block head %}
+<script src="{% static 'scripts/airtel_data_query.js' %}" defer></script>
+<script type="module" src="{% static 'scripts/admin_metrics.js' %}" defer></script>
+<script type="module" src="{% static 'scripts/airtel_metric_charts.js' %}" defer></script>
+<script type="module" src="{% static 'scripts/metric_render.js' %}" defer></script>
+<script type="module" src="{% static 'scripts/admin_payments.js' %}" defer></script>
+<link rel="stylesheet" href="{% static 'styles/agent_stock_mobile.css' %}">
+{% endblock %}
+{% block content %}
+<ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a class="nav-link fw-bold btn" id="defualtfilter" href="#">Table Data</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link fw-bold btn" id="metrics" href="#">Metrics</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link fw-bold btn" id="currentPayments" href="#">Current Payments</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link fw-bold btn" id="concludedPayments" href="#">Concluded Payments</a>
+    </li>
+</ul>
+<br> 
+<div class="container bg-dark" id="container_head">
+    <form action="" method="post" class="search-form text-light">
+        {% csrf_token %}
+        <input type="search" id="search_data" name="search_query" class="form-control me-2"
+        placeholder="filter the specific promoter here" aria-label="Search" aria-describedby="search-addon"
+        list="promoters">
+
+        <datalist id="promoters">
+            {% for promoter in promoters %}
+                <option value="{{ promoter.first_name }} {{ promoter.last_name }}">
+            {% endfor %}
+        </datalist>
+    </form>
+    <div class="row d-flex justify-content-center">
+        <div class="col-md-4 col-sm-4 mb-4">
+            <div class="card common-bg rounded-start">
+                <div class="card-header  text-center">
+                    <p class="card-title fw-bold">Total Promoters:  {{ total_promoters }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-4 mb-4">
+            <div class="card common-bg rounded-start">
+                <div class="card-header  text-center">
+                    <p class="card-title fw-bold">Total Collected:  {{ total_collected }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-4 mb-4">
+            <div class="card common-bg rounded-start">
+                <div class="card-header  text-center">
+                    <p class="card-title fw-bold">Total Available:  {{ availableStock }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+<div class="container">
+</div>
+<div class="d-flex justify-content-center">
+    <div class="spinner-border text-warning" role="status" id="loader">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+</div>
+<div class="container" id="container">
+    {% bootstrap_messages %}
+    <div class="table-responsive">
+        <table class="table table-secondary table-hover table-bordered
+        table-sm" id="airtelDevicesTable">
+            <thead>
+                <t class="common-bg">
+                    <th scope="col">Promoter</th>
+                    <th scope="col">Total Devices</th>
+                    <th scope="col">In Stock</th>
+                    <th scope="col" style="background-color: blue;">MIFI</th>
+                    <th scope="col" style="background-color: purple;">IDU</th>
+                    <th scope="col">Tody's Collection</th>
+                    <th scope="col">Within due date</th>
+                    <th scope="col">Overdue</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="container w-100 common-color">
+    <div class="pagination container-fluid w-100 d-flex justify-content-center" id="pagination">
+        <span class="step-links w-100 d-flex justify-content-around">
+        </span>
+    </div>
+</div>
+<style>
+
+    table {
+        text-align: center;
+        border-radius: 10px;
+        scrollbar-width: none;
+    }
+
+    #container_head {
+        display: flex;
+        padding-top: 10px;
+    }
+
+    #container_head form {
+        width: 40%;
+    }
+
+    #container_head .row {
+        width: 100%;
+    }
+
+    @media screen and (max-width: 600px) {
+        #container_head {
+            display: block;
+        }
+        #container_head form {
+            width: 100%;
+        }
+
+        #container_head form {
+            width: 100%;
+        }
+        
+    }
+
+</style>
+{% endblock %}

@@ -1,5 +1,6 @@
 from django.contrib import admin
-from ..customfilters.agent_filter import AirtelAgentFilter
+from system_core_1.customfilters.agent_filter import AirtelAgentFilter
+from django.utils import timezone
 
 
 class Airtel_mifi_storageAdmin(admin.ModelAdmin):
@@ -18,6 +19,8 @@ class Airtel_mifi_storageAdmin(admin.ModelAdmin):
                    'payment_confirmed', 'returned', 'returned_by')
 
     list_per_page = 50
+
+    actions = ['mark_as_sold', 'mark_as_returned', 'mark_as_not_in_stock']
 
     def entry_timestamp(self, obj):
         """Return the timestamp of the entry date"""
@@ -42,3 +45,31 @@ class Airtel_mifi_storageAdmin(admin.ModelAdmin):
     def returned_on_timestamp(self, obj):
         """Return the timestamp of the date returned"""
         return obj.returned_on
+
+    def not_in_stock(self, request, queryset):
+        for obj in queryset:
+            if obj:
+                obj.in_stock = False
+                obj.save()
+    not_in_stock.short_description = "Mark as not in stock"
+
+    def mark_as_sold(self, request, queryset):
+        """Mark the phone as sold"""
+        for obj in queryset:
+            if obj:
+                obj.in_stock = False
+                obj.activated = True
+                obj.payment_confirmed = True
+                obj.paid = True
+                obj.date_sold = timezone.now().date()
+                obj.save()
+    mark_as_sold.short_description = "Mark as sold"
+
+    def mark_as_returned(self, request, queryset):
+        """Mark the phone as returned"""
+        for obj in queryset:
+            if obj:
+                obj.returned = True
+                obj.returned_on = timezone.now().date()
+                obj.save()
+    mark_as_returned.short_description = "Mark as returned"

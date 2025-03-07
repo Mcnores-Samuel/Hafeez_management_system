@@ -1,0 +1,668 @@
+{% load static %}
+{% load plus_r %}
+{% load webpush_notifications %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        {% webpush_header %}
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Dashboard</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+        <link rel="icon" href="{% static 'images/logo.png' %}" type="image/png">
+        <link rel="stylesheet" href="{% static 'styles/common.css' %}">
+        <link rel="stylesheet" href="{% static 'styles/base_header.css' %}">
+        <link rel="stylesheet" href="{% static 'styles/dashboard.css' %}">
+        {% block head %}
+        <link rel="stylesheet" href="{% static 'styles/loading-message.css' %}">
+        <link rel="stylesheet" href="{% static 'styles/agent_stock_mobile.css' %}">
+        <script src="{% static 'scripts/analysis_lib/admin_stock_analysis.js' %}" defer></script>
+        <script src="{% static 'scripts/analysis_lib/daily_sales.js' %}" defer></script>
+        <script src="{% static 'scripts/analysis_lib/weekly_sales.js' %}" defer></script>
+        <script src="{% static 'scripts/analysis_lib/monthly_sales.js' %}" defer></script>
+        <script src="{% static 'scripts/analysis_lib/yearly_analysis.js' %}" defer></script>
+        <script src="{% static 'scripts/analysis_lib/agent_overall_stock.js' %}" defer></script>
+        {% endblock %}
+        <script src="{% static 'scripts/pending_sales.js' %}" defer></script>
+        <script src="{% static 'scripts/send_daily_update.js' %}" defer></script>
+        <script src="{% static 'scripts/sidebar.js' %}" defer></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <style>
+            .pending-sales-notice, .note-bage {
+                font-size: 10px;
+                position: absolute;
+            }
+            
+            .animated-section {
+                opacity: 0;
+                transform: translateY(30px);
+                transition: opacity 1.7s ease, transform 1.7s ease;
+            }
+
+            .animated-section.loaded {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            .daily_expenses {
+                font-size: 12px;
+                color: #f00;
+                font-weight: bold;
+            }
+            .estimated_profit {
+                font-size: 12px;
+                color: #0f0;
+                font-weight: bold;
+            }
+            .profit {
+                font-size: 9px;
+                color: #0f0;
+                font-weight: bold;
+            }
+            .preview {
+                font-size: 12px;
+                color: #fff;
+                font-weight: bold;
+            }
+        </style>
+    </head>
+    <body>
+        <button class="scroll-back"><i class='bx bxs-up-arrow-square'></i></button>
+        <div class="row w-100 heading-row">
+            <div class="col-md-2 col-12">
+                <br>
+                <div class="collapse d-md-block wrapper" id="sidebarCollapse">
+                    <div class="sidebar">
+                        <ul class="navbar-nav flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link d-flex align-items-center" href="{% url 'dashboard' %}"
+                                data-bs-toggle="tooltip" 
+                                title="analytics">
+                                <span class="material-icons">
+                                    analytics
+                                </span>
+                                <span class="text"> Analytics</span>
+                                </a>
+                            </li>
+                            {% if user.is_authenticated and user.is_superuser %}
+                            <li class="nav-item">
+                                <a class="nav-link d-flex align-items-center" href="{{ admin_url }}"
+                                data-bs-toggle="tooltip" 
+                                title="Control Center">
+                                <span class="material-icons">
+                                    settings
+                                    </span>
+                                    <span class="text"> Control Center</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link d-flex align-items-center" href="{% url 'accounting' %}"
+                                data-bs-toggle="tooltip"
+                                title="Accounting">
+                                <span class="material-icons">
+                                    paid
+                                </span>
+                                <span class="text"> Accounting</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link d-flex align-items-center" href="{% url 'ex_rate_pricing' %}"
+                                data-bs-toggle="tooltip"
+                                title="Exchange Rate">
+                                <span class="material-icons">
+                                    handshake
+                                </span>
+                                <span class="text"> Ex Rate Pricing</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link d-flex align-items-center" href="{% url 'airtel_device_data_entry' %}"
+                                data-bs-toggle="tooltip"
+                                title="Airtel Devices">
+                                <span class="material-icons">
+                                    phone_android
+                                </span>
+                                <span class="text"> Airtel Devices</span>
+                                </a>
+                            </li>
+                            {% endif %}
+                            <li class="nav-item">
+                                <a class="nav-link d-flex align-items-center" href="{% url 'dataAccess' %}"
+                                data-bs-toggle="tooltip"
+                                title="Audit Tool Box">
+                                    <span class="material-icons">
+                                        home_repair_service
+                                    </span>
+                                    <span class="text"> Audit Tool</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link d-flex align-items-center" href="{% url 'data_search' %}"
+                                data-bs-toggle="tooltip"
+                                title="Sales">
+                                <span class="material-icons">
+                                    point_of_sale
+                                </span>
+                                <span class="text"> Point Of Sale</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link d-flex align-items-center" href="{% url 'dispatch_stock' %}"
+                                data-bs-toggle="tooltip"
+                                title="Deploy Stock">
+                                <span class="material-icons">
+                                    send_time_extension
+                                </span>
+                                <span class="text"> Deploy Stock</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link d-flex align-items-center" href="{% url 'add_to_stock' %}"
+                                data-bs-toggle="tooltip"
+                                title="Add To Stock">
+                                <span class="material-icons">
+                                    add_circle
+                                </span>
+                                <span class="text"> Add To Stock</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link d-flex align-items-center" href="{% url 'pending_sales' %}"
+                                data-bs-toggle="tooltip" 
+                                title="Pending Actions">
+                                <span class="material-icons">
+                                    pending_actions
+                                </span>
+                                <span class="badge bg-danger pending-sales-notice"></span>
+                                <span class="text"> Pending Sales</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link d-flex align-items-center" href="{% url 'main_stock_details' %}"
+                                data-bs-toggle="tooltip"
+                                title="Stock">
+                                <span class="material-icons">
+                                    inventory
+                                </span>
+                                <span class="text"> Stock</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link d-flex align-items-center" href="{% url 'main_sales_details' %}"
+                                data-bs-toggle="tooltip"
+                                title="Sales">
+                                <span class="material-icons">
+                                outbound
+                                </span>
+                                <span class="text"> Sales</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link d-flex align-items-center" href="{% url 'defects' %}"
+                                data-bs-toggle="tooltip" 
+                                title="Defective Devices">
+                                <span class="material-icons">
+                                    report_problem
+                                </span>
+                                <span class="text"> Defects</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link d-flex align-items-center" href="{% url 'profile' %}"
+                                data-bs-toggle="tooltip" 
+                                title="Profile">
+                                    <span class="material-icons">
+                                        account_circle
+                                    </span>
+                                    <span class="text"> Profile</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                            <a class="nav-link d-flex align-items-center" href="{% url 'sign_out' %}"
+                                data-bs-toggle="tooltip" 
+                                title="Logout">
+                                    <span class="material-icons">
+                                        logout
+                                    </span>
+                                    <span class="text"> Logout</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link d-flex align-items-center" href="{% url 'feedback' %}"
+                                data-bs-toggle="tooltip" 
+                                title="feedback">
+                                    <span class="material-icons">
+                                    feedback
+                                    </span>
+                                    <span class="text"> Feedback</span>
+                                </a>
+                            </li>
+                            <br>
+                            <br>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="top-display card-bg">
+            <div class="topbar-wrapper">
+                <div class="logo">HE</div>
+            </div>
+            <div class="topbar">
+                <button class="btn d-md-none menu-btn menu" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarCollapse" aria-expanded="false" aria-controls="sidebarCollapse">
+                    <span class="material-icons">
+                        menu
+                        </span>
+                </button>
+            </div>
+            <form action="{% url 'data_search' %}" method="post" class="d-flex position-relative search-form text-light">
+                {% csrf_token %}
+                <input type="search" id="search_term" name="search_query" class="form-control me-2"
+                placeholder="Search IMEI number or Contract number" aria-label="Search" aria-describedby="search-addon" />
+                <button type="submit" class="btn search-btn material-icons">search</button>
+                <button type="button" class="btn common-bg" style="margin-left: 10px;"
+                data-bs-toggle="modal" data-bs-target="#viewExpensesModal">Expenses</button>
+            </form>
+            <div class="notify">
+                <div class="dropdown">
+                    <button type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                        <span class="material-icons common-color">
+                            notifications
+                        </span>
+                        <span class="badge bg-danger"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a class="dropdown-item" href="#">
+                                <div class="d-flex">
+                                        <span class="material-icons">
+                                            notifications
+                                        </span>
+                                    <div class="">
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="profile">
+                {% if avatar.image %}
+                <img src="{{ avatar.image.url }}" alt="avatar" class="avatar">
+                {% else %}
+                    <span class="material-icons">
+                        account_circle
+                    </span>
+                {% endif %}
+                <div class="dropdown">
+                    <button type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a class="dropdown-item" href="{% url 'profile' %}">
+                                <div class="d-flex">
+                                    <div class="icon">
+                                        <span class="material-icons">
+                                            account_circle
+                                        </span>
+                                    </div>
+                                    <div class="">
+                                        <p>Profile</p>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{% url 'sign_out' %}">
+                                <div class="d-flex">
+                                    <div class="icon">
+                                        <span class="material-icons">
+                                            logout
+                                        </span>
+                                    </div>
+                                    <div class="">
+                                        <p>Logout</p>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <section class="presentaion">
+            {% block content %}
+                {% if messages %}
+                    <div class="messages animated-section">
+                        {% for message in messages %}
+                            {% if message.tags == 'success' %}
+                                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                    {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            {% elif message.ta352631920189863s == 'error' %}
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            {% elif message.tags == 'warning' %}
+                                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                    {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            {% else %}
+                                <div class="alert alert-info alert-dismissible fade show" role="alert">
+                                    {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            <br>
+            <section class="charts-and-data">
+                <div class="row gy-3">
+                    <div class="col-md-3 col-12">
+                        <div class="card card-bg text-light">
+                            <div class="card-body">
+                                <p class="card-text"><strong class="text-info preview">Overall Stock</strong> <span class="preview" id="overall_stock_analysis">0</span></p>
+                                <p class="card-text"><strong class="text-info preview">Estimated Cost</strong> <span class="preview" id="estimated-cost">0</span></p>
+                                <p class="card-text"><strong class="text-info preview">Estimated Revenue</strong> <span class="preview" id="estimated-revenue">0</span></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-12">
+                        <div class="card card-bg text-light">
+                            <div class="card-body">
+                                <p class="card-text"><strong class="text-info preview">Overall Sales</strong> <span class="preview" id="overall_sales_analysis">0</span></p>
+                                <p class="card-text"><strong class="text-success preview">Estimated Profit</strong> <span class="preview" id="estimated-profit">0</span></p>
+                                <p class="card-text"><strong class="text-warning preview">Estimated Expenses</strong> <span class="preview" id="estimated-expenses">0</span></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-12">
+                        <div class="card card-bg text-light">
+                            <div class="card-body">
+                                <p class="card-text"><strong class="text-info preview">Main Shop Stock</strong> <span class="preview" id="main_shop_stock_analysis">0</span></p>
+                                <p class="card-text"><strong class="text-info preview">Main Shop Sales</strong> <span class="preview" id="main_shop_sales_analysis">0</span></p>
+                                <p class="card-text"><strong class="text-danger preview">Estimated Loss</strong> <span class="preview text-danger" id="estimated-loss">
+                                    0
+                                    <span class="material-icons text-danger" style="font-size: 12px">arrow_downward</span>
+                                </span></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-12">
+                        <div class="card card-bg text-light">
+                            <div class="card-body">
+                                <div class="">
+                                    <p class="fw-bold">Main shop target</p>
+                                    <div class="">
+                                        <div class="text-end fw-bold"></div>
+                                        <div class="progress">
+                                            <div class="progress-bar progress-bar-striped progress-bar-animated fw-bold"
+                                            role="progressbar" aria-valuenow="{{ progress }}" aria-valuemin="0"
+                                            aria-valuemax="{{ terget }}"></div>
+                                        </div>
+                                    </div>
+                                    <div class="fw-bold">System Status: <span class="text-success">Active</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <br>
+            <section class="charts_by_chartjs">
+                <div class="row gy-3">
+                    <div class="col-md-4 col-12">
+                        <div class="card bg-light">
+                            <div class="card-header text-center">
+                                <p class="text-muted fw-bold">Daily Sales on loan</p>
+                            </div>
+                            <div class="card-body">
+                                <div class="daily_sales_loader_loan"></div>
+                                <canvas class="daily_sales_chart_loan" width="300" height="250"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-12">
+                        <div class="card bg-light">
+                            <div class="card-header text-center">
+                                <p class="fw-bold text-muted">Daily Sales on Cash</p>
+                            </div>
+                            <div class="card-body">
+                                <div class="daily_sales_loader_cash"></div>
+                                <canvas class="daily_sales_chart_cash" width="300" height="250"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-12">
+                        <div class="card bg-light">
+                            <div class="card-header text-center">
+                                <p class="fw-bold text-muted">Weekly Sales on loan</p>
+                            </div>
+                            <div class="card-body">
+                                <div class="weekly_sales_loader_loan"></div>
+                                <canvas class="Weekly_sales_chart_loan" width="300" height="250"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <br>
+            <section class="charts_by_chartjs">
+                <div class="row gy-3">
+                    <div class="col-md-4 col-12">
+                        <div class="card bg-light">
+                            <div class="card-header text-center">
+                                <p class="fw-bold text-muted">Weekly Sales on Cash</p>
+                            </div>
+                            <div class="card-body">
+                                <div class="weekly_sales_loader_cash"></div>
+                                <canvas class="Weekly_sales_chart_cash" width="300" height="250"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-12">
+                        <div class="card bg-light">
+                            <div class="card-header text-center">
+                                <p class="fw-bold text-muted">Monthly Sales on loan</p>
+                            </div>
+                            <div class="card-body">
+                                <div class="agent_sales_loan_chart_loader"></div>
+                                <canvas class="agent_sales_loan_chart" width="300" height="250"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-12">
+                        <div class="card bg-light">
+                            <div class="card-header text-center">
+                                <p class="fw-bold text-muted">Monthly Sales on Cash</p>
+                            </div>
+                            <div class="card-body">
+                                <div class="agent_sales_cash_chart_loader"></div>
+                                <canvas class="agent_sales_cash_chart" width="300" height="250"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <br>
+            <section class="charts_by_chartjs">
+                <div class="row gy-3">
+                    <div class="col-md-6 col-12">
+                        <div class="card bg-light">
+                            <div class="card-header text-center">
+                                <h4 class="fw-bold text-muted">Agent Overall Stock</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="loading-message-stock"></div>
+                                <canvas class="all_agents_stock_chart" width="400" height="400"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-12">
+                        <div class="card bg-light">
+                            <div class="card-header text-center">
+                                <h4 class="fw-bold text-muted">Main Shop Stock</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="loading-message-shop"></div>
+                                <canvas class="main_stock_chart" width="400" height="400"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <br>
+            <section class="yearly_analysis">
+                <div class="row gy-3">
+                    <div class="col-md-6 col-12">
+                        <div class="card bg-light">
+                            <div class="card-header text-center">
+                                <h4 class="fw-bold text-muted">Main Shop Yearly Sales</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="yearly_sales_chart_loader"></div>
+                                <canvas class="yearly_sales_chart" width="400" height="400"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-12">
+                        <div class="card bg-light">
+                            <div class="card-header text-center">
+                                <h4 class="fw-bold text-muted">Overall Yearly Sales</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="yearly_sales_chart_loader_total"></div>
+                                <canvas class="yearly_sales_chart_total" width="400" height="400"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <br>
+            <section class="yearly_analysis">
+                <div class="row">
+                    <div class="col-md-6 col-12 w-100">
+                        <div class="card bg-light">
+                            <div class="card-header text-center">
+                                <h4 class="fw-bold text-muted">Product analytics</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="yearly_product_sales_chart_loader"></div>
+                                <canvas class="yearly_product_sales_chart" width="400" height="400"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <div class="modal fade" id="web_push_request" tabindex="-1" aria-labelledby="web_push_request" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title fw-bold text-muted">Notification Permission</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="text-center">
+                                <p class="text-muted">
+                                    To recieve notifications from Hafeez Enterprise, click the allow button below.
+                                    This will enable us to send you notifications about system updates, sales and other important information.
+                                </p>
+                                {% webpush_button with_class="btn common-bg" %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="viewExpensesModal" tabindex="-1" aria-labelledby="viewExpensesModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title fw-bold" id="viewExpensesModalLabel">Expenses  
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="{% url 'expenses' %}" method="post">
+                                {% csrf_token %}
+                                <label for="user">Expense Holder</label>
+                                <input type="text" name="user" id="user" class="form-control" required
+                                placeholder="Enter the name of the person who spent the money", list="users">
+                                <datalist id="users">
+                                    {% for user in users %}
+                                        <option value="{{ user }}">
+                                    {% endfor %}
+                                </datalist>
+                                <br>
+                                <label for="category">Category</label>
+                                <input type="text" name="category" id="category" class="form-control" required
+                                placeholder="Enter the category of the expense", list="categories">
+                                <datalist id="categories">
+                                    <option value="Rent/Lease">
+                                    <option value="Utilities">
+                                    <option value="Salaries">
+                                    <option value="Internet and Communication">
+                                    <option value="Transport">
+                                    <option value="Maintenance and Repairs">
+                                    <option value="Taxes">
+                                    <option value="Insurance">
+                                    <option value="Advertising">
+                                    <option value="Advertising Materials">
+                                    <option value="Promotions and Discounts">
+                                    <option value="Customer Retention Costs">
+                                    <option value="Professional Services">
+                                    <option value="Bank Charges">
+                                    <option value="Office Supplies">
+                                    <option value="Subscriptions">
+                                    <option value="Fuel Costs">
+                                    <option value="Food Expenses">
+                                    <option value="Damage Costs">
+                                </datalist>
+                                <br>
+                                <label for="description" class="">Description</label>
+                                <input type="text" name="description" id="description" class="form-control" required
+                                placeholder="Name or describe the money usage type">
+                                <br>
+                                <label for="amount" class="">Amount</label>
+                                <input type="number" name="amount" id="amount" class="form-control" required
+                                placeholder="Enter the amount spent">
+                                <br>
+                                <label for="date" class="">Date</label>
+                                <input type="datetime-local" name="date" id="date" class="form-control" required>
+                                <br>
+                                <button type="submit" class="btn common-bg w-100 fw-bold">Submit</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endblock %}
+        </section>
+        <br>
+        <script>
+            window.addEventListener('DOMContentLoaded', () => {
+                const sections = document.querySelectorAll('.animated-section');
+                const observer = new IntersectionObserver(entries => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('loaded');
+                        } else {
+                            entry.target.classList.remove('loaded');
+                        }
+                    });
+                });
+                sections.forEach(section => {
+                    observer.observe(section);
+                });
+            });
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    </body>
+</html>
