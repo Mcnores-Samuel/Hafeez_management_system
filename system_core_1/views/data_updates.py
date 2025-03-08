@@ -9,7 +9,6 @@ from ..models.main_storage import MainStorage
 from django.http import JsonResponse
 from ..models.user_profile import UserAvatar
 from ..data_query_engine.agents_queries.agents_data_query import AgentsDataQuery
-from django.db import IntegrityError
 from ..forms.filters import FilterAgentAndDataStockOut
 
 
@@ -88,6 +87,27 @@ def profile(request):
                 'avatar': avatar
             }
         return render(request, 'users/admin_sites/profile.html', context)
+    elif request.user.groups.filter(name='branches').exists():
+        if request.method == 'POST':
+            profile_form = UserProfileForm(request.POST, user=request.user)
+            if profile_form.is_valid():
+                profile = profile_form.process_profile()
+                if profile:
+                    messages.success(request, 'Your profile information was successfully updated.')
+                    return redirect('profile')
+                else:
+                    messages.error(request, 'An error occurred while updating your profile information.')
+                    return redirect('profile')
+        else:
+            profile_form = UserProfileForm(user=request.user)
+        avatar = UserAvatar.objects.get(user=request.user) if UserAvatar.objects.filter(user=request.user).exists() else None
+        context = {
+                'profile': user.email[0],
+                'user': user,
+                'form': profile_form,
+                'avatar': avatar
+            }
+        return render(request, 'users/branches/profile.html', context)
     elif request.user.groups.filter(name='MBOs').exists():
         if request.method == 'POST':
             profile_form = UserProfileForm(request.POST, user=request.user)
@@ -110,6 +130,7 @@ def profile(request):
             }
         return render(request, 'users/mbos/profile.html', context)
     return redirect('dashboard')
+
 
 @login_required
 def upload_image(request):

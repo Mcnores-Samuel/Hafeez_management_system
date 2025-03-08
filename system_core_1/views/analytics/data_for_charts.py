@@ -1,11 +1,11 @@
-from ..models.main_storage import MainStorage
+from ...models.main_storage import MainStorage
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
-from ..models.agent_profile import AgentProfile
+from ...models.agent_profile import AgentProfile
 from django.contrib.auth.models import Group
-from ..models.user_profile import UserProfile
-from ..data_analysis_engine.admin_panel.mainstorage_analysis import MainStorageAnalysis
-from ..data_query_engine.agents_queries.agents_data_query import AgentsDataQuery
+from ...models.user_profile import UserProfile
+from ...data_analysis_engine.admin_panel.mainstorage_analysis import MainStorageAnalysis
+from ...data_query_engine.agents_queries.agents_data_query import AgentsDataQuery
 
 
 @login_required

@@ -1,6 +1,6 @@
 """This model represent the entire stock available and sold in all posts."""
-from ..models.main_storage import MainStorage
-from ..models.main_storage import Airtel_mifi_storage
+from ....models.main_storage import MainStorage
+from ....models.main_storage import Airtel_mifi_storage
 from system_core_1.models.cost_per_invoice import CostPerInvoice
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt

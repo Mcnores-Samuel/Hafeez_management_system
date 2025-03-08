@@ -1,11 +1,11 @@
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
-from ..models.user_profile import UserProfile
-from ..models.main_storage import MainStorage
+from ...models.user_profile import UserProfile
+from ...models.main_storage import MainStorage
 from django.contrib.auth.models import Group
 from django.utils import timezone
-from ..data_analysis_engine.admin_panel.calc_commitions import CalcCommissions
-from ..data_analysis_engine.admin_panel.mainstorage_analysis import MainStorageAnalysis
+from ...data_analysis_engine.admin_panel.calc_commitions import CalcCommissions
+from ...data_analysis_engine.admin_panel.mainstorage_analysis import MainStorageAnalysis
 
 
 @login_required

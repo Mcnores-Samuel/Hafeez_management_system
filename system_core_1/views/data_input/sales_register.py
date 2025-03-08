@@ -7,14 +7,14 @@ process by agents.
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from ..models.main_storage import MainStorage
+from ...models.main_storage import MainStorage
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
 from webpush import send_user_notification
-from ..models.accessories import Accessories, Accessory_Sales
-from ..models.appliances import Appliances, Appliance_Sales
-from ..models.refarbished_devices import RefarbishedDevices, RefarbishedDevicesSales
+from ...models.accessories import Accessories, Accessory_Sales
+from ...models.appliances import Appliances, Appliance_Sales
+from ...models.refarbished_devices import RefarbishedDevices, RefarbishedDevicesSales
 from django.utils import timezone
 
 

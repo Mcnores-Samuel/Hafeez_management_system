@@ -1,8 +1,8 @@
 """This module contains the record airtel devices payment view."""
-from ..models.promoter_payments import PromoterPayments
+from ...models.promoter_payments import PromoterPayments
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
-from ..models.user_profile import UserProfile
+from ...models.user_profile import UserProfile
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 

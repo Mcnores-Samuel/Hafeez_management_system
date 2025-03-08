@@ -4,7 +4,7 @@ from system_core_1.views.airtel_devices.airtel_device_destributer import search_
 from system_core_1.views.airtel_devices.airtel_accounts import promoters_data, devices_per_promoter, airtel_promoter_accounts, paymentsNotification
 from system_core_1.views.airtel_devices.airtel_dev_ops import return_device, edit_device, sale_device, reset_device
 from system_core_1.views.airtel_devices.airtel_admin_ops import airtel_devices_data, airtel_device_data_entry, metrics
-from system_core_1.views.recordairteldevices_payment import record_airtel_devices_payment
+from system_core_1.views.data_input.recordairteldevices_payment import record_airtel_devices_payment
 from system_core_1.views.airtel_devices.add_airtel_devices_stock import add_airtel_devices_stock
 from system_core_1.views.airtel_devices.admin_airtel_payments import currentPayments, renewPayment, concludedPayments, deletePayment
 
