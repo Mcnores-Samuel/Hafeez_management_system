@@ -112,21 +112,37 @@ class MainStorage(models.Model):
         return "Device: {}, Imei: {}".format(self.name, self.device_imei)
     
     @classmethod
-    def total_cost(cls):
-        total = cls.objects.filter(
-            in_stock=True, sold=False, pending=False, cost__gt=0, available=True,
-            assigned=True, agent__groups__name='agents').aggregate(
-            total_cost=Sum('cost'))
+    def total_cost(cls, agent = None):
+        total = 0
+        if agent:
+          total = cls.objects.filter(
+              agent=agent, in_stock=True, sold=False, pending=False, cost__gt=0, available=True,
+              assigned=True).aggregate(total_cost=Sum('cost'))
+        else:
+          total = cls.objects.filter(
+              in_stock=True, sold=False, pending=False, cost__gt=0, available=True,
+              assigned=True, agent__groups__name__in=['agents', 'branches']).aggregate(
+              total_cost=Sum('cost'))
         if total['total_cost'] is None:
             return 0
         return total['total_cost']
     
     @classmethod
-    def total_revenue(cls):
-        total = cls.objects.filter(
-            in_stock=False, sold=True, pending=False, assigned=True,
-            cost__gt=0, price__gt=0, agent__groups__name='agents').aggregate(
-            total_revenue=Sum('price'))
+    def total_revenue(cls, agent = None, month = None):
+        total = 0
+        if agent and month:
+          total = cls.objects.filter(
+              agent=agent, in_stock=False, sold=True, pending=False, cost__gt=0, price__gt=0,
+              stock_out_date__month=month, stock_out_date__year=timezone.now().year,
+              assigned=True).aggregate(
+              total_revenue=Sum('price'))
+        else:
+          total = cls.objects.filter(
+              in_stock=False, sold=True, pending=False, assigned=True,
+              cost__gt=0, price__gt=0, agent__groups__name__in=['agents', 'branches'],
+              stock_out_date__month=timezone.now().month, stock_out_date__year=timezone.now().year
+              ).aggregate(
+              total_revenue=Sum('price'))
         if total['total_revenue'] is None:
             return 0
         return total['total_revenue']

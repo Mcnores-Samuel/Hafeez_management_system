@@ -4,10 +4,12 @@ The revenues app is responsible for handling the revenue data of the system.
 """
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from ...models.main_storage import MainStorage
+from system_core_1.models.accessories import Accessories
+from system_core_1.models.appliances import Appliances
+from system_core_1.models.main_storage import MainStorage
+from system_core_1.models.refarbished_devices import RefarbishedDevices
 from django.http import JsonResponse
 from django.utils import timezone
-from django.db.models import Sum
 
 
 @login_required
@@ -20,7 +22,9 @@ def accounting(request):
     Returns:
         HttpResponse: The response object.
     """
-    return render(request, 'users/admin_sites/accounting.html')
+    if request.user.is_superuser:
+        return render(request, 'users/admin_sites/accounting.html')
+    return render(request, 'users/branches/accounting.html')
 
 
 @login_required
@@ -41,19 +45,23 @@ def cost_and_expenses(request):
 def getCostAndRevenue(request):
     """Returns a JSON object containing the total cost and revenue."""
     if request.method == 'GET':
-        this_month = timezone.now().month
-        total_cost = MainStorage.objects.filter(
-            in_stock=False, sold=True, pending=False, cost__gt=0, price__gt=0,
-            stock_out_date__month=this_month, stock_out_date__year=timezone.now().year,
-            assigned=True, agent__groups__name='agents').aggregate(
-            total_cost=Sum('cost'))
-        total_revenue = MainStorage.objects.filter(
-            in_stock=False, sold=True, pending=False, assigned=True,
-            stock_out_date__month=this_month, cost__gt=0, price__gt=0,
-            stock_out_date__year=timezone.now().year, agent__groups__name='agents').aggregate(
-            total_revenue=Sum('price'))
+        total_cost = 0
+        total_revenue = 0
+        if request.user.is_superuser:
+            total_refarbished_cost = RefarbishedDevices.total_cost()
+            total_appliance_cost = Appliances.total_cost()
+            total_accessory_cost = Accessories.total_cost()
+            total_cost = MainStorage.total_cost()
+            total_cost += total_refarbished_cost
+            total_cost += total_appliance_cost
+            total_cost += total_accessory_cost
+            total_revenue = MainStorage.total_revenue()
+        elif request.user.groups.filter(name='branches').exists():
+            total_cost = MainStorage.total_cost(agent=request.user)
+            total_revenue = MainStorage.total_revenue(
+                agent=request.user, month=timezone.now().month)
         return JsonResponse({
-            'total_cost': total_cost['total_cost'],
-            'total_revenue': total_revenue['total_revenue']
+            'total_cost': total_cost,
+            'total_revenue': total_revenue
         })
     return JsonResponse({'error': 'Invalid request.'})

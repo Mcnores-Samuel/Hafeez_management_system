@@ -141,25 +141,35 @@ class MainStorageAnalysis:
             return sales, overall_sales
         return None
     
-    def overall_stock(self):
+    def overall_stock(self, agent=None):
         """This function returns a JSON object containing
         the overall stock data.
         """
-        stock = MainStorage.objects.filter( agent__groups__name='agents', in_stock=True, assigned=True,
+        if agent:
+            stock = MainStorage.objects.filter(agent=agent, in_stock=True, assigned=True,
                 sold=False, missing=False, pending=False, faulty=False, recieved=True, available=True,
                 issue=False).count()
+        else:
+            stock = MainStorage.objects.filter( agent__groups__name='agents', in_stock=True, assigned=True,
+                    sold=False, missing=False, pending=False, faulty=False, recieved=True, available=True,
+                    issue=False).count()
+
         return stock
     
-    def overall_sales(self):
+    def overall_sales(self, agent=None):
         """This function returns a JSON object containing
         the overall sales data.
         """
         month = timezone.now().date().month
         year = timezone.now().date().year
-
-        sales = MainStorage.objects.filter(agent__groups__name='agents', in_stock=False, assigned=True,
+        if agent:
+            sales = MainStorage.objects.filter(agent=agent, in_stock=False, assigned=True,
                 sold=True, missing=False, pending=False, faulty=False, stock_out_date__month=month,
                 stock_out_date__year=year).count()
+        else:
+            sales = MainStorage.objects.filter(agent__groups__name='agents', in_stock=False, assigned=True,
+                    sold=True, missing=False, pending=False, faulty=False, stock_out_date__month=month,
+                    stock_out_date__year=year).count()
         return sales
     
     def pending_sales(self, request):

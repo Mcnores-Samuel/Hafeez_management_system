@@ -48,23 +48,40 @@ def get_yearly_product_sales(request):
 def admin_stock_analysis(request):
     """This function returns a JSON object containing the daily stock data."""
     if request.method == 'GET':
-        main_shop_staff = Group.objects.get(name='main_shop')
-        representatives = UserProfile.objects.filter(groups=main_shop_staff).first()
-        sales = MainStorageAnalysis().get_agent_stock_out(representatives)
-        overall_sales = MainStorageAnalysis().overall_sales()
-        overall_stock = MainStorageAnalysis().overall_stock()
-        total = 0
-        for value in sales:
-            total += value[1]
-        CalcCommissions().update_commission(representatives, total)
-        progress, target = CalcCommissions().target_progress(representatives)
-        main_shop_stock = MainStorage.objects.filter(
-            agent=representatives, in_stock=True, sold=False, missing=False,
-            assigned=True, available=True).count()
+        progress = 0
+        target = 0
+        total_sales = 0
+        overall_sales = 0
+        overall_stock = 0
+        main_shop_stock = 0
+        if request.user.is_superuser:
+            representatives = UserProfile.objects.filter(groups='main_shop').first()
+            sales = MainStorageAnalysis().get_agent_stock_out(representatives)
+            overall_sales = MainStorageAnalysis().overall_sales(agent=representatives)
+            overall_stock = MainStorageAnalysis().overall_stock()
+            for value in sales:
+                total_sales += value[1]
+            CalcCommissions().update_commission(representatives, total_sales)
+            progress, target = CalcCommissions().target_progress(representatives)
+            main_shop_stock = MainStorage.objects.filter(
+                agent=representatives, in_stock=True, sold=False, missing=False,
+                assigned=True, available=True).count()
+        elif request.user.groups.filter(name='branches').exists():
+            representatives = request.user
+            sales = MainStorageAnalysis().get_agent_stock_out(representatives)
+            overall_sales = MainStorageAnalysis().overall_sales(agent=representatives)
+            overall_stock = MainStorageAnalysis().overall_stock(agent=representatives)
+            for value in sales:
+                total_sales += value[1]
+            CalcCommissions().update_commission(representatives, total_sales)
+            progress, target = CalcCommissions().target_progress(representatives)
+            main_shop_stock = MainStorage.objects.filter(
+                agent=representatives, in_stock=True, sold=False, missing=False,
+                assigned=True, available=True).count()
         context = {
             'progress': progress,
             'target': target,
-            'sales': total,
+            'sales': total_sales,
             'overall_sales': overall_sales,
             'overall_stock': overall_stock,
             'main_shop_stock': main_shop_stock,
