@@ -113,10 +113,10 @@ function updateWeeklyChart(url, dest, chartType = 'line', loader) {
 
 
 const dest_1 = '.Weekly_sales_chart_loan';
-const url_1 = '/system_core_1/get_weekly_sales_json_loan/';
+const url_1 = '/system_core_1/get_weekly_sales/Loan/';
 const loader_1 = '.weekly_sales_loader_loan';
 const dest_2 = '.Weekly_sales_chart_cash';
-const url_2 = '/system_core_1/get_weekly_sales_json_cash/';
+const url_2 = '/system_core_1/get_weekly_sales/Cash/';
 const loader_2 = '.weekly_sales_loader_cash';
 
 updateWeeklyChart(url_1, dest_1, 'bar', loader_1);

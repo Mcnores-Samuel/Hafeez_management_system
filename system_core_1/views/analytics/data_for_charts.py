@@ -9,59 +9,36 @@ from ...data_query_engine.agents_queries.agents_data_query import AgentsDataQuer
 
 
 @login_required
-def get_daily_sales_json_loan(request):
+def get_daily_sales(request, sales_type):
     """Returns a JSON object containing the daily sales data."""
     if request.method == 'GET':
         sales = None
         if request.user.groups.filter(name='branches').exists():
-            sales = MainStorageAnalysis().get_daily_sales('Loan', agent=request.user)
+            sales = MainStorageAnalysis().get_daily_sales(sales_type=sales_type, agent=request.user)
         else:
-            sales = MainStorageAnalysis().get_daily_sales('Loan')
+            sales = MainStorageAnalysis().get_daily_sales(sales_type=sales_type)
         return JsonResponse(sales)
     return JsonResponse({'error': 'Invalid request.'})
 
 
 @login_required
-def get_daily_sales_json_cash(request):
-    """Returns a JSON object containing the daily sales data."""
-    if request.method == 'GET':
-        sales = MainStorageAnalysis().get_daily_sales('Cash')
-        return JsonResponse(sales)
-    return JsonResponse({'error': 'Invalid request.'})
-
-
-@login_required
-def get_weekly_sales_json_loan(request):
+def get_weekly_sales(request, sales_type):
     """Returns a JSON object containing the weekly sales data."""
     if request.method == 'GET':
-        days = MainStorageAnalysis().get_weekly_sales('Loan')
+        days = None
+        if request.user.groups.filter(name='branches').exists():
+            days = MainStorageAnalysis().get_weekly_sales(sales_type=sales_type, agent=request.user)
+        else:
+            days = MainStorageAnalysis().get_weekly_sales(sales_type=sales_type)
         return JsonResponse(days)
     return JsonResponse({'error': 'Invalid request.'})
 
 
 @login_required
-def get_weekly_sales_json_cash(request):
-    """Returns a JSON object containing the weekly sales data."""
-    if request.method == 'GET':
-        days = MainStorageAnalysis().get_weekly_sales('Cash')
-        return JsonResponse(days)
-    return JsonResponse({'error': 'Invalid request.'})
-
-
-@login_required
-def get_sale_by_agent_monthy_loan(request):
+def get_sale_by_agent_monthly(request, sales_type):
     """Returns a JSON object containing the monthly sales data by agent."""
     if request.method == 'GET':
-        sales_by_agent = MainStorageAnalysis().get_monthly_sales_by_agents('Loan')
-        return JsonResponse(sales_by_agent, safe=False)
-    return JsonResponse({'error': 'Invalid request.'})
-
-
-@login_required
-def get_sale_by_agent_monthy_cash(request):
-    """Returns a JSON object containing the monthly sales data by agent."""
-    if request.method == 'GET':
-        sales_by_agent = MainStorageAnalysis().get_monthly_sales_by_agents('Cash')
+        sales_by_agent = MainStorageAnalysis().get_monthly_sales_by_agents(sales_type=sales_type)
         return JsonResponse(sales_by_agent, safe=False)
     return JsonResponse({'error': 'Invalid request.'})
 

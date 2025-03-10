@@ -4,12 +4,9 @@ from system_core_1.views.analytics import stock_analysis
 
 urlpatterns = [
     # data analysis urls
-    path('get_daily_sales_json_loan/', data_for_charts.get_daily_sales_json_loan, name='get_daily_sales_json_loan'),
-    path('get_daily_sales_json_cash/', data_for_charts.get_daily_sales_json_cash, name='get_daily_sales_json_cash'),
-    path('get_weekly_sales_json_loan/', data_for_charts.get_weekly_sales_json_loan, name='get_weekly_sales_json_loan'),
-    path('get_weekly_sales_json_cash/', data_for_charts.get_weekly_sales_json_cash, name='get_weekly_sales_json_cash'),
-    path('get_sale_by_agent_monthy_loan/', data_for_charts.get_sale_by_agent_monthy_loan, name='get_sale_by_agent_monthy_loan'),
-    path('get_sale_by_agent_monthy_cash/', data_for_charts.get_sale_by_agent_monthy_cash, name='get_sale_by_agent_monthy_cash'),
+    path('get_daily_sales/<str:sales_type>/', data_for_charts.get_daily_sales, name='get_daily_sales'),
+    path('get_weekly_sales/<str:sales_type>/', data_for_charts.get_weekly_sales, name='get_weekly_sales'),
+    path('get_sale_by_agent_monthly/<str:sales_type>/', data_for_charts.get_sale_by_agent_monthly, name='get_sale_by_agent_monthly'),
     path('get_individual_agent_stock/', data_for_charts.get_individual_agent_stock, name='get_individual_agent_stock'),
     path('get_individual_agent_stock_out/', data_for_charts.get_individual_agent_stock_out, name='get_individual_agent_stock_out'),
     path('get_agents_stock_json/', data_for_charts.get_agents_stock_json, name='get_agents_stock_json'),

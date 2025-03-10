@@ -123,10 +123,10 @@ function updateSalesByAgentChart(url, dest, chartType, loader) {
 }
 
 const dest_monthly = '.agent_sales_loan_chart';
-const url_monthly = '/system_core_1/get_sale_by_agent_monthy_loan/';
+const url_monthly = '/system_core_1/get_sale_by_agent_monthly/Loan/';
 const loader_monthly = '.agent_sales_loan_chart_loader';
 const dest_monthly2 = '.agent_sales_cash_chart';
-const url_monthly2 = '/system_core_1/get_sale_by_agent_monthy_cash/';
+const url_monthly2 = '/system_core_1/get_sale_by_agent_monthly/Cash/';
 const loader_monthly2 = '.agent_sales_cash_chart_loader';
 
 updateSalesByAgentChart(url_monthly, dest_monthly,

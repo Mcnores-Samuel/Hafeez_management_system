@@ -79,6 +79,16 @@ class MainStorageAnalysis:
                     sold=True, in_stock=False, sales_type=sales_type,
                     missing=False, pending=False, assigned=True,
                     recieved=True, issue=False, faulty=False).count()
+        branch = UserProfile.objects.filter(groups__name='branches')
+        for agent in branch:
+            sales_by_agent[str(agent.user.username).lower().capitalize()] = MainStorage.objects.filter(
+                    agent=agent.user,
+                    stock_out_date__month=current_month,
+                    stock_out_date__year=current_year,
+                    sold=True, in_stock=False, sales_type=sales_type,
+                    missing=False, pending=False, assigned=True,
+                    recieved=True, issue=False, faulty=False).count()
+        sales_by_agent['Branch'] = branch
         sales_by_agent['Total'] = total_sales.count()
         sales_by_agent = sorted(sales_by_agent.items(), key=lambda x: x[1], reverse=True)
         return sales_by_agent
