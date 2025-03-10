@@ -12,18 +12,26 @@ class MainStorageAnalysis:
     def __init__(self, *args, **kwargs):
         pass
 
-    def get_daily_sales(self, sales_type, day=timezone.now().date()):
+    def get_daily_sales(self, sales_type, agent=None, day=timezone.now().date()):
         """Returns a dictionary containing the daily sales data."""
-        data_set = MainStorage.objects.filter(
-            stock_out_date=day,
-            sold=True, in_stock=False,
-            sales_type=sales_type)
+        data_set = None
+        if agent:
+            data_set = MainStorage.objects.filter(
+                agent=agent,
+                stock_out_date=day,
+                sold=True, in_stock=False,
+                sales_type=sales_type)
+        else:
+            data_set = MainStorage.objects.filter(
+                stock_out_date=day,
+                sold=True, in_stock=False,
+                sales_type=sales_type)
         sales = {}
         for data in data_set:
             sales[data.phone_type] = sales.get(data.phone_type, 0) + 1
         return sales
     
-    def get_weekly_sales(self, sales_type):
+    def get_weekly_sales(self, sales_type, agent=None):
         """Returns a dictionary containing the weekly sales data."""
         current_week = timezone.now().date()
         week_days = ['Monday', 'Tuesday', 'Wednesday',
@@ -33,11 +41,18 @@ class MainStorageAnalysis:
         monday = current_week - timezone.timedelta(
             days=current_week.weekday())
         sunday = monday + timezone.timedelta(days=6)
-
-        data_set = MainStorage.objects.filter(
-            stock_out_date__range=[monday, sunday],
-            sold=True, in_stock=False,
-            sales_type=sales_type)
+        data_set = None
+        if agent:
+            data_set = MainStorage.objects.filter(
+                agent=agent,
+                stock_out_date__range=[monday, sunday],
+                sold=True, in_stock=False,
+                sales_type=sales_type)
+        else:
+            data_set = MainStorage.objects.filter(
+                stock_out_date__range=[monday, sunday],
+                sold=True, in_stock=False,
+                sales_type=sales_type)
         for data in data_set:
             item = {'type': data.phone_type}
             days[week_days[data.stock_out_date.weekday()]].append(item)
@@ -150,7 +165,7 @@ class MainStorageAnalysis:
                 sold=False, missing=False, pending=False, faulty=False, recieved=True, available=True,
                 issue=False).count()
         else:
-            stock = MainStorage.objects.filter( agent__groups__name='agents', in_stock=True, assigned=True,
+            stock = MainStorage.objects.filter( agent__groups__name__in=['agents', 'branches'], in_stock=True, assigned=True,
                     sold=False, missing=False, pending=False, faulty=False, recieved=True, available=True,
                     issue=False).count()
 
@@ -167,7 +182,7 @@ class MainStorageAnalysis:
                 sold=True, missing=False, pending=False, faulty=False, stock_out_date__month=month,
                 stock_out_date__year=year).count()
         else:
-            sales = MainStorage.objects.filter(agent__groups__name='agents', in_stock=False, assigned=True,
+            sales = MainStorage.objects.filter(agent__groups__name__in=['agents', 'branches'], in_stock=False, assigned=True,
                     sold=True, missing=False, pending=False, faulty=False, stock_out_date__month=month,
                     stock_out_date__year=year).count()
         return sales

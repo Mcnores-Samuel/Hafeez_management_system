@@ -16,8 +16,9 @@ def stockQuery(request):
         # Get all devices in stock and assigned to agents in one query
         one_hr_ago = timezone.now() - timezone.timedelta(hours=1)
         devices = MainStorage.objects.filter(
-            in_stock=True,
-            agent__groups__name='agents'
+            in_stock=True, available=True,
+            sold=False, missing=False, pending=False,
+            agent__groups__name__in=['agents', 'branches']
             ).values_list('device_imei', flat=True)
         devices = reversed(devices)
         return JsonResponse({'data': list(devices)}, status=200)

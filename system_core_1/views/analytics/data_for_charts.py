@@ -12,7 +12,11 @@ from ...data_query_engine.agents_queries.agents_data_query import AgentsDataQuer
 def get_daily_sales_json_loan(request):
     """Returns a JSON object containing the daily sales data."""
     if request.method == 'GET':
-        sales = MainStorageAnalysis().get_daily_sales('Loan')
+        sales = None
+        if request.user.groups.filter(name='branches').exists():
+            sales = MainStorageAnalysis().get_daily_sales('Loan', agent=request.user)
+        else:
+            sales = MainStorageAnalysis().get_daily_sales('Loan')
         return JsonResponse(sales)
     return JsonResponse({'error': 'Invalid request.'})
 

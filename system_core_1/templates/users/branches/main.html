@@ -145,7 +145,7 @@
                                 <span class="material-icons">
                                     inventory
                                 </span>
-                                <span class="text"> Stock</span>
+                                <span class="text">Available Stock</span>
                                 </a>
                             </li>
                             <li class="nav-item">
@@ -318,8 +318,8 @@
                         <div class="card card-bg text-light">
                             <div class="card-body">
                                 <p class="card-text"><strong class="text-info preview">Overall Stock</strong> <span class="preview" id="overall_stock_analysis">0</span></p>
-                                <p class="card-text"><strong class="text-info preview">Estimated Cost</strong> <span class="preview" id="estimated-cost">0</span></p>
-                                <p class="card-text"><strong class="text-info preview">Estimated Revenue</strong> <span class="preview" id="estimated-revenue">0</span></p>
+                                <p class="card-text"><strong class="text-info preview">Stock Cost</strong> <span class="preview" id="estimated-cost">0</span></p>
+                                <p class="card-text"><strong class="text-info preview">Revenue</strong> <span class="preview" id="estimated-revenue">0</span></p>
                             </div>
                         </div>
                     </div>
@@ -327,17 +327,17 @@
                         <div class="card card-bg text-light">
                             <div class="card-body">
                                 <p class="card-text"><strong class="text-info preview">Overall Sales</strong> <span class="preview" id="overall_sales_analysis">0</span></p>
-                                <p class="card-text"><strong class="text-success preview">Estimated Profit</strong> <span class="preview" id="estimated-profit">0</span></p>
-                                <p class="card-text"><strong class="text-warning preview">Estimated Expenses</strong> <span class="preview" id="estimated-expenses">0</span></p>
+                                <p class="card-text"><strong class="text-success preview">Profit</strong> <span class="preview" id="estimated-profit">0</span></p>
+                                <p class="card-text"><strong class="text-warning preview">Expenses</strong> <span class="preview" id="estimated-expenses">0</span></p>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-3 col-12">
                         <div class="card card-bg text-light">
                             <div class="card-body">
-                                <p class="card-text"><strong class="text-info preview">Main Shop Stock</strong> <span class="preview" id="main_shop_stock_analysis">0</span></p>
-                                <p class="card-text"><strong class="text-info preview">Main Shop Sales</strong> <span class="preview" id="main_shop_sales_analysis">0</span></p>
-                                <p class="card-text"><strong class="text-danger preview">Estimated Loss</strong> <span class="preview text-danger" id="estimated-loss">
+                                <p class="card-text"><strong class="text-info preview">Shop Stock</strong> <span class="preview" id="main_shop_stock_analysis">0</span></p>
+                                <p class="card-text"><strong class="text-info preview">Shop Sales</strong> <span class="preview" id="main_shop_sales_analysis">0</span></p>
+                                <p class="card-text"><strong class="text-danger preview">Loss</strong> <span class="preview text-danger" id="estimated-loss">
                                     0
                                     <span class="material-icons text-danger" style="font-size: 12px">arrow_downward</span>
                                 </span></p>
@@ -348,7 +348,7 @@
                         <div class="card card-bg text-light">
                             <div class="card-body">
                                 <div class="">
-                                    <p class="fw-bold">Main shop target</p>
+                                    <p class="fw-bold">Shop target</p>
                                     <div class="">
                                         <div class="text-end fw-bold"></div>
                                         <div class="progress">
@@ -446,38 +446,11 @@
                     <div class="col-md-6 col-12">
                         <div class="card bg-light">
                             <div class="card-header text-center">
-                                <h4 class="fw-bold text-muted">Agent Overall Stock</h4>
-                            </div>
-                            <div class="card-body">
-                                <div class="loading-message-stock"></div>
-                                <canvas class="all_agents_stock_chart" width="400" height="400"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-12">
-                        <div class="card bg-light">
-                            <div class="card-header text-center">
-                                <h4 class="fw-bold text-muted">Main Shop Stock</h4>
+                                <h4 class="fw-bold text-muted">Available Stock</h4>
                             </div>
                             <div class="card-body">
                                 <div class="loading-message-shop"></div>
-                                <canvas class="main_stock_chart" width="400" height="400"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <br>
-            <section class="yearly_analysis">
-                <div class="row gy-3">
-                    <div class="col-md-6 col-12">
-                        <div class="card bg-light">
-                            <div class="card-header text-center">
-                                <h4 class="fw-bold text-muted">Main Shop Yearly Sales</h4>
-                            </div>
-                            <div class="card-body">
-                                <div class="yearly_sales_chart_loader"></div>
-                                <canvas class="yearly_sales_chart" width="400" height="400"></canvas>
+                                <canvas class="main_stock_chart" width="400" height="300"></canvas>
                             </div>
                         </div>
                     </div>
@@ -488,7 +461,7 @@
                             </div>
                             <div class="card-body">
                                 <div class="yearly_sales_chart_loader_total"></div>
-                                <canvas class="yearly_sales_chart_total" width="400" height="400"></canvas>
+                                <canvas class="yearly_sales_chart_total" width="400" height="300"></canvas>
                             </div>
                         </div>
                     </div>
