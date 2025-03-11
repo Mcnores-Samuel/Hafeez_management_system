@@ -114,7 +114,12 @@ def get_individual_agent_stock_out(request):
 def get_yearly_sales(request):
     """Returns a JSON object containing the yearly sales data."""
     if request.method == 'GET':
-        sales = MainStorageAnalysis().get_sales_for_all_months(request.user)
+        sales = None
+        if request.user.is_superuser:
+            agent = UserProfile.objects.filter(groups__name='main_shop').first()
+            sales = MainStorageAnalysis().get_sales_for_all_months(agent=agent)
+        else:
+            sales = MainStorageAnalysis().get_sales_for_all_months(request.user)
         return JsonResponse(sales, safe=False)
     return JsonResponse({'error': 'Invalid request.'})
 
@@ -123,7 +128,11 @@ def get_yearly_sales(request):
 def get_yearly_sales_total(request):
     """Returns the total yearly sales."""
     if request.method == 'GET':
-        sales = MainStorageAnalysis().get_sales_for_all_months(request.user)
+        sales = None
+        if request.user.is_superuser:
+            sales = MainStorageAnalysis().get_sales_for_all_months()
+        else:
+            sales = MainStorageAnalysis().get_sales_for_all_months(request.user)
         return JsonResponse(sales, safe=False)
     return JsonResponse({'error': 'Invalid request.'})
 

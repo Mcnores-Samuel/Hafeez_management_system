@@ -125,7 +125,7 @@ class MainStorageAnalysis:
         stock = sorted(stock.items(), key=lambda x: x[1], reverse=True)
         return stock
     
-    def get_sales_for_all_months(self, agent):
+    def get_sales_for_all_months(self, agent=None):
         """Returns a dictionary containing the agent's sales for all months."""
         months = ['January', 'February', 'March', 'April', 'May',
                   'June', 'July', 'August', 'September', 'October',

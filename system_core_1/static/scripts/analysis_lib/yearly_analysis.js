@@ -281,32 +281,4 @@ function yearlySalesAnalysisProduct(url, dest, chartType, loader) {
   fetchAndUpdateDailyData();
 }
 
-const urlYearly = '/system_core_1/get_yearly_sales/';
-const destYearly = '.yearly_sales_chart';
-const chartTypeYearly = 'bar';
-const loaderYearly = '.yearly_sales_chart_loader';
-
-yearlySalesAnalysis(
-  urlYearly, destYearly,
-  chartTypeYearly, loaderYearly,
-);
-
-const productAnalysis = '/system_core_1/get_yearly_product_sales/';
-const productDest = '.yearly_product_sales_chart';
-const productLoader = '.yearly_product_sales_chart_loader';
-const chartTypeProduct = 'bar';
-
-yearlySalesAnalysis(
-  urlYearlyOther, destYearlyOther,
-  chartTypeYearlyOther, loaderYearlyOther,
-);
-
-const urlYearlyOther = '/system_core_1/get_yearly_sales_total/';
-const destYearlyOther = '.yearly_sales_chart_total';
-const chartTypeYearlyOther = 'bar';
-const loaderYearlyOther = '.yearly_sales_chart_loader_total';
-
-yearlySalesAnalysisProduct(
-  productAnalysis, productDest,
-  chartTypeProduct, productLoader,
-);
+export { yearlySalesAnalysis, yearlySalesAnalysisProduct };
