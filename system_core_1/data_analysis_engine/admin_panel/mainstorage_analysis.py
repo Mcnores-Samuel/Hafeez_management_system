@@ -59,38 +59,41 @@ class MainStorageAnalysis:
             item = {}
         return days
     
-    def get_monthly_sales_by_agents(self, sales_type):
+    def get_monthly_sales_by_agents(self, sales_type, agent=None):
         """Returns a dictionary containing the monthly sales data."""
-        agents = AgentProfile.objects.all().order_by('user__username')
+        agents = None
         sales_by_agent = {}
         current_month = timezone.now().date().month
         current_year = timezone.now().date().year
-        total_sales = MainStorage.objects.filter(
-            stock_out_date__month=current_month,
-            stock_out_date__year=current_year,
-            sold=True, in_stock=False, sales_type=sales_type,
-            missing=False, pending=False, assigned=True,
-            recieved=True, issue=False, faulty=False)
-        for agent in agents:
-            sales_by_agent[str(agent.user.username).lower().capitalize()] = MainStorage.objects.filter(
-                    agent=agent.user,
-                    stock_out_date__month=current_month,
-                    stock_out_date__year=current_year,
-                    sold=True, in_stock=False, sales_type=sales_type,
-                    missing=False, pending=False, assigned=True,
-                    recieved=True, issue=False, faulty=False).count()
-        branch = UserProfile.objects.filter(groups__name='branches')
-        for agent in branch:
-            sales_by_agent[str(agent.user.username).lower().capitalize()] = MainStorage.objects.filter(
-                    agent=agent.user,
-                    stock_out_date__month=current_month,
-                    stock_out_date__year=current_year,
-                    sold=True, in_stock=False, sales_type=sales_type,
-                    missing=False, pending=False, assigned=True,
-                    recieved=True, issue=False, faulty=False).count()
-        sales_by_agent['Branch'] = branch
-        sales_by_agent['Total'] = total_sales.count()
-        sales_by_agent = sorted(sales_by_agent.items(), key=lambda x: x[1], reverse=True)
+        if agent:
+            sales = MainStorage.objects.filter(
+                agent=agent, stock_out_date__month=current_month,
+                stock_out_date__year=current_year,
+                sold=True, in_stock=False, sales_type=sales_type,
+                missing=False, pending=False, assigned=True,
+                recieved=True, issue=False, faulty=False)
+            for sale in sales:
+                sales_by_agent[sale.name] = sales_by_agent.get(sale.name, 0) + 1
+            sales_by_agent['Total'] = sales.count()
+            sales_by_agent = sorted(sales_by_agent.items(), key=lambda x: x[1], reverse=True)
+        else:
+            agents = UserProfile.objects.filter(groups__name__in=['agents', 'branches'])
+            total_sales = MainStorage.objects.filter(
+                stock_out_date__month=current_month,
+                stock_out_date__year=current_year,
+                sold=True, in_stock=False, sales_type=sales_type,
+                missing=False, pending=False, assigned=True,
+                recieved=True, issue=False, faulty=False)
+            for agent in agents:
+                sales_by_agent[str(agent.username).lower().capitalize()] = MainStorage.objects.filter(
+                        agent=agent,
+                        stock_out_date__month=current_month,
+                        stock_out_date__year=current_year,
+                        sold=True, in_stock=False, sales_type=sales_type,
+                        missing=False, pending=False, assigned=True,
+                        recieved=True, issue=False, faulty=False).count()
+            sales_by_agent['Total'] = total_sales.count()
+            sales_by_agent = sorted(sales_by_agent.items(), key=lambda x: x[1], reverse=True)
         return sales_by_agent
     
     def get_agent_stock_in(self, agent):
@@ -127,44 +130,27 @@ class MainStorageAnalysis:
         months = ['January', 'February', 'March', 'April', 'May',
                   'June', 'July', 'August', 'September', 'October',
                   'November', 'December']
-        if agent.groups.filter(name='agents').exists():
-            agent_profile = AgentProfile.objects.get(user=agent)
-            if agent_profile:
-                year = timezone.now().date().year
-                sales = {}
-                for month in months:
-                    sales[month] = MainStorage.objects.filter(
-                        agent=agent, in_stock=False,
-                        assigned=True,
-                        sold=True,
-                        stock_out_date__month=months.index(month)+1,
-                        stock_out_date__year=year,
-                        pending=False, issue=False,
-                        recieved=True, faulty=False).count()
-                overall = 0 #placeholder
-                return sales, overall
-        elif (agent.groups.filter(name='staff_members').exists() or
-              agent.is_superuser):
-            sales = {}
-            overall_sales = {}
-            main_shop_staff = Group.objects.get(name='main_shop')
-            representatives = UserProfile.objects.filter(groups=main_shop_staff)
+        sales = {}
+        year = timezone.now().date().year
+        if agent:
             for month in months:
-                total = MainStorage.objects.filter(
-                    agent__in=representatives, in_stock=False,
-                    assigned=True, sold=True, missing=False,
-                    pending=False, stock_out_date__month=months.index(month)+1,
-                    stock_out_date__year=timezone.now().date().year,
-                    issue=False, recieved=True, faulty=False).count()
+                sales[month] = MainStorage.objects.filter(
+                    agent=agent, in_stock=False,
+                    assigned=True, sold=True,
+                    stock_out_date__month=months.index(month)+1,
+                    stock_out_date__year=year,
+                    pending=False, issue=False,
+                    recieved=True, faulty=False).count()
+        else:
+            for month in months:
                 main = MainStorage.objects.filter(in_stock=False,
                     assigned=True, sold=True, missing=False,
                     pending=False, stock_out_date__month=months.index(month)+1,
                     stock_out_date__year=timezone.now().date().year,
                     issue=False, recieved=True, faulty=False).count()
-                sales[month] = total
-                overall_sales[month] = main
-            return sales, overall_sales
-        return None
+                sales[month] = main
+        return sales
+
     
     def overall_stock(self, agent=None):
         """This function returns a JSON object containing

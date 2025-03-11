@@ -13,6 +13,7 @@ function agent_stock_chart_details() {
     const modelList = [];
     const total = [];
     const colors = [];
+    let tota_sales = 0
 
     $.ajax({
       url: '/system_core_1/get_individual_agent_stock/',
@@ -29,6 +30,7 @@ function agent_stock_chart_details() {
         $.each(data, (model, value) => {
           modelList.push(model);
           total.push(value);
+          tota_sales += value;
         });
 
         for (let i = 0; i < modelList.length; i++) {
@@ -65,7 +67,7 @@ function agent_stock_chart_details() {
               plugins: {
                 title: {
                   display: true,
-                  text: 'Stock Analysis',
+                  text: `Stock Analysis: total ${tota_sales}`,
                   color: 'navy',
                   position: 'bottom',
                   align: 'center',
@@ -118,7 +120,7 @@ function updateDailyChart(url, dest, chartType, loader) {
   function fetchAndUpdateDailyData() {
     const modelList = [];
     const total = [];
-    let overallTotal = 0;
+
 
     $.ajax({
       url,
@@ -135,7 +137,6 @@ function updateDailyChart(url, dest, chartType, loader) {
         $.each(data, (model, value) => {
           modelList.push(model);
           total.push(value);
-          overallTotal += value;
         });
 
         if (dailySalesChart === null) {
