@@ -6,6 +6,7 @@ from .views.defects import defects
 from .views.agents import agents_data_access
 from .views.system_routine_updates import (morning_update, afternoon_update, evening_update)
 from .views.accounts_and_data import dataAccess, sales_stock_summry, dailySalesByShop
+from system_core_1.views.faq import faq
 from system_core_1.views.airtel_devices.urls import urlpatterns as airtel_devices_urls
 from system_core_1.views.accounting.urls import urlpatterns as accounting_urls
 from system_core_1.views.ex_rate_pricing.admin_views.urls import urlpatterns as ex_rate_pricing_urls
@@ -36,6 +37,7 @@ urlpatterns += [
     path('pending_sales_details/<str:username>/', pending_sales_details, name='pending_sales_details'),
     path('defects/', defects, name='defects'),
     # General access points
+    path('faq/', faq, name='faq'),
     path('profile/', data_updates.profile, name='profile'),
     path('data_search/', search_and_filters.data_search, name='data_search'),
     path('verify_stock_recieved/', data_updates.verify_stock_recieved, name='verify_stock_recieved'),

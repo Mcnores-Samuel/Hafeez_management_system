@@ -1,0 +1,233 @@
+{% extends 'users/branches/main.html' %}
+{% load plus_r %}
+{% load static %}
+{% load django_bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% block content %}
+<style>
+    .faq-card {
+        cursor: pointer;
+        transition: transform 0.3s ease;
+    }
+
+    .faq-card:hover {
+        transform: scale(1.05);
+    }
+
+    .faq-container {
+        max-width: 1200px;
+        margin: auto;
+    }
+</style>
+<div class="container">
+    {% bootstrap_messages %}
+    <h2 class="text-center mb-4">Frequently Asked Questions</h2>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 faq-container">
+
+        <!-- Card 1 -->
+        <div class="col">
+            <div class="card faq-card" data-bs-toggle="modal" data-bs-target="#addStockModal">
+                <div class="card-body text-center">
+                    <h5 class="card-title">How to Add Stock</h5>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="col">
+            <div class="card faq-card" data-bs-toggle="modal" data-bs-target="#registerSalesModal">
+                <div class="card-body text-center">
+                    <h5 class="card-title">How to Register Sales</h5>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="col">
+            <div class="card faq-card" data-bs-toggle="modal" data-bs-target="#stockTakingModal">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Stock Taking</h5>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="col">
+            <div class="card faq-card" data-bs-toggle="modal" data-bs-target="#shareStockModal">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Distribute Stock</h5>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="col">
+            <div class="card faq-card" data-bs-toggle="modal" data-bs-target="#bulkSalesModal">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Make Multiple Sales</h5>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 6 -->
+        <div class="col">
+            <div class="card faq-card" data-bs-toggle="modal" data-bs-target="#viewStockModal">
+                <div class="card-body text-center">
+                    <h5 class="card-title">View Available Stock</h5>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 7 -->
+        <div class="col">
+            <div class="card faq-card" data-bs-toggle="modal" data-bs-target="#viewSalesModal">
+                <div class="card-body text-center">
+                    <h5 class="card-title">View Sales</h5>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Modals -->
+<!-- Add Stock Modal -->
+<div class="modal fade" id="addStockModal" tabindex="-1" aria-labelledby="addStockLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addStockLabel">How to Add Stock</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <ul>
+                    <li><strong>Smartphones (with IMEI):</strong>  Scan up to 30 IMEI numbers of the same model at once. Enter the cost per model, model name (as suggested), and supplier details before submitting.</li>
+                    <li><strong>Accessories:</strong>  Enter the accessory name, model (from the package description), cost per item, and total quantity.</li>
+                    <li><strong>Refurbished Devices:</strong> Enter the device name, model, cost, and total quantity—same process as accessories.</li>
+                    <li><strong>Appliances:</strong> Follow the same process as accessories.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Register Sales Modal -->
+<div class="modal fade" id="registerSalesModal" tabindex="-1" aria-labelledby="registerSalesLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="registerSalesLabel">How to Register Sales</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Sales on Yellow are automatically recorded, but cash sales must be done manually.</p>
+                <ul>
+                    <li><strong>Yellow (Loan-Based) Sales:</strong> These are automatically tracked by the system.</li>
+                    <li><strong>Cash Sales:</strong> Must be manually recorded by the sales rep.
+                        <ul>
+                            <li>Scan or search for the IMEI number.</li>
+                            <li>If found, click the "Sale on Cash" or "Deploy" button and follow the instructions.</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Stock Taking Modal -->
+<div class="modal fade" id="stockTakingModal" tabindex="-1" aria-labelledby="stockTakingLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="stockTakingLabel">How to Conduct Stock Taking</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Go to <strong>Deploy Stock > Stock Taking</strong>, scan all available stock IMEIs, and submit.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Share Stock Modal -->
+<div class="modal fade" id="shareStockModal" tabindex="-1" aria-labelledby="shareStockLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="shareStockLabel">How to Distribute Stock</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <ul>
+                    <li>Go to Deploy Stock and scan the IMEI numbers of the devices to be transferred.</li>
+                    <li>Select the receiving shop.</li>
+                    <li>Choose the deployment date and confirm the transfer.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bulk Sales Modal -->
+<div class="modal fade" id="bulkSalesModal" tabindex="-1" aria-labelledby="bulkSalesLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="bulkSalesLabel">How to Make Multiple Sales</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <ul>
+                    <li>Navigate to Deploy Stock > Sales.</li>
+                    <li>Enter the IMEI numbers of the devices to be sold.</li>
+                    <li>Choose the sales type (cash or loan).</li>
+                    <li>Enter the sales date and confirm the sale.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- View Stock Modal -->
+<div class="modal fade" id="viewStockModal" tabindex="-1" aria-labelledby="viewStockLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="viewStockLabel">How to View Available Stock</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <ul>
+                    <li>Navigate to Available Stock or My Stock.</li>
+                    <li>View stock analysis or a detailed list of available inventory.</li>
+                    <li>Use the search bar to find specific items.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- View Sales Modal -->
+<div class="modal fade" id="viewSalesModal" tabindex="-1" aria-labelledby="viewSalesLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="viewSalesLabel">How to View Sales</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <ul>
+                    <li>Navigate to the Sales section. The system displays the current month’s sales by default.</li>
+                    <li>View a summary of all sales, including cash and loan-based sales.</li>
+                    <li>Use the search bar to find specific sales.</li>
+                    <li>Adjust the input fields to view sales from other months.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>
+{% endblock %}

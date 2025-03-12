@@ -65,29 +65,28 @@ class AgentsDataQuery:
 
     def search(self, user, search_term, request, status, sold):
         """Returns a list of devices matching the search term."""
-        if user.groups.filter(name='agents').exists():
-            agent_profile = AgentProfile.objects.get(user=user)
-            if agent_profile:
-                queryset = MainStorage.objects.filter(
-                    Q(device_imei__icontains=search_term) |
-                    Q(device_imei_2__icontains=search_term) |
-                    Q(name__icontains=search_term) |
-                    Q(phone_type__icontains=search_term) |
-                    Q(contract_no__icontains=search_term) |
-                    Q(category__icontains=search_term) |
-                    Q(sales_type__icontains=search_term)
-                ).filter(agent=user, in_stock=status,
-                         assigned=True, missing=False, sold=sold).all().order_by('-entry_date')
-                paginator = Paginator(queryset, 12)
-                page_number = request.GET.get('page')
+        if user.is_authenticated:
+            queryset = MainStorage.objects.filter(
+                Q(device_imei__icontains=search_term) |
+                Q(device_imei_2__icontains=search_term) |
+                Q(name__icontains=search_term) |
+                Q(phone_type__icontains=search_term) |
+                Q(contract_no__icontains=search_term) |
+                Q(category__icontains=search_term) |
+                Q(sales_type__icontains=search_term)
+            ).filter(agent=user, in_stock=status,
+                    assigned=True, missing=False, sold=sold).all().order_by('-entry_date')
+            total = queryset.count()
+            paginator = Paginator(queryset, 12)
+            page_number = request.GET.get('page')
 
-                try:
-                    paginated_queryset = paginator.page(page_number)
-                except PageNotAnInteger:
-                    paginated_queryset = paginator.page(1)
-                except EmptyPage:
-                    paginated_queryset = paginator.page(paginator.num_pages)
-                return paginated_queryset
+            try:
+                paginated_queryset = paginator.page(page_number)
+            except PageNotAnInteger:
+                paginated_queryset = paginator.page(1)
+            except EmptyPage:
+                paginated_queryset = paginator.page(paginator.num_pages)
+            return paginated_queryset, total
         return None
     
     def search_stock_out(self, user, search_term, request):
@@ -102,30 +101,29 @@ class AgentsDataQuery:
         Returns:
             QuerySet: A queryset containing the search results.
         """
-        if user.groups.filter(name='agents').exists():
-            agent_profile = AgentProfile.objects.get(user=user)
-            if agent_profile:
-                queryset = MainStorage.objects.filter(
-                    Q(device_imei__icontains=search_term) |
-                    Q(device_imei_2__icontains=search_term) |
-                    Q(name__icontains=search_term) |
-                    Q(phone_type__icontains=search_term) |
-                    Q(contract_no__icontains=search_term) |
-                    Q(category__icontains=search_term) |
-                    Q(sales_type__icontains=search_term)
-                ).filter(agent=user, in_stock=False,
-                         assigned=True, missing=False,
-                         sold=True).all().order_by('-stock_out_date')
-                paginator = Paginator(queryset, 12)
-                page_number = request.GET.get('page')
+        if user.is_authenticated:
+            queryset = MainStorage.objects.filter(
+                Q(device_imei__icontains=search_term) |
+                Q(device_imei_2__icontains=search_term) |
+                Q(name__icontains=search_term) |
+                Q(phone_type__icontains=search_term) |
+                Q(contract_no__icontains=search_term) |
+                Q(category__icontains=search_term) |
+                Q(sales_type__icontains=search_term)
+            ).filter(agent=user, in_stock=False,
+                        assigned=True, missing=False,
+                        sold=True).all().order_by('-stock_out_date')
+            total = queryset.count()
+            paginator = Paginator(queryset, 12)
+            page_number = request.GET.get('page')
 
-                try:
-                    paginated_queryset = paginator.page(page_number)
-                except PageNotAnInteger:
-                    paginated_queryset = paginator.page(1)
-                except EmptyPage:
-                    paginated_queryset = paginator.page(paginator.num_pages)
-                return paginated_queryset
+            try:
+                paginated_queryset = paginator.page(page_number)
+            except PageNotAnInteger:
+                paginated_queryset = paginator.page(1)
+            except EmptyPage:
+                paginated_queryset = paginator.page(paginator.num_pages)
+            return paginated_queryset, total
         return None
 
                 

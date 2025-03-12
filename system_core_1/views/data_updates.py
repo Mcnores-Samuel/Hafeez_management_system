@@ -239,7 +239,7 @@ def stock_out(request):
             year = form.cleaned_data.get('year', None)
             stock_out, total = AgentsDataQuery().stock(user, False, request, month, year)
         elif search_term:
-            stock_out = AgentsDataQuery().search_stock_out(
+            stock_out, total = AgentsDataQuery().search_stock_out(
                 user, search_term, request)
     context = {
         'sales': stock_out,
