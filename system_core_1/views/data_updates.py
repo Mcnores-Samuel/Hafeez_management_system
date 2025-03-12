@@ -10,6 +10,7 @@ from django.http import JsonResponse
 from ..models.user_profile import UserAvatar
 from ..data_query_engine.agents_queries.agents_data_query import AgentsDataQuery
 from ..forms.filters import FilterAgentAndDataStockOut
+from django.utils import timezone
 
 
 @login_required
@@ -197,15 +198,19 @@ def in_stock(request):
         HttpResponse: The response object.
     """
     context = None
+    total = 0
     user = request.user
-    stock_in = AgentsDataQuery().stock(user, True, request)
+    stock_in, total = AgentsDataQuery().stock(user=user, status=True, request=request)
     if request.method == 'POST':
-        stock_in = AgentsDataQuery().search(
+        stock_in, total = AgentsDataQuery().search(
             user, request.POST.get('search_term', None),
             request, status=True, sold=False)
+        
     context = {
-        'stock_in': stock_in
+        'stock_in': stock_in, 'total': total
     }
+    if request.user.groups.filter(name='branches').exists():
+        return render(request, 'users/branches/stock.html', context)
     return render(request, 'users/agent_sites/in_stock.html', context)
 
 
@@ -221,21 +226,18 @@ def stock_out(request):
     """
     context = None
     user = request.user
-    stock_out = AgentsDataQuery().stock(user, False, request)
-    form = FilterAgentAndDataStockOut()
-    total = stock_out.count()
+    total = 0
+    month = request.GET.get('month', timezone.now().date().month)
+    year = request.GET.get('year', timezone.now().date().year)
+    stock_out, total = AgentsDataQuery().stock(user, False, request, month=month, year=year)
+    form = FilterAgentAndDataStockOut(initial={'month': month, 'year': year})
     if request.method == 'POST':
         form = FilterAgentAndDataStockOut(request.POST)
         search_term = request.POST.get('search_term', None)
         if form.is_valid():
             month = form.cleaned_data.get('month', None)
             year = form.cleaned_data.get('year', None)
-
-            stock_out = MainStorage.objects.filter(
-                agent=user, stock_out_date__month=month, stock_out_date__year=year,
-                in_stock=False, sold=True, missing=False, assigned=True,
-                pending=False).all().order_by('-stock_out_date')
-            total = stock_out.count()
+            stock_out, total = AgentsDataQuery().stock(user, False, request, month, year)
         elif search_term:
             stock_out = AgentsDataQuery().search_stock_out(
                 user, search_term, request)
@@ -244,6 +246,8 @@ def stock_out(request):
         'form': form,
         'total': total
     }
+    if request.user.groups.filter(name='branches').exists():
+        return render(request, 'users/branches/sales.html', context)
     return render(request, 'users/agent_sites/stock_out.html', context)
 
 

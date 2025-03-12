@@ -31,40 +31,38 @@ class AgentsDataQuery:
                 return sales
         return None
 
-    def stock(self, user, status, request):
+    def stock(self, user, status, request, month=timezone.now().date().month,
+              year=timezone.now().date().year):
         """Returns a list of devices in stock."""
-        if user.groups.filter(name='agents').exists():
-            agent_profile = AgentProfile.objects.get(user=user)
-            if agent_profile and status:
-                stock_in = MainStorage.objects.filter(
-                    agent=user, in_stock=True,
-                    assigned=True, missing=False,
-                    pending=False, issue=False, sold=False,
-                    recieved=True, faulty=False,
-                    paid=False).all().order_by('-entry_date')
-                paginator = Paginator(stock_in, 12)
-                page_number = request.GET.get('page')
-
-                try:
-                    stock_in = paginator.page(page_number)
-                except PageNotAnInteger:
-                    stock_in = paginator.page(1)
-                except EmptyPage:
-                    stock_in = paginator.page(paginator.num_pages)
-                return stock_in
-            elif agent_profile and not status:
-                current_month = timezone.now().date().month
-                current_year = timezone.now().date().year
-                stock_out = MainStorage.objects.filter(
-                    agent=user, in_stock=False,
-                    assigned=True, missing=False,
-                    stock_out_date__month=current_month,
-                    stock_out_date__year=current_year,
-                    pending=False, sold=True, issue=False,
-                    faulty=False).all().order_by('-stock_out_date')
-                return stock_out
-        return None
+        data = None
+        if user and status == True:
+            data = MainStorage.objects.filter(
+                agent=user, in_stock=True,
+                assigned=True, missing=False,
+                pending=False, issue=False, sold=False,
+                recieved=True, faulty=False,
+                paid=False).all().order_by('-entry_date')
+        elif user and status == False:
+            data = MainStorage.objects.filter(
+                agent=user, in_stock=False,
+                assigned=True, missing=False,
+                stock_out_date__month=month,
+                stock_out_date__year=year,
+                pending=False, sold=True, issue=False,
+                faulty=False).all().order_by('-stock_out_date')
             
+        total = data.count()
+        paginator = Paginator(data, 12)
+        page_number = request.GET.get('page')
+
+        try:
+            data = paginator.page(page_number)
+        except PageNotAnInteger:
+            data = paginator.page(1)
+        except EmptyPage:
+            data = paginator.page(paginator.num_pages)
+        return data, total
+
     def search(self, user, search_term, request, status, sold):
         """Returns a list of devices matching the search term."""
         if user.groups.filter(name='agents').exists():
