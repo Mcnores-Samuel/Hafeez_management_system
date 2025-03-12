@@ -23,6 +23,7 @@ def current_year_revenue(request):
 
     if data is None:
         return JsonResponse({'error': 'Invalid request.'})
+    
     total = data.count()
     items_with_both_ps = data.filter(price__gt=0, cost__gt=0)
     t_items_wbps = items_with_both_ps.count()
@@ -118,13 +119,22 @@ def calculateCreditRevenue(request):
             'June', 'July', 'August', 'September', 'October',
             'November', 'December']
         revenue = {}
-        for month in months:
-            items = MainStorage.objects.filter(
-                in_stock=False, sold=True, pending=False, missing=False, cost__gt=0, price__gt=0,
-                assigned=True, sales_type='Loan', stock_out_date__month=months.index(month)+1,
-                stock_out_date__year=timezone.now().year)
-            total = sum([item.price for item in items])
-            revenue[month] = total
+        if request.user.is_superuser:
+            for month in months:
+                items = MainStorage.objects.filter(
+                    in_stock=False, sold=True, pending=False, missing=False, cost__gt=0, price__gt=0,
+                    assigned=True, sales_type='Loan', stock_out_date__month=months.index(month)+1,
+                    stock_out_date__year=timezone.now().year)
+                total = sum([item.price for item in items])
+                revenue[month] = total
+        else:
+            for month in months:
+                items = MainStorage.objects.filter(
+                    in_stock=False, sold=True, pending=False, missing=False, cost__gt=0, price__gt=0,
+                    assigned=True, sales_type='Loan', stock_out_date__month=months.index(month)+1,
+                    stock_out_date__year=timezone.now().year, agent=request.user)
+                total = sum([item.price for item in items])
+                revenue[month] = total
         return JsonResponse(revenue, safe=False)
     return JsonResponse({'error': 'Invalid request.'})
 
@@ -137,13 +147,22 @@ def calculateCashRevenue(request):
             'June', 'July', 'August', 'September', 'October',
             'November', 'December']
         revenue = {}
-        for month in months:
-            items = MainStorage.objects.filter(
-                in_stock=False, sold=True, pending=False, missing=False, cost__gt=0, price__gt=0,
-                assigned=True, sales_type='Cash', stock_out_date__month=months.index(month)+1,
-                stock_out_date__year=timezone.now().year)
-            total = sum([item.price for item in items])
-            revenue[month] = total
+        if request.user.is_superuser:
+            for month in months:
+                items = MainStorage.objects.filter(
+                    in_stock=False, sold=True, pending=False, missing=False, cost__gt=0, price__gt=0,
+                    assigned=True, sales_type='Cash', stock_out_date__month=months.index(month)+1,
+                    stock_out_date__year=timezone.now().year)
+                total = sum([item.price for item in items])
+                revenue[month] = total
+        else:
+            for month in months:
+                items = MainStorage.objects.filter(
+                    in_stock=False, sold=True, pending=False, missing=False, cost__gt=0, price__gt=0,
+                    assigned=True, sales_type='Cash', stock_out_date__month=months.index(month)+1,
+                    stock_out_date__year=timezone.now().year, agent=request.user)
+                total = sum([item.price for item in items])
+                revenue[month] = total
         return JsonResponse(revenue, safe=False)
     return JsonResponse({'error': 'Invalid request.'})
 
@@ -154,12 +173,21 @@ def lastyearBycurrentMonth(request):
     if request.method == 'GET':
         current_month = timezone.now().month
         last_year = timezone.now().year - 1
-        data = MainStorage.objects.filter(
-            in_stock=False, sold=True, missing=False, pending=False, assigned=True,
-            stock_out_date__month__lte=current_month,
-            stock_out_date__year=last_year, price__gt=0,
-            agent__groups__name='agents'
-        )
+        data = None
+        if request.user.is_superuser:
+            data = MainStorage.objects.filter(
+                in_stock=False, sold=True, missing=False, pending=False, assigned=True,
+                stock_out_date__month__lte=current_month,
+                stock_out_date__year=last_year, price__gt=0,
+                agent__groups__name='agents'
+            )
+        else:
+            data = MainStorage.objects.filter(
+                in_stock=False, sold=True, missing=False, pending=False, assigned=True,
+                stock_out_date__month__lte=current_month,
+                stock_out_date__year=last_year, price__gt=0,
+                agent=request.user
+            )
         group_by_month = {}
         for i in range(1, current_month+1):
             items = data.filter(stock_out_date__month=i)
@@ -176,16 +204,30 @@ def revenue_growth(request):
         current_year = timezone.now().year
         last_year = current_year - 1
         current_month = timezone.now().month
-        current_year_data = MainStorage.objects.filter(
-            in_stock=False, sold=True, missing=False, pending=False, assigned=True,
-            stock_out_date__year=current_year, price__gt=0, stock_out_date__month__lte=current_month,
-            agent__groups__name='agents'
-        )
-        last_year_data = MainStorage.objects.filter(
-            in_stock=False, sold=True, missing=False, pending=False, assigned=True,
-            stock_out_date__year=last_year, price__gt=0, stock_out_date__month__lte=current_month,
-            agent__groups__name='agents'
-        )
+        current_year_data = None
+        last_year_data = None
+        if request.user.is_superuser:
+            current_year_data = MainStorage.objects.filter(
+                in_stock=False, sold=True, missing=False, pending=False, assigned=True,
+                stock_out_date__year=current_year, price__gt=0, stock_out_date__month__lte=current_month,
+                agent__groups__name='agents'
+            )
+            last_year_data = MainStorage.objects.filter(
+                in_stock=False, sold=True, missing=False, pending=False, assigned=True,
+                stock_out_date__year=last_year, price__gt=0, stock_out_date__month__lte=current_month,
+                agent__groups__name='agents'
+            )
+        else:
+            current_year_data = MainStorage.objects.filter(
+                in_stock=False, sold=True, missing=False, pending=False, assigned=True,
+                stock_out_date__year=current_year, price__gt=0, stock_out_date__month__lte=current_month,
+                agent=request.user
+            )
+            last_year_data = MainStorage.objects.filter(
+                in_stock=False, sold=True, missing=False, pending=False, assigned=True,
+                stock_out_date__year=last_year, price__gt=0, stock_out_date__month__lte=current_month,
+                agent=request.user
+            )
         current_year_revenue = sum([item.price for item in current_year_data])
         last_year_revenue = sum([item.price for item in last_year_data])
         if last_year_revenue == 0:
