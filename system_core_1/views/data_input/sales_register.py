@@ -54,8 +54,7 @@ def combinedData_collection(request, data_id):
     This view assumes user authentication and validation of agent status have been
     handled in the authentication system and AgentProfile model.
     """
-    if (request.user.is_authenticated and request.user.groups.filter(name='staff_members').exists() 
-        or request.user.is_staff and request.user.is_superuser):
+    if request.user.is_authenticated:
         if request.method == 'POST':
             payment = request.POST.get('payment_method')
             item = MainStorage.objects.get(id=data_id)
