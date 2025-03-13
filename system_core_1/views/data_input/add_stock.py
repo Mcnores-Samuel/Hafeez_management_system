@@ -41,7 +41,7 @@ def add_to_stock(request):
         or request.user.is_staff and request.user.is_superuser
         or request.user.groups.filter(name='branches').exists()):
         user = request.user
-        data = MainStorage.objects.all().aggregate()
+        data = MainStorage.objects.all()
         phone_names = set()
         for phone in data:
             if phone.name is not None:
