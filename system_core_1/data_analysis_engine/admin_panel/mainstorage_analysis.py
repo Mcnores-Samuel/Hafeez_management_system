@@ -3,8 +3,7 @@ from ...models.main_storage import MainStorage
 from ...models.agent_profile import AgentProfile
 from ...models.user_profile import UserProfile
 from django.utils import timezone
-from django.contrib.auth.models import Group
-
+from django.db.models import Count
 
 
 class MainStorageAnalysis:
@@ -128,28 +127,51 @@ class MainStorageAnalysis:
     def get_sales_for_all_months(self, agent=None):
         """Returns a dictionary containing the agent's sales for all months."""
         months = ['January', 'February', 'March', 'April', 'May',
-                  'June', 'July', 'August', 'September', 'October',
-                  'November', 'December']
-        sales = {}
-        year = timezone.now().date().year
+                'June', 'July', 'August', 'September', 'October',
+                'November', 'December']
+        
+        current_year = timezone.now().date().year
+        last_year = current_year - 1
+
+        # Base query filters
+        filters = {
+            "in_stock": False,
+            "assigned": True,
+            "sold": True,
+            "pending": False,
+            "issue": False,
+            "recieved": True,
+            "faulty": False
+        }
+        
         if agent:
-            for month in months:
-                sales[month] = MainStorage.objects.filter(
-                    agent=agent, in_stock=False,
-                    assigned=True, sold=True,
-                    stock_out_date__month=months.index(month)+1,
-                    stock_out_date__year=year,
-                    pending=False, issue=False,
-                    recieved=True, faulty=False).count()
+            filters["agent"] = agent
         else:
-            for month in months:
-                main = MainStorage.objects.filter(in_stock=False,
-                    assigned=True, sold=True, missing=False,
-                    pending=False, stock_out_date__month=months.index(month)+1,
-                    stock_out_date__year=timezone.now().date().year,
-                    issue=False, recieved=True, faulty=False).count()
-                sales[month] = main
-        return sales
+            filters["agent__groups__name__in"] = ['agents', 'branches']
+            filters["missing"] = False
+
+        # Single query to fetch sales for both years
+        sales_data = (
+            MainStorage.objects
+            .filter(**filters, stock_out_date__year__in=[last_year, current_year])
+            .values("stock_out_date__year", "stock_out_date__month")
+            .annotate(sales_count=Count("id"))
+        )
+
+        # Organize data into a dictionary
+        last_year_data = {month: 0 for month in months}
+        this_year_data = {month: 0 for month in months}
+
+        for entry in sales_data:
+            year = entry["stock_out_date__year"]
+            month = entry["stock_out_date__month"]
+            month_name = months[month - 1]  # Convert month number to name
+
+            if year == last_year:
+                last_year_data[month_name] = entry["sales_count"]
+            else:
+                this_year_data[month_name] = entry["sales_count"]
+        return {"current_year": this_year_data, "last_year": last_year_data}
 
     
     def overall_stock(self, agent=None):
@@ -166,7 +188,7 @@ class MainStorageAnalysis:
                     issue=False).count()
 
         return stock
-    
+ 
     def overall_sales(self, agent=None):
         """This function returns a JSON object containing
         the overall sales data.
@@ -182,7 +204,7 @@ class MainStorageAnalysis:
                     sold=True, missing=False, pending=False, faulty=False, stock_out_date__month=month,
                     stock_out_date__year=year).count()
         return sales
-    
+
     def pending_sales(self, request):
         """This function returns a list of all pending sales.
         It also returns the total number of pending sales.

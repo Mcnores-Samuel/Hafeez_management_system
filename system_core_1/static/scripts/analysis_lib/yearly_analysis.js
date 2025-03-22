@@ -1,10 +1,3 @@
-/**
- * Yearly Sales Analysis - Fetches data from the server and renders a chart
- * @param {*} url - The url to fetch data from
- * @param {*} dest - The destination to render the chart
- * @param {*} chartType - The type of chart to render
- * @param {*} loader - The loader to show when fetching data
- */
 function yearlySalesAnalysis(url, dest, chartType, loader) {
   let salesAnalystChart = null;
   let yearlyAnalysisctx = null;
@@ -13,64 +6,47 @@ function yearlySalesAnalysis(url, dest, chartType, loader) {
     yearlyAnalysisctx = $(dest).get(0).getContext('2d');
   }
 
-  const date = new Date();
-
-  function fetchAndUpdateDailyData() {
-    const modelList = [];
-    const total = [];
-
+  function fetchAndUpdateData() {
     $.ajax({
       url,
       method: 'GET',
       contentType: 'application/json',
       beforeSend() {
-        const load = $(loader);
-        load.addClass('loading-message');
+        $(loader).addClass('loading-message');
       },
       success(data) {
-        const load = $(loader);
-        load.removeClass('loading-message');
+        $(loader).removeClass('loading-message');
 
-        $.each(data, (key, value) => {
-          modelList.push(key);
-          total.push(value);
-        });
+        const months = Object.keys(data.current_year);
+        const currentYearSales = Object.values(data.current_year);
+        const lastYearSales = Object.values(data.last_year);
 
         if (salesAnalystChart === null) {
           salesAnalystChart = new Chart(yearlyAnalysisctx, {
             type: chartType,
             data: {
-              labels: modelList,
-              datasets: [{
-                label: date.toDateString(),
-                data: total,
-                backgroundColor: '#4285F4',
-              },
-              {
-                label: 'Total Sales',
-                data: total,
-                backgroundColor: '#0F9D58',
-                borderColor: '#0F9D58',
-                borderWidth: 2,
-                type: 'line',
-                fill: false,
-                yAxisID: 'y',
-                order: 1,
-                tension: 0.4,
-                pointRadius: 5,
-                pointHoverRadius: 7,
-                pointBackgroundColor: '#0F9D58',
-                pointBorderColor: '#0F9D58',
-                pointHoverBackgroundColor: '#0F9D58',
-                pointHoverBorderColor: '#0F9D58',
-                pointBorderWidth: 2,
-                pointHoverBorderWidth: 3,
-                hitRadius: 10,
-                hoverRadius: 10,
-                hoverBorderWidth: 3,
-                hoverBackgroundColor: '#0F9D58',
-                hoverBorderColor: '#0F9D58',
-              },
+              labels: months,
+              datasets: [
+                {
+                  label: 'Current Year Sales',
+                  data: currentYearSales,
+                  backgroundColor: '#4285F4',
+                  borderColor: '#4285F4',
+                  borderWidth: 2,
+                  fill: false,
+                  tension: 0.4,
+                  pointRadius: 5,
+                },
+                {
+                  label: 'Last Year Sales',
+                  data: lastYearSales,
+                  backgroundColor: '#FF5733',
+                  borderColor: '#FF5733',
+                  borderWidth: 2,
+                  fill: false,
+                  tension: 0.4,
+                  pointRadius: 5,
+                }
               ],
             },
             options: {
@@ -79,61 +55,49 @@ function yearlySalesAnalysis(url, dest, chartType, loader) {
               plugins: {
                 title: {
                   display: true,
-                  text: `Yearly Sales Analysis: Total Sales: ${total.reduce((a, b) => a + b, 0)}`,
+                  text: `Yearly Sales Comparison: ${new Date().getFullYear()} vs ${new Date().getFullYear() - 1}`,
                   color: '#fe9a43',
-                  position: 'bottom',
-                  align: 'center',
                   font: {
                     weight: 'bold',
-                    size: 16,
+                    size: 12,
                   },
-                  padding: 20,
                 },
                 legend: {
-                  display: false,
+                  display: true,
                 },
               },
               scales: {
                 x: {
-                  grid: {
-                    display: false,
-                    drawBorder: false,
-                  },
                   ticks: {
                     color: '#fe9a43',
-                    font: {
-                      weight: 'bold',
-                    },
+                    font: { weight: 'bold' },
                   },
                 },
                 y: {
-                  grid: {
-                    display: false,
-                    drawBorder: false,
-                  },
                   ticks: {
                     color: '#fe9a43',
-                    font: {
-                      weight: 'bold',
-                    },
+                    font: { weight: 'bold' },
                   },
                 },
               },
             },
           });
         } else {
-          salesAnalystChart.data.labels = modelList;
-          salesAnalystChart.data.datasets[0].data = total;
+          salesAnalystChart.data.labels = months;
+          salesAnalystChart.data.datasets[0].data = currentYearSales;
+          salesAnalystChart.data.datasets[1].data = lastYearSales;
           salesAnalystChart.update();
         }
-        setTimeout(fetchAndUpdateDailyData, 5 * 60 * 1000);
+
+        setTimeout(fetchAndUpdateData, 5 * 60 * 1000);
       },
       error(err) {
         console.error(err);
       },
     });
   }
-  fetchAndUpdateDailyData();
+
+  fetchAndUpdateData();
 }
 
 /**

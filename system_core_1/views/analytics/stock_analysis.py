@@ -57,7 +57,7 @@ def admin_stock_analysis(request):
         if request.user.is_superuser:
             representatives = UserProfile.objects.filter(groups__name='main_shop').first()
             sales = MainStorageAnalysis().get_agent_stock_out(agent=representatives)
-            overall_sales = MainStorageAnalysis().overall_sales(agent=representatives)
+            overall_sales = MainStorageAnalysis().overall_sales()
             overall_stock = MainStorageAnalysis().overall_stock()
             for value in sales:
                 total_sales += value[1]

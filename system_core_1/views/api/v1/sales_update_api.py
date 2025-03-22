@@ -14,9 +14,8 @@ def stockQuery(request):
     """Query the stock of phones available in the inventory."""
     if request.method == 'GET':
         # Get all devices in stock and assigned to agents in one query
-        one_hr_ago = timezone.now() - timezone.timedelta(hours=1)
         devices = MainStorage.objects.filter(
-            in_stock=True, available=True,
+            in_stock=True, category__in=["Itel", "Tecno"],
             sold=False, missing=False, pending=False,
             agent__groups__name__in=['agents', 'branches']
             ).values_list('device_imei', flat=True)
