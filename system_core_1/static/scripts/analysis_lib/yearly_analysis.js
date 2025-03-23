@@ -18,8 +18,8 @@ function yearlySalesAnalysis(url, dest, chartType, loader) {
         $(loader).removeClass('loading-message');
 
         const months = Object.keys(data.current_year);
-        const currentYearSales = Object.values(data.current_year);
-        const lastYearSales = Object.values(data.last_year);
+        const currentYearSales = months.map(month => data.current_year[month].month_total);
+        const lastYearSales = months.map(month => data.last_year[month].month_total);
 
         if (salesAnalystChart === null) {
           salesAnalystChart = new Chart(yearlyAnalysisctx, {
@@ -64,6 +64,29 @@ function yearlySalesAnalysis(url, dest, chartType, loader) {
                 },
                 legend: {
                   display: true,
+                },
+                tooltip: {
+                  callbacks: {
+                    title: (tooltipItems) => {
+                      return `Sales Breakdown - ${tooltipItems[0].label}`;
+                    },
+                    afterBody: (tooltipItems) => {
+                      let datasetIndex = tooltipItems[0].datasetIndex;
+                      let month = tooltipItems[0].label.toLowerCase();
+                      let yearType = datasetIndex === 0 ? "current_year" : "last_year";
+                      let agentData = data[yearType][month];
+
+                      let details = [];
+                      for (let agent in agentData) {
+                        if (agent !== "month_total") {
+                          details.push(`${agent}: ${agentData[agent]}`);
+                        }
+                      }
+                      return details.length ? details : ["No agent data available"];
+                    }
+                  },
+                  bodySpacing: 5,
+                  displayColors: false,
                 },
               },
               scales: {

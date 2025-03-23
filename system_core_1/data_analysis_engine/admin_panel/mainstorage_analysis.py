@@ -4,6 +4,8 @@ from ...models.agent_profile import AgentProfile
 from ...models.user_profile import UserProfile
 from django.utils import timezone
 from django.db.models import Count
+from collections import defaultdict
+import json
 
 
 class MainStorageAnalysis:
@@ -123,14 +125,16 @@ class MainStorageAnalysis:
             stock[data.phone_type] = stock.get(data.phone_type, 0) + 1
         stock = sorted(stock.items(), key=lambda x: x[1], reverse=True)
         return stock
-    
+
     def get_sales_for_all_months(self, agent=None):
-        """Returns a dictionary containing the agent's sales for all months."""
+        """Returns a dictionary containing the agent's sales for all months, categorized by year and agent,
+        with an additional 'month_total' field."""
+        
         months = ['January', 'February', 'March', 'April', 'May',
                 'June', 'July', 'August', 'September', 'October',
                 'November', 'December']
         
-        current_year = timezone.now().date().year
+        current_year = timezone.now().year
         last_year = current_year - 1
 
         # Base query filters
@@ -150,29 +154,38 @@ class MainStorageAnalysis:
             filters["agent__groups__name__in"] = ['agents', 'branches']
             filters["missing"] = False
 
-        # Single query to fetch sales for both years
+        # Query to fetch sales for both years, grouped by agent and month
         sales_data = (
             MainStorage.objects
             .filter(**filters, stock_out_date__year__in=[last_year, current_year])
-            .values("stock_out_date__year", "stock_out_date__month")
+            .values("stock_out_date__year", "stock_out_date__month", "agent__username")
             .annotate(sales_count=Count("id"))
         )
 
-        # Organize data into a dictionary
-        last_year_data = {month: 0 for month in months}
-        this_year_data = {month: 0 for month in months}
-
+        # Organize data into the required format with month_total
+        sales_summary = {
+            "current_year": {month.lower(): defaultdict(int) for month in months},
+            "last_year": {month.lower(): defaultdict(int) for month in months}
+        }
+        
         for entry in sales_data:
             year = entry["stock_out_date__year"]
-            month = entry["stock_out_date__month"]
-            month_name = months[month - 1]  # Convert month number to name
+            month = months[entry["stock_out_date__month"] - 1].lower()  # Convert to lowercase
+            agent_name = entry["agent__username"]
+            sales_count = entry["sales_count"]
 
             if year == last_year:
-                last_year_data[month_name] = entry["sales_count"]
+                sales_summary["last_year"][month][agent_name] = sales_count
             else:
-                this_year_data[month_name] = entry["sales_count"]
-        return {"current_year": this_year_data, "last_year": last_year_data}
+                sales_summary["current_year"][month][agent_name] = sales_count
 
+        # Calculate month_total for each month
+        for year_key in ["current_year", "last_year"]:
+            for month in sales_summary[year_key]:
+                sales_summary[year_key][month]["month_total"] = sum(
+                    sales_summary[year_key][month].values()
+                )
+        return sales_summary
     
     def overall_stock(self, agent=None):
         """This function returns a JSON object containing
