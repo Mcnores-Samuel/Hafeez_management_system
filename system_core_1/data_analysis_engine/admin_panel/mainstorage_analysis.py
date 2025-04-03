@@ -26,7 +26,7 @@ class MainStorageAnalysis:
             data_set = MainStorage.objects.filter(
                 stock_out_date=day,
                 sold=True, in_stock=False,
-                sales_type=sales_type)
+                sales_type=sales_type, agent__groups__name__in=["agents", "branches"])
         sales = {}
         for data in data_set:
             sales[data.phone_type] = sales.get(data.phone_type, 0) + 1
@@ -53,7 +53,8 @@ class MainStorageAnalysis:
             data_set = MainStorage.objects.filter(
                 stock_out_date__range=[monday, sunday],
                 sold=True, in_stock=False,
-                sales_type=sales_type)
+                sales_type=sales_type,
+                agent__groups__name__in=["agents", "branches"]).distinct()
         for data in data_set:
             item = {'type': data.phone_type}
             days[week_days[data.stock_out_date.weekday()]].append(item)
@@ -79,21 +80,16 @@ class MainStorageAnalysis:
             sales_by_agent = sorted(sales_by_agent.items(), key=lambda x: x[1], reverse=True)
         else:
             agents = UserProfile.objects.filter(groups__name__in=['agents', 'branches'])
-            total_sales = MainStorage.objects.filter(
-                stock_out_date__month=current_month,
-                stock_out_date__year=current_year,
-                sold=True, in_stock=False, sales_type=sales_type,
-                missing=False, pending=False, assigned=True,
-                recieved=True, issue=False, faulty=False)
             for agent in agents:
-                sales_by_agent[str(agent.username).lower().capitalize()] = MainStorage.objects.filter(
-                        agent=agent,
-                        stock_out_date__month=current_month,
-                        stock_out_date__year=current_year,
-                        sold=True, in_stock=False, sales_type=sales_type,
-                        missing=False, pending=False, assigned=True,
-                        recieved=True, issue=False, faulty=False).count()
-            sales_by_agent['Total'] = total_sales.count()
+                total = MainStorage.objects.filter(
+                    agent=agent,
+                    stock_out_date__month=current_month,
+                    stock_out_date__year=current_year,
+                    sold=True, in_stock=False, sales_type=sales_type,
+                    missing=False, pending=False, assigned=True,
+                    recieved=True, issue=False, faulty=False).count()
+                sales_by_agent[str(agent.username).lower().capitalize()] = total
+                sales_by_agent['Total'] = sales_by_agent.get("Total", 0) + total
             sales_by_agent = sorted(sales_by_agent.items(), key=lambda x: x[1], reverse=True)
         return sales_by_agent
     
