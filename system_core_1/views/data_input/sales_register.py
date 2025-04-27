@@ -11,7 +11,6 @@ from ...models.main_storage import MainStorage
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
-from webpush import send_user_notification
 from ...models.accessories import Accessories, Accessory_Sales
 from ...models.appliances import Appliances, Appliance_Sales
 from ...models.refarbished_devices import RefarbishedDevices, RefarbishedDevicesSales
@@ -72,10 +71,6 @@ def combinedData_collection(request, data_id):
                         item.name, item.device_imei
                     ))
                     item.save()
-                    payload = {'head': 'Sales Notification', 'body': '{} of imei {} sold successfully'.format(
-                        item.name, item.device_imei
-                    ), 'icon': 'https://raw.githubusercontent.com/Mcnores-Samuel/Hafeez_management_system/main/system_core_1/static/images/logo.png', 'url': 'www.hafeezmw.com'}
-                    send_user_notification(user=request.user, payload=payload, ttl=1000)
                     return redirect('data_search')
             else:
                 messages.error(request, 'Phone out of stock')
