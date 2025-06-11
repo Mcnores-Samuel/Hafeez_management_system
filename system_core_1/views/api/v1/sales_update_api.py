@@ -15,7 +15,7 @@ def stockQuery(request):
     if request.method == 'GET':
         # Get all devices in stock and assigned to agents in one query
         devices = MainStorage.objects.filter(
-            in_stock=True, category__in=["Itel", "Tecno"],
+            in_stock=True,
             sold=False, missing=False, pending=False,
             agent__groups__name__in=['agents', 'branches']
             ).values_list('device_imei', flat=True)
