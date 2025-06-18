@@ -4,6 +4,8 @@ const imei_1 = $('#id_device_imei');
 const imei_2 = $('#id_device_imei_2');
 const name = $('#id_name');
 const cost_price = $('#id_cost_price');
+const category = $('#id_category');
+const specs = $('#id_spec');
 const supplier = $('#id_supplier');
 const waitRoom = $('#waiting-room');
 const send = $('#submit');
@@ -137,6 +139,8 @@ send.on('click', () => {
       data: JSON.stringify(container),
       name: name.val(),
       cost_price: cost_price.val(),
+      category: category.val(),
+      specs: specs.val(),
       supplier: supplier.val(),
     },
     beforeSend() {

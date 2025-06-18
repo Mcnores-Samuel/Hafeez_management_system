@@ -51,18 +51,23 @@ def add_to_stock(request):
             data = json.loads(request.POST.get('data'))
             name = request.POST.get('name')
             cost_price = request.POST.get('cost_price')
+            category = request.POST.get('category')
+            spec = request.POST.get('spec')
             supplier = request.POST.get('supplier')
             instance = MainStorage.objects.filter(name=name).first()
             main_shop_staff = Group.objects.get(name='main_shop')
             representatives = UserProfile.objects.filter(groups=main_shop_staff)
             agent = representatives.first()
             already_exists = []
+            if instance is not None:
+                category = instance.category
+                spec = instance.spec
             for item in data:
                 try:
                     MainStorage.objects.create(
                         device_imei=item[0], device_imei_2=item[1], name=name,
-                        phone_type=instance.phone_type, category=instance.category,
-                        spec=instance.spec, screen_size=instance.screen_size,
+                        phone_type=name, category=category,
+                        spec=spec, screen_size=instance.screen_size,
                         battery=instance.battery, camera=instance.camera, os=instance.os,
                         in_stock=True, sales_type='##', contract_no='##', available=True,
                         entry_date=timezone.now(), stock_out_date=timezone.now(),
@@ -73,7 +78,6 @@ def add_to_stock(request):
                         updated_by=user.username, comment='##'
                     )
                 except Exception as e:
-                    print(e)
                     already_exists.append(item)
             return JsonResponse({'status': 200, 'data': already_exists})
     if request.user.is_staff and request.user.is_superuser:
