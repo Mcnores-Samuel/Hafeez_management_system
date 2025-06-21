@@ -78,6 +78,7 @@ def add_to_stock(request):
                         updated_by=user.username, comment='##'
                     )
                 except Exception as e:
+                    print(e)
                     already_exists.append(item)
             return JsonResponse({'status': 200, 'data': already_exists})
     if request.user.is_staff and request.user.is_superuser:

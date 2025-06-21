@@ -68,7 +68,7 @@ class MainStorage(models.Model):
     device_imei = models.CharField(max_length=15, unique=True)
     device_imei_2 = models.CharField(max_length=15, unique=True, null=True, blank=True)
     name = models.CharField(max_length=50, null=True)
-    phone_type = models.CharField(max_length=25, blank=True, null=True)
+    phone_type = models.CharField(max_length=50, blank=True, null=True)
     category = models.CharField(max_length=25, null=True, default='Tecno')
     spec = models.CharField(max_length=25, null=True, blank=True)
     screen_size = models.CharField(max_length=25, null=True, blank=True)
