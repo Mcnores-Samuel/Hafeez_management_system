@@ -38,8 +38,7 @@ SERVER_DOMAIN1 = os.environ.get('SERVER_DOMAIN', default=".vercel.app")
 SERVER_DOMAIN2 = os.environ.get('SERVER_DOMAIN2', default=".railway.app")
 OTHER_DOMAIN = os.environ.get('OTHER_DOMAIN')
 ALLOWED_HOSTS = [MAIN_DOMAIN, SUBDOMAIN_NAME, SERVER_DOMAIN1,
-                 SERVER_DOMAIN2, OTHER_DOMAIN, 'localhost', '127.0.0.1',
-                 '192.168.58.146']
+                 SERVER_DOMAIN2, OTHER_DOMAIN, 'localhost', '127.0.0.1']
 
 CSRF_COOKIE_SECURE = (bool(int(os.environ.get('CSRF_COOKIE_SECURE', 1))))
 
@@ -47,8 +46,7 @@ CSRF_TRUSTED_ORIGINS = [
     'https://' + MAIN_DOMAIN,
     'https://' + SUBDOMAIN_NAME,
     'http://' + MAIN_DOMAIN,
-    'http://' + SUBDOMAIN_NAME,
-    'http://192.168.58.146'
+    'http://' + SUBDOMAIN_NAME
 ]
 SECURE_HSTS_SECONDS = 31536000  # 1 year
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
