@@ -70,8 +70,7 @@ def pendingSales(request):
             sold=True,
             pending=True,
             recieved=True,
-            missing=False,
-            agent__groups__name='agents'
+            missing=False
             ).values_list('device_imei', flat=True)
         devices = reversed(devices)
         return JsonResponse({'data': list(devices)}, status=200)

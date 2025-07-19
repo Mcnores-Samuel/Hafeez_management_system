@@ -6,7 +6,6 @@ from ..models.main_storage import MainStorage
 from ..models.user_profile import UserProfile
 from django.contrib import messages as message
 from django.http import JsonResponse
-from webpush import send_user_notification
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.urls import reverse
 
@@ -28,13 +27,6 @@ def pending_sales(request):
                 device_imei=device, pending=True, missing=False)
             agent = UserProfile.objects.get(username=approved[0].agent)
             name = approved[0].name
-            payload = {
-                'head': '{} your sale has been approved.'.format(agent.username),
-                'body': 'The sale of {} imei number {} has been approved.'.format(
-                    name, device),
-                'icon': 'https://raw.githubusercontent.com/Mcnores-Samuel/Hafeez_management_system/main/system_core_1/static/images/logo.png',
-                'url': 'www.hafeezmw.com'
-            }
             if approved:
                 if (approved[0].sales_type == 'Loan'
                     and approved[0].contract_no != '##'):
@@ -42,7 +34,6 @@ def pending_sales(request):
                     approved.update(pending=False)
                     message.success(request, '{} of {} The sale has been approved.'.format(
                         name, device))
-                    send_user_notification(user=agent, payload=payload, ttl=1000)
                     url = reverse('pending_sales_details', args=[agent.username])
                     return redirect(url)
                 elif (approved[0].sales_type == 'Cash'):
@@ -50,7 +41,6 @@ def pending_sales(request):
                     approved.update(pending=False)
                     message.success(request, '{} of {} The sale has been approved.'.format(
                         name, device))
-                    send_user_notification(user=agent, payload=payload, ttl=1000)
                     url = reverse('pending_sales_details', args=[agent.username])
                     return redirect(url)
                 else:
@@ -74,7 +64,7 @@ def total_pending_sales(request):
         if request.user.is_staff and request.user.is_superuser:
             total = MainStorage.objects.filter(
                 pending=True, sold=True, in_stock=False,
-                missing=False, issue=False, faulty=False).count()
+                missing=False, issue=False, faulty=False, recieved=True).count()
         elif request.user.groups.filter(name='agents').exists():
             total = MainStorage.objects.filter(
                 pending=True, sold=True, in_stock=False,
